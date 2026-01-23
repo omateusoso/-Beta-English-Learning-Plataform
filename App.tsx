@@ -10,7 +10,8 @@ import {
     Sofa, Bed, Utensils, Bath, Tv, Watch, CalendarDays, HelpCircle, Target, Battery, 
     BatteryCharging, BatteryFull, Lock, Key, Baby, UserPlus, Monitor, Shield, Sprout, Landmark,
     Sparkles, ShieldCheck, Rocket, ZapIcon, Quote, Lightbulb, GraduationCap as TeacherIcon,
-    Languages, Keyboard, Fingerprint, MousePointer2, SpellCheck, UserCheck, Flame, HelpCircle as QuestionIcon
+    Languages, Keyboard, Fingerprint, MousePointer2, SpellCheck, UserCheck, Flame, HelpCircle as QuestionIcon,
+    Ear, Zap as FastIcon
 } from 'lucide-react';
 
 // --- Styles ---
@@ -1109,26 +1110,170 @@ const VerbToBeNegInt = ({ isPortuguese }: { isPortuguese: boolean }) => {
     );
 };
 
-const IndefiniteArticles = () => (
-    <div className="space-y-8 animate-fade-in">
-        <div className="grid md:grid-cols-2 gap-8">
-            <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col items-center text-center">
-                <div className="w-16 h-16 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center text-3xl font-bold mb-4">A</div>
-                <h3 className="font-bold text-slate-800 mb-2">+ Consonant SOUND</h3>
-                <div className="space-y-2 w-full">
-                    {['A cat', 'A house', 'A university'].map(t => <button key={t} onClick={() => speak(t)} className="w-full p-3 bg-slate-50 rounded-lg hover:bg-indigo-50 hover:text-indigo-600 transition-colors text-slate-700 font-bold">{t}</button>)}
+const IndefiniteArticles = ({ isPortuguese }: { isPortuguese: boolean }) => {
+    const examplesA = [
+        { phrase: 'A car', ipa: '/ə kɑːr/', trans: '(Um carro)' },
+        { phrase: 'A book', ipa: '/ə bʊk/', trans: '(Um livro)' },
+        { phrase: 'A house', ipa: '/ə haʊs/', trans: '(Uma casa)' },
+    ];
+    const examplesAn = [
+        { phrase: 'An apple', ipa: '/ən ˈæpl/', trans: '(Uma maçã)' },
+        { phrase: 'An egg', ipa: '/ən ɛɡ/', trans: '(Um ovo)' },
+        { phrase: 'An ice cream', ipa: '/ən aɪs kriːm/', trans: '(Um sorvete)' },
+    ];
+    const trickyExamples = [
+        { phrase: 'A university', reason: isPortuguese ? "Som de 'yu' (consoante)" : "Starts with 'yu' sound", ipa: '/ə ˌjuːnɪˈvɜːrsəti/', icon: '🏫' },
+        { phrase: 'An hour', reason: isPortuguese ? "'H' mudo (som de vogal)" : "Silent 'H' (vowel sound)", ipa: '/ən ˈaʊər/', icon: '⌛' },
+    ];
+
+    return (
+        <div className="space-y-12 animate-fade-in pb-20">
+            {/* Teacher Intro */}
+            <div className="relative p-8 rounded-[2rem] bg-emerald-900 text-white overflow-hidden shadow-2xl">
+                <div className="absolute top-0 right-0 p-4 opacity-10"><Ear className="w-32 h-32" /></div>
+                <div className="relative z-10 flex flex-col md:flex-row gap-6 items-center">
+                    <div className="w-20 h-20 rounded-full bg-emerald-500 flex items-center justify-center text-4xl shadow-lg border-2 border-emerald-400">👨‍🏫</div>
+                    <div className="flex-1">
+                        <h3 className="text-2xl font-serif-display mb-2">
+                            {isPortuguese ? "O Segredo está no Ouvido" : "The Secret is in the Ear"}
+                        </h3>
+                        <p className="text-emerald-100 text-sm leading-relaxed italic">
+                            {isPortuguese 
+                                ? "\"A e AN significam a mesma coisa: 'um' ou 'uma'. O segredo para não errar nunca é ouvir o SOM da próxima palavra, não olhar a letra. Se o som travar na garganta, use AN. Se o som fluir, use A.\""
+                                : "\"A and AN mean the same thing: 'a' or 'an'. The secret to never missing is listening to the SOUND of the next word, not looking at the letter. If the sound blocks in your throat, use AN. If it flows, use A.\""
+                            }
+                        </p>
+                    </div>
                 </div>
             </div>
-            <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col items-center text-center">
-                <div className="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center text-3xl font-bold mb-4">AN</div>
-                <h3 className="font-bold text-slate-800 mb-2">+ Vowel SOUND</h3>
-                <div className="space-y-2 w-full">
-                    {['An apple', 'An elephant', 'An hour'].map(t => <button key={t} onClick={() => speak(t)} className="w-full p-3 bg-slate-50 rounded-lg hover:bg-emerald-50 hover:text-emerald-600 transition-colors text-slate-700 font-bold">{t}</button>)}
+
+            {/* Comparison Grid */}
+            <div className="grid md:grid-cols-2 gap-8">
+                {/* A Card */}
+                <div className="bg-white p-8 rounded-[2.5rem] border-2 border-indigo-50 shadow-sm relative group overflow-hidden">
+                    <div className="absolute top-0 right-0 p-6 text-6xl font-black text-indigo-50 group-hover:text-indigo-100 transition-colors">A</div>
+                    <div className="relative z-10">
+                        <div className="w-12 h-12 bg-indigo-600 text-white rounded-2xl flex items-center justify-center text-2xl font-black mb-6 shadow-lg">A</div>
+                        <h4 className="text-xl font-bold text-slate-800 mb-2">
+                            {isPortuguese ? "+ Som de Consoante" : "+ Consonant Sound"}
+                        </h4>
+                        <p className="text-slate-500 text-xs mb-8">
+                            {isPortuguese ? "Usamos 'A' quando a próxima palavra começa com som de consoante." : "Use 'A' when the next word starts with a consonant sound."}
+                        </p>
+                        <div className="space-y-3">
+                            {examplesA.map((ex, i) => (
+                                <button key={i} onClick={() => speak(ex.phrase)} className="w-full flex items-center justify-between p-4 bg-slate-50 rounded-2xl hover:bg-indigo-50 transition-all border border-transparent hover:border-indigo-100 group/btn">
+                                    <div className="flex items-baseline gap-2">
+                                        <span className="font-bold text-slate-700">{ex.phrase}</span>
+                                        <span className="text-[10px] font-mono text-slate-400">{ex.ipa}</span>
+                                        <span className="text-[9px] font-medium text-slate-400 uppercase tracking-tighter">{ex.trans}</span>
+                                    </div>
+                                    <Volume2 className="w-4 h-4 text-slate-300 group-hover/btn:text-indigo-500" />
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+
+                {/* AN Card */}
+                <div className="bg-white p-8 rounded-[2.5rem] border-2 border-emerald-50 shadow-sm relative group overflow-hidden">
+                    <div className="absolute top-0 right-0 p-6 text-6xl font-black text-emerald-50 group-hover:text-emerald-100 transition-colors">AN</div>
+                    <div className="relative z-10">
+                        <div className="w-12 h-12 bg-emerald-600 text-white rounded-2xl flex items-center justify-center text-2xl font-black mb-6 shadow-lg">AN</div>
+                        <h4 className="text-xl font-bold text-slate-800 mb-2">
+                            {isPortuguese ? "+ Som de Vogal" : "+ Vowel Sound"}
+                        </h4>
+                        <p className="text-slate-500 text-xs mb-8">
+                            {isPortuguese ? "Usamos 'AN' quando a próxima palavra começa com som de vogal." : "Use 'AN' when the next word starts with a vowel sound."}
+                        </p>
+                        <div className="space-y-3">
+                            {examplesAn.map((ex, i) => (
+                                <button key={i} onClick={() => speak(ex.phrase)} className="w-full flex items-center justify-between p-4 bg-slate-50 rounded-2xl hover:bg-emerald-50 transition-all border border-transparent hover:border-emerald-100 group/btn">
+                                    <div className="flex items-baseline gap-2">
+                                        <span className="font-bold text-slate-700">{ex.phrase}</span>
+                                        <span className="text-[10px] font-mono text-slate-400">{ex.ipa}</span>
+                                        <span className="text-[9px] font-medium text-slate-400 uppercase tracking-tighter">{ex.trans}</span>
+                                    </div>
+                                    <Volume2 className="w-4 h-4 text-slate-300 group-hover/btn:text-emerald-500" />
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* Tricky Cases Section */}
+            <section className="space-y-6">
+                <div className="flex items-center gap-3">
+                    <div className="p-2 bg-amber-100 rounded-lg text-amber-600"><AlertTriangle className="w-5 h-5" /></div>
+                    <h4 className="text-2xl font-bold text-slate-800">
+                        {isPortuguese ? "As Armadilhas (Tricky Cases)" : "Tricky Cases"}
+                    </h4>
+                </div>
+                <div className="grid md:grid-cols-2 gap-4">
+                    {trickyExamples.map((ex, i) => (
+                        <div key={i} className="p-6 bg-amber-50/50 border border-amber-100 rounded-3xl flex gap-5 items-center group">
+                            <div className="w-16 h-16 bg-white rounded-2xl shadow-sm flex items-center justify-center text-3xl group-hover:scale-110 transition-transform">{ex.icon}</div>
+                            <div>
+                                <button onClick={() => speak(ex.phrase)} className="flex items-baseline gap-2 mb-1">
+                                    <span className="text-xl font-black text-amber-900">{ex.phrase}</span>
+                                    <span className="text-[10px] font-mono text-amber-700/50">{ex.ipa}</span>
+                                </button>
+                                <p className="text-[11px] font-bold text-amber-800/70 uppercase tracking-widest leading-tight">
+                                    {ex.reason}
+                                </p>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </section>
+
+            {/* Master Notes: When NOT to use */}
+            <div className="bg-rose-50 rounded-[2.5rem] p-10 relative border border-rose-100">
+                <div className="absolute top-0 left-10 -translate-y-1/2 bg-rose-500 text-white px-6 py-2 rounded-full font-black text-xs uppercase tracking-widest shadow-lg">
+                    {isPortuguese ? "Importante!" : "Crucial Note!"}
+                </div>
+                <div className="grid md:grid-cols-2 gap-10 items-start">
+                    <div className="space-y-6">
+                        <div className="flex gap-4">
+                            <div className="w-10 h-10 bg-white rounded-xl shadow-sm flex items-center justify-center shrink-0"><Users className="w-5 h-5 text-rose-500" /></div>
+                            <div>
+                                <h6 className="font-bold text-rose-900 mb-1">{isPortuguese ? "Apenas no Singular" : "Singular Only"}</h6>
+                                <p className="text-xs text-rose-800 leading-relaxed">
+                                    {isPortuguese 
+                                        ? "A e AN significam 'UM/UMA'. Por isso, nunca use com palavras no plural. Diga 'Cars', não 'A cars'."
+                                        : "A and AN mean 'ONE'. Therefore, never use them with plural words. Say 'Cars', not 'A cars'."}
+                                </p>
+                            </div>
+                        </div>
+                        <div className="flex gap-4">
+                            <div className="w-10 h-10 bg-white rounded-xl shadow-sm flex items-center justify-center shrink-0"><FastIcon className="w-5 h-5 text-rose-500" /></div>
+                            <div>
+                                <h6 className="font-bold text-rose-900 mb-1">{isPortuguese ? "Profissões" : "Jobs & Titles"}</h6>
+                                <p className="text-xs text-rose-800 leading-relaxed">
+                                    {isPortuguese 
+                                        ? "Em inglês, somos obrigados a usar artigos com profissões. 'I am a doctor', não 'I am doctor'."
+                                        : "In English, we MUST use articles with jobs. 'I am a doctor', not 'I am doctor'."}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="bg-white/50 p-6 rounded-3xl border border-rose-200">
+                        <h6 className="font-bold text-rose-900 mb-4 flex items-center gap-2">
+                            <Lightbulb className="w-4 h-4" />
+                            {isPortuguese ? "Desafio de Mestre" : "Master Challenge"}
+                        </h6>
+                        <p className="text-xs text-rose-700 leading-relaxed italic">
+                            {isPortuguese 
+                                ? "\"Como você diria 'um agente do FBI'? Pense no som da letra F (/ɛf/). A resposta correta é AN FBI AGENT. Viu como o som manda em tudo?\""
+                                : "\"How would you say 'an FBI agent'? Think of the sound of the letter F (/ɛf/). The correct answer is AN FBI AGENT. See how sound rules everything?\""}
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-);
+    );
+};
 
 const JobsOccupations = () => (
     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 animate-fade-in">
@@ -1575,7 +1720,7 @@ export default function App() {
             case 2: return <SubjectPronouns isPortuguese={isPortuguese} />;
             case 3: return <VerbToBeAffirmative isPortuguese={isPortuguese} />;
             case 4: return <VerbToBeNegInt isPortuguese={isPortuguese} />;
-            case 5: return <IndefiniteArticles />;
+            case 5: return <IndefiniteArticles isPortuguese={isPortuguese} />;
             case 6: return <JobsOccupations />;
             case 7: return <SingularPlural />;
             case 8: return <ColorsAdjectives />;
