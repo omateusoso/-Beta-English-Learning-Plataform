@@ -95,7 +95,7 @@ const GreetingsFarewells = ({ isPortuguese }: { isPortuguese: boolean }) => {
 
     const informalGreetings = [
         { phrase: "Hi / Hey", ipa: "/haɪ/ /heɪ/", trans: "Oi", example: "Hey Matthew! How's it going?" },
-        { phrase: "What's up?", ipa: "/wʌts ʌp/", trans: "E aí?", example: "Hey man, what's up? Nothing much." },
+        { phrase: "What's up?", ipa: "/wʌts ʌp?", trans: "E aí?", example: "Hey man, what's up? Nothing much." },
         { phrase: "How's it going?", ipa: "/haʊz ɪt ˈɡoʊɪŋ/", trans: "Como vão as coisas?", example: "How's it going with the new job?" },
     ];
 
@@ -483,7 +483,7 @@ const AlphabetSpelling = ({ isPortuguese }: { isPortuguese: boolean }) => {
             </section>
 
             {/* Teacher's Corner: Master Notes */}
-            <div className="bg-rose-50 rounded-[2.5rem] p-10 relative border border-rose-100 overflow-hidden">
+            <div className="bg-rose-50 rounded-[2.5rem] p-10 relative border border-rose-100">
                 <div className="absolute top-0 right-10 -translate-y-1/2 bg-rose-500 text-white px-6 py-2 rounded-full font-black text-xs uppercase tracking-widest shadow-lg">
                     {isPortuguese ? "Observações de Mestre" : "Master Notes"}
                 </div>
