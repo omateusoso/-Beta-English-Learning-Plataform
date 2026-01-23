@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { 
     Volume2, ArrowRight, Check, X, Globe, BookOpen, Info, RefreshCw, 
@@ -13,7 +14,7 @@ import {
     Languages, Keyboard, Fingerprint, MousePointer2, SpellCheck, UserCheck, Flame, HelpCircle as QuestionIcon,
     Ear, Zap as FastIcon, Laptop, HardHat, Camera as PhotoIcon, Music as AudioIcon, 
     ChefHat, ShoppingBag, Shield as SecurityIcon, Plane, Scale, Plus, Minus, IterationCw, Eye,
-    Maximize, Minimize, Activity
+    Maximize, Minimize, Activity, Compass, Navigation
 } from 'lucide-react';
 
 // --- Styles ---
@@ -1586,7 +1587,7 @@ const SingularPlural = ({ isPortuguese }: { isPortuguese: boolean }) => {
                         </h3>
                         <p className="text-indigo-100 text-sm leading-relaxed italic">
                             {isPortuguese 
-                                ? "\"Plural em inglês parece simples—basta colocar um 'S', certo? Quase sempre! Mas existem grupos de palavras que gostam de ser diferentes. Hoje vamos dominar as 4 regras principais e os famosos irregulares que pegam todo mundo de surpresa.\""
+                                ? "\"Plural em inglês parece simples—basta colocar um 'S', certo? Quase sempre! Mais existem grupos de palavras que gostam de ser diferentes. Hoje vamos dominar as 4 regras principais e os famosos irregulares que pegam todo mundo de surpresa.\""
                                 : "\"Plural in English seems simple—just add an 'S', right? Most of the time! But there are groups of words that like to be different. Today we'll master the 4 main rules and the famous irregulars that catch everyone by surprise.\""
                             }
                         </p>
@@ -1747,7 +1748,7 @@ const SingularPlural = ({ isPortuguese }: { isPortuguese: boolean }) => {
                         <h5 className="font-bold text-rose-900 mb-2">
                             {isPortuguese ? "O Erro que Entrega o Iniciante" : "The Beginner's Tell"}
                         </h5>
-                        <p className="text-sm text-rose-800 leading-relaxed italic">
+                        <p className="text-sm text-rose-800 italic leading-relaxed italic">
                             {isPortuguese 
                                 ? "\"Muitos alunos esquecem que Adjetivos (cores, tamanhos) NUNCA vão para o plural. Dizemos 'The red cars', nunca 'The reds cars'. O plural fica guardado apenas no substantivo!\""
                                 : "\"Many students forget that Adjectives (colors, sizes) NEVER go into plural. We say 'The red cars', never 'The reds cars'. The plural is only kept in the noun!\""}
@@ -2094,13 +2095,232 @@ const ColorsAdjectives = ({ isPortuguese }: { isPortuguese: boolean }) => {
     );
 };
 
-const NumbersZeroToTwenty = () => (
-    <div className="grid grid-cols-4 gap-4 animate-fade-in">
-        {Array.from({length: 21}, (_, i) => i).map(n => (
-            <button key={n} onClick={() => speak(n.toString())} className="p-6 bg-white rounded-2xl shadow-sm font-bold text-xl text-center hover:bg-indigo-600 hover:text-white transition-all transform hover:scale-105">{n}</button>
-        ))}
-    </div>
-);
+const NumbersZeroToTwenty = ({ isPortuguese }: { isPortuguese: boolean }) => {
+    const basicNumbers = [
+        { n: 0, w: 'Zero', ipa: '/ˈzɪəroʊ/', trans: 'Zero', hint: 'zii-rou', icon: '⭕' },
+        { n: 1, w: 'One', ipa: '/wʌn/', trans: 'Um', hint: 'uan', icon: '☝️' },
+        { n: 2, w: 'Two', ipa: '/tuː/', trans: 'Dois', hint: 'tuu', icon: '✌️' },
+        { n: 3, w: 'Three', ipa: '/θriː/', trans: 'Três', hint: 'th-rii', icon: '☘️' },
+        { n: 4, w: 'Four', ipa: '/fɔːr/', trans: 'Quatro', hint: 'fór', icon: '🍀' },
+        { n: 5, w: 'Five', ipa: '/faɪv/', trans: 'Cinco', hint: 'fa-iv', icon: '🖐️' },
+        { n: 6, w: 'Six', ipa: '/sɪks/', trans: 'Seis', hint: 'siks', icon: '🎲' },
+        { n: 7, w: 'Seven', ipa: '/ˈsevn/', trans: 'Sete', hint: 'sé-ven', icon: '🌈' },
+        { n: 8, w: 'Eight', ipa: '/eɪt/', trans: 'Oito', hint: 'êit', icon: '🎱' },
+        { n: 9, w: 'Nine', ipa: '/naɪn/', trans: 'Nove', hint: 'ná-in', icon: '🐱' },
+        { n: 10, w: 'Ten', ipa: '/ten/', trans: 'Dez', hint: 'tén', icon: '🔟' },
+        { n: 11, w: 'Eleven', ipa: '/ɪˈlevn/', trans: 'Onze', hint: 'i-lé-ven', icon: '⚽' },
+        { n: 12, w: 'Twelve', ipa: '/twelv/', trans: 'Doze', hint: 'tu-él-v', icon: '🕛' },
+    ];
+
+    const teenNumbers = [
+        { n: 13, w: 'Thirteen', ipa: '/ˌθɜːrˈtiːn/', trans: 'Treze', hint: 'th-er-tiin', icon: '🔞' },
+        { n: 14, w: 'Fourteen', ipa: '/ˌfɔːrˈtiːn/', trans: 'Quatorze', hint: 'for-tiin', icon: '📅' },
+        { n: 15, w: 'Fifteen', ipa: '/ˌfɪfˈtiːn/', trans: 'Quinze', hint: 'fif-tiin', icon: '🎂' },
+        { n: 16, w: 'Sixteen', ipa: '/ˌsɪksˈtiːn/', trans: 'Dezesseis', hint: 'siks-tiin', icon: '🚗' },
+        { n: 17, w: 'Seventeen', ipa: '/ˌsevnˈtiːn/', trans: 'Dezessete', hint: 'se-ven-tiin', icon: '🎓' },
+        { n: 18, w: 'Eighteen', ipa: '/ˌeɪˈtiːn/', trans: 'Dezoito', hint: 'ei-tiin', icon: '🗽' },
+        { n: 19, w: 'Nineteen', ipa: '/ˌnaɪnˈtiːn/', trans: 'Dezenove', hint: 'nain-tiin', icon: '🚀' },
+    ];
+
+    return (
+        <div className="space-y-12 animate-fade-in pb-20">
+            {/* Senior Teacher Introduction */}
+            <div className="relative p-8 rounded-[2rem] bg-indigo-900 text-white overflow-hidden shadow-2xl">
+                <div className="absolute top-0 right-0 p-4 opacity-10"><Calculator className="w-32 h-32" /></div>
+                <div className="relative z-10 flex flex-col md:flex-row gap-6 items-center">
+                    <div className="w-20 h-20 rounded-full bg-indigo-500 flex items-center justify-center text-4xl shadow-lg border-2 border-indigo-400">👨‍🏫</div>
+                    <div className="flex-1">
+                        <h3 className="text-2xl font-serif-display mb-2">
+                            {isPortuguese ? "Matthew's Counting Lab" : "Matthew's Counting Lab"}
+                        </h3>
+                        <p className="text-indigo-100 text-sm leading-relaxed italic">
+                            {isPortuguese 
+                                ? "\"Números são a batida do coração da lógica. Sem eles, você não sabe sua idade, não paga o café e não dá seu telefone. O segredo de hoje está no sufixo '-teen'. Se você acentuar o som final corretamente, o mundo te entenderá perfeitamente!\""
+                                : "\"Numbers are the heartbeat of logic. Without them, you don't know your age, you can't pay for coffee, and you can't give your phone number. Today's secret lies in the '-teen' suffix. If you stress that final sound correctly, the world will understand you perfectly!\""
+                            }
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            {/* Part 1: The Foundation (0-12) */}
+            <section className="space-y-6">
+                <div className="flex items-center gap-3">
+                    <div className="p-2 bg-indigo-100 rounded-lg text-indigo-600"><Star className="w-5 h-5" /></div>
+                    <h4 className="text-2xl font-bold text-slate-800">
+                        {isPortuguese ? "A Base (0-12)" : "The Foundation (0-12)"}
+                    </h4>
+                </div>
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+                    {basicNumbers.map(item => (
+                        <button 
+                            key={item.n} 
+                            onClick={() => speak(item.w)}
+                            className="group bg-white p-5 rounded-[2rem] border border-slate-100 shadow-sm hover:border-indigo-500 hover:shadow-xl transition-all flex flex-col items-center relative overflow-hidden"
+                        >
+                            <span className="text-4xl mb-2 group-hover:scale-110 transition-transform">{item.icon}</span>
+                            <span className="text-3xl font-black text-slate-800 leading-none mb-1">{item.n}</span>
+                            <h5 className="font-bold text-indigo-600 text-sm group-hover:text-indigo-700 transition-colors">{item.w}</h5>
+                            <div className="flex flex-col items-center mt-2">
+                                <span className="text-[10px] font-mono text-slate-400 leading-none">{item.ipa}</span>
+                                {isPortuguese && <span className="text-[9px] font-bold text-indigo-300 uppercase mt-0.5 opacity-60">({item.trans})</span>}
+                            </div>
+                            <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                                <Volume2 className="w-3 h-3 text-indigo-300" />
+                            </div>
+                        </button>
+                    ))}
+                </div>
+            </section>
+
+            {/* Part 2: The Teens (13-19) */}
+            <section className="space-y-6">
+                <div className="flex items-center gap-3">
+                    <div className="p-2 bg-emerald-100 rounded-lg text-emerald-600"><Zap className="w-5 h-5" /></div>
+                    <h4 className="text-2xl font-bold text-slate-800">
+                        {isPortuguese ? "Os 'Teens' (13-19)" : "The Teens (13-19)"}
+                    </h4>
+                </div>
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+                    {teenNumbers.map(item => (
+                        <button 
+                            key={item.n} 
+                            onClick={() => speak(item.w)}
+                            className="group bg-white p-6 rounded-[2.5rem] border-2 border-emerald-50 shadow-sm hover:border-emerald-500 hover:shadow-2xl transition-all flex flex-col items-center text-center relative"
+                        >
+                            <span className="text-2xl font-black text-emerald-600 mb-2">{item.n}</span>
+                            <h5 className="font-black text-slate-800 text-lg group-hover:text-emerald-700 transition-colors">
+                                {item.w.split('t')[0]}<span className="text-emerald-500 underline decoration-2">teen</span>
+                            </h5>
+                            <div className="flex flex-col items-center mt-2">
+                                <span className="text-[10px] font-mono text-slate-400">{item.ipa}</span>
+                                {isPortuguese && <span className="text-[9px] font-bold text-emerald-300 uppercase mt-0.5">({item.trans})</span>}
+                            </div>
+                            <Volume2 className="w-4 h-4 text-emerald-200 mt-4 group-hover:scale-125 transition-transform" />
+                        </button>
+                    ))}
+                </div>
+            </section>
+
+            {/* Special Number 20 */}
+            <section className="bg-indigo-900 rounded-[3rem] p-10 text-white relative overflow-hidden shadow-2xl">
+                <div className="absolute -right-20 -bottom-20 w-64 h-64 bg-indigo-500 rounded-full blur-3xl opacity-20"></div>
+                <div className="relative z-10 flex flex-col md:flex-row items-center gap-10">
+                    <div className="w-32 h-32 rounded-[2rem] bg-indigo-600 border-4 border-indigo-400 flex items-center justify-center text-6xl font-black shadow-inner">20</div>
+                    <div className="text-center md:text-left flex-1">
+                        <div className="flex items-center gap-3 justify-center md:justify-start mb-2">
+                            <h4 className="text-4xl font-serif-display">Twenty</h4>
+                            <button onClick={() => speak("Twenty")} className="p-2 bg-indigo-700 rounded-full hover:bg-indigo-500 transition-colors"><Volume2 className="w-5 h-5"/></button>
+                        </div>
+                        <p className="text-indigo-200 text-sm leading-relaxed max-w-lg">
+                            {isPortuguese 
+                                ? "O número 20 marca o início das dezenas. Note a diferença no som final '-TY' em vez de '-TEEN'. Em muitos sotaques americanos, o 'T' quase não é pronunciado, soando como 'twenny'!"
+                                : "The number 20 marks the beginning of the tens. Note the difference in the final sound '-TY' instead of '-TEEN'. In many American accents, the 'T' is barely pronounced, sounding like 'twenny'!"
+                            }
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            {/* Pro Tip Box: TEEN vs TY */}
+            <div className="p-8 bg-amber-50 border-2 border-amber-100 rounded-[2.5rem] flex flex-col md:flex-row gap-8 items-center relative overflow-hidden">
+                <div className="absolute top-0 right-0 p-4 opacity-5 rotate-12"><Ear className="w-32 h-32 text-amber-900" /></div>
+                <div className="w-20 h-20 bg-amber-500 rounded-[1.5rem] flex items-center justify-center text-white shadow-xl shrink-0">
+                    <AlertTriangle className="w-10 h-10" />
+                </div>
+                <div className="relative z-10">
+                    <h5 className="font-bold text-amber-900 text-lg mb-2">
+                        {isPortuguese ? "Dica de Pronúncia: O Estresse Tônico" : "Pronunciation Tip: The Tonic Stress"}
+                    </h5>
+                    <p className="text-amber-800 text-sm leading-relaxed mb-6">
+                        {isPortuguese 
+                            ? <>Não confunda <b>13 (Thirteen)</b> com <b>30 (Thirty)</b>. Nos números "teen", a força da voz vai para o final: thir-<b>TEEN</b>. Nos números de dezena, a força vai para o início: <b>THIR</b>-ty.</>
+                            : <>Don't confuse <b>13 (Thirteen)</b> with <b>30 (Thirty)</b>. In "teen" numbers, the stress is at the end: thir-<b>TEEN</b>. In tens, the stress is at the beginning: <b>THIR</b>-ty.</>
+                        }
+                    </p>
+                </div>
+            </div>
+
+            {/* Applications: Numbers in Real Life */}
+            <section className="space-y-6">
+                <div className="flex items-center gap-3">
+                    <div className="p-2 bg-blue-100 rounded-lg text-blue-600"><BookOpen className="w-5 h-5" /></div>
+                    <h4 className="text-2xl font-bold text-slate-800">
+                        {isPortuguese ? "Onde usamos?" : "Practical Usage"}
+                    </h4>
+                </div>
+                <div className="grid md:grid-cols-2 gap-6">
+                    {/* Age Application */}
+                    <div className="p-8 bg-white rounded-[2rem] border border-slate-100 shadow-sm flex flex-col gap-4">
+                        <h5 className="font-bold text-slate-700 flex items-center gap-2">
+                            <Baby className="w-5 h-5 text-indigo-400" />
+                            {isPortuguese ? "Sua Idade" : "Your Age"}
+                        </h5>
+                        <button 
+                            onClick={() => speak("I am eighteen years old.")}
+                            className="p-4 bg-slate-50 rounded-2xl hover:bg-indigo-50 transition-all text-left group"
+                        >
+                            <p className="text-sm font-bold text-slate-600 italic">"I am <span className="text-indigo-600 underline">eighteen</span> years old."</p>
+                            <p className="text-[10px] text-slate-400 mt-1">{isPortuguese ? "(Eu tenho 18 anos)" : "(Literal: I am 18 years old)"}</p>
+                        </button>
+                        <p className="text-xs text-slate-500 bg-indigo-50/50 p-3 rounded-xl border border-indigo-100">
+                            {isPortuguese 
+                                ? "Lembre-se: em inglês não 'temos' idade, nós 'somos' idade (use o Verb TO BE)."
+                                : "Remember: in English we don't 'have' age, we 'are' age (use Verb TO BE)."}
+                        </p>
+                    </div>
+
+                    {/* Phone Number Application */}
+                    <div className="p-8 bg-white rounded-[2rem] border border-slate-100 shadow-sm flex flex-col gap-4">
+                        <h5 className="font-bold text-slate-700 flex items-center gap-2">
+                            <Hash className="w-5 h-5 text-emerald-400" />
+                            {isPortuguese ? "Número de Telefone" : "Phone Numbers"}
+                        </h5>
+                        <button 
+                            onClick={() => speak("Oh nine eight seven six")}
+                            className="p-4 bg-slate-50 rounded-2xl hover:bg-emerald-50 transition-all text-left"
+                        >
+                            <p className="text-sm font-bold text-slate-600 italic">"0 - 9 - 8 - 7 - 6..."</p>
+                            <p className="text-[10px] text-emerald-600 mt-1 font-bold">{isPortuguese ? "Dica: Fale dígito por dígito." : "Tip: Say it digit by digit."}</p>
+                        </button>
+                        <div className="flex gap-4 items-center">
+                            <div className="p-3 bg-white border border-slate-100 rounded-xl shadow-sm text-center flex-1">
+                                <span className="text-[10px] font-black text-slate-400 block uppercase">0 = Zero</span>
+                            </div>
+                            <span className="text-slate-300 font-bold">OR</span>
+                            <div className="p-3 bg-white border border-slate-100 rounded-xl shadow-sm text-center flex-1">
+                                <span className="text-[10px] font-black text-emerald-500 block uppercase">0 = Oh</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* Master Note: The 'TH' in Three */}
+            <div className="bg-rose-50 rounded-[2.5rem] p-10 relative border border-rose-100">
+                <div className="absolute top-0 left-10 -translate-y-1/2 bg-rose-500 text-white px-6 py-2 rounded-full font-black text-xs uppercase tracking-widest shadow-lg">
+                    {isPortuguese ? "Atenção Total!" : "Full Attention!"}
+                </div>
+                <div className="flex gap-6 items-start">
+                    <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center shadow-sm shrink-0">
+                        <Mic className="w-8 h-8 text-rose-500" />
+                    </div>
+                    <div>
+                        <h5 className="font-bold text-rose-900 mb-2">
+                            {isPortuguese ? "O Som Fantasma: 'TH' em Three" : "The Ghost Sound: 'TH' in Three"}
+                        </h5>
+                        <p className="text-sm text-rose-800 leading-relaxed">
+                            {isPortuguese 
+                                ? <>O número <b>3 (Three)</b> é um dos sons mais difíceis para brasileiros. Coloque a ponta da língua entre os dentes e sopre levemente. Se você disser "tree" (/triː/), você está dizendo <b>Árvore</b>. Pratique o sopro!</>
+                                : <>The number <b>3 (Three)</b> is a tricky sound. Place the tip of your tongue between your teeth and blow gently. If you say "tree" (/triː/), you're saying <b>Árvore</b>. Practice the blow!</>
+                            }
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+};
 
 const NumbersTwentyHundred = () => (
     <div className="space-y-6 animate-fade-in">
@@ -2122,16 +2342,234 @@ const DemonstrativesNew = () => (
     </div>
 );
 
-const CountriesNationalities = () => (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 animate-fade-in">
-        {[{c: 'USA', n: 'American'}, {c: 'UK', n: 'British'}, {c: 'Brazil', n: 'Brazilian'}, {c: 'Japan', n: 'Japanese'}].map(item => (
-            <button key={item.c} onClick={() => speak(`I am from ${item.c}. I am ${item.n}.`)} className="p-6 bg-white rounded-2xl border border-slate-100 text-left hover:border-indigo-400 flex justify-between items-center transition-all">
-                <div><div className="font-bold text-slate-800">{item.c}</div><div className="text-indigo-500 text-sm">{item.n}</div></div>
-                <Globe className="w-5 h-5 text-slate-200" />
-            </button>
-        ))}
-    </div>
-);
+const CountriesNationalities = ({ isPortuguese }: { isPortuguese: boolean }) => {
+    const regionalData = [
+        {
+            region: isPortuguese ? "Américas" : "Americas",
+            icon: "🌎",
+            items: [
+                { country: "Brazil", nat: "Brazilian", lang: "Portuguese", ipaC: "/brəˈzɪl/", ipaN: "/brəˈzɪl.jən/", flag: "🇧🇷", trans: "Brasil" },
+                { country: "USA", nat: "American", lang: "English", ipaC: "/ˌjuː.esˈeɪ/", ipaN: "/əˈmer.ɪ.kən/", flag: "🇺🇸", trans: "EUA" },
+                { country: "Canada", nat: "Canadian", lang: "English/French", ipaC: "/ˈkæn.ə.də/", ipaN: "/kəˈneɪ.di.ən/", flag: "🇨🇦", trans: "Canadá" },
+                { country: "Mexico", nat: "Mexican", lang: "Spanish", ipaC: "/ˈmek.sɪ.koʊ/", ipaN: "/ˈmek.sɪ.kən/", flag: "🇲🇽", trans: "México" },
+                { country: "Argentina", nat: "Argentine", lang: "Spanish", ipaC: "/ˌɑːr.dʒənˈtiː.nə/", ipaN: "/ˈɑːr.dʒən.taɪn/", flag: "🇦🇷", trans: "Argentina" },
+                { country: "Colombia", nat: "Colombian", lang: "Spanish", ipaC: "/kəˈlʌm.bi.ə/", ipaN: "/kəˈlʌm.bi.ən/", flag: "🇨🇴", trans: "Colômbia" },
+                { country: "Chile", nat: "Chilean", lang: "Spanish", ipaC: "/ˈtʃɪl.i/", ipaN: "/ˈtʃɪl.i.ən/", flag: "🇨🇱", trans: "Chile" },
+                { country: "Peru", nat: "Peruvian", lang: "Spanish", ipaC: "/pəˈruː/", ipaN: "/pəˈruː.vi.ən/", flag: "🇵🇪", trans: "Peru" },
+            ]
+        },
+        {
+            region: isPortuguese ? "Europa" : "Europe",
+            icon: "🇪🇺",
+            items: [
+                { country: "UK", nat: "British", lang: "English", ipaC: "/ˌjuːˈkeɪ/", ipaN: "/ˈbrɪt.ɪʃ/", flag: "🇬🇧", trans: "Reino Unido" },
+                { country: "France", nat: "French", lang: "French", ipaC: "/fræns/", ipaN: "/frentʃ/", flag: "🇫🇷", trans: "França" },
+                { country: "Germany", nat: "German", lang: "German", ipaC: "/ˈdʒɜːr.mə.ni/", ipaN: "/ˈdʒɜːr.mən/", flag: "🇩🇪", trans: "Alemanha" },
+                { country: "Italy", nat: "Italian", lang: "Italian", ipaC: "/ˈɪt.əl.i/", ipaN: "/ɪˈtæl.jən/", flag: "🇮🇹", trans: "Itália" },
+                { country: "Spain", nat: "Spanish", lang: "Spanish", ipaC: "/speɪn/", ipaN: "/ˈspæn.ɪʃ/", flag: "🇪🇸", trans: "Espanha" },
+                { country: "Portugal", nat: "Portuguese", lang: "Portuguese", ipaC: "/ˈpɔːr.tʃə.ɡəl/", ipaN: "/ˌpɔːr.tʃʊˈɡiːz/", flag: "🇵🇹", trans: "Portugal" },
+                { country: "Ireland", nat: "Irish", lang: "English/Irish", ipaC: "/ˈaɪə.lənd/", ipaN: "/ˈaɪ.rɪʃ/", flag: "🇮🇪", trans: "Irlanda" },
+                { country: "Russia", nat: "Russian", lang: "Russian", ipaC: "/ˈrʌʃ.ə/", ipaN: "/ˈrʌʃ.ən/", flag: "🇷🇺", trans: "Rússia" },
+                { country: "Netherlands", nat: "Dutch", lang: "Dutch", ipaC: "/ˈneð.ə.ləndz/", ipaN: "/dʌtʃ/", flag: "🇳🇱", trans: "Holanda" },
+                { country: "Greece", nat: "Greek", lang: "Greek", ipaC: "/ɡriːs/", ipaN: "/ɡriːk/", flag: "🇬🇷", trans: "Grécia" },
+            ]
+        },
+        {
+            region: isPortuguese ? "Ásia" : "Asia",
+            icon: "🌏",
+            items: [
+                { country: "China", nat: "Chinese", lang: "Mandarin", ipaC: "/ˈtʃaɪ.nə/", ipaN: "/ˌtʃaɪˈniːz/", flag: "🇨🇳", trans: "China" },
+                { country: "Japan", nat: "Japanese", lang: "Japanese", ipaC: "/dʒəˈpæn/", ipaN: "/ˌdʒæp.ənˈiːz/", flag: "🇯🇵", trans: "Japão" },
+                { country: "South Korea", nat: "Korean", lang: "Korean", ipaC: "/ˌsaʊθ kəˈriː.ə/", ipaN: "/kəˈriː.ən/", flag: "🇰🇷", trans: "Coreia do Sul" },
+                { country: "India", nat: "Indian", lang: "Hindi/English", ipaC: "/ˈɪn.di.ə/", ipaN: "/ˈɪn.di.ən/", flag: "🇮🇳", trans: "Índia" },
+                { country: "Thailand", nat: "Thai", lang: "Thai", ipaC: "/ˈtaɪ.lænd/", ipaN: "/taɪ/", flag: "🇹🇭", trans: "Tailândia" },
+                { country: "Vietnam", nat: "Vietnamese", lang: "Vietnamese", ipaC: "/ˌvjet.ˈnæm/", ipaN: "/ˌvjet.nəˈmiːz/", flag: "🇻🇳", trans: "Vietnã" },
+                { country: "Israel", nat: "Israeli", lang: "Hebrew", ipaC: "/ˈɪz.reɪl/", ipaN: "/ɪzˈreɪ.li/", flag: "🇮🇱", trans: "Israel" },
+                { country: "Turkey", nat: "Turkish", lang: "Turkish", ipaC: "/ˈtɜːr.ki/", ipaN: "/ˈtɜːr.kɪʃ/", flag: "🇹🇷", trans: "Turquia" },
+            ]
+        },
+        {
+            region: isPortuguese ? "África & Oceania" : "Africa & Oceania",
+            icon: "🌍",
+            items: [
+                { country: "Australia", nat: "Australian", lang: "English", ipaC: "/ɒˈstreɪ.li.ə/", ipaN: "/ɒˈstreɪ.li.ən/", flag: "🇦🇺", trans: "Austrália" },
+                { country: "New Zealand", nat: "New Zealander", lang: "English", ipaC: "/ˌnjuː ˈziː.lənd/", ipaN: "/ˌnjuː ˈziː.lən.dər/", flag: "🇳🇿", trans: "Nova Zelândia" },
+                { country: "South Africa", nat: "South African", lang: "Multilingual", ipaC: "/ˌsaʊθ ˈæf.rɪ.kə/", ipaN: "/ˌsaʊθ ˈæf.rɪ.kən/", flag: "🇿🇦", trans: "África do Sul" },
+                { country: "Egypt", nat: "Egyptian", lang: "Arabic", ipaC: "/ˈiː.dʒɪpt/", ipaN: "/iˈdʒɪp.ʃən/", flag: "🇪🇬", trans: "Egito" },
+                { country: "Nigeria", nat: "Nigerian", lang: "English", ipaC: "/naɪˈdʒɪə.ri.ə/", ipaN: "/naɪˈdʒɪə.ri.ən/", flag: "🇳🇬", trans: "Nigéria" },
+                { country: "Morocco", nat: "Moroccan", lang: "Arabic", ipaC: "/məˈrɒk.əʊ/", ipaN: "/məˈrɒk.ən/", flag: "🇲🇦", trans: "Marrocos" },
+            ]
+        }
+    ];
+
+    return (
+        <div className="space-y-12 animate-fade-in pb-20">
+            {/* Senior Teacher Intro */}
+            <div className="relative p-8 rounded-[2rem] bg-indigo-900 text-white overflow-hidden shadow-2xl">
+                <div className="absolute top-0 right-0 p-4 opacity-10"><Globe className="w-32 h-32" /></div>
+                <div className="relative z-10 flex flex-col md:flex-row gap-6 items-center">
+                    <div className="w-20 h-20 rounded-full bg-indigo-500 flex items-center justify-center text-4xl shadow-lg border-2 border-indigo-400">👨‍🏫</div>
+                    <div className="flex-1">
+                        <h3 className="text-2xl font-serif-display mb-2">
+                            {isPortuguese ? "Matthew's Global Tour" : "Matthew's Global Tour"}
+                        </h3>
+                        <p className="text-indigo-100 text-sm leading-relaxed italic">
+                            {isPortuguese 
+                                ? "\"De onde você é? Essa é a chave para abrir portas em qualquer conversa internacional. Hoje vamos mapear o mundo. Preste atenção nos sufixos: eles revelam padrões! Ah, e lembre-se: nacionalidades são SEMPRE com letra maiúscula!\""
+                                : "\"Where are you from? That's the key to opening doors in any international conversation. Today we map the world. Pay attention to the suffixes: they reveal patterns! Oh, and remember: nationalities are ALWAYS capitalized!\""
+                            }
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            {/* Grammar Insight Card */}
+            <section className="bg-white p-8 rounded-[2.5rem] border-2 border-indigo-50 shadow-sm relative overflow-hidden">
+                <div className="absolute top-0 right-0 p-4 opacity-5"><Compass className="w-24 h-24 text-indigo-900" /></div>
+                <h4 className="text-xl font-bold text-slate-800 mb-6 flex items-center gap-3">
+                    <Navigation className="w-5 h-5 text-indigo-600" />
+                    {isPortuguese ? "Como se apresentar" : "How to introduce yourself"}
+                </h4>
+                <div className="grid md:grid-cols-2 gap-8">
+                    <div className="p-6 bg-indigo-50 rounded-2xl border border-indigo-100 group hover:shadow-md transition-all">
+                        <span className="text-[10px] font-black text-indigo-400 uppercase tracking-widest mb-2 block">{isPortuguese ? "Usando o País" : "Using the Country"}</span>
+                        <p className="text-xl font-black text-indigo-900 mb-2">"I am from <span className="underline">Brazil</span>."</p>
+                        <p className="text-[10px] text-indigo-400 italic">{isPortuguese ? "Use 'from' para indicar a origem (substantivo)." : "Use 'from' to indicate origin (noun)."}</p>
+                    </div>
+                    <div className="p-6 bg-emerald-50 rounded-2xl border border-emerald-100 group hover:shadow-md transition-all">
+                        <span className="text-[10px] font-black text-emerald-400 uppercase tracking-widest mb-2 block">{isPortuguese ? "Usando a Nacionalidade" : "Using the Nationality"}</span>
+                        <p className="text-xl font-black text-emerald-900 mb-2">"I am <span className="underline">Brazilian</span>."</p>
+                        <p className="text-[10px] text-emerald-400 italic">{isPortuguese ? "Nacionalidade é um adjetivo. NÃO use 'from' aqui." : "Nationality is an adjective. DO NOT use 'from' here."}</p>
+                    </div>
+                </div>
+            </section>
+
+            {/* Main Content Sections by Region */}
+            {regionalData.map((reg, idx) => (
+                <section key={idx} className="space-y-6 animate-slide-up" style={{ animationDelay: `${idx * 0.1}s` }}>
+                    <div className="flex items-center gap-3 pl-2">
+                        <span className="text-2xl drop-shadow-sm">{reg.icon}</span>
+                        <h4 className="text-2xl font-black text-slate-800 tracking-tight">{reg.region}</h4>
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                        {reg.items.map((item, i) => (
+                            <button 
+                                key={i}
+                                onClick={() => speak(`I am from ${item.country}. I am ${item.nat}.`)}
+                                className="group p-5 bg-white rounded-[2rem] border border-slate-100 shadow-sm hover:shadow-xl hover:border-indigo-300 transition-all text-left relative overflow-hidden"
+                            >
+                                <div className="flex justify-between items-start mb-4">
+                                    <span className="text-3xl grayscale group-hover:grayscale-0 transition-all">{item.flag}</span>
+                                    <Volume2 className="w-4 h-4 text-slate-200 group-hover:text-indigo-400 transition-colors" />
+                                </div>
+                                <div className="space-y-4">
+                                    <div>
+                                        <h5 className="font-black text-slate-800 text-lg leading-none group-hover:text-indigo-600 transition-colors">{item.country}</h5>
+                                        <div className="flex flex-col mt-1">
+                                            <span className="text-[9px] font-mono text-slate-400">{item.ipaC}</span>
+                                            {isPortuguese && <span className="text-[8px] font-bold text-slate-300 uppercase tracking-tighter">({item.trans})</span>}
+                                        </div>
+                                    </div>
+                                    <div className="pt-2 border-t border-slate-50">
+                                        <span className="text-[9px] font-black text-indigo-400 uppercase tracking-widest block mb-1">{isPortuguese ? "Nacionalidade" : "Nationality"}</span>
+                                        <p className="font-bold text-slate-600 text-sm">{item.nat}</p>
+                                        <span className="text-[9px] font-mono text-slate-300">{item.ipaN}</span>
+                                    </div>
+                                    <div className="flex items-center gap-2 pt-2">
+                                        <Languages className="w-3 h-3 text-emerald-400" />
+                                        <span className="text-[10px] font-bold text-emerald-600 uppercase tracking-tighter">{item.lang}</span>
+                                    </div>
+                                </div>
+                                <div className="absolute -bottom-2 -right-2 opacity-5 group-hover:opacity-10 transition-opacity">
+                                    <MapPin className="w-16 h-16 text-indigo-900" />
+                                </div>
+                            </button>
+                        ))}
+                    </div>
+                </section>
+            ))}
+
+            {/* Pro Tip Section */}
+            <div className="bg-amber-50 rounded-[2.5rem] p-10 relative border border-amber-100">
+                <div className="absolute top-0 right-10 -translate-y-1/2 bg-amber-400 text-white px-6 py-2 rounded-full font-black text-xs uppercase tracking-widest shadow-lg">
+                    {isPortuguese ? "Dicas Pedagógicas" : "Teacher's Pro Tips"}
+                </div>
+                <div className="grid md:grid-cols-2 gap-10">
+                    <div className="flex gap-6 items-start">
+                        <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center shadow-sm shrink-0">
+                            <Type className="w-8 h-8 text-amber-500" />
+                        </div>
+                        <div>
+                            <h5 className="font-bold text-amber-900 mb-2">
+                                {isPortuguese ? "Maiúsculas Obrigatórias" : "Mandatory Capitals"}
+                            </h5>
+                            <p className="text-sm text-amber-800 leading-relaxed">
+                                {isPortuguese 
+                                    ? <>Diferente do português, em inglês <strong>Nacionalidades</strong> e <strong>Idiomas</strong> são sempre escritos com letra maiúscula. Escreva <b>"Brazilian"</b> e <b>"English"</b>, nunca <s>"brazilian"</s>.</>
+                                    : <>Unlike in some languages, in English <strong>Nationalities</strong> and <strong>Languages</strong> are always capitalized. Write <b>"Brazilian"</b> and <b>"English"</b>, never lowercase.</>
+                                }
+                            </p>
+                        </div>
+                    </div>
+                    <div className="flex gap-6 items-start">
+                        <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center shadow-sm shrink-0">
+                            <Compass className="w-8 h-8 text-amber-500" />
+                        </div>
+                        <div>
+                            <h5 className="font-bold text-amber-900 mb-2">
+                                {isPortuguese ? "O Artigo 'THE'" : "The 'THE' Article"}
+                            </h5>
+                            <p className="text-sm text-amber-800 leading-relaxed">
+                                {isPortuguese 
+                                    ? <>Geralmente não usamos "The" antes de nomes de países (<s>The Brazil</s>). Mas usamos se o país for uma coleção de estados ou ilhas: <b>The USA</b>, <b>The UK</b>, <b>The Bahamas</b>.</>
+                                    : <>We usually don't use "The" before country names (<s>The Brazil</s>). However, we do use it if the country is a collection of states or islands: <b>The USA</b>, <b>The UK</b>, <b>The Bahamas</b>.</>
+                                }
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* Application Practice */}
+            <section className="bg-slate-900 rounded-[3rem] p-12 text-white relative overflow-hidden text-center shadow-2xl">
+                <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.05)_0%,transparent_70%)]"></div>
+                <h5 className="text-3xl font-serif-display mb-4 relative z-10">
+                    {isPortuguese ? "Hora de Aplicar!" : "Time to Apply!"}
+                </h5>
+                <p className="text-slate-400 text-sm mb-12 max-w-md mx-auto relative z-10 leading-relaxed italic">
+                    {isPortuguese 
+                        ? "\"Imagine que você está em um aeroporto internacional. Clique na pergunta para ouvir e tente responder usando seu país e nacionalidade!\""
+                        : "\"Imagine you are at an international airport. Click the question to listen and try to answer using your country and nationality!\""}
+                </p>
+                
+                <div className="flex flex-col md:flex-row justify-center gap-8 relative z-10">
+                    <button 
+                        onClick={() => speak("Where are you from?")}
+                        className="p-8 bg-white/10 backdrop-blur-xl rounded-3xl border border-white/20 hover:bg-white/20 transition-all group"
+                    >
+                        <QuestionIcon className="w-8 h-8 text-indigo-400 mb-4 mx-auto group-hover:scale-110 transition-transform" />
+                        <div className="font-black text-2xl mb-1 italic">"Where are you from?"</div>
+                        <div className="text-[10px] font-mono text-indigo-300">/wer ɑːr juː frɒm/</div>
+                        {isPortuguese && <div className="text-[9px] mt-2 text-slate-400 font-bold uppercase">(De onde você é?)</div>}
+                    </button>
+
+                    <div className="flex items-center text-4xl opacity-20 hidden md:block">→</div>
+
+                    <div className="p-8 bg-white/5 rounded-3xl border-2 border-white/10 border-dashed flex flex-col justify-center gap-4">
+                        <div className="text-left">
+                            <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1 block">Option A:</span>
+                            <div className="text-xl font-bold text-slate-300 italic">"I am from <span className="text-indigo-400 underline decoration-indigo-400/30">[Country]</span>."</div>
+                        </div>
+                        <div className="text-left">
+                            <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1 block">Option B:</span>
+                            <div className="text-xl font-bold text-slate-300 italic">"I am <span className="text-emerald-400 underline decoration-emerald-400/30">[Nationality]</span>."</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    );
+};
 
 const FamilyVocabulary = () => (
     <div className="grid grid-cols-2 md:grid-cols-3 gap-4 animate-fade-in">
@@ -2478,8 +2916,8 @@ export default function App() {
             case 6: return <JobsOccupations isPortuguese={isPortuguese} />;
             case 7: return <SingularPlural isPortuguese={isPortuguese} />;
             case 8: return <ColorsAdjectives isPortuguese={isPortuguese} />;
-            case 9: return <CountriesNationalities />;
-            case 10: return <NumbersZeroToTwenty />;
+            case 9: return <CountriesNationalities isPortuguese={isPortuguese} />;
+            case 10: return <NumbersZeroToTwenty isPortuguese={isPortuguese} />;
             case 11: return <NumbersTwentyHundred />;
             case 12: return <DemonstrativesNew />;
             case 13: return <FamilyVocabulary />;
