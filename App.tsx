@@ -11,7 +11,8 @@ import {
     BatteryCharging, BatteryFull, Lock, Key, Baby, UserPlus, Monitor, Shield, Sprout, Landmark,
     Sparkles, ShieldCheck, Rocket, ZapIcon, Quote, Lightbulb, GraduationCap as TeacherIcon,
     Languages, Keyboard, Fingerprint, MousePointer2, SpellCheck, UserCheck, Flame, HelpCircle as QuestionIcon,
-    Ear, Zap as FastIcon
+    Ear, Zap as FastIcon, Laptop, HardHat, Camera as PhotoIcon, Music as AudioIcon, 
+    ChefHat, ShoppingBag, Shield as SecurityIcon, Plane, Scale, Plus, Minus, IterationCw
 } from 'lucide-react';
 
 // --- Styles ---
@@ -96,7 +97,7 @@ const GreetingsFarewells = ({ isPortuguese }: { isPortuguese: boolean }) => {
 
     const informalGreetings = [
         { phrase: "Hi / Hey", ipa: "/haɪ/ /heɪ/", trans: "Oi", example: "Hey Matthew! How's it going?" },
-        { phrase: "What's up?", ipa: "/wʌts ʌp/", trans: "E aí?", example: "Hey man, what's up? Nothing much." },
+        { phrase: "What's up?", ipa: "/wʌts ʌp?", trans: "E aí?", example: "Hey man, what's up? Nothing much." },
         { phrase: "How's it going?", ipa: "/haʊz ɪt ˈɡoʊɪŋ/", trans: "Como vão as coisas?", example: "How's it going with the new job?" },
     ];
 
@@ -1275,34 +1276,487 @@ const IndefiniteArticles = ({ isPortuguese }: { isPortuguese: boolean }) => {
     );
 };
 
-const JobsOccupations = () => (
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 animate-fade-in">
-        {[
-            { title: 'Doctor', icon: '👨‍⚕️' }, { title: 'Nurse', icon: '👩‍⚕️' }, { title: 'Teacher', icon: '👨‍🏫' }, { title: 'Engineer', icon: '👷' },
-            { title: 'Artist', icon: '🎨' }, { title: 'Chef', icon: '👨‍🍳' }, { title: 'Pilot', icon: '✈️' }, { title: 'Police', icon: '👮' }
-        ].map(job => (
-            <button key={job.title} onClick={() => speak(`A ${job.title}`)} className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md hover:border-indigo-200 transition-all flex flex-col items-center">
-                <span className="text-4xl mb-2">{job.icon}</span><span className="font-bold text-slate-700">{job.title}</span>
-            </button>
-        ))}
-    </div>
-);
+const JobsOccupations = ({ isPortuguese }: { isPortuguese: boolean }) => {
+    const jobCategories = [
+        {
+            name: isPortuguese ? "Saúde & Bem-estar" : "Healthcare & Wellness",
+            icon: <Stethoscope className="w-5 h-5" />,
+            color: "rose",
+            jobs: [
+                { title: 'Doctor', ipa: '/ˈdɒktər/', trans: 'Médico', icon: '👨‍⚕️' },
+                { title: 'Nurse', ipa: '/nɜːrs/', trans: 'Enfermeiro', icon: '👩‍⚕️' },
+                { title: 'Dentist', ipa: '/ˈdentɪst/', trans: 'Dentista', icon: '🦷' },
+                { title: 'Surgeon', ipa: '/ˈsɜːrdʒən/', trans: 'Cirurgião', icon: '😷' },
+                { title: 'Psychologist', ipa: '/saɪˈkɒlədʒɪst/', trans: 'Psicólogo', icon: '🧠' },
+            ]
+        },
+        {
+            name: isPortuguese ? "Tecnologia & Escritório" : "Tech & Office",
+            icon: <Laptop className="w-5 h-5" />,
+            color: "indigo",
+            jobs: [
+                { title: 'Software Developer', ipa: '/ˈsɒftwer dɪˈveləpər/', trans: 'Desenvolvedor', icon: '💻' },
+                { title: 'Manager', ipa: '/ˈmænɪdʒər/', trans: 'Gerente', icon: '💼' },
+                { title: 'Accountant', ipa: '/əˈkaʊntənt/', trans: 'Contador', icon: '📊' },
+                { title: 'Secretary', ipa: '/ˈsekrəteri/', trans: 'Secretário', icon: '📞' },
+                { title: 'Data Scientist', ipa: '/ˈdeɪtə ˈsaɪəntɪst/', trans: 'Cientista de Dados', icon: '📉' },
+            ]
+        },
+        {
+            name: isPortuguese ? "Educação & Ciência" : "Education & Science",
+            icon: <TeacherIcon className="w-5 h-5" />,
+            color: "blue",
+            jobs: [
+                { title: 'Teacher', ipa: '/ˈtiːtʃər/', trans: 'Professor', icon: '👨‍🏫' },
+                { title: 'Student', ipa: '/ˈstjuːdnt/', trans: 'Estudante', icon: '🎓' },
+                { title: 'Professor', ipa: '/prəˈfesər/', trans: 'Professor Univ.', icon: '🏫' },
+                { title: 'Researcher', ipa: '/rɪˈsɜːrtʃər/', trans: 'Pesquisador', icon: '🔬' },
+                { title: 'Scientist', ipa: '/ˈsaɪəntɪst/', trans: 'Cientista', icon: '🧪' },
+            ]
+        },
+        {
+            name: isPortuguese ? "Artes & Mídia" : "Arts & Media",
+            icon: <Palette className="w-5 h-5" />,
+            color: "purple",
+            jobs: [
+                { title: 'Artist', ipa: '/ˈɑːrtɪst/', trans: 'Artista', icon: '🎨' },
+                { title: 'Photographer', ipa: '/fəˈtɒɡrəfər/', trans: 'Fotógrafo', icon: '📸' },
+                { title: 'Musician', ipa: '/mjuˈzɪʃn/', trans: 'Músico', icon: '🎸' },
+                { title: 'Actor', ipa: '/ˈæktər/', trans: 'Ator', icon: '🎭' },
+                { title: 'Designer', ipa: '/dɪˈzaɪnər/', trans: 'Designer', icon: '🖍️' },
+            ]
+        },
+        {
+            name: isPortuguese ? "Serviços & Comércio" : "Services & Trade",
+            icon: <ShoppingBag className="w-5 h-5" />,
+            color: "emerald",
+            jobs: [
+                { title: 'Chef', ipa: '/ʃef/', trans: 'Chef de Cozinha', icon: '👨‍🍳' },
+                { title: 'Waiter', ipa: '/ˈweɪtər/', trans: 'Garçom', icon: '🍽️' },
+                { title: 'Driver', ipa: '/ˈdraɪvər/', trans: 'Motorista', icon: '🚗' },
+                { title: 'Salesperson', ipa: '/ˈseɪlzpɜːrsn/', trans: 'Vendedor', icon: '🛍️' },
+                { title: 'Baker', ipa: '/ˈbeɪkər/', trans: 'Padeiro', icon: '🥐' },
+            ]
+        },
+        {
+            name: isPortuguese ? "Técnico & Segurança" : "Technical & Security",
+            icon: <SecurityIcon className="w-5 h-5" />,
+            color: "slate",
+            jobs: [
+                { title: 'Police Officer', ipa: '/pəˈliːs ˈɒfɪsər/', trans: 'Policial', icon: '👮' },
+                { title: 'Firefighter', ipa: '/ˈfaɪəfaɪtər/', trans: 'Bombeiro', icon: '👩‍🚒' },
+                { title: 'Engineer', ipa: '/ˌendʒɪˈnɪər/', trans: 'Engenheiro', icon: '👷' },
+                { title: 'Pilot', ipa: '/ˈpaɪlət/', trans: 'Piloto', icon: '✈️' },
+                { title: 'Lawyer', ipa: '/ˈlɔɪər/', trans: 'Advogado', icon: '⚖️' },
+            ]
+        }
+    ];
 
-const SingularPlural = () => (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 animate-fade-in">
-        {[
-            { rule: 'Standard', plus: '+S', ex: 'Car → Cars' },
-            { rule: 'Ch/Sh/X/S', plus: '+ES', ex: 'Bus → Buses' },
-            { rule: 'Consonant+Y', plus: '-Y +IES', ex: 'Baby → Babies' }
-        ].map(r => (
-            <div key={r.rule} className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm text-center">
-                <h4 className="font-bold text-indigo-600 uppercase text-xs tracking-wider mb-2">{r.rule}</h4>
-                <div className="text-3xl font-bold text-slate-800 mb-4">{r.plus}</div>
-                <div className="text-slate-500 font-medium">{r.ex}</div>
+    const colorClasses: any = {
+        rose: "bg-rose-50 border-rose-100 text-rose-700",
+        indigo: "bg-indigo-50 border-indigo-100 text-indigo-700",
+        blue: "bg-blue-50 border-blue-100 text-blue-700",
+        purple: "bg-purple-50 border-purple-100 text-purple-700",
+        emerald: "bg-emerald-50 border-emerald-100 text-emerald-700",
+        slate: "bg-slate-50 border-slate-100 text-slate-700"
+    };
+
+    return (
+        <div className="space-y-12 animate-fade-in pb-20">
+            {/* Introduction Section */}
+            <div className="relative p-8 rounded-[2rem] bg-slate-900 text-white overflow-hidden shadow-2xl">
+                <div className="absolute top-0 right-0 p-4 opacity-10"><WorkIcon className="w-32 h-32" /></div>
+                <div className="relative z-10 flex flex-col md:flex-row gap-6 items-center">
+                    <div className="w-20 h-20 rounded-full bg-indigo-500 flex items-center justify-center text-4xl shadow-lg border-2 border-indigo-400">👨‍🏫</div>
+                    <div className="flex-1">
+                        <h3 className="text-2xl font-serif-display mb-2">
+                            {isPortuguese ? "O Que Você Faz?" : "What Do You Do?"}
+                        </h3>
+                        <p className="text-slate-300 text-sm leading-relaxed italic">
+                            {isPortuguese 
+                                ? "\"Falar sobre o trabalho é o início de qualquer networking. Hoje vamos aprender como nomear as profissões e, o mais importante: a regra gramatical obrigatória que muitos esquecem. Prepare-se para atualizar seu 'LinkedIn' mental!\""
+                                : "\"Talking about work is the beginning of any networking. Today we'll learn how to name professions and, most importantly: the mandatory grammatical rule many forget. Get ready to update your mental 'LinkedIn'!\""
+                            }
+                        </p>
+                    </div>
+                </div>
             </div>
-        ))}
-    </div>
-);
+
+            {/* Main Categories and Jobs */}
+            {jobCategories.map((category, catIdx) => (
+                <section key={catIdx} className="space-y-6">
+                    <div className="flex items-center gap-3">
+                        <div className={`p-2 rounded-lg ${colorClasses[category.color].split(' ')[0]} ${colorClasses[category.color].split(' ')[2]}`}>
+                            {category.icon}
+                        </div>
+                        <h4 className="text-xl font-bold text-slate-800">{category.name}</h4>
+                    </div>
+                    
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                        {category.jobs.map((job, jobIdx) => (
+                            <button 
+                                key={jobIdx}
+                                onClick={() => speak(`I am a ${job.title}`)}
+                                className={`group p-6 rounded-[2rem] border-2 transition-all hover:shadow-lg flex items-center gap-4 text-left ${colorClasses[category.color]}`}
+                            >
+                                <span className="text-4xl grayscale group-hover:grayscale-0 transition-all">{job.icon}</span>
+                                <div className="flex-1">
+                                    <div className="flex justify-between items-center mb-0.5">
+                                        <h5 className="font-black text-lg leading-tight">{job.title}</h5>
+                                        <Volume2 className="w-4 h-4 opacity-30 group-hover:opacity-100 transition-opacity" />
+                                    </div>
+                                    <div className="flex flex-col">
+                                        <span className="text-[10px] font-mono opacity-50">{job.ipa}</span>
+                                        <span className="text-[9px] font-bold uppercase tracking-widest opacity-60">{job.trans}</span>
+                                    </div>
+                                </div>
+                            </button>
+                        ))}
+                    </div>
+                </section>
+            ))}
+
+            {/* Master Tip: The Article Rule */}
+            <div className="p-8 bg-indigo-50 border-2 border-indigo-100 rounded-[2.5rem] flex flex-col md:flex-row gap-8 items-center relative overflow-hidden">
+                <div className="absolute top-0 right-0 p-4 opacity-5 rotate-12"><Info className="w-32 h-32 text-indigo-900" /></div>
+                <div className="w-20 h-20 bg-indigo-600 rounded-[1.5rem] flex items-center justify-center text-white shadow-xl shrink-0">
+                    <Check className="w-10 h-10" />
+                </div>
+                <div className="relative z-10">
+                    <h5 className="font-bold text-indigo-900 text-lg mb-2">
+                        {isPortuguese ? "A Regra de Ouro: O Artigo Obrigatório" : "The Golden Rule: Mandatory Articles"}
+                    </h5>
+                    <p className="text-indigo-800 text-sm leading-relaxed mb-6">
+                        {isPortuguese 
+                            ? <>Diferente do português, em inglês <strong>sempre</strong> usamos <strong>A</strong> ou <strong>AN</strong> antes de uma profissão no singular.</>
+                            : <>Unlike in some languages, in English you <strong>must always</strong> use <strong>A</strong> or <strong>AN</strong> before a singular profession.</>
+                        }
+                    </p>
+                    <div className="flex flex-col sm:flex-row gap-4">
+                        <div className="flex items-center gap-3 p-4 bg-white/60 rounded-2xl border border-indigo-100">
+                            <span className="text-emerald-600 font-black">✓</span>
+                            <p className="text-sm font-bold text-slate-700 italic">"I am <span className="text-indigo-600 underline">a</span> doctor."</p>
+                        </div>
+                        <div className="flex items-center gap-3 p-4 bg-white/60 rounded-2xl border border-rose-100 opacity-60">
+                            <span className="text-rose-500 font-black">✗</span>
+                            <p className="text-sm font-medium text-slate-400 italic">"I am doctor."</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* Interaction: What do you do? */}
+            <section className="bg-white rounded-[2.5rem] p-10 border border-slate-100 shadow-sm text-center">
+                <h5 className="font-serif-display text-2xl text-slate-800 mb-2">
+                    {isPortuguese ? "Hora de Praticar" : "Practice Time"}
+                </h5>
+                <p className="text-slate-500 text-sm mb-10 max-w-md mx-auto">
+                    {isPortuguese 
+                        ? "Quando alguém perguntar sua profissão, use a estrutura abaixo. Clique para ouvir a pergunta mais comum:"
+                        : "When someone asks your job, use the structure below. Click to hear the most common question:"}
+                </p>
+                
+                <div className="grid md:grid-cols-2 gap-8 items-center max-w-3xl mx-auto">
+                    <button 
+                        onClick={() => speak("What do you do?")}
+                        className="p-8 bg-indigo-600 text-white rounded-3xl shadow-xl hover:scale-105 transition-all group"
+                    >
+                        <div className="text-[10px] font-black uppercase tracking-[0.2em] mb-2 opacity-60">
+                            {isPortuguese ? "A Pergunta" : "The Question"}
+                        </div>
+                        <div className="text-2xl font-bold flex items-center justify-center gap-3">
+                            "What do you do?" <Volume2 className="w-5 h-5 group-hover:animate-pulse" />
+                        </div>
+                        <div className="mt-2 text-[10px] font-mono opacity-50 italic">/wɒt duː juː duː/</div>
+                        {isPortuguese && <div className="mt-1 text-[10px] font-medium opacity-60">(O que você faz?)</div>}
+                    </button>
+
+                    <div className="p-8 bg-slate-50 rounded-3xl border-2 border-dashed border-slate-200">
+                        <div className="text-[10px] font-black uppercase tracking-[0.2em] mb-4 text-slate-400">
+                            {isPortuguese ? "Sua Resposta" : "Your Answer"}
+                        </div>
+                        <div className="text-2xl font-black text-slate-700 flex items-center justify-center gap-3">
+                            "I am a/an <span className="text-indigo-600">_____</span>."
+                        </div>
+                        <div className="mt-6 flex flex-wrap justify-center gap-2">
+                            {['Teacher', 'Student', 'Engineer'].map(j => (
+                                <button key={j} onClick={() => speak(`I am a ${j}`)} className="px-3 py-1.5 bg-white rounded-full text-xs font-bold text-indigo-500 border border-indigo-100 hover:bg-indigo-50 transition-colors">
+                                    + {j}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* Master Note: Gender in English Jobs */}
+            <div className="bg-amber-50 rounded-[2.5rem] p-10 relative border border-amber-100">
+                <div className="absolute top-0 right-10 -translate-y-1/2 bg-amber-400 text-white px-6 py-2 rounded-full font-black text-xs uppercase tracking-widest shadow-lg">
+                    {isPortuguese ? "Nota Linguística" : "Linguistic Note"}
+                </div>
+                <div className="flex gap-8 items-start">
+                    <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center shadow-sm shrink-0">
+                        <Hand className="w-8 h-8 text-amber-500" />
+                    </div>
+                    <div>
+                        <h5 className="font-bold text-amber-900 mb-3">
+                            {isPortuguese ? "Gênero Neutro" : "Gender Neutrality"}
+                        </h5>
+                        <p className="text-sm text-amber-800 leading-relaxed">
+                            {isPortuguese 
+                                ? <>Diferente do português, a maioria das profissões em inglês não tem gênero. <strong>"Teacher"</strong> serve para professor e professora. <strong>"Doctor"</strong> para médico e médica. Apenas alguns casos raros como <strong>Actor/Actress</strong> ou <strong>Waiter/Waitress</strong> ainda mantêm distinção, mas a tendência moderna é usar a forma neutra para todos!</>
+                                : <>Unlike many languages, most jobs in English are gender-neutral. <strong>"Teacher"</strong> works for everyone. <strong>"Doctor"</strong> works for everyone. Only rare cases like <strong>Actor/Actress</strong> still have distinctions, but the modern trend is to use one form for all!</>
+                            }
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+const SingularPlural = ({ isPortuguese }: { isPortuguese: boolean }) => {
+    const rules = [
+        {
+            title: isPortuguese ? "Regra Geral (+S)" : "General Rule (+S)",
+            desc: isPortuguese ? "A maioria das palavras ganha apenas um 'S'." : "Most words just add 'S'.",
+            color: "bg-indigo-50 border-indigo-100 text-indigo-700",
+            icon: <Plus className="w-5 h-5" />,
+            examples: [
+                { s: 'Car', p: 'Cars', sipa: '/kɑːr/', pipa: '/kɑːrz/', trans: 'Carro' },
+                { s: 'Book', p: 'Books', sipa: '/bʊk/', pipa: '/bʊks/', trans: 'Livro' },
+                { s: 'Dog', p: 'Dogs', sipa: '/dɒɡ/', pipa: '/dɒɡz/', trans: 'Cachorro' },
+            ]
+        },
+        {
+            title: isPortuguese ? "Sibilantes (+ES)" : "Sibilants (+ES)",
+            desc: isPortuguese ? "Palavras que terminam em S, SS, CH, SH, X, Z." : "Words ending in S, SS, CH, SH, X, Z.",
+            color: "bg-emerald-50 border-emerald-100 text-emerald-700",
+            icon: <Zap className="w-5 h-5" />,
+            examples: [
+                { s: 'Bus', p: 'Buses', sipa: '/bʌs/', pipa: '/ˈbʌsɪz/', trans: 'Ônibus' },
+                { s: 'Watch', p: 'Watches', sipa: '/wɒtʃ/', pipa: '/ˈwɒtʃɪz/', trans: 'Relógio' },
+                { s: 'Box', p: 'Boxes', sipa: '/bɒks/', pipa: '/ˈbɒksɪz/', trans: 'Caixa' },
+            ]
+        },
+        {
+            title: isPortuguese ? "Consonante + Y (-IES)" : "Consonant + Y (-IES)",
+            desc: isPortuguese ? "Troque o Y por IES." : "Change Y to IES.",
+            color: "bg-rose-50 border-rose-100 text-rose-700",
+            icon: <Scissors className="w-5 h-5" />,
+            examples: [
+                { s: 'Baby', p: 'Babies', sipa: '/ˈbeɪbi/', pipa: '/ˈbeɪbiz/', trans: 'Bebê' },
+                { s: 'City', p: 'Cities', sipa: '/ˈsɪti/', pipa: '/ˈsɪtiz/', trans: 'Cidade' },
+                { s: 'Party', p: 'Parties', sipa: '/ˈpɑːrti/', pipa: '/ˈpɑːrtiz/', trans: 'Festa' },
+            ]
+        },
+        {
+            title: isPortuguese ? "F / FE (-VES)" : "F / FE (-VES)",
+            desc: isPortuguese ? "Troque o F por VES." : "Change F to VES.",
+            color: "bg-amber-50 border-amber-100 text-amber-700",
+            icon: <Gavel className="w-5 h-5" />,
+            examples: [
+                { s: 'Leaf', p: 'Leaves', sipa: '/liːf/', pipa: '/liːvz/', trans: 'Folha' },
+                { s: 'Knife', p: 'Knives', sipa: '/naɪf/', pipa: '/naɪvz/', trans: 'Faca' },
+                { s: 'Wolf', p: 'Wolves', sipa: '/wʊlf/', pipa: '/wʊlvz/', trans: 'Lobo' },
+            ]
+        }
+    ];
+
+    const irregulars = [
+        { s: 'Man', p: 'Men', sipa: '/mæn/', pipa: '/men/', icon: '👨' },
+        { s: 'Woman', p: 'Women', sipa: '/ˈwʊmən/', pipa: '/ˈwɪmɪn/', icon: '👩' },
+        { s: 'Child', p: 'Children', sipa: '/tʃaɪld/', pipa: '/ˈtʃɪldrən/', icon: '🧒' },
+        { s: 'Person', p: 'People', sipa: '/ˈpɜːrsn/', pipa: '/ˈpiːpl/', icon: '👤' },
+        { s: 'Tooth', p: 'Teeth', sipa: '/tuːθ/', pipa: '/tiːθ/', icon: '🦷' },
+        { s: 'Foot', p: 'Feet', sipa: '/fʊt/', pipa: '/fiːt/', icon: '🦶' },
+    ];
+
+    return (
+        <div className="space-y-12 animate-fade-in pb-20">
+            {/* Senior Teacher Introduction */}
+            <div className="relative p-8 rounded-[2rem] bg-indigo-900 text-white overflow-hidden shadow-2xl">
+                <div className="absolute top-0 right-0 p-4 opacity-10"><Users className="w-32 h-32" /></div>
+                <div className="relative z-10 flex flex-col md:flex-row gap-6 items-center">
+                    <div className="w-20 h-20 rounded-full bg-indigo-500 flex items-center justify-center text-4xl shadow-lg border-2 border-indigo-400">👨‍🏫</div>
+                    <div className="flex-1">
+                        <h3 className="text-2xl font-serif-display mb-2">
+                            {isPortuguese ? "Mais de Um!" : "More Than One!"}
+                        </h3>
+                        <p className="text-indigo-100 text-sm leading-relaxed italic">
+                            {isPortuguese 
+                                ? "\"Plural em inglês parece simples—basta colocar um 'S', certo? Quase sempre! Mas existem grupos de palavras que gostam de ser diferentes. Hoje vamos dominar as 4 regras principais e os famosos irregulares que pegam todo mundo de surpresa.\""
+                                : "\"Plural in English seems simple—just add an 'S', right? Most of the time! But there are groups of words that like to be different. Today we'll master the 4 main rules and the famous irregulars that catch everyone by surprise.\""
+                            }
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            {/* Rule Categories */}
+            <div className="grid md:grid-cols-2 gap-6">
+                {rules.map((rule, idx) => (
+                    <section key={idx} className="space-y-4">
+                        <div className="flex items-center gap-3">
+                            <div className={`p-2 rounded-lg ${rule.color.split(' ')[0]} ${rule.color.split(' ')[2]}`}>
+                                {rule.icon}
+                            </div>
+                            <h4 className="text-lg font-bold text-slate-800">{rule.title}</h4>
+                        </div>
+                        <div className={`p-6 rounded-[2rem] border-2 ${rule.color} shadow-sm`}>
+                            <p className="text-xs font-medium mb-6 opacity-70 italic">{rule.desc}</p>
+                            <div className="space-y-4">
+                                {rule.examples.map((ex, i) => (
+                                    <div key={i} className="flex items-center justify-between bg-white/40 p-3 rounded-2xl border border-current/5 group hover:bg-white transition-all">
+                                        <div className="flex items-center gap-3">
+                                            <div className="text-left">
+                                                <span className="font-bold text-slate-700">{ex.s}</span>
+                                                <div className="flex flex-col">
+                                                    <span className="text-[9px] font-mono opacity-40">{ex.sipa}</span>
+                                                    <span className="text-[8px] font-bold uppercase tracking-tighter opacity-30">{ex.trans}</span>
+                                                </div>
+                                            </div>
+                                            <ArrowRight className="w-3 h-3 text-current/30 group-hover:translate-x-1 transition-transform" />
+                                            <div className="text-left">
+                                                <span className="font-black text-indigo-600">{ex.p}</span>
+                                                <span className="block text-[9px] font-mono opacity-40">{ex.pipa}</span>
+                                            </div>
+                                        </div>
+                                        <button onClick={() => speak(`${ex.s}, ${ex.p}`)} className="p-2 text-current/20 hover:text-indigo-500 transition-colors">
+                                            <Volume2 className="w-3 h-3" />
+                                        </button>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </section>
+                ))}
+            </div>
+
+            {/* Irregular Plurals Section */}
+            <section className="bg-slate-900 rounded-[2.5rem] p-10 text-white relative overflow-hidden shadow-xl">
+                <div className="absolute -right-10 -bottom-10 w-40 h-40 bg-indigo-500 rounded-full blur-3xl opacity-10"></div>
+                <div className="relative z-10">
+                    <div className="flex items-center gap-3 mb-8">
+                        <div className="p-2 bg-indigo-800 rounded-lg"><AlertTriangle className="w-5 h-5 text-indigo-400" /></div>
+                        <h4 className="text-xl font-bold">{isPortuguese ? "Os Irregulares (Sem 'S')" : "The Irregulars (No 'S')"}</h4>
+                    </div>
+                    <p className="text-slate-400 text-sm mb-10 max-w-lg leading-relaxed">
+                        {isPortuguese 
+                            ? "Essas palavras são 'rebeldes' e não seguem regras. Elas mudam completamente de forma no plural. Estes são os mais comuns que você DEVE memorizar."
+                            : "These words are 'rebels' and don't follow rules. They change form completely in plural. These are the most common ones you MUST memorize."}
+                    </p>
+                    
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                        {irregulars.map((ex, i) => (
+                            <button 
+                                key={i}
+                                onClick={() => speak(`${ex.s}, ${ex.p}`)}
+                                className="flex items-center gap-4 p-4 bg-white/5 border border-white/10 rounded-2xl hover:bg-white/10 transition-all text-left group"
+                            >
+                                <span className="text-3xl grayscale group-hover:grayscale-0 transition-all">{ex.icon}</span>
+                                <div>
+                                    <div className="flex items-center gap-2">
+                                        <span className="text-sm font-medium text-slate-400">{ex.s}</span>
+                                        <ArrowRight className="w-3 h-3 text-indigo-500" />
+                                        <span className="text-lg font-black text-white">{ex.p}</span>
+                                    </div>
+                                    <div className="flex gap-2 text-[9px] font-mono text-slate-500">
+                                        <span>{ex.sipa}</span>
+                                        <span>•</span>
+                                        <span className="text-indigo-400">{ex.pipa}</span>
+                                    </div>
+                                </div>
+                            </button>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* Same Form Section */}
+            <div className="p-8 bg-emerald-50 border-2 border-emerald-100 rounded-[2.5rem] flex flex-col md:flex-row gap-8 items-center">
+                <div className="w-20 h-20 bg-emerald-500 rounded-[1.5rem] flex items-center justify-center text-white shadow-xl shrink-0">
+                    <IterationCw className="w-10 h-10" />
+                </div>
+                <div>
+                    <h5 className="font-bold text-emerald-900 text-lg mb-2">
+                        {isPortuguese ? "Palavras que Não Mudam" : "Unchanging Words"}
+                    </h5>
+                    <p className="text-emerald-800 text-sm leading-relaxed mb-4">
+                        {isPortuguese 
+                            ? "Algumas palavras (geralmente animais) têm a mesma forma para o singular e para o plural. O contexto dirá de quantos estamos falando."
+                            : "Some words (usually animals) have the same form for singular and plural. Context will tell you how many we are talking about."}
+                    </p>
+                    <div className="flex flex-wrap gap-3">
+                        {['1 Fish → 2 Fish', '1 Sheep → 2 Sheep', '1 Deer → 2 Deer'].map(t => (
+                            <span key={t} className="px-4 py-2 bg-white rounded-full text-xs font-black text-emerald-600 shadow-sm border border-emerald-100">
+                                {t}
+                            </span>
+                        ))}
+                    </div>
+                </div>
+            </div>
+
+            {/* Pro Tip: Pronunciation Focus */}
+            <div className="bg-amber-50 rounded-[2.5rem] p-10 relative border border-amber-100 overflow-visible">
+                <div className="absolute top-0 right-10 -translate-y-1/2 bg-amber-400 text-white px-6 py-2 rounded-full font-black text-xs uppercase tracking-widest shadow-lg">
+                    {isPortuguese ? "Segredo de Pronúncia" : "Pronunciation Secret"}
+                </div>
+                <div className="flex flex-col md:flex-row gap-8 items-start">
+                    <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center shadow-sm shrink-0">
+                        <Ear className="w-8 h-8 text-amber-500" />
+                    </div>
+                    <div>
+                        <h5 className="font-bold text-amber-900 mb-3">
+                            {isPortuguese ? "Os 3 Sons do 'S'" : "The 3 Sounds of 'S'"}
+                        </h5>
+                        <p className="text-sm text-amber-800 leading-relaxed mb-6">
+                            {isPortuguese 
+                                ? "O 'S' final nem sempre soa como 'S'. Dependendo do som anterior, ele pode soar como /s/, /z/ ou /ɪz/."
+                                : "The final 'S' doesn't always sound like 'S'. Depending on the previous sound, it can sound like /s/, /z/, or /ɪz/."}
+                        </p>
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full">
+                            <div className="p-4 bg-white/60 rounded-2xl border border-amber-200">
+                                <span className="block text-xl font-black text-amber-600 mb-1">/s/</span>
+                                <span className="text-[10px] text-slate-500">Books, Cats, Maps</span>
+                            </div>
+                            <div className="p-4 bg-white/60 rounded-2xl border border-amber-200">
+                                <span className="block text-xl font-black text-amber-600 mb-1">/z/</span>
+                                <span className="text-[10px] text-slate-500">Dogs, Cars, Pens</span>
+                            </div>
+                            <div className="p-4 bg-white/60 rounded-2xl border border-amber-200">
+                                <span className="block text-xl font-black text-amber-600 mb-1">/ɪz/</span>
+                                <span className="text-[10px] text-slate-500">Buses, Boxes, Watches</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* Final Master Challenge */}
+            <div className="bg-rose-50 rounded-[2.5rem] p-10 relative border border-rose-100">
+                <div className="absolute top-0 left-10 -translate-y-1/2 bg-rose-500 text-white px-6 py-2 rounded-full font-black text-xs uppercase tracking-widest shadow-lg">
+                    {isPortuguese ? "Desafio de Mestre" : "Master Challenge"}
+                </div>
+                <div className="flex gap-6 items-start">
+                    <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center shadow-sm shrink-0">
+                        <Quote className="w-8 h-8 text-rose-500" />
+                    </div>
+                    <div>
+                        <h5 className="font-bold text-rose-900 mb-2">
+                            {isPortuguese ? "O Erro que Entrega o Iniciante" : "The Beginner's Tell"}
+                        </h5>
+                        <p className="text-sm text-rose-800 leading-relaxed italic">
+                            {isPortuguese 
+                                ? "\"Muitos alunos esquecem que Adjetivos (cores, tamanhos) NUNCA vão para o plural. Dizemos 'The red cars', nunca 'The reds cars'. O plural fica guardado apenas no substantivo!\""
+                                : "\"Many students forget that Adjectives (colors, sizes) NEVER go into plural. We say 'The red cars', never 'The reds cars'. The plural is only kept in the noun!\""}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+};
 
 const ColorsAdjectives = () => {
     const colors = [
@@ -1721,8 +2175,8 @@ export default function App() {
             case 3: return <VerbToBeAffirmative isPortuguese={isPortuguese} />;
             case 4: return <VerbToBeNegInt isPortuguese={isPortuguese} />;
             case 5: return <IndefiniteArticles isPortuguese={isPortuguese} />;
-            case 6: return <JobsOccupations />;
-            case 7: return <SingularPlural />;
+            case 6: return <JobsOccupations isPortuguese={isPortuguese} />;
+            case 7: return <SingularPlural isPortuguese={isPortuguese} />;
             case 8: return <ColorsAdjectives />;
             case 9: return <CountriesNationalities />;
             case 10: return <NumbersZeroToTwenty />;
