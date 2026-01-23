@@ -79,24 +79,24 @@ const speak = (text: string, lang = 'en-US', rate = 0.9) => {
 
 // --- CONTENT COMPONENTS ---
 
-const GreetingsFarewells = () => {
+const GreetingsFarewells = ({ isPortuguese }: { isPortuguese: boolean }) => {
     const timeGreetings = [
-        { phrase: "Good morning", ipa: "/ɡʊd ˈmɔːrnɪŋ/", trans: "Bom dia", time: "05:00 - 12:00", icon: "🌅", bg: "from-orange-50 to-amber-50", text: "text-amber-700" },
-        { phrase: "Good afternoon", ipa: "/ɡʊd ˌæftərˈnuːn/", trans: "Boa tarde", time: "12:00 - 18:00", icon: "☀️", bg: "from-blue-50 to-indigo-50", text: "text-blue-700" },
-        { phrase: "Good evening", ipa: "/ɡʊd ˈiːvnɪŋ/", trans: "Boa noite (chegada)", time: "18:00 - 21:00", icon: "🌇", bg: "from-indigo-50 to-purple-50", text: "text-indigo-700" },
-        { phrase: "Good night", ipa: "/ɡʊd naɪt/", trans: "Boa noite (saída)", time: "Leaving", icon: "🌙", bg: "from-slate-50 to-slate-100", text: "text-slate-700" },
+        { phrase: "Good morning", ipa: "/ɡʊd ˈmɔːrnɪŋ/", trans: "Bom dia", time: isPortuguese ? "05:00 - 12:00" : "05:00 AM - 12:00 PM", icon: "🌅", bg: "from-orange-50 to-amber-50", text: "text-amber-700" },
+        { phrase: "Good afternoon", ipa: "/ɡʊd ˌæftərˈnuːn/", trans: "Boa tarde", time: isPortuguese ? "12:00 - 18:00" : "12:00 PM - 06:00 PM", icon: "☀️", bg: "from-blue-50 to-indigo-50", text: "text-blue-700" },
+        { phrase: "Good evening", ipa: "/ɡʊd ˈiːvnɪŋ/", trans: "Boa noite", time: isPortuguese ? "18:00 - 21:00 (Chegada)" : "06:00 PM - 09:00 PM (Arrival)", icon: "🌇", bg: "from-indigo-50 to-purple-50", text: "text-indigo-700" },
+        { phrase: "Good night", ipa: "/ɡʊd naɪt/", trans: "Boa noite", time: isPortuguese ? "Despedida / Dormir" : "Leaving / Sleeping", icon: "🌙", bg: "from-slate-50 to-slate-100", text: "text-slate-700" },
     ];
 
     const formalGreetings = [
         { phrase: "Hello", ipa: "/həˈloʊ/", trans: "Olá", example: "Hello, Mr. Smith. How are you today?" },
-        { phrase: "How do you do?", ipa: "/haʊ duː juː duː/", trans: "Como vai? (Muito formal)", example: "Pleasure to meet you. How do you do?" },
-        { phrase: "Nice to meet you", ipa: "/naɪs tu miːt juː/", trans: "Prazer em conhecê-lo", example: "It's a great honor, nice to meet you." },
+        { phrase: "How do you do?", ipa: "/haʊ duː juː duː/", trans: "Como vai?", example: "Pleasure to meet you. How do you do?" },
+        { phrase: "Nice to meet you", ipa: "/naɪs tu miːt juː/", trans: "Prazer em conhecer", example: "It's a great honor, nice to meet you." },
     ];
 
     const informalGreetings = [
         { phrase: "Hi / Hey", ipa: "/haɪ/ /heɪ/", trans: "Oi", example: "Hey Matthew! How's it going?" },
-        { phrase: "What's up?", ipa: "/wʌts ʌp/", trans: "E aí? / O que está rolando?", example: "Hey man, what's up? Nothing much." },
-        { phrase: "How's it going?", ipa: "/haʊz ɪt ˈɡoʊɪŋ/", trans: "Como estão as coisas?", example: "How's it going with the new job?" },
+        { phrase: "What's up?", ipa: "/wʌts ʌp/", trans: "E aí?", example: "Hey man, what's up? Nothing much." },
+        { phrase: "How's it going?", ipa: "/haʊz ɪt ˈɡoʊɪŋ/", trans: "Como vão as coisas?", example: "How's it going with the new job?" },
     ];
 
     return (
@@ -107,9 +107,14 @@ const GreetingsFarewells = () => {
                 <div className="relative z-10 flex flex-col md:flex-row gap-6 items-center">
                     <div className="w-20 h-20 rounded-full bg-indigo-500 flex items-center justify-center text-4xl shadow-lg border-2 border-indigo-400">👨‍🏫</div>
                     <div className="flex-1">
-                        <h3 className="text-2xl font-serif-display mb-2">A Message from Matthew</h3>
+                        <h3 className="text-2xl font-serif-display mb-2">
+                            {isPortuguese ? "Uma mensagem do Matthew" : "A Message from Matthew"}
+                        </h3>
                         <p className="text-indigo-100 text-sm leading-relaxed italic">
-                            "Greetings are the foundation of any relationship. In English, the way you say 'hello' defines the tone of the entire conversation. Today, we'll master not just the words, but the culture behind them. Pay attention to the 'Good Night' trap—it's the most common mistake for beginners!"
+                            {isPortuguese 
+                                ? "\"As saudações são a base de qualquer relacionamento. Em inglês, a forma como você diz 'olá' define o tom de toda a conversa. Hoje, vamos dominar não apenas as palavras, mas a cultura por trás delas. Preste atenção na armadilha do 'Good Night'—é o erro mais comum entre iniciantes!\""
+                                : "\"Greetings are the foundation of any relationship. In English, the way you say 'hello' defines the tone of the entire conversation. Today, we'll master not just the words, but the culture behind them. Pay attention to the 'Good Night' trap—it's the most common mistake for beginners!\""
+                            }
                         </p>
                     </div>
                 </div>
@@ -119,7 +124,9 @@ const GreetingsFarewells = () => {
             <section className="space-y-6">
                 <div className="flex items-center gap-3">
                     <div className="p-2 bg-indigo-100 rounded-lg text-indigo-600"><Clock className="w-5 h-5" /></div>
-                    <h4 className="text-2xl font-bold text-slate-800">Time-Based Greetings</h4>
+                    <h4 className="text-2xl font-bold text-slate-800">
+                        {isPortuguese ? "Saudações por Período" : "Time-Based Greetings"}
+                    </h4>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {timeGreetings.map((item, idx) => (
@@ -136,7 +143,7 @@ const GreetingsFarewells = () => {
                                 </div>
                                 <div className="flex gap-2 items-baseline">
                                     <span className="text-[10px] font-mono text-slate-400">{item.ipa}</span>
-                                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-tighter">— {item.trans}</span>
+                                    {isPortuguese && <span className="text-[10px] font-bold text-slate-400 uppercase tracking-tighter">— {item.trans}</span>}
                                 </div>
                                 <p className="text-[11px] text-slate-500 font-medium mt-2 flex items-center gap-1">
                                     <Clock className="w-3 h-3" /> {item.time}
@@ -153,10 +160,14 @@ const GreetingsFarewells = () => {
                     <AlertTriangle className="w-6 h-6" />
                 </div>
                 <div>
-                    <h5 className="font-black text-rose-800 uppercase tracking-widest text-xs mb-1">The "Good Night" Trap</h5>
+                    <h5 className="font-black text-rose-800 uppercase tracking-widest text-xs mb-1">
+                        {isPortuguese ? "A ARMADILHA DO \"GOOD NIGHT\"" : "The \"Good Night\" Trap"}
+                    </h5>
                     <p className="text-sm text-rose-700 leading-relaxed">
-                        Never say <strong>"Good night"</strong> when you arrive at a party or dinner. Use <strong>"Good evening"</strong>. <br/>
-                        Save <strong>"Good night"</strong> strictly for when you are <strong>leaving</strong> or going to sleep.
+                        {isPortuguese 
+                            ? <>Nunca diga <strong>"Good night"</strong> ao chegar em uma festa ou jantar. Use <strong>"Good evening"</strong>. Reserve o <strong>"Good night"</strong> estritamente para quando estiver <strong>indo embora</strong> ou indo dormir.</>
+                            : <>Never say <strong>"Good night"</strong> when you arrive at a party or dinner. Use <strong>"Good evening"</strong>. Save <strong>"Good night"</strong> strictly for when you are <strong>leaving</strong> or going to sleep.</>
+                        }
                     </p>
                 </div>
             </div>
@@ -167,7 +178,9 @@ const GreetingsFarewells = () => {
                 <div className="space-y-6">
                     <div className="flex items-center gap-3">
                         <div className="p-2 bg-slate-100 rounded-lg text-slate-600"><Briefcase className="w-5 h-5" /></div>
-                        <h4 className="text-xl font-bold text-slate-800">Formal Situations</h4>
+                        <h4 className="text-xl font-bold text-slate-800">
+                            {isPortuguese ? "Situações Formais" : "Formal Situations"}
+                        </h4>
                     </div>
                     <div className="space-y-4">
                         {formalGreetings.map((g, i) => (
@@ -178,10 +191,12 @@ const GreetingsFarewells = () => {
                                 </div>
                                 <div className="flex gap-2 items-center mb-3">
                                     <span className="text-[10px] text-slate-400 font-mono italic">{g.ipa}</span>
-                                    <span className="text-[10px] font-bold text-indigo-400 tracking-wider">— {g.trans}</span>
+                                    {isPortuguese && <span className="text-[10px] font-bold text-indigo-400 tracking-wider">— {g.trans}</span>}
                                 </div>
                                 <div className="p-3 bg-slate-50 rounded-xl border-l-4 border-slate-200">
-                                    <div className="text-[10px] font-black uppercase text-slate-400 mb-1">Example</div>
+                                    <div className="text-[10px] font-black uppercase text-slate-400 mb-1">
+                                        {isPortuguese ? "Exemplo" : "Example"}
+                                    </div>
                                     <p className="text-xs text-slate-600 italic">"{g.example}"</p>
                                 </div>
                             </div>
@@ -193,7 +208,9 @@ const GreetingsFarewells = () => {
                 <div className="space-y-6">
                     <div className="flex items-center gap-3">
                         <div className="p-2 bg-indigo-50 rounded-lg text-indigo-600"><MessageCircle className="w-5 h-5" /></div>
-                        <h4 className="text-xl font-bold text-slate-800">Informal / Friends</h4>
+                        <h4 className="text-xl font-bold text-slate-800">
+                            {isPortuguese ? "Informal / Amigos" : "Informal / Friends"}
+                        </h4>
                     </div>
                     <div className="space-y-4">
                         {informalGreetings.map((g, i) => (
@@ -204,10 +221,12 @@ const GreetingsFarewells = () => {
                                 </div>
                                 <div className="flex gap-2 items-center mb-3">
                                     <span className="text-[10px] text-slate-400 font-mono italic">{g.ipa}</span>
-                                    <span className="text-[10px] font-bold text-indigo-400 tracking-wider">— {g.trans}</span>
+                                    {isPortuguese && <span className="text-[10px] font-bold text-indigo-400 tracking-wider">— {g.trans}</span>}
                                 </div>
                                 <div className="p-3 bg-indigo-50/50 rounded-xl border-l-4 border-indigo-200">
-                                    <div className="text-[10px] font-black uppercase text-indigo-400 mb-1">Example</div>
+                                    <div className="text-[10px] font-black uppercase text-indigo-400 mb-1">
+                                        {isPortuguese ? "Exemplo" : "Example"}
+                                    </div>
                                     <p className="text-xs text-slate-600 italic">"{g.example}"</p>
                                 </div>
                             </div>
@@ -219,29 +238,49 @@ const GreetingsFarewells = () => {
             {/* Quick Practice / Teacher's Note */}
             <div className="bg-amber-50 rounded-[2.5rem] p-10 relative border border-amber-100">
                 <div className="absolute top-0 left-10 -translate-y-1/2 bg-amber-400 text-white px-6 py-2 rounded-full font-black text-xs uppercase tracking-widest shadow-lg">
-                    Pro Tips
+                    {isPortuguese ? "Dicas de Mestre" : "Pro Tips"}
                 </div>
                 <div className="grid md:grid-cols-2 gap-10 items-center">
                     <div className="space-y-6">
                         <div className="flex items-start gap-4">
                             <div className="p-2 bg-white rounded-lg shadow-sm"><Lightbulb className="w-5 h-5 text-amber-500" /></div>
                             <div>
-                                <h6 className="font-bold text-amber-900 mb-1">Body Language Matters</h6>
-                                <p className="text-sm text-amber-800 leading-relaxed">In many English-speaking cultures, a firm handshake and eye contact are expected when greeting someone formally. 🤝</p>
+                                <h6 className="font-bold text-amber-900 mb-1">
+                                    {isPortuguese ? "Linguagem Corporal importa" : "Body Language Matters"}
+                                </h6>
+                                <p className="text-sm text-amber-800 leading-relaxed">
+                                    {isPortuguese 
+                                        ? "Em culturas de língua inglesa, um aperto de mão firme e contato visual são esperados ao cumprimentar alguém formalmente. 🤝"
+                                        : "In many English-speaking cultures, a firm handshake and eye contact are expected when greeting someone formally. 🤝"
+                                    }
+                                </p>
                             </div>
                         </div>
                         <div className="flex items-start gap-4">
                             <div className="p-2 bg-white rounded-lg shadow-sm"><Lightbulb className="w-5 h-5 text-amber-500" /></div>
                             <div>
-                                <h6 className="font-bold text-amber-900 mb-1">The "What's up?" Secret</h6>
-                                <p className="text-sm text-amber-800 leading-relaxed">When someone says <em>"What's up?"</em>, they aren't always asking for a full report. A common reply is simply: <em>"Not much, you?"</em> 🤙</p>
+                                <h6 className="font-bold text-amber-900 mb-1">
+                                    {isPortuguese ? "O Segredo do \"What's up?\"" : "The \"What's up?\" Secret"}
+                                </h6>
+                                <p className="text-sm text-amber-800 leading-relaxed">
+                                    {isPortuguese 
+                                        ? "Quando alguém diz \"What's up?\", nem sempre quer um relatório completo. Uma resposta comum é apenas: \"Not much, you?\" 🤙"
+                                        : "When someone says \"What's up?\", they aren't always asking for a full report. A common reply is simply: \"Not much, you?\" 🤙"
+                                    }
+                                </p>
                             </div>
                         </div>
                     </div>
                     <div className="bg-white p-6 rounded-3xl shadow-inner border border-amber-200/50">
-                        <h6 className="font-bold text-slate-800 mb-4 flex items-center gap-2"><Quote className="w-4 h-4 text-amber-400" /> Pronunciation Focus</h6>
+                        <h6 className="font-bold text-slate-800 mb-4 flex items-center gap-2">
+                            <Quote className="w-4 h-4 text-amber-400" /> 
+                            {isPortuguese ? "Foco na Pronúncia" : "Pronunciation Focus"}
+                        </h6>
                         <p className="text-sm text-slate-600 leading-relaxed">
-                            Watch the <strong>"H"</strong> in <em>"Hello"</em> and <em>"Hi"</em>. It should be a soft breath of air, like you're cleaning glasses. Avoid the strong Brazilian 'R' sound!
+                            {isPortuguese 
+                                ? "Preste atenção no \"H\" de \"Hello\" e \"Hi\". Deve ser um sopro suave, como se estivesse limpando óculos. Evite o som de 'R' forte do português! 🌬️"
+                                : "Watch the \"H\" in \"Hello\" and \"Hi\". It should be a soft breath of air, like you're cleaning glasses. Avoid the strong Brazilian 'R' sound! 🌬️"
+                            }
                         </p>
                     </div>
                 </div>
@@ -875,7 +914,7 @@ export default function App() {
 
     const renderContent = () => {
         switch(activeSection) {
-            case 0: return <GreetingsFarewells />;
+            case 0: return <GreetingsFarewells isPortuguese={isPortuguese} />;
             case 1: return <AlphabetSpelling />;
             case 2: return <SubjectPronouns />;
             case 3: return <VerbToBeAffirmative />;
@@ -935,7 +974,9 @@ export default function App() {
                             <div className="flex items-center gap-2 text-indigo-500 text-xs font-bold uppercase tracking-widest mb-4">
                                 <Sparkles className="w-4 h-4" /> Matthew's Curriculum
                             </div>
-                            <h2 className="text-5xl font-serif-display text-slate-900 tracking-tight">Lesson Context</h2>
+                            <h2 className="text-5xl font-serif-display text-slate-900 tracking-tight">
+                                {isPortuguese ? "Contexto da Lição" : "Lesson Context"}
+                            </h2>
                             <div className="h-1.5 w-24 bg-indigo-600 rounded-full mt-6"></div>
                         </header>
                         <div className="pb-32">
