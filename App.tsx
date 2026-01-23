@@ -12,7 +12,8 @@ import {
     Sparkles, ShieldCheck, Rocket, ZapIcon, Quote, Lightbulb, GraduationCap as TeacherIcon,
     Languages, Keyboard, Fingerprint, MousePointer2, SpellCheck, UserCheck, Flame, HelpCircle as QuestionIcon,
     Ear, Zap as FastIcon, Laptop, HardHat, Camera as PhotoIcon, Music as AudioIcon, 
-    ChefHat, ShoppingBag, Shield as SecurityIcon, Plane, Scale, Plus, Minus, IterationCw
+    ChefHat, ShoppingBag, Shield as SecurityIcon, Plane, Scale, Plus, Minus, IterationCw, Eye,
+    Maximize, Minimize, Activity
 } from 'lucide-react';
 
 // --- Styles ---
@@ -1758,37 +1759,336 @@ const SingularPlural = ({ isPortuguese }: { isPortuguese: boolean }) => {
     );
 };
 
-const ColorsAdjectives = () => {
-    const colors = [
-        { name: 'Red', hex: '#ef4444', text: 'white' }, { name: 'Blue', hex: '#3b82f6', text: 'white' },
-        { name: 'Green', hex: '#22c55e', text: 'white' }, { name: 'Yellow', hex: '#eab308', text: 'black' },
-        { name: 'Purple', hex: '#a855f7', text: 'white' }, { name: 'Black', hex: '#0f172a', text: 'white' }
+const ColorsAdjectives = ({ isPortuguese }: { isPortuguese: boolean }) => {
+    const colorLibrary = [
+        {
+            category: isPortuguese ? "Cores Básicas" : "Basic Colors",
+            colors: [
+                { name: 'Red', hex: '#ef4444', ipa: '/red/', trans: 'Vermelho' },
+                { name: 'Blue', hex: '#3b82f6', ipa: '/bluː/', trans: 'Azul' },
+                { name: 'Green', hex: '#22c55e', ipa: '/ɡriːn/', trans: 'Verde' },
+                { name: 'Yellow', hex: '#eab308', ipa: '/ˈjeloʊ/', trans: 'Amarelo' },
+                { name: 'Orange', hex: '#f97316', ipa: '/ˈɔːrɪndʒ/', trans: 'Laranja' },
+                { name: 'Purple', hex: '#a855f7', ipa: '/ˈpɜːrpl/', trans: 'Roxo' },
+                { name: 'Pink', hex: '#ec4899', ipa: '/pɪŋk/', trans: 'Rosa' },
+                { name: 'Brown', hex: '#78350f', ipa: '/braʊn/', trans: 'Marrom' },
+                { name: 'Black', hex: '#0f172a', ipa: '/blæk/', trans: 'Preto' },
+                { name: 'White', hex: '#ffffff', ipa: '/waɪt/', trans: 'Branco', border: true },
+                { name: 'Gray', hex: '#64748b', ipa: '/ɡreɪ/', trans: 'Cinza' },
+            ]
+        },
+        {
+            category: isPortuguese ? "Cores Complexas & Tons" : "Complex Colors & Shades",
+            colors: [
+                { name: 'Teal', hex: '#14b8a6', ipa: '/tiːl/', trans: 'Ciano/Verde-azulado' },
+                { name: 'Maroon', hex: '#7f1d1d', ipa: '/məˈruːn/', trans: 'Vinho/Bordô' },
+                { name: 'Turquoise', hex: '#06b6d4', ipa: '/ˈtɜːrkwɔɪz/', trans: 'Turquesa' },
+                { name: 'Beige', hex: '#f5f5dc', ipa: '/beɪʒ/', trans: 'Bege' },
+                { name: 'Navy', hex: '#1e3a8a', ipa: '/ˈneɪvi/', trans: 'Azul-marinho' },
+                { name: 'Gold', hex: '#fbbf24', ipa: '/ɡoʊld/', trans: 'Dourado' },
+                { name: 'Silver', hex: '#cbd5e1', ipa: '/ˈsɪlvər/', trans: 'Prateado' },
+                { name: 'Violet', hex: '#8b5cf6', ipa: '/ˈvaɪələt/', trans: 'Violeta' },
+                { name: 'Emerald', hex: '#10b981', ipa: '/ˈemərəld/', trans: 'Esmeralda' },
+                { name: 'Amber', hex: '#f59e0b', ipa: '/ˈæmbər/', trans: 'Âmbar' },
+            ]
+        }
     ];
-    const opposites = [
-        { w1: 'Big', t1: 'Large', w2: 'Small', t2: 'Small' },
-        { w1: 'Fast', t1: 'Fast', w2: 'Slow', t2: 'Slow' },
-        { w1: 'Happy', t1: 'Happy', w2: 'Sad', t2: 'Sad' },
-        { w1: 'Rich', t1: 'Rich', w2: 'Poor', t2: 'Poor' }
+
+    const adjectivePairs = [
+        {
+            category: isPortuguese ? "Aparência & Condição" : "Appearance & Condition",
+            pairs: [
+                { w1: 'Beautiful', ipa1: '/ˈbjuːtɪfl/', trans1: 'Bonito(a)', w2: 'Ugly', ipa2: '/ˈʌɡli/', trans2: 'Feio(a)' },
+                { w1: 'Clean', ipa1: '/kliːn/', trans1: 'Limpo(a)', w2: 'Dirty', ipa2: '/ˈdɜːrti/', trans2: 'Sujo(a)' },
+                { w1: 'New', ipa1: '/njuː/', trans1: 'Novo(a)', w2: 'Old', ipa2: '/oʊld/', trans2: 'Velho(a)' },
+                { w1: 'Rich', ipa1: '/rɪtʃ/', trans1: 'Rico(a)', w2: 'Poor', ipa2: '/pʊər/', trans2: 'Pobre' },
+                { w1: 'Strong', ipa1: '/strɒŋ/', trans1: 'Forte', w2: 'Weak', ipa2: '/wiːk/', trans2: 'Fraco(a)' },
+                { w1: 'Fast', ipa1: '/fɑːst/', trans1: 'Rápido(a)', w2: 'Slow', ipa2: '/sloʊ/', trans2: 'Lento(a)' },
+            ]
+        },
+        {
+            category: isPortuguese ? "Tamanho & Forma" : "Size & Shape",
+            pairs: [
+                { w1: 'Big', ipa1: '/bɪɡ/', trans1: 'Grande', w2: 'Small', ipa2: '/smɔːl/', trans2: 'Pequeno(a)' },
+                { w1: 'Tall', ipa1: '/tɔːl/', trans1: 'Alto(a)', w2: 'Short', ipa2: '/ʃɔːrt/', trans2: 'Baixo(a)' },
+                { w1: 'Long', ipa1: '/lɒŋ/', trans1: 'Comprido(a)', w2: 'Short', ipa2: '/ʃɔːrt/', trans2: 'Curto(a)' },
+                { w1: 'Wide', ipa1: '/waɪd/', trans1: 'Largo(a)', w2: 'Narrow', ipa2: '/ˈnæroʊ/', trans2: 'Estreito(a)' },
+                { w1: 'Thick', ipa1: '/θɪk/', trans1: 'Grosso(a)', w2: 'Thin', ipa2: '/θɪn/', trans2: 'Fino(a)' },
+                { w1: 'Huge', ipa1: '/hjuːdʒ/', trans1: 'Enorme', w2: 'Tiny', ipa2: '/ˈtaɪni/', trans2: 'Minúsculo(a)' },
+            ]
+        },
+        {
+            category: isPortuguese ? "Personalidade & Emoção" : "Personality & Emotion",
+            pairs: [
+                { w1: 'Happy', ipa1: '/ˈhæpi/', trans1: 'Feliz', w2: 'Sad', ipa2: '/sæd/', trans2: 'Triste' },
+                { w1: 'Kind', ipa1: '/kaɪnd/', trans1: 'Gentil', w2: 'Cruel', ipa2: '/ˈkruːəl/', trans2: 'Cruel' },
+                { w1: 'Brave', ipa1: '/breɪv/', trans1: 'Corajoso(a)', w2: 'Cowardly', ipa2: '/ˈkaʊərdli/', trans2: 'Covarde' },
+                { w1: 'Funny', ipa1: '/ˈfʌni/', trans1: 'Engraçado(a)', w2: 'Serious', ipa2: '/ˈsɪəriəs/', trans2: 'Sério(a)' },
+                { w1: 'Smart', ipa1: '/smɑːrt/', trans1: 'Inteligente', w2: 'Stupid', ipa2: '/ˈstjuːpɪd/', trans2: 'Burro(a)' },
+                { w1: 'Excited', ipa1: '/ɪkˈsaɪtɪd/', trans1: 'Animado(a)', w2: 'Bored', ipa2: '/bɔːrd/', trans2: 'Entediado(a)' },
+            ]
+        },
+        {
+            category: isPortuguese ? "Sensação & Utilidade" : "Sensation & Utility",
+            pairs: [
+                { w1: 'Hot', ipa1: '/hɒt/', trans1: 'Quente', w2: 'Cold', ipa2: '/koʊld/', trans2: 'Frio' },
+                { w1: 'Hard', ipa1: '/hɑːrd/', trans1: 'Duro/Difícil', w2: 'Soft/Easy', ipa2: '/sɒft/ /ˈiːzi/', trans2: 'Macio/Fácil' },
+                { w1: 'Full', ipa1: '/fʊl/', trans1: 'Cheio(a)', w2: 'Empty', ipa2: '/ˈempti/', trans2: 'Vazio(a)' },
+                { w1: 'Good', ipa1: '/ɡʊd/', trans1: 'Bom/Boa', w2: 'Bad', ipa2: '/bæd/', trans2: 'Mau/Ruim' },
+                { w1: 'Cheap', ipa1: '/tʃiːp/', trans1: 'Barato(a)', w2: 'Expensive', ipa2: '/ɪkˈspensɪv/', trans2: 'Caro(a)' },
+                { w1: 'Right', ipa1: '/raɪt/', trans1: 'Certo(a)', w2: 'Wrong', ipa2: '/rɒŋ/', trans2: 'Errado(a)' },
+            ]
+        }
     ];
+
     return (
-        <div className="space-y-8 animate-fade-in">
-            <div className="grid grid-cols-3 md:grid-cols-6 gap-3">
-                {colors.map(c => (
-                    <button key={c.name} onClick={() => speak(c.name)} className="h-20 rounded-xl flex items-center justify-center font-bold shadow-sm" style={{ backgroundColor: c.hex, color: c.text }}> {c.name} </button>
-                ))}
+        <div className="space-y-12 animate-fade-in pb-20">
+            {/* Senior Teacher Intro */}
+            <div className="relative p-8 rounded-[2rem] bg-indigo-900 text-white overflow-hidden shadow-2xl">
+                <div className="absolute top-0 right-0 p-4 opacity-10"><Palette className="w-32 h-32" /></div>
+                <div className="relative z-10 flex flex-col md:flex-row gap-6 items-center">
+                    <div className="w-20 h-20 rounded-full bg-indigo-500 flex items-center justify-center text-4xl shadow-lg border-2 border-indigo-400">👨‍🏫</div>
+                    <div className="flex-1">
+                        <h3 className="text-2xl font-serif-display mb-2">
+                            {isPortuguese ? "Dando Vida ao Mundo" : "Giving Life to the World"}
+                        </h3>
+                        <p className="text-indigo-100 text-sm leading-relaxed italic">
+                            {isPortuguese 
+                                ? "\"Adjetivos são os temperos da língua. Sem eles, as frases são insossas. Hoje vamos colorir seu vocabulário com dezenas de cores e os opostos mais importantes. Preste atenção: em inglês, a descrição vem ANTES da coisa!\""
+                                : "\"Adjectives are the spices of language. Without them, sentences are bland. Today we will color your vocabulary with dozens of colors and the most important opposites. Pay attention: in English, the description comes BEFORE the thing!\""
+                            }
+                        </p>
+                    </div>
+                </div>
             </div>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                {opposites.map((pair, idx) => (
-                    <div key={idx} className="flex flex-col gap-2 p-3 bg-white rounded-xl border border-slate-100 shadow-sm">
-                        <button onClick={() => speak(pair.w1)} className="text-left group">
-                            <div className="font-bold text-slate-700 group-hover:text-indigo-600">{pair.w1}</div>
-                        </button>
-                        <div className="h-px bg-slate-100 w-full"></div>
-                        <button onClick={() => speak(pair.w2)} className="text-left group">
-                            <div className="font-bold text-slate-700 group-hover:text-rose-600">{pair.w2}</div>
-                        </button>
+
+            {/* Colors Section */}
+            <section className="space-y-8">
+                <div className="flex items-center gap-3">
+                    <div className="p-2 bg-indigo-100 rounded-lg text-indigo-600"><Palette className="w-5 h-5" /></div>
+                    <h4 className="text-2xl font-bold text-slate-800">
+                        {isPortuguese ? "O Espectro Completo" : "The Full Spectrum"}
+                    </h4>
+                </div>
+
+                {colorLibrary.map((lib, idx) => (
+                    <div key={idx} className="space-y-4">
+                        <h5 className="text-xs font-black uppercase tracking-widest text-slate-400 pl-2">{lib.category}</h5>
+                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-6 gap-3">
+                            {lib.colors.map(c => (
+                                <button 
+                                    key={c.name}
+                                    onClick={() => speak(c.name)}
+                                    className={`group h-24 rounded-2xl flex flex-col items-center justify-center shadow-sm hover:scale-105 transition-all relative overflow-hidden border ${c.border ? 'border-slate-200' : 'border-transparent'}`}
+                                    style={{ backgroundColor: c.hex }}
+                                >
+                                    <span className={`font-black text-sm drop-shadow-md ${['White', 'Beige', 'Silver', 'Amber', 'Yellow'].includes(c.name) ? 'text-slate-800' : 'text-white'}`}>
+                                        {c.name}
+                                    </span>
+                                    <div className="flex flex-col items-center">
+                                        <span className={`text-[8px] font-mono opacity-60 ${['White', 'Beige', 'Silver', 'Amber', 'Yellow'].includes(c.name) ? 'text-slate-500' : 'text-slate-200'}`}>
+                                            {c.ipa}
+                                        </span>
+                                        {isPortuguese && (
+                                            <span className={`text-[8px] font-bold uppercase tracking-tighter ${['White', 'Beige', 'Silver', 'Amber', 'Yellow'].includes(c.name) ? 'text-slate-400' : 'text-slate-300'}`}>
+                                                {c.trans}
+                                            </span>
+                                        )}
+                                    </div>
+                                    <div className="absolute bottom-1 right-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                                        <Volume2 className={`w-3 h-3 ${['White', 'Beige', 'Silver', 'Amber', 'Yellow'].includes(c.name) ? 'text-slate-400' : 'text-white/50'}`} />
+                                    </div>
+                                </button>
+                            ))}
+                        </div>
                     </div>
                 ))}
+
+                {/* Modifiers for Colors */}
+                <div className="p-6 bg-slate-100 rounded-3xl grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div className="flex flex-col items-center text-center">
+                        <span className="text-xs font-black text-indigo-600 uppercase mb-2">Light + [Color]</span>
+                        <div className="flex gap-2 mb-2">
+                            <div className="w-8 h-8 rounded-lg bg-blue-200 border border-white"></div>
+                            <div className="w-8 h-8 rounded-lg bg-blue-500"></div>
+                        </div>
+                        <p className="text-[10px] text-slate-500"><strong>Light Blue</strong> {isPortuguese ? "(Azul-claro)" : "(Light Blue)"}</p>
+                    </div>
+                    <div className="flex flex-col items-center text-center">
+                        <span className="text-xs font-black text-slate-900 uppercase mb-2">Dark + [Color]</span>
+                        <div className="flex gap-2 mb-2">
+                            <div className="w-8 h-8 rounded-lg bg-blue-900 border border-white"></div>
+                            <div className="w-8 h-8 rounded-lg bg-blue-500"></div>
+                        </div>
+                        <p className="text-[10px] text-slate-500"><strong>Dark Blue</strong> {isPortuguese ? "(Azul-escuro)" : "(Dark Blue)"}</p>
+                    </div>
+                    <div className="flex flex-col items-center text-center">
+                        <span className="text-xs font-black text-rose-500 uppercase mb-2">Bright + [Color]</span>
+                        <div className="flex gap-2 mb-2">
+                            <div className="w-8 h-8 rounded-lg bg-yellow-400 animate-pulse"></div>
+                            <div className="w-8 h-8 rounded-lg bg-yellow-600"></div>
+                        </div>
+                        <p className="text-[10px] text-slate-500"><strong>Bright Yellow</strong> {isPortuguese ? "(Amarelo Vibrante)" : "(Vibrant Yellow)"}</p>
+                    </div>
+                </div>
+            </section>
+
+            {/* Adjectives & Opposites Section */}
+            <section className="space-y-10">
+                <div className="flex items-center gap-3">
+                    <div className="p-2 bg-emerald-100 rounded-lg text-emerald-600"><Activity className="w-5 h-5" /></div>
+                    <h4 className="text-2xl font-bold text-slate-800">
+                        {isPortuguese ? "Adjetivos & Seus Opostos" : "Adjectives & Their Opposites"}
+                    </h4>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    {adjectivePairs.map((cat, idx) => (
+                        <div key={idx} className="space-y-4">
+                            <h5 className="text-sm font-bold text-slate-700 flex items-center gap-2 border-b pb-2">
+                                <Star className="w-4 h-4 text-emerald-400" /> {cat.category}
+                            </h5>
+                            <div className="space-y-3">
+                                {cat.pairs.map((pair, pIdx) => (
+                                    <div key={pIdx} className="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm flex items-center justify-between group hover:shadow-md transition-all">
+                                        <button onClick={() => speak(pair.w1)} className="flex-1 text-left">
+                                            <span className="font-black text-indigo-600 text-lg">{pair.w1}</span>
+                                            <div className="flex flex-col">
+                                                <span className="text-[9px] font-mono text-slate-400">{pair.ipa1}</span>
+                                                {isPortuguese && <span className="text-[8px] font-bold text-slate-400 uppercase tracking-tighter">{pair.trans1}</span>}
+                                            </div>
+                                        </button>
+                                        <div className="px-4 text-slate-300 font-bold">vs</div>
+                                        <button onClick={() => speak(pair.w2)} className="flex-1 text-right">
+                                            <span className="font-black text-rose-500 text-lg">{pair.w2}</span>
+                                            <div className="flex flex-col">
+                                                <span className="text-[9px] font-mono text-slate-400">{pair.ipa2}</span>
+                                                {isPortuguese && <span className="text-[8px] font-bold text-slate-400 uppercase tracking-tighter">{pair.trans2}</span>}
+                                            </div>
+                                        </button>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </section>
+
+            {/* Grammar: Adjective Placement */}
+            <section className="bg-indigo-50 border-2 border-indigo-100 rounded-[2.5rem] p-10 relative overflow-hidden">
+                <div className="absolute bottom-0 right-0 p-4 opacity-5 rotate-12"><IterationCw className="w-40 h-40 text-indigo-900" /></div>
+                <div className="relative z-10">
+                    <h5 className="font-serif-display text-2xl text-indigo-900 mb-6 flex items-center gap-3">
+                        <Scale className="w-8 h-8" />
+                        {isPortuguese ? "Regra de Ouro: A Ordem dos Fatores" : "Golden Rule: The Order of Things"}
+                    </h5>
+                    <div className="grid md:grid-cols-2 gap-10">
+                        <div>
+                            <p className="text-indigo-800 text-sm leading-relaxed mb-6">
+                                {isPortuguese 
+                                    ? <>Em inglês, o adjetivo (qualidade) quase sempre vem <strong>ANTES</strong> do substantivo (objeto/pessoa). No português dizemos "carro azul", no inglês dizemos "azul carro".</>
+                                    : <>In English, the adjective (quality) almost always comes <strong>BEFORE</strong> the noun (object/person). We don't say "car blue", we say "blue car".</>
+                                }
+                            </p>
+                            <div className="flex flex-col gap-3">
+                                <div className="p-4 bg-white rounded-2xl border border-indigo-200 flex items-center justify-between">
+                                    <div className="flex items-center gap-3">
+                                        <span className="px-3 py-1 bg-indigo-600 text-white rounded-lg text-xs font-black">ADJ</span>
+                                        <span className="px-3 py-1 bg-slate-200 text-slate-600 rounded-lg text-xs font-black">NOUN</span>
+                                    </div>
+                                    <ArrowRight className="w-4 h-4 text-indigo-300" />
+                                    <span className="font-black text-indigo-700">"A <span className="underline">red</span> car"</span>
+                                </div>
+                                <div className="p-4 bg-white rounded-2xl border border-indigo-200 flex items-center justify-between">
+                                    <div className="flex items-center gap-3">
+                                        <span className="px-3 py-1 bg-indigo-600 text-white rounded-lg text-xs font-black">ADJ</span>
+                                        <span className="px-3 py-1 bg-slate-200 text-slate-600 rounded-lg text-xs font-black">NOUN</span>
+                                    </div>
+                                    <ArrowRight className="w-4 h-4 text-indigo-300" />
+                                    <span className="font-black text-indigo-700">"A <span className="underline">smart</span> student"</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="bg-white/60 p-6 rounded-3xl border border-indigo-200 backdrop-blur-sm">
+                            <h6 className="font-black text-indigo-900 text-xs uppercase tracking-widest mb-4">
+                                {isPortuguese ? "Exceção: Com o Verb TO BE" : "Exception: With Verb TO BE"}
+                            </h6>
+                            <p className="text-xs text-indigo-700 leading-relaxed mb-4">
+                                {isPortuguese 
+                                    ? "Se estivermos usando o Verb To Be, o adjetivo vem depois do verbo, assim como no português."
+                                    : "If we are using the Verb To Be, the adjective comes after the verb, just like in many other languages."}
+                            </p>
+                            <div className="space-y-2">
+                                <button onClick={() => speak("The car is red.")} className="w-full p-3 bg-indigo-50 border border-indigo-100 rounded-xl text-left text-xs font-bold text-indigo-900 flex justify-between group">
+                                    "The car <u>is</u> <b>red</b>."
+                                    <Volume2 className="w-3 h-3 opacity-20 group-hover:opacity-100" />
+                                </button>
+                                <button onClick={() => speak("You are happy.")} className="w-full p-3 bg-indigo-50 border border-indigo-100 rounded-xl text-left text-xs font-bold text-indigo-900 flex justify-between group">
+                                    "You <u>are</u> <b>happy</b>."
+                                    <Volume2 className="w-3 h-3 opacity-20 group-hover:opacity-100" />
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* Master Tips Corner */}
+            <div className="bg-amber-50 rounded-[2.5rem] p-10 relative border border-amber-100">
+                <div className="absolute top-0 right-10 -translate-y-1/2 bg-amber-400 text-white px-6 py-2 rounded-full font-black text-xs uppercase tracking-widest shadow-lg">
+                    {isPortuguese ? "Dicas de Mestre" : "Master Notes"}
+                </div>
+                <div className="grid md:grid-cols-2 gap-10">
+                    <div className="flex gap-6 items-start">
+                        <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center shadow-sm shrink-0">
+                            <IterationCw className="w-8 h-8 text-amber-500" />
+                        </div>
+                        <div>
+                            <h5 className="font-bold text-amber-900 mb-2">
+                                {isPortuguese ? "Sem Plural para Adjetivos!" : "No Plural for Adjectives!"}
+                            </h5>
+                            <p className="text-sm text-amber-800 leading-relaxed">
+                                {isPortuguese 
+                                    ? <>Nunca coloque adjetivos no plural. O "S" vai apenas no substantivo. Dizemos <b>"Big houses"</b>, não <s>"Bigs houses"</s>.</>
+                                    : <>Never put adjectives in plural. The "S" only goes on the noun. We say <b>"Big houses"</b>, not <s>"Bigs houses"</s>.</>
+                                }
+                            </p>
+                        </div>
+                    </div>
+                    <div className="flex gap-6 items-start">
+                        <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center shadow-sm shrink-0">
+                            <FastIcon className="w-8 h-8 text-amber-500" />
+                        </div>
+                        <div>
+                            <h5 className="font-bold text-amber-900 mb-2">
+                                {isPortuguese ? "Aumentando a Intensidade" : "Boosting Intensity"}
+                            </h5>
+                            <p className="text-sm text-amber-800 leading-relaxed mb-3">
+                                {isPortuguese 
+                                    ? "Use estas palavras para dar mais força aos seus adjetivos:"
+                                    : "Use these words to give more strength to your adjectives:"}
+                            </p>
+                            <div className="flex flex-wrap gap-2">
+                                {['Very', 'Quite', 'Really', 'Extremely'].map(mod => (
+                                    <span key={mod} className="px-2 py-1 bg-white border border-amber-200 rounded text-[10px] font-black text-amber-700">{mod}</span>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* Teacher Matthew's Final Quote */}
+            <div className="bg-rose-50 rounded-[2.5rem] p-10 relative border border-rose-100 flex gap-8 items-center">
+                <div className="w-20 h-20 rounded-full bg-rose-500 border-4 border-white shadow-xl flex items-center justify-center text-4xl shrink-0 animate-float">👨‍🏫</div>
+                <div>
+                    <h6 className="font-black text-rose-900 uppercase text-xs tracking-widest mb-1">{isPortuguese ? "Desafio Final" : "Final Challenge"}</h6>
+                    <p className="text-sm text-rose-800 italic leading-relaxed">
+                        {isPortuguese 
+                            ? "\"Olhe ao seu redor agora. Escolha 3 objetos e tente descrevê-los usando uma cor e um adjetivo. Por exemplo: 'A blue small phone'. Pratique isso todo dia e você pensará em inglês em semanas!\""
+                            : "\"Look around you now. Pick 3 objects and try to describe them using a color and an adjective. For example: 'A blue small phone'. Practice this every day and you'll be thinking in English in weeks!\""}
+                    </p>
+                </div>
             </div>
         </div>
     );
@@ -2177,7 +2477,7 @@ export default function App() {
             case 5: return <IndefiniteArticles isPortuguese={isPortuguese} />;
             case 6: return <JobsOccupations isPortuguese={isPortuguese} />;
             case 7: return <SingularPlural isPortuguese={isPortuguese} />;
-            case 8: return <ColorsAdjectives />;
+            case 8: return <ColorsAdjectives isPortuguese={isPortuguese} />;
             case 9: return <CountriesNationalities />;
             case 10: return <NumbersZeroToTwenty />;
             case 11: return <NumbersTwentyHundred />;
