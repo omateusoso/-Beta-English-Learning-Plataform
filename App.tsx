@@ -10,7 +10,7 @@ import {
     Sofa, Bed, Utensils, Bath, Tv, Watch, CalendarDays, HelpCircle, Target, Battery, 
     BatteryCharging, BatteryFull, Lock, Key, Baby, UserPlus, Monitor, Shield, Sprout, Landmark,
     Sparkles, ShieldCheck, Rocket, ZapIcon, Quote, Lightbulb, GraduationCap as TeacherIcon,
-    Languages
+    Languages, Keyboard, Fingerprint, MousePointer2, SpellCheck
 } from 'lucide-react';
 
 // --- Styles ---
@@ -289,51 +289,238 @@ const GreetingsFarewells = ({ isPortuguese }: { isPortuguese: boolean }) => {
     );
 };
 
-const AlphabetSpelling = () => {
-    const soundGroups = [
-        { sound: '/eɪ/ (ay)', letters: ['A', 'H', 'J', 'K'] },
-        { sound: '/iː/ (ee)', letters: ['B', 'C', 'D', 'E', 'G', 'P', 'T', 'V', 'Z*'] },
-        { sound: '/ɛ/ (eh)', letters: ['F', 'L', 'M', 'N', 'S', 'X'] },
-        { sound: '/aɪ/ (eye)', letters: ['I', 'Y'] },
-        { sound: '/oʊ/ (oh)', letters: ['O'] },
-        { sound: '/juː/ (you)', letters: ['Q', 'U', 'W'] },
-        { sound: '/ɑːr/ (ar)', letters: ['R'] },
+const AlphabetSpelling = ({ isPortuguese }: { isPortuguese: boolean }) => {
+    const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+    const alphabetIPA: Record<string, string> = {
+        A: "/eɪ/", B: "/biː/", C: "/siː/", D: "/diː/", E: "/iː/", F: "/ɛf/", G: "/dʒiː/", H: "/eɪtʃ/", I: "/aɪ/", J: "/dʒeɪ/", K: "/keɪ/", L: "/ɛl/", M: "/ɛm/", N: "/ɛn/", O: "/oʊ/", P: "/piː/", Q: "/kjuː/", R: "/ɑːr/", S: "/ɛs/", T: "/tiː/", U: "/juː/", V: "/viː/", W: "/ˈdʌbəljuː/", X: "/ɛks/", Y: "/waɪ/", Z: "/ziː/"
+    };
+    const alphabetTrans: Record<string, string> = {
+        A: "êi", B: "bi", C: "ci", D: "di", E: "i", F: "éf", G: "dji", H: "êitch", I: "ai", J: "djei", K: "kei", L: "él", M: "ém", N: "én", O: "ôu", P: "pi", Q: "kiu", R: "ár", S: "és", T: "ti", U: "iú", V: "vi", W: "dâbol iú", X: "éks", Y: "uai", Z: "zi"
+    };
+
+    const phoneticGroups = [
+        { sound: "/eɪ/", color: "bg-orange-50 text-orange-700 border-orange-200", letters: ["A", "H", "J", "K"], description: isPortuguese ? "Som de 'ei' (EI)" : "The 'ay' sound" },
+        { sound: "/iː/", color: "bg-blue-50 text-blue-700 border-blue-200", letters: ["B", "C", "D", "E", "G", "P", "T", "V", "Z"], description: isPortuguese ? "Som de 'i' longo (II)" : "The long 'ee' sound" },
+        { sound: "/ɛ/", color: "bg-emerald-50 text-emerald-700 border-emerald-200", letters: ["F", "L", "M", "N", "S", "X"], description: isPortuguese ? "Som de 'é' (É)" : "The 'eh' sound" },
+        { sound: "/aɪ/", color: "bg-purple-50 text-purple-700 border-purple-200", letters: ["I", "Y"], description: isPortuguese ? "Som de 'ai' (AI)" : "The 'eye' sound" },
+        { sound: "/oʊ/", color: "bg-amber-50 text-amber-700 border-amber-200", letters: ["O"], description: isPortuguese ? "Som de 'ôu' (OU)" : "The 'oh' sound" },
+        { sound: "/juː/", color: "bg-indigo-50 text-indigo-700 border-indigo-200", letters: ["Q", "U", "W"], description: isPortuguese ? "Som de 'iu' (IU)" : "The 'you' sound" },
+        { sound: "/ɑːr/", color: "bg-rose-50 text-rose-700 border-rose-200", letters: ["R"], description: isPortuguese ? "Som de 'ar' (AR)" : "The 'ar' sound" },
     ];
-    const [activeLetter, setActiveLetter] = useState<string | null>(null);
+
+    const acronyms = [
+        { name: "FBI", full: isPortuguese ? "Agência Federal de Investigação" : "Federal Bureau of Investigation" },
+        { name: "CEO", full: isPortuguese ? "Diretor Executivo" : "Chief Executive Officer" },
+        { name: "VIP", full: isPortuguese ? "Pessoa Muito Importante" : "Very Important Person" },
+        { name: "USA", full: isPortuguese ? "Estados Unidos da América" : "United States of America" },
+    ];
+
     return (
-        <div className="space-y-8 animate-fade-in">
-             <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
-                <h3 className="text-lg font-bold text-slate-800 mb-2">Phonetic Groups</h3>
-                <p className="text-slate-500 text-sm mb-6">Letters in English are easier to remember when grouped by their vowel sound.</p>
-                <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                    {soundGroups.map((group, idx) => (
-                        <div key={idx} className="bg-slate-50 rounded-xl p-4 border border-slate-100 hover:border-indigo-200 transition-colors">
-                            <div className="text-xs font-bold text-slate-400 uppercase mb-2 flex justify-between">
-                                <span>Sound: {group.sound}</span>
-                                <Volume2 className="w-3 h-3 cursor-pointer" onClick={() => speak(group.letters.join(', '))} />
+        <div className="space-y-16 animate-fade-in pb-20">
+            {/* Senior Teacher Introduction */}
+            <div className="relative p-8 rounded-[2rem] bg-indigo-900 text-white overflow-hidden shadow-2xl">
+                <div className="absolute top-0 right-0 p-4 opacity-10"><Keyboard className="w-32 h-32" /></div>
+                <div className="relative z-10 flex flex-col md:flex-row gap-6 items-center">
+                    <div className="w-20 h-20 rounded-full bg-indigo-500 flex items-center justify-center text-4xl shadow-lg border-2 border-indigo-400">👨‍🏫</div>
+                    <div className="flex-1">
+                        <h3 className="text-2xl font-serif-display mb-2">
+                            {isPortuguese ? "O Código de Matthew" : "Matthew's Code"}
+                        </h3>
+                        <p className="text-indigo-100 text-sm leading-relaxed italic">
+                            {isPortuguese 
+                                ? "\"O alfabeto é o código secreto do inglês. Se você não sabe soletrar, você não sabe se comunicar profissionalmente. Mas aqui está o segredo: não tente decorar a ordem, tente decorar os SONS. Vamos transformar essas 26 letras em sua primeira vitória!\""
+                                : "\"The alphabet is the secret code of English. If you can't spell, you can't communicate professionally. But here's the secret: don't try to memorize the order, try to memorize the SOUNDS. Let's turn these 26 letters into your first victory!\""
+                            }
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            {/* Standard Alphabet Grid */}
+            <section className="space-y-8">
+                <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                        <div className="p-2 bg-indigo-100 rounded-lg text-indigo-600"><Type className="w-5 h-5" /></div>
+                        <h4 className="text-2xl font-bold text-slate-800">
+                            {isPortuguese ? "O Alfabeto Completo" : "The Full Alphabet"}
+                        </h4>
+                    </div>
+                    <span className="text-xs font-bold text-slate-400 uppercase tracking-widest bg-slate-100 px-3 py-1 rounded-full">
+                        26 {isPortuguese ? "Letras" : "Letters"}
+                    </span>
+                </div>
+                
+                <div className="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-9 gap-3">
+                    {alphabet.map(letter => (
+                        <button 
+                            key={letter}
+                            onClick={() => speak(letter)}
+                            className="group bg-white p-4 rounded-2xl border border-slate-100 shadow-sm hover:border-indigo-500 hover:shadow-md transition-all flex flex-col items-center justify-center relative overflow-hidden"
+                        >
+                            <span className="text-3xl font-black text-slate-800 group-hover:text-indigo-600 transition-colors">{letter}</span>
+                            <div className="flex flex-col items-center">
+                                <span className="text-[10px] font-mono text-slate-400 mt-1">{alphabetIPA[letter]}</span>
+                                {isPortuguese && <span className="text-[9px] font-bold text-indigo-300 uppercase leading-none mt-0.5">({alphabetTrans[letter]})</span>}
+                            </div>
+                            <div className="absolute top-1 right-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                                <Volume2 className="w-3 h-3 text-indigo-300" />
+                            </div>
+                        </button>
+                    ))}
+                </div>
+            </section>
+
+            {/* Phonetic Groups - The Secret Sauce */}
+            <section className="space-y-8">
+                <div className="flex items-center gap-3">
+                    <div className="p-2 bg-emerald-100 rounded-lg text-emerald-600"><Fingerprint className="w-5 h-5" /></div>
+                    <h4 className="text-2xl font-bold text-slate-800">
+                        {isPortuguese ? "Grupos Fonéticos (O Atalho)" : "Phonetic Groups (The Shortcut)"}
+                    </h4>
+                </div>
+                <div className="bg-emerald-50/50 p-4 rounded-2xl border border-emerald-100 text-sm text-emerald-800 mb-6 flex items-center gap-3">
+                    <Info className="w-5 h-5 shrink-0" />
+                    <p className="leading-relaxed">
+                        {isPortuguese 
+                            ? "As letras nestes grupos compartilham o mesmo som de vogal. Memorizar o alfabeto através destes grupos é 7x mais eficiente do que tentar decorar a ordem de A a Z!"
+                            : "Letters in these groups share the same vowel sound. Memorizing the alphabet through these groups is 7x more efficient than trying to memorize the A-Z order!"}
+                    </p>
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {phoneticGroups.map((group, idx) => (
+                        <div key={idx} className={`p-6 rounded-3xl border ${group.color} flex flex-col gap-4 shadow-sm hover:shadow-md transition-shadow`}>
+                            <div className="flex justify-between items-center border-b border-current/10 pb-2">
+                                <span className="text-lg font-black tracking-widest">{group.sound}</span>
+                                <span className="text-[10px] font-bold uppercase tracking-widest opacity-60">{group.description}</span>
                             </div>
                             <div className="flex flex-wrap gap-2">
-                                {group.letters.map(letter => (
-                                    <button key={letter} onClick={() => { setActiveLetter(letter); speak(letter.replace('*','')); }}
-                                        className={`w-10 h-10 rounded-lg font-bold text-lg shadow-sm transition-all ${activeLetter === letter ? 'bg-indigo-600 text-white scale-110' : 'bg-white text-slate-700 hover:bg-indigo-50'}`}
-                                    > {letter.replace('*','')} </button>
+                                {group.letters.map(l => (
+                                    <button 
+                                        key={l} 
+                                        onClick={() => speak(l)}
+                                        className="w-12 h-12 rounded-xl bg-white/40 border border-current/10 font-black text-xl hover:bg-white shadow-sm transition-all flex items-center justify-center group/letter"
+                                    >
+                                        {l}
+                                        <div className="absolute -bottom-2 opacity-0 group-hover/letter:opacity-100 transition-opacity text-[8px] font-mono">{alphabetIPA[l]}</div>
+                                    </button>
                                 ))}
                             </div>
                         </div>
                     ))}
                 </div>
-                <p className="text-xs text-slate-400 mt-4 text-right">* In US English, Z is /ziː/. In UK English, it's /zɛd/.</p>
-            </div>
-            <div className="bg-indigo-900 text-white p-6 rounded-2xl shadow-lg flex flex-col items-center text-center">
-                <h3 className="text-xl font-bold mb-2 flex items-center gap-2"><PenTool className="w-5 h-5" /> Spelling Practice</h3>
-                <p className="text-indigo-200 mb-6 text-sm">How do you spell your name?</p>
-                <div className="bg-indigo-800/50 p-6 rounded-xl border border-indigo-700 w-full max-w-lg">
-                    <p className="font-hand text-2xl mb-4">"My name is <span className="text-yellow-400">Sarah</span>"</p>
-                    <div className="flex justify-center gap-2">
-                        {['S', 'A', 'R', 'A', 'H'].map((l, i) => (
-                            <button key={i} onClick={() => speak(l)} className="w-12 h-12 rounded-lg bg-white text-indigo-900 font-bold text-xl hover:scale-110 transition-transform shadow-lg border-b-4 border-indigo-300 active:border-b-0 active:translate-y-1"> {l} </button>
-                        ))}
+            </section>
+
+            {/* Practical Application: Acronyms */}
+            <section className="space-y-8">
+                <div className="flex items-center gap-3">
+                    <div className="p-2 bg-amber-100 rounded-lg text-amber-600"><MousePointer2 className="w-5 h-5" /></div>
+                    <h4 className="text-2xl font-bold text-slate-800">
+                        {isPortuguese ? "Aplicações Reais" : "Real-World Applications"}
+                    </h4>
+                </div>
+                
+                <div className="grid md:grid-cols-2 gap-6">
+                    <div className="bg-white p-8 rounded-[2.5rem] shadow-sm border border-slate-100 relative overflow-hidden group">
+                        <div className="absolute -right-8 -bottom-8 w-32 h-32 bg-slate-50 rounded-full group-hover:scale-150 transition-transform"></div>
+                        <h5 className="text-lg font-bold text-slate-800 mb-6 relative">
+                            {isPortuguese ? "Soletrando Siglas Famosas" : "Spelling Famous Acronyms"}
+                        </h5>
+                        <div className="space-y-4 relative">
+                            {acronyms.map(a => (
+                                <button 
+                                    key={a.name}
+                                    onClick={() => speak(a.name.split("").join(", "))}
+                                    className="w-full flex items-center justify-between p-4 bg-slate-50 rounded-2xl hover:bg-indigo-50 hover:border-indigo-200 border border-transparent transition-all"
+                                >
+                                    <div className="flex items-center gap-4">
+                                        <span className="font-black text-indigo-600 text-xl tracking-[0.2em]">{a.name}</span>
+                                        <div className="w-px h-6 bg-slate-200"></div>
+                                        <span className="text-xs text-slate-500 font-medium">{a.full}</span>
+                                    </div>
+                                    <Volume2 className="w-4 h-4 text-slate-300" />
+                                </button>
+                            ))}
+                        </div>
                     </div>
+
+                    <div className="bg-indigo-900 p-8 rounded-[2.5rem] shadow-2xl text-white">
+                        <h5 className="text-lg font-bold mb-6 flex items-center gap-2">
+                            <SpellCheck className="w-5 h-5" />
+                            {isPortuguese ? "Prática Interativa" : "Interactive Practice"}
+                        </h5>
+                        <div className="space-y-8">
+                            <div className="p-6 bg-indigo-800/50 rounded-2xl border border-indigo-700">
+                                <p className="text-indigo-300 text-[10px] font-black uppercase mb-4 tracking-widest">
+                                    {isPortuguese ? "Como soletrar seu nome?" : "How to spell your name?"}
+                                </p>
+                                <div className="flex flex-wrap gap-2">
+                                    {["M", "A", "T", "T", "H", "E", "W"].map((l, i) => (
+                                        <button 
+                                            key={i} 
+                                            onClick={() => speak(l)}
+                                            className="w-10 h-10 bg-white text-indigo-900 rounded-lg font-black hover:scale-110 hover:shadow-[0_0_15px_rgba(255,255,255,0.4)] transition-all shadow-lg flex items-center justify-center"
+                                        >
+                                            {l}
+                                        </button>
+                                    ))}
+                                </div>
+                                <div className="mt-4 text-[10px] text-indigo-300/60 font-mono italic">
+                                    {isPortuguese ? "Clique em cada letra para ouvir o som individual" : "Click each letter to hear its individual sound"}
+                                </div>
+                            </div>
+                            <div className="bg-indigo-500/10 p-4 rounded-xl border border-indigo-500/20 flex gap-4 items-start">
+                                <Quote className="w-5 h-5 text-indigo-400 shrink-0" />
+                                <p className="text-xs text-indigo-100 leading-relaxed">
+                                    {isPortuguese 
+                                        ? "Dica de Mestre: Em hotéis, aeroportos e chamadas de vídeo, pedir para soletrar é vital. Se não entender algo, diga: \"Could you spell that, please?\""
+                                        : "Master Tip: In hotels, airports, and video calls, asking to spell is vital. If you don't understand something, say: \"Could you spell that, please?\""}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* Teacher's Corner: Master Notes */}
+            <div className="bg-rose-50 rounded-[2.5rem] p-10 relative border border-rose-100 overflow-hidden">
+                <div className="absolute top-0 right-10 -translate-y-1/2 bg-rose-500 text-white px-6 py-2 rounded-full font-black text-xs uppercase tracking-widest shadow-lg">
+                    {isPortuguese ? "Observações de Mestre" : "Master Notes"}
+                </div>
+                <div className="grid md:grid-cols-2 gap-10">
+                    <div className="flex gap-5">
+                        <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center shadow-sm shrink-0 font-black text-2xl text-rose-500">Z</div>
+                        <div>
+                            <h6 className="font-black text-rose-900 uppercase text-xs tracking-widest mb-2">The 'Z' Dilemma</h6>
+                            <p className="text-sm text-rose-800 leading-relaxed">
+                                {isPortuguese 
+                                    ? <>No <strong>Inglês Americano</strong> (EUA), dizemos <strong>"Zee"</strong> (/ziː/). No <strong>Inglês Britânico</strong> (Reino Unido), dizemos <strong>"Zed"</strong> (/zɛd/). Ambos são perfeitamente corretos!</>
+                                    : <>In <strong>American English</strong> (USA), we say <strong>"Zee"</strong> (/ziː/). In <strong>British English</strong> (UK), we say <strong>"Zed"</strong> (/zɛd/). Both are perfectly correct!</>}
+                            </p>
+                        </div>
+                    </div>
+                    <div className="flex gap-5">
+                        <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center shadow-sm shrink-0 font-black text-2xl text-rose-500">W</div>
+                        <div>
+                            <h6 className="font-black text-rose-900 uppercase text-xs tracking-widest mb-2">The 'W' Identity</h6>
+                            <p className="text-sm text-rose-800 leading-relaxed">
+                                {isPortuguese 
+                                    ? <>A letra <strong>'W'</strong> é a única com três sílabas no nome: <strong>Double-U</strong>. Literalmente significa "U Duplo" devido à sua forma histórica.</>
+                                    : <>The letter <strong>'W'</strong> is the only one with three syllables in its name: <strong>Double-U</strong>. It literally means "Double U" due to its historical shape.</>}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div className="mt-10 p-6 bg-white/50 rounded-2xl border border-rose-200/50">
+                    <h6 className="font-black text-rose-900 uppercase text-xs tracking-widest mb-3 flex items-center gap-2">
+                        <Lightbulb className="w-4 h-4" /> 
+                        {isPortuguese ? "Exercício Final de Mestre" : "Master Final Exercise"}
+                    </h6>
+                    <p className="text-sm text-rose-800">
+                        {isPortuguese 
+                            ? "Tente soletrar seu e-mail em voz alta agora. Lembre-se: o ponto (.) se diz 'DOT' e o arroba (@) se diz 'AT'. Pratique até soar natural!"
+                            : "Try spelling your email out loud right now. Remember: the dot (.) is said 'DOT' and the at (@) is said 'AT'. Practice until it sounds natural!"}
+                    </p>
                 </div>
             </div>
         </div>
@@ -915,7 +1102,7 @@ export default function App() {
     const renderContent = () => {
         switch(activeSection) {
             case 0: return <GreetingsFarewells isPortuguese={isPortuguese} />;
-            case 1: return <AlphabetSpelling />;
+            case 1: return <AlphabetSpelling isPortuguese={isPortuguese} />;
             case 2: return <SubjectPronouns />;
             case 3: return <VerbToBeAffirmative />;
             case 4: return <VerbToBeNegInt />;
