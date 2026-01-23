@@ -9,7 +9,7 @@ import {
     Smile, Frown, ThumbsUp, ThumbsDown, StopCircle, Play, Pause, Repeat, Mic, Headphones, 
     Sofa, Bed, Utensils, Bath, Tv, Watch, CalendarDays, HelpCircle, Target, Battery, 
     BatteryCharging, BatteryFull, Lock, Key, Baby, UserPlus, Monitor, Shield, Sprout, Landmark,
-    Sparkles, ShieldCheck, Rocket, ZapIcon
+    Sparkles, ShieldCheck, Rocket, ZapIcon, Quote, Lightbulb, GraduationCap as TeacherIcon
 } from 'lucide-react';
 
 // --- Styles ---
@@ -76,55 +76,170 @@ const speak = (text: string, lang = 'en-US', rate = 0.9) => {
 
 const GreetingsFarewells = () => {
     const timeGreetings = [
-        { phrase: "Good morning", time: "05:00 - 12:00", icon: <Sunrise className="text-orange-400"/>, context: "Start of the day" },
-        { phrase: "Good afternoon", time: "12:00 - 18:00", icon: <Sun className="text-yellow-500"/>, context: "After lunch" },
-        { phrase: "Good evening", time: "18:00 - 21:00", icon: <Sunset className="text-indigo-400"/>, context: "Arrival / Dinner" },
-        { phrase: "Good night", time: "End of day", icon: <Moon className="text-slate-600"/>, context: "Sleeping / Bye" },
+        { phrase: "Good morning", ipa: "/ɡʊd ˈmɔːrnɪŋ/", trans: "Bom dia", time: "05:00 - 12:00", icon: "🌅", bg: "from-orange-50 to-amber-50", text: "text-amber-700" },
+        { phrase: "Good afternoon", ipa: "/ɡʊd ˌæftərˈnuːn/", trans: "Boa tarde", time: "12:00 - 18:00", icon: "☀️", bg: "from-blue-50 to-indigo-50", text: "text-blue-700" },
+        { phrase: "Good evening", ipa: "/ɡʊd ˈiːvnɪŋ/", trans: "Boa noite (chegada)", time: "18:00 - 21:00", icon: "🌇", bg: "from-indigo-50 to-purple-50", text: "text-indigo-700" },
+        { phrase: "Good night", ipa: "/ɡʊd naɪt/", trans: "Boa noite (saída)", time: "Leaving", icon: "🌙", bg: "from-slate-50 to-slate-100", text: "text-slate-700" },
     ];
-    const socialGreetings = [
-        { type: 'Formal', color: 'bg-slate-100 border-slate-200', items: ['Hello', 'How are you?', 'Nice to meet you', 'Goodbye'] },
-        { type: 'Informal', color: 'bg-indigo-50 border-indigo-200', items: ['Hi', "What's up?", 'Good to see you', 'See ya'] }
+
+    const formalGreetings = [
+        { phrase: "Hello", ipa: "/həˈloʊ/", trans: "Olá", example: "Hello, Mr. Smith. How are you today?" },
+        { phrase: "How do you do?", ipa: "/haʊ duː juː duː/", trans: "Como vai? (Muito formal)", example: "Pleasure to meet you. How do you do?" },
+        { phrase: "Nice to meet you", ipa: "/naɪs tu miːt juː/", trans: "Prazer em conhecê-lo", example: "It's a great honor, nice to meet you." },
     ];
+
+    const informalGreetings = [
+        { phrase: "Hi / Hey", ipa: "/haɪ/ /heɪ/", trans: "Oi", example: "Hey Matthew! How's it going?" },
+        { phrase: "What's up?", ipa: "/wʌts ʌp/", trans: "E aí? / O que está rolando?", example: "Hey man, what's up? Nothing much." },
+        { phrase: "How's it going?", ipa: "/haʊz ɪt ˈɡoʊɪŋ/", trans: "Como estão as coisas?", example: "How's it going with the new job?" },
+    ];
+
     return (
-        <div className="space-y-8 animate-fade-in">
-            <div className="bg-amber-50 border border-amber-200 p-4 rounded-xl flex gap-3">
-                <Info className="w-5 h-5 text-amber-600 shrink-0" />
-                <div className="text-sm text-amber-900">
-                    <strong>Teacher's Tip:</strong> "Good evening" is used when you <em>arrive</em> somewhere at night. "Good night" is ONLY used when you are <em>leaving</em> or going to sleep.
+        <div className="space-y-12 animate-fade-in pb-20">
+            {/* Senior Teacher Introduction */}
+            <div className="relative p-8 rounded-[2rem] bg-indigo-900 text-white overflow-hidden shadow-2xl">
+                <div className="absolute top-0 right-0 p-4 opacity-10"><TeacherIcon className="w-32 h-32" /></div>
+                <div className="relative z-10 flex flex-col md:flex-row gap-6 items-center">
+                    <div className="w-20 h-20 rounded-full bg-indigo-500 flex items-center justify-center text-4xl shadow-lg border-2 border-indigo-400">👨‍🏫</div>
+                    <div className="flex-1">
+                        <h3 className="text-2xl font-serif-display mb-2">A Message from Matthew</h3>
+                        <p className="text-indigo-100 text-sm leading-relaxed italic">
+                            "Greetings are the foundation of any relationship. In English, the way you say 'hello' defines the tone of the entire conversation. Today, we'll master not just the words, but the culture behind them. Pay attention to the 'Good Night' trap—it's the most common mistake for beginners!"
+                        </p>
+                    </div>
                 </div>
             </div>
-            <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
-                <h3 className="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2"><Clock className="w-5 h-5 text-indigo-600" /> Time of Day</h3>
+
+            {/* Time-Based Greetings */}
+            <section className="space-y-6">
+                <div className="flex items-center gap-3">
+                    <div className="p-2 bg-indigo-100 rounded-lg text-indigo-600"><Clock className="w-5 h-5" /></div>
+                    <h4 className="text-2xl font-bold text-slate-800">Time-Based Greetings</h4>
+                </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {timeGreetings.map((item, idx) => (
-                        <button key={idx} onClick={() => speak(item.phrase)} className="flex items-center gap-4 p-4 rounded-xl border border-slate-100 hover:border-indigo-300 hover:bg-slate-50 transition-all group text-left">
-                            <div className="p-3 bg-white rounded-full shadow-sm group-hover:scale-110 transition-transform">{item.icon}</div>
-                            <div>
-                                <h4 className="font-bold text-slate-700 text-lg group-hover:text-indigo-700">{item.phrase}</h4>
-                                <span className="text-xs text-slate-400 font-mono">{item.time} • {item.context}</span>
+                        <button 
+                            key={idx} 
+                            onClick={() => speak(item.phrase)}
+                            className={`group relative p-6 rounded-3xl border-2 border-transparent hover:border-indigo-200 transition-all flex items-start gap-4 text-left bg-gradient-to-br ${item.bg} shadow-sm hover:shadow-md`}
+                        >
+                            <span className="text-4xl">{item.icon}</span>
+                            <div className="flex-1">
+                                <div className="flex justify-between items-center mb-1">
+                                    <h5 className={`text-xl font-bold ${item.text}`}>{item.phrase}</h5>
+                                    <Volume2 className="w-4 h-4 text-slate-300 group-hover:text-indigo-500" />
+                                </div>
+                                <div className="flex gap-2 items-baseline">
+                                    <span className="text-[10px] font-mono text-slate-400">{item.ipa}</span>
+                                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-tighter">— {item.trans}</span>
+                                </div>
+                                <p className="text-[11px] text-slate-500 font-medium mt-2 flex items-center gap-1">
+                                    <Clock className="w-3 h-3" /> {item.time}
+                                </p>
                             </div>
-                            <Volume2 className="ml-auto w-4 h-4 text-slate-300 group-hover:text-indigo-500" />
                         </button>
                     ))}
                 </div>
+            </section>
+
+            {/* The Trap Box */}
+            <div className="p-6 bg-rose-50 border-2 border-rose-100 rounded-[2rem] flex gap-5 shadow-sm">
+                <div className="w-12 h-12 bg-rose-500 rounded-2xl flex items-center justify-center text-white shrink-0 shadow-lg">
+                    <AlertTriangle className="w-6 h-6" />
+                </div>
+                <div>
+                    <h5 className="font-black text-rose-800 uppercase tracking-widest text-xs mb-1">The "Good Night" Trap</h5>
+                    <p className="text-sm text-rose-700 leading-relaxed">
+                        Never say <strong>"Good night"</strong> when you arrive at a party or dinner. Use <strong>"Good evening"</strong>. <br/>
+                        Save <strong>"Good night"</strong> strictly for when you are <strong>leaving</strong> or going to sleep.
+                    </p>
+                </div>
             </div>
-            <div className="grid md:grid-cols-2 gap-6">
-                {socialGreetings.map((group) => (
-                    <div key={group.type} className={`p-6 rounded-2xl border-2 ${group.color}`}>
-                        <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
-                            {group.type === 'Formal' ? <Briefcase className="w-5 h-5"/> : <MessageCircle className="w-5 h-5"/>}
-                            {group.type}
-                        </h3>
-                        <div className="space-y-2">
-                            {group.items.map((text) => (
-                                <button key={text} onClick={() => speak(text)} className="w-full text-left px-4 py-3 bg-white rounded-lg shadow-sm hover:shadow-md transition-all flex justify-between items-center group">
-                                    <span className="font-medium text-slate-700">{text}</span>
-                                    <Volume2 className="w-4 h-4 text-slate-300 group-hover:text-indigo-500"/>
-                                </button>
-                            ))}
+
+            {/* Formal vs Informal */}
+            <section className="grid md:grid-cols-2 gap-8">
+                {/* Formal Column */}
+                <div className="space-y-6">
+                    <div className="flex items-center gap-3">
+                        <div className="p-2 bg-slate-100 rounded-lg text-slate-600"><Briefcase className="w-5 h-5" /></div>
+                        <h4 className="text-xl font-bold text-slate-800">Formal Situations</h4>
+                    </div>
+                    <div className="space-y-4">
+                        {formalGreetings.map((g, i) => (
+                            <div key={i} className="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow group">
+                                <div className="flex justify-between items-center mb-1">
+                                    <span className="font-bold text-slate-700 text-lg">{g.phrase}</span>
+                                    <button onClick={() => speak(g.phrase)} className="p-2 rounded-full hover:bg-slate-50 text-slate-300 hover:text-indigo-600"><Volume2 className="w-4 h-4"/></button>
+                                </div>
+                                <div className="flex gap-2 items-center mb-3">
+                                    <span className="text-[10px] text-slate-400 font-mono italic">{g.ipa}</span>
+                                    <span className="text-[10px] font-bold text-indigo-400 tracking-wider">— {g.trans}</span>
+                                </div>
+                                <div className="p-3 bg-slate-50 rounded-xl border-l-4 border-slate-200">
+                                    <div className="text-[10px] font-black uppercase text-slate-400 mb-1">Example</div>
+                                    <p className="text-xs text-slate-600 italic">"{g.example}"</p>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+                {/* Informal Column */}
+                <div className="space-y-6">
+                    <div className="flex items-center gap-3">
+                        <div className="p-2 bg-indigo-50 rounded-lg text-indigo-600"><MessageCircle className="w-5 h-5" /></div>
+                        <h4 className="text-xl font-bold text-slate-800">Informal / Friends</h4>
+                    </div>
+                    <div className="space-y-4">
+                        {informalGreetings.map((g, i) => (
+                            <div key={i} className="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow group">
+                                <div className="flex justify-between items-center mb-1">
+                                    <span className="font-bold text-slate-700 text-lg">{g.phrase}</span>
+                                    <button onClick={() => speak(g.phrase)} className="p-2 rounded-full hover:bg-slate-50 text-slate-300 hover:text-indigo-600"><Volume2 className="w-4 h-4"/></button>
+                                </div>
+                                <div className="flex gap-2 items-center mb-3">
+                                    <span className="text-[10px] text-slate-400 font-mono italic">{g.ipa}</span>
+                                    <span className="text-[10px] font-bold text-indigo-400 tracking-wider">— {g.trans}</span>
+                                </div>
+                                <div className="p-3 bg-indigo-50/50 rounded-xl border-l-4 border-indigo-200">
+                                    <div className="text-[10px] font-black uppercase text-indigo-400 mb-1">Example</div>
+                                    <p className="text-xs text-slate-600 italic">"{g.example}"</p>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* Quick Practice / Teacher's Note */}
+            <div className="bg-amber-50 rounded-[2.5rem] p-10 relative border border-amber-100">
+                <div className="absolute top-0 left-10 -translate-y-1/2 bg-amber-400 text-white px-6 py-2 rounded-full font-black text-xs uppercase tracking-widest shadow-lg">
+                    Pro Tips
+                </div>
+                <div className="grid md:grid-cols-2 gap-10 items-center">
+                    <div className="space-y-6">
+                        <div className="flex items-start gap-4">
+                            <div className="p-2 bg-white rounded-lg shadow-sm"><Lightbulb className="w-5 h-5 text-amber-500" /></div>
+                            <div>
+                                <h6 className="font-bold text-amber-900 mb-1">Body Language Matters</h6>
+                                <p className="text-sm text-amber-800 leading-relaxed">In many English-speaking cultures, a firm handshake and eye contact are expected when greeting someone formally. 🤝</p>
+                            </div>
+                        </div>
+                        <div className="flex items-start gap-4">
+                            <div className="p-2 bg-white rounded-lg shadow-sm"><Lightbulb className="w-5 h-5 text-amber-500" /></div>
+                            <div>
+                                <h6 className="font-bold text-amber-900 mb-1">The "What's up?" Secret</h6>
+                                <p className="text-sm text-amber-800 leading-relaxed">When someone says <em>"What's up?"</em>, they aren't always asking for a full report. A common reply is simply: <em>"Not much, you?"</em> 🤙</p>
+                            </div>
                         </div>
                     </div>
-                ))}
+                    <div className="bg-white p-6 rounded-3xl shadow-inner border border-amber-200/50">
+                        <h6 className="font-bold text-slate-800 mb-4 flex items-center gap-2"><Quote className="w-4 h-4 text-amber-400" /> Pronunciation Focus</h6>
+                        <p className="text-sm text-slate-600 leading-relaxed">
+                            Watch the <strong>"H"</strong> in <em>"Hello"</em> and <em>"Hi"</em>. It should be a soft breath of air, like you're cleaning glasses. Avoid the strong Brazilian 'R' sound!
+                        </p>
+                    </div>
+                </div>
             </div>
         </div>
     );
