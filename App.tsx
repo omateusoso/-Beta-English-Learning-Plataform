@@ -9,7 +9,8 @@ import {
     Smile, Frown, ThumbsUp, ThumbsDown, StopCircle, Play, Pause, Repeat, Mic, Headphones, 
     Sofa, Bed, Utensils, Bath, Tv, Watch, CalendarDays, HelpCircle, Target, Battery, 
     BatteryCharging, BatteryFull, Lock, Key, Baby, UserPlus, Monitor, Shield, Sprout, Landmark,
-    Sparkles, ShieldCheck, Rocket, ZapIcon, Quote, Lightbulb, GraduationCap as TeacherIcon
+    Sparkles, ShieldCheck, Rocket, ZapIcon, Quote, Lightbulb, GraduationCap as TeacherIcon,
+    Languages
 } from 'lucide-react';
 
 // --- Styles ---
@@ -50,6 +51,10 @@ const globalStyles = `
     background: rgba(15, 23, 42, 0.95);
     backdrop-filter: blur(10px);
     border-right: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .language-toggle-shadow {
+    box-shadow: 0 10px 25px -5px rgba(99, 102, 241, 0.3), 0 8px 10px -6px rgba(99, 102, 241, 0.3);
   }
 `;
 
@@ -840,10 +845,33 @@ const Sidebar = ({ activeModule, onToggleModule, activeSection, onSelectSection,
     );
 };
 
+// --- LANGUAGE TOGGLE COMPONENT ---
+const FloatingLanguageToggle = ({ isPortuguese, onToggle }: { isPortuguese: boolean, onToggle: (val: boolean) => void }) => {
+    return (
+        <div className="fixed bottom-10 left-1/2 -translate-x-1/2 md:left-auto md:right-12 md:translate-x-0 z-[100] animate-slide-up" style={{ animationDelay: '1s' }}>
+            <div className="bg-white/80 backdrop-blur-xl p-1.5 rounded-2xl border border-indigo-100 flex items-center gap-1 shadow-2xl language-toggle-shadow">
+                <button 
+                    onClick={() => onToggle(false)}
+                    className={`px-5 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 ${!isPortuguese ? 'bg-indigo-600 text-white shadow-lg' : 'text-slate-400 hover:text-slate-600'}`}
+                >
+                    <span className="text-base">🇺🇸</span> English
+                </button>
+                <button 
+                    onClick={() => onToggle(true)}
+                    className={`px-5 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 ${isPortuguese ? 'bg-indigo-600 text-white shadow-lg' : 'text-slate-400 hover:text-slate-600'}`}
+                >
+                    <span className="text-base">🇧🇷</span> Português
+                </button>
+            </div>
+        </div>
+    );
+}
+
 export default function App() {
     const [currentLevel, setCurrentLevel] = useState<number | null>(null); 
     const [activeModule, setActiveModule] = useState<number | null>(1);
     const [activeSection, setActiveSection] = useState(0); 
+    const [isPortuguese, setIsPortuguese] = useState(false);
 
     const renderContent = () => {
         switch(activeSection) {
@@ -892,7 +920,7 @@ export default function App() {
     return (
         <>
             <style>{globalStyles}</style>
-            <div className="min-h-screen flex flex-col md:flex-row bg-[#f8fafc]">
+            <div className="min-h-screen flex flex-col md:flex-row bg-[#f8fafc] relative">
                 <Sidebar 
                     activeModule={activeModule}
                     onToggleModule={(id: any) => setActiveModule(activeModule === id ? null : id)}
@@ -901,7 +929,7 @@ export default function App() {
                     onBack={() => setCurrentLevel(null)}
                     currentLevel={currentLevel}
                 />
-                <main className="flex-1 h-screen overflow-y-auto p-6 md:p-12 lg:p-20">
+                <main className="flex-1 h-screen overflow-y-auto p-6 md:p-12 lg:p-20 relative scroll-smooth no-scrollbar">
                     <div className="max-w-4xl mx-auto">
                         <header className="mb-16 animate-fade-in">
                             <div className="flex items-center gap-2 text-indigo-500 text-xs font-bold uppercase tracking-widest mb-4">
@@ -915,6 +943,9 @@ export default function App() {
                         </div>
                     </div>
                 </main>
+                
+                {/* Floating Language Switcher */}
+                <FloatingLanguageToggle isPortuguese={isPortuguese} onToggle={setIsPortuguese} />
             </div>
         </>
     );
