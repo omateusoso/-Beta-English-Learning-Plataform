@@ -1,26 +1,32 @@
 #!/bin/bash
 
-# Configurar Git (Global)
-git config --global user.name "Mateus Costa"
-git config --global user.email "omateuosos@gmail.com"
-
-# Navegar para o diretório do projeto
+# Navegar para o diretório
 cd /Users/omateusosos/Documents/GitHub/beta-english-platform
 
-# Adicionar mudanças
-echo "Adicionando arquivos..."
-git add .
+echo "🚀 Iniciando Lançamento Oficial (Produção)..."
 
-# Commit
-echo "Realizando commit..."
-git commit -m "backup atualizado"
+# Verificar se temos mudanças não salvas
+if [ -n "$(git status --porcelain)" ]; then
+  echo "⚠️  Existem mudanças não salvas. Salvando rascunho primeiro..."
+  ./save_draft.sh
+fi
 
-# Push para o repositório remoto
-echo "Enviando para o GitHub..."
-git push
+# Mudar para main e trazer novidades da develop
+echo "📦 Preparando pacote para os alunos..."
+git checkout main || git checkout -b main
+git pull origin main
+git merge develop --no-edit -m "Release: Atualizando plataforma"
 
-# Deploy
-echo "Iniciando deploy..."
+# Enviar código estável para o GitHub
+echo "cloud: Atualizando repositório principal..."
+git push origin main
+
+# Publicar o site
+echo "🌍 Publicando site..."
 npm run deploy
 
-echo "✅ Backup e Deploy concluídos com sucesso!"
+# Voltar para o modo desenvolvedor
+echo "🧪 Voltando para o laboratório..."
+git checkout develop
+
+echo "✅ Sucesso! A nova versão está online para os alunos."
