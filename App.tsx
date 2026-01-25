@@ -33,18 +33,20 @@ interface User {
 }
 
 // --- Auth Components ---
-const AuthModal = ({ isOpen, onClose }: any) => {
-    const [email, setEmail] = useState('');
+const AuthModal = ({ isOpen, onClose, initialMode = 'login' }: any) => {
+    const [mode, setMode] = useState<'login' | 'signup'>(initialMode);
+    const [formData, setFormData] = useState({ name: '', surname: '', age: '', email: '', phone: '' });
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
 
     useEffect(() => {
         if (isOpen) {
+            setMode(initialMode);
             setError('');
             setSuccessMessage('');
         }
-    }, [isOpen]);
+    }, [isOpen, initialMode]);
 
     if (!isOpen) return null;
 
@@ -55,14 +57,19 @@ const AuthModal = ({ isOpen, onClose }: any) => {
         setLoading(true);
 
         const actionCodeSettings = {
-            url: window.location.href, // Redirect back to this same page
+            url: window.location.href,
             handleCodeInApp: true,
         };
 
         try {
-            await sendSignInLinkToEmail(auth, email, actionCodeSettings);
-            window.localStorage.setItem('emailForSignIn', email);
-            setSuccessMessage('Magic link sent! Check your inbox to sign in.');
+            // For Signup, we stash the details to apply them AFTER the user clicks the email link
+            if (mode === 'signup') {
+                window.localStorage.setItem('pendingSignupData', JSON.stringify(formData));
+            }
+
+            await sendSignInLinkToEmail(auth, formData.email, actionCodeSettings);
+            window.localStorage.setItem('emailForSignIn', formData.email);
+            setSuccessMessage(`Magic link sent to ${formData.email}! Check your inbox.`);
         } catch (err: any) {
             console.error(err);
             setError('Failed to send link. Please try again.');
@@ -81,13 +88,32 @@ const AuthModal = ({ isOpen, onClose }: any) => {
                 <div className="p-8">
                     <div className="text-center mb-8">
                         <div className="w-16 h-16 bg-indigo-100 text-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-inner">
-                            <Mail className="w-8 h-8" />
+                            {mode === 'login' ? <LogIn className="w-8 h-8" /> : <UserPlus className="w-8 h-8" />}
                         </div>
-                        <h2 className="text-2xl font-black text-slate-800 mb-2">Welcome Back</h2>
-                        <p className="text-slate-500">Enter your email to receive a magic login link.</p>
+                        <h2 className="text-2xl font-black text-slate-800 mb-2">{mode === 'login' ? 'Welcome Back' : 'Create Account'}</h2>
+                        <p className="text-slate-500">{mode === 'login' ? 'Enter your email to login instantly.' : 'Join to start your learning journey.'}</p>
+                    </div>
+
+                    {/* Toggle */}
+                    <div className="flex bg-slate-100 p-1.5 rounded-xl mb-6">
+                        <button type="button" onClick={() => setMode('login')} className={`flex-1 py-2 rounded-lg text-sm font-bold transition-all ${mode === 'login' ? 'bg-white text-indigo-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}>Login</button>
+                        <button type="button" onClick={() => setMode('signup')} className={`flex-1 py-2 rounded-lg text-sm font-bold transition-all ${mode === 'signup' ? 'bg-white text-indigo-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}>Sign Up</button>
                     </div>
 
                     <form onSubmit={handleSubmit} className="space-y-4">
+                        {mode === 'signup' && (
+                            <>
+                                <div className="grid grid-cols-2 gap-4">
+                                    <input required placeholder="Name" className="p-3 bg-slate-50 rounded-xl border border-slate-200 w-full focus:outline-none focus:border-indigo-500" value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} />
+                                    <input required placeholder="Surname" className="p-3 bg-slate-50 rounded-xl border border-slate-200 w-full focus:outline-none focus:border-indigo-500" value={formData.surname} onChange={e => setFormData({ ...formData, surname: e.target.value })} />
+                                </div>
+                                <div className="grid grid-cols-2 gap-4">
+                                    <input required type="number" placeholder="Age" className="p-3 bg-slate-50 rounded-xl border border-slate-200 w-full focus:outline-none focus:border-indigo-500" value={formData.age} onChange={e => setFormData({ ...formData, age: e.target.value })} />
+                                    <input required type="tel" placeholder="Phone" className="p-3 bg-slate-50 rounded-xl border border-slate-200 w-full focus:outline-none focus:border-indigo-500" value={formData.phone} onChange={e => setFormData({ ...formData, phone: e.target.value })} />
+                                </div>
+                            </>
+                        )}
+
                         <div className="relative">
                             <Mail className="absolute left-3 top-3.5 w-5 h-5 text-slate-400" />
                             <input
@@ -95,8 +121,8 @@ const AuthModal = ({ isOpen, onClose }: any) => {
                                 type="email"
                                 placeholder="Email Address"
                                 className="p-3 pl-10 bg-slate-50 rounded-xl border border-slate-200 w-full focus:outline-none focus:border-indigo-500 transition-colors"
-                                value={email}
-                                onChange={e => setEmail(e.target.value)}
+                                value={formData.email}
+                                onChange={e => setFormData({ ...formData, email: e.target.value })}
                             />
                         </div>
 
@@ -114,64 +140,9 @@ const AuthModal = ({ isOpen, onClose }: any) => {
 
                         {!successMessage && (
                             <button type="submit" disabled={loading} className="w-full py-4 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white font-bold rounded-xl transition-all shadow-lg shadow-indigo-500/30 flex items-center justify-center gap-2">
-                                {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Send Login Link'}
+                                {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : (mode === 'login' ? 'Send Login Link' : 'Send Activation Link')}
                             </button>
                         )}
-                    </form>
-                </div>
-            </div>
-        </div>
-    );
-};
-
-const ProfileSetupModal = ({ isOpen, user, onSave }: any) => {
-    const [formData, setFormData] = useState({ name: '', surname: '', age: '', phone: '' });
-    const [loading, setLoading] = useState(false);
-
-    if (!isOpen) return null;
-
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        setLoading(true);
-        try {
-            if (auth.currentUser) {
-                await updateProfile(auth.currentUser, {
-                    displayName: `${formData.name} ${formData.surname}`,
-                    photoURL: `https://ui-avatars.com/api/?name=${formData.name}+${formData.surname}&background=6366f1&color=fff`
-                });
-                onSave(); // Trigger UI update in parent
-            }
-        } catch (err) {
-            console.error("Failed to update profile", err);
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    return (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-            <div className="bg-white rounded-3xl w-full max-w-md overflow-hidden shadow-2xl animate-fade-in-up">
-                <div className="p-8">
-                    <div className="text-center mb-8">
-                        <div className="w-16 h-16 bg-indigo-100 text-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-inner">
-                            <UserIcon className="w-8 h-8" />
-                        </div>
-                        <h2 className="text-2xl font-black text-slate-800 mb-2">Complete Your Profile</h2>
-                        <p className="text-slate-500">Tell us a bit about yourself to get started.</p>
-                    </div>
-
-                    <form onSubmit={handleSubmit} className="space-y-4">
-                        <div className="grid grid-cols-2 gap-4">
-                            <input required placeholder="Name" className="p-3 bg-slate-50 rounded-xl border border-slate-200 w-full focus:outline-none focus:border-indigo-500" value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} />
-                            <input required placeholder="Surname" className="p-3 bg-slate-50 rounded-xl border border-slate-200 w-full focus:outline-none focus:border-indigo-500" value={formData.surname} onChange={e => setFormData({ ...formData, surname: e.target.value })} />
-                        </div>
-                        <div className="grid grid-cols-2 gap-4">
-                            <input required type="number" placeholder="Age" className="p-3 bg-slate-50 rounded-xl border border-slate-200 w-full focus:outline-none focus:border-indigo-500" value={formData.age} onChange={e => setFormData({ ...formData, age: e.target.value })} />
-                            <input required type="tel" placeholder="Phone" className="p-3 bg-slate-50 rounded-xl border border-slate-200 w-full focus:outline-none focus:border-indigo-500" value={formData.phone} onChange={e => setFormData({ ...formData, phone: e.target.value })} />
-                        </div>
-                        <button type="submit" disabled={loading} className="w-full py-4 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white font-bold rounded-xl transition-all shadow-lg shadow-indigo-500/30 flex items-center justify-center gap-2">
-                            {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <>Save Profile <ArrowRight className="w-5 h-5" /></>}
-                        </button>
                     </form>
                 </div>
             </div>
@@ -3983,11 +3954,9 @@ export default function App() {
     // Auth State
     // Auth State
     // Auth State
-    // Auth State
     const [user, setUser] = useState<User | null>(null);
     const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
-    const [isProfileSetupOpen, setIsProfileSetupOpen] = useState(false);
-    const [loadingAuth, setLoadingAuth] = useState(true);
+    const [authMode, setAuthMode] = useState<'login' | 'signup'>('signup');
 
     // Firebase Auth Listener & Deep Link Handler
     useEffect(() => {
@@ -3995,15 +3964,32 @@ export default function App() {
         if (isSignInWithEmailLink(auth, window.location.href)) {
             let email = window.localStorage.getItem('emailForSignIn');
             if (!email) {
-                // If email is missing (e.g. opened in different device), ask user for it
                 email = window.prompt('Please provide your email for confirmation');
             }
             if (email) {
                 signInWithEmailLink(auth, email, window.location.href)
-                    .then(() => {
+                    .then(async (result) => {
                         window.localStorage.removeItem('emailForSignIn');
-                        // Remove URL parameters
                         window.history.replaceState({}, document.title, "/");
+
+                        // CHECK FOR PENDING SIGNUP DATA
+                        const pendingData = window.localStorage.getItem('pendingSignupData');
+                        if (pendingData) {
+                            try {
+                                const { name, surname } = JSON.parse(pendingData);
+                                if (result.user) {
+                                    await updateProfile(result.user, {
+                                        displayName: `${name} ${surname}`,
+                                        photoURL: `https://ui-avatars.com/api/?name=${name}+${surname}&background=6366f1&color=fff`
+                                    });
+                                    // Refresh user state immediately to show name
+                                    setUser(prev => prev ? ({ ...prev, name, surname }) : null);
+                                }
+                                window.localStorage.removeItem('pendingSignupData');
+                            } catch (e) {
+                                console.error("Failed to apply signup data", e);
+                            }
+                        }
                     })
                     .catch((error) => console.error(error));
             }
@@ -4012,13 +3998,7 @@ export default function App() {
         // Auth State Listener
         const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
             if (firebaseUser) {
-                const [name, surname] = (firebaseUser.displayName || '').split(' ');
-
-                // If user has no name (fresh magic link signup), trigger Profile Setup
-                if (!name) {
-                    setIsProfileSetupOpen(true);
-                }
-
+                const [name, surname] = (firebaseUser.displayName || 'Learner ').split(' ');
                 setUser({
                     name: name || 'Learner',
                     surname: surname || '',
@@ -4028,7 +4008,6 @@ export default function App() {
             } else {
                 setUser(null);
             }
-            setLoadingAuth(false);
         });
         return () => unsubscribe();
     }, []);
@@ -4036,15 +4015,6 @@ export default function App() {
     const handleLogout = async () => {
         await signOut(auth);
         setCurrentLevel(null);
-    };
-
-    const handleProfileSaved = () => {
-        setIsProfileSetupOpen(false);
-        // Force refresh user data state
-        if (auth.currentUser) {
-            const [name, surname] = (auth.currentUser.displayName || ' ').split(' ');
-            setUser(prev => prev ? ({ ...prev, name: name || 'Learner', surname: surname || '' }) : null);
-        }
     };
 
     const renderContent = () => {
@@ -4083,14 +4053,6 @@ export default function App() {
         }
     };
 
-    if (loadingAuth) {
-        return (
-            <div className="min-h-screen flex items-center justify-center bg-slate-900 text-white">
-                <Loader2 className="w-8 h-8 animate-spin text-indigo-500" />
-            </div>
-        );
-    }
-
     if (!currentLevel) {
         return (
             <>
@@ -4098,17 +4060,13 @@ export default function App() {
                 <AuthModal
                     isOpen={isAuthModalOpen}
                     onClose={() => setIsAuthModalOpen(false)}
-                />
-                <ProfileSetupModal
-                    isOpen={isProfileSetupOpen}
-                    onSave={handleProfileSaved}
-                    user={user}
+                    initialMode={authMode}
                 />
                 <WelcomeScreen
                     onSelectLevel={setCurrentLevel}
                     user={user}
-                    onLogin={() => setIsAuthModalOpen(true)}
-                    onSignup={() => setIsAuthModalOpen(true)}
+                    onLogin={() => { setAuthMode('login'); setIsAuthModalOpen(true); }}
+                    onSignup={() => { setAuthMode('signup'); setIsAuthModalOpen(true); }}
                 />
                 {user && <ProfileHeader user={user} onLogout={handleLogout} />}
             </>
