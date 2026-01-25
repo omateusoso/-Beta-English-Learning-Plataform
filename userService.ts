@@ -52,10 +52,10 @@ export const userService = {
         return [{
             uid: 'teacher-matthew',
             email: 'matthew@beta.com',
-            name: 'Matthew',
-            surname: 'Teacher',
+            name: 'Teacher',
+            surname: 'Matthew',
             role: 'teacher',
-            photoURL: 'https://ui-avatars.com/api/?name=Matthew+Teacher&background=6366f1&color=fff'
+            photoURL: '' // No photo, fallback logic might use initials or emoji if implemented, but App fallback was just replaced. Ideally we might want an emoji here too or handle it upstairs.
         }];
     },
 

@@ -31,114 +31,7 @@ interface User extends UserProfile {
 }
 
 
-// --- Offline Components ---
-const OfflineWelcome = ({ onStart }: { onStart: (name: string, surname: string) => void }) => {
-    const [name, setName] = useState('');
-    const [surname, setSurname] = useState('');
-
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        if (name.trim()) {
-            onStart(name.trim(), surname.trim());
-        }
-    };
-
-    return (
-        <div className="fixed inset-0 bg-[#0f172a] z-50 flex items-center justify-center p-6 text-center">
-            <div className="max-w-md w-full animate-fade-in-up">
-                <div className="w-20 h-20 bg-indigo-500 rounded-3xl mx-auto mb-8 flex items-center justify-center shadow-2xl shadow-indigo-500/30">
-                    <Sparkles className="w-10 h-10 text-white" />
-                </div>
-                <h1 className="text-4xl font-serif-display text-white mb-4">Welcome</h1>
-                <p className="text-slate-400 mb-8">Enter your name to start learning instantly. No account needed.</p>
-
-                <form onSubmit={handleSubmit} className="space-y-4">
-                    <div className="grid grid-cols-2 gap-4">
-                        <input
-                            required
-                            autoFocus
-                            placeholder="First Name"
-                            className="p-4 bg-white/10 border border-white/10 rounded-2xl text-white placeholder:text-slate-500 focus:outline-none focus:border-indigo-500 w-full transition-all"
-                            value={name}
-                            onChange={e => setName(e.target.value)}
-                        />
-                        <input
-                            placeholder="Surname (Optional)"
-                            className="p-4 bg-white/10 border border-white/10 rounded-2xl text-white placeholder:text-slate-500 focus:outline-none focus:border-indigo-500 w-full transition-all"
-                            value={surname}
-                            onChange={e => setSurname(e.target.value)}
-                        />
-                    </div>
-                    <button
-                        type="submit"
-                        disabled={!name.trim()}
-                        className="w-full py-4 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold rounded-2xl transition-all shadow-lg shadow-indigo-600/30 flex items-center justify-center gap-2"
-                    >
-                        Start Learning <ArrowRight className="w-5 h-5" />
-                    </button>
-                </form>
-            </div>
-        </div>
-    );
-};
-
-const ProfileHeader = ({ user, onLogout }: { user: User, onLogout: () => void }) => (
-    <div className="fixed top-6 right-6 z-50 animate-fade-in hidden md:block">
-        <div className="group relative">
-            <button className="flex items-center gap-3 bg-white/90 backdrop-blur pl-2 pr-4 py-1.5 rounded-full shadow-sm border border-slate-100 hover:shadow-md transition-all">
-                <img src={user.avatar} alt={user.name} className="w-8 h-8 rounded-full bg-indigo-100" />
-                <div className="text-left hidden lg:block">
-                    <div className="text-xs font-bold text-slate-700">{user.name}</div>
-                    <div className="text-[10px] text-slate-400">{user.email}</div>
-                </div>
-                <ChevronDown className="w-3 h-3 text-slate-300" />
-            </button>
-            <div className="absolute right-0 top-full mt-2 w-48 bg-white rounded-2xl shadow-xl border border-slate-100 p-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all transform origin-top-right">
-                <div className="p-3 border-b border-slate-50 mb-1 lg:hidden">
-                    <div className="text-sm font-bold text-slate-700">{user.name}</div>
-                    <div className="text-xs text-slate-400">{user.email}</div>
-                </div>
-                <button onClick={onLogout} className="w-full text-left flex items-center gap-2 p-2 rounded-xl text-sm font-medium text-rose-600 hover:bg-rose-50 transition-colors">
-                    <LogOut className="w-4 h-4" /> Logout
-                </button>
-            </div>
-        </div>
-    </div>
-);
-
-const SidebarProfile = ({ user, onLogout, onOpenProfile }: { user: User, onLogout: () => void, onOpenProfile?: () => void }) => {
-    // Only show if full profile is loaded (has role)
-    if (!user.role) return null;
-
-    return (
-        <div className="p-4 mt-auto border-t border-white/5 bg-[#0f172a]/50">
-            <button onClick={onOpenProfile} className="flex items-center gap-3 mb-3 w-full text-left group hover:bg-white/5 p-2 rounded-xl transition-all">
-                <div className="relative">
-                    <img src={user.photoURL || user.avatar || `https://ui-avatars.com/api/?name=${user.name}+${user.surname}`} alt={user.name} className="w-10 h-10 rounded-full border-2 border-indigo-500/30 group-hover:border-indigo-400 transition-colors" />
-                    <div className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-emerald-500 border-2 border-[#0f172a] rounded-full"></div>
-                </div>
-                <div className="flex-1 min-w-0">
-                    <div className="text-sm font-bold text-white truncate group-hover:text-indigo-300 transition-colors">{user.name}</div>
-                    <div className="flex items-center gap-1">
-                        <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded-full uppercase tracking-wider ${user.role === 'admin' ? 'bg-indigo-500/20 text-indigo-300 border border-indigo-500/30' :
-                            user.role === 'teacher' ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30' :
-                                'bg-slate-700 text-slate-400 border border-slate-600'
-                            }`}>
-                            {user.role}
-                        </span>
-                    </div>
-                </div>
-                <div title="Open Profile" className="text-indigo-400 opacity-0 group-hover:opacity-100 transition-opacity">
-                    <Settings className="w-4 h-4" />
-                </div>
-            </button>
-
-            <button onClick={onLogout} className="w-full flex items-center justify-center gap-2 p-2 rounded-xl text-xs font-bold text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors">
-                <LogOut className="w-3 h-3" /> Sign Out
-            </button>
-        </div>
-    );
-};
+// --- Offline Components Removed (Guest Mode Active) ---
 
 // --- Styles ---
 const globalStyles = `
@@ -4015,12 +3908,7 @@ const WelcomeScreen = ({ onSelectLevel, user, onLogin, onSignup, unlockedLevels 
 
             {!user ? (
                 <div className="flex gap-4 animate-fade-in">
-                    <button onClick={onLogin} className="px-8 py-4 bg-white/10 text-white border border-white/20 rounded-2xl font-bold hover:bg-white/20 transition-all flex items-center gap-2">
-                        <LogIn className="w-5 h-5" /> Login
-                    </button>
-                    <button onClick={onSignup} className="px-8 py-4 bg-indigo-600 text-white rounded-2xl font-bold hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-600/30 flex items-center gap-2">
-                        <UserPlus className="w-5 h-5" /> Create Account
-                    </button>
+                    {/* Guest Mode Auto-Login Active - Buttons Hidden */}
                 </div>
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 w-full max-w-7xl animate-fade-in">
@@ -4208,7 +4096,7 @@ const Sidebar = ({ activeModule, onToggleModule, activeSection, onSelectSection,
             </div>
 
             {/* Profile Footer */}
-            {user && <SidebarProfile user={user} onLogout={onLogout} onOpenProfile={() => document.dispatchEvent(new Event('openProfileModal'))} />}
+
         </aside>
     );
 };
@@ -4267,18 +4155,29 @@ export default function App() {
         }
     };
 
-    // Load Progress & Profile (Offline Mode)
+    // Load Progress & Profile (Silent Guest Mode)
     useEffect(() => {
-        const loadUser = async () => {
-            const user = await userService.getCurrentUser();
-            if (user) {
-                setUser(user);
-                // Load progress
-                const userProgress = await progressService.getUserProgress(user.uid);
-                setProgress(userProgress);
+        const initUser = async () => {
+            let user = await userService.getCurrentUser();
+
+            // If no user, create Guest automatically
+            if (!user) {
+                user = {
+                    uid: 'guest',
+                    email: '',
+                    name: 'Student',
+                    surname: '',
+                    role: 'student'
+                };
+                await userService.createUser(user);
             }
+
+            // Load State
+            setUser(user);
+            const userProgress = await progressService.getUserProgress(user.uid);
+            setProgress(userProgress);
         };
-        loadUser();
+        initUser();
     }, []);
 
     // Event Listeners for Panels
@@ -4312,30 +4211,8 @@ export default function App() {
 
     // Removed Firebase Auth Listener
 
-    // Handle "Start" from Welcome Screen
-    const handleStart = async (name: string, surname: string) => {
-        const uid = Date.now().toString(); // Simple ID generation
-        const newUser: UserProfile = {
-            uid,
-            email: '', // No email needed
-            name,
-            surname,
-            role: 'student'
-        };
-        await userService.createUser(newUser);
-        setUser({ ...newUser });
-        setProgress({ completedLessons: [], unlockedLevels: [1] });
-    };
+    // Removed handleStart and handleLogout
 
-    const handleLogout = async () => {
-        // Just clear state. Data persists in localStorage.
-        // To truly "reset" for a new user, we'd clear localStorage, but "Logout" usually implies just closing session.
-        // For this single-user offline app, "Logout" might mean "Switch User" (which clears localstorage) or just locked.
-        // Let's make it clear the current user session so they can enter a new name if they want.
-        localStorage.removeItem('currentUser'); // Clear persistence
-        setUser(null);
-        setCurrentLevel(null);
-    };
 
     const renderContent = () => {
         switch (activeSection) {
@@ -4373,21 +4250,14 @@ export default function App() {
         }
     };
 
+    // Auto-Guest Mode means we always have a user after the effect runs
+    // But while loading, we might want a loader or just return null to avoid flicker
     if (!user) {
-        return (
-            <>
-                <style>{globalStyles}</style>
-                <OfflineWelcome onStart={handleStart} />
-            </>
-        );
+        return <div className="min-h-screen bg-[#f8fafc] flex items-center justify-center"><Loader2 className="w-8 h-8 text-indigo-500 animate-spin" /></div>;
     }
 
     if (!currentLevel) {
-        const levelNames: any = { 1: 'Beginner', 2: 'Pre-Intermediate', 3: 'Intermediate', 4: 'Advanced' };
-
-        // Temporarily, we just check unlocks. If user has completed level 1, show that.
-        // For this Beta, we only have Level 1 content fully working, so we'll show the Dashboard if currentLevel is null.
-
+        // Show Level Select (Home)
         return (
             <>
                 <style>{globalStyles}</style>
@@ -4399,10 +4269,6 @@ export default function App() {
                     unlockedLevels={progress.unlockedLevels}
                     completedCount={progress.completedLessons.length}
                 />
-                <ProfileHeader user={user} onLogout={handleLogout} />
-                {/* Admin & Teacher Panels */}
-                <ProfileModal isOpen={isProfileModalOpen} onClose={() => setIsProfileModalOpen(false)} currentUser={user} onUpdateUser={setUser} />
-                <TeacherSelector isOpen={isTeacherSelectorOpen} onSelect={handleAssignTeacher} />
             </>
         );
     }
@@ -4424,7 +4290,7 @@ export default function App() {
                     onBack={() => setCurrentLevel(null)}
                     currentLevel={currentLevel}
                     user={user}
-                    onLogout={handleLogout}
+                    onLogout={() => { }} // No-op
                     completedLessons={progress.completedLessons}
                 />
                 <main className="flex-1 h-screen overflow-y-auto p-6 md:p-12 lg:p-20 relative scroll-smooth no-scrollbar">
