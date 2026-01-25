@@ -5,7 +5,7 @@ git config --global user.name "Mateus Costa"
 git config --global user.email "omateuosos@gmail.com"
 
 # Navegar para o diretório do projeto
-cd /Users/omateusosos/.gemini/antigravity/scratch/beta-english-platform
+cd /Users/omateusosos/Documents/GitHub/beta-english-platform
 
 # Adicionar mudanças
 echo "Adicionando arquivos..."

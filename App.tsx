@@ -4364,7 +4364,7 @@ const WelcomeScreen = ({ onSelectLevel, user, onLogin, onSignup, unlockedLevels 
 
             {!user ? (
                 <div className="flex gap-4 animate-fade-in">
-                    {/* Guest Mode Auto-Login Active - Buttons Hidden */}
+
                 </div>
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 w-full max-w-7xl animate-fade-in">
@@ -4645,9 +4645,9 @@ export default function App() {
     };
 
 
-    // Removed Firebase Auth Listener
 
-    // Removed handleStart and handleLogout
+
+
 
 
     const renderContent = () => {
