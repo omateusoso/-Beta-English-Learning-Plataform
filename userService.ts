@@ -49,7 +49,14 @@ export const userService = {
 
     // Get all teachers - Mock response for offline
     async getTeachers(): Promise<UserProfile[]> {
-        return [];
+        return [{
+            uid: 'teacher-matthew',
+            email: 'matthew@beta.com',
+            name: 'Matthew',
+            surname: 'Teacher',
+            role: 'teacher',
+            photoURL: 'https://ui-avatars.com/api/?name=Matthew+Teacher&background=6366f1&color=fff'
+        }];
     },
 
     // Get my students - Mock response for offline
