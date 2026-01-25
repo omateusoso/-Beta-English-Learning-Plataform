@@ -4491,14 +4491,17 @@ const Sidebar = ({ activeModule, onToggleModule, activeSection, onSelectSection,
 
             <div className="flex-1 overflow-y-auto p-4 space-y-4 pt-6">
                 {modules.map(m => {
+                    const isLocked = currentLevel === 1 && m.id >= 4;
+
                     return (
-                        <div key={m.id} className="rounded-2xl overflow-hidden transition-all duration-300">
-                            <button onClick={() => onToggleModule(m.id)}
-                                className={`w-full p-4 flex items-center justify-between text-sm font-semibold transition-all ${activeModule === m.id ? 'bg-indigo-500/10 text-white' : 'text-slate-400 hover:text-white hover:bg-white/5'}`}
+                        <div key={m.id} className={`rounded-2xl overflow-hidden transition-all duration-300 ${isLocked ? 'opacity-50 grayscale' : ''}`}>
+                            <button onClick={() => !isLocked && onToggleModule(m.id)}
+                                disabled={isLocked}
+                                className={`w-full p-4 flex items-center justify-between text-sm font-semibold transition-all ${activeModule === m.id ? 'bg-indigo-500/10 text-white' : 'text-slate-400 hover:text-white hover:bg-white/5'} ${isLocked ? 'cursor-not-allowed hover:bg-transparent hover:text-slate-400' : ''}`}
                             >
                                 <div className="flex items-center gap-4">
                                     <div className={`p-2 rounded-lg relative ${activeModule === m.id ? 'bg-indigo-500 text-white' : 'bg-slate-800 text-slate-500'}`}>
-                                        {m.icon}
+                                        {isLocked ? <LockIcon className="w-4 h-4" /> : m.icon}
                                     </div>
                                     <div className="flex flex-col text-left">
                                         <span className="text-[11px] font-black tracking-widest uppercase text-indigo-400">
@@ -4507,15 +4510,15 @@ const Sidebar = ({ activeModule, onToggleModule, activeSection, onSelectSection,
                                         <span className="truncate">{m.title}</span>
                                     </div>
                                 </div>
-                                {activeModule === m.id ? <ChevronDown className="w-4 h-4 text-indigo-400" /> : <ChevronRight className="w-4 h-4 opacity-30" />}
+                                {isLocked ? null : (activeModule === m.id ? <ChevronDown className="w-4 h-4 text-indigo-400" /> : <ChevronRight className="w-4 h-4 opacity-30" />)}
                             </button>
 
-                            {activeModule === m.id && (
+                            {activeModule === m.id && !isLocked && (
                                 <div className="mt-1 ml-4 border-l border-white/5 space-y-1 pl-2 animate-fade-in">
                                     {Array.from({ length: m.range[1] - m.range[0] + 1 }, (_, i) => m.range[0] + i).map(idx => {
                                         return (
                                             <button key={idx} onClick={() => onSelectSection(idx)}
-                                                className={`w-full text-left px-4 py-3 rounded-xl text-xs font-medium transition-all flex items-center gap-3 ${activeSection === idx ? 'bg-white/10 text-indigo-400 shadow-inner' : 'text-slate-500 hover:text-slate-300'}`}
+                                                className={`w-full text-left px-4 py-3 rounded-xl text-xs font-medium transition-all flex items-center gap-3 ${activeSection === idx ? 'bg-white/10 text-indigo-400 shadow-inner' : 'text-slate-500 hover:text-slate-500'}`} // Fixed hover text color on inner buttons generally or relevant logic
                                             >
                                                 <div className={`w-1 h-1 rounded-full transition-all ${activeSection === idx ? 'bg-indigo-400 scale-150 shadow-[0_0_8px_rgba(129,140,248,0.8)]' : 'bg-slate-700'}`} />
                                                 <span>
