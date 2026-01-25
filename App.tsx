@@ -4402,7 +4402,8 @@ export default function App() {
                     alert("Verification successful! You are now logged in.");
 
                     window.localStorage.removeItem('emailForSignIn');
-                    window.history.replaceState({}, document.title, "/");
+                    // Force reload to ensure auth state is picked up cleanly
+                    window.location.href = "/";
 
                     // CHECK FOR PENDING SIGNUP DATA
                     const pendingData = window.localStorage.getItem('pendingSignupData');
