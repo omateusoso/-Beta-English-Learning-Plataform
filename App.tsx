@@ -1,13 +1,14 @@
 
 import React, { useState, useEffect } from 'react';
 import {
-    Volume2, ArrowRight, Check, X, Globe, BookOpen, Info, RefreshCw,
+    Menu, BookOpen, Star, Brain, ArrowRight, PlayCircle, Settings, Globe, Mic,
+    MessageCircle, Volume2, Award, Calendar, ChevronRight, ChevronLeft, Search, Check, X, Info, RefreshCw,
     Users, MapPin, Briefcase, Stethoscope, GraduationCap, PenTool,
-    Wrench, ChevronDown, ChevronRight, Layout, Star, Zap, Award, ArrowLeft,
-    Clock, Calendar, Heart, User, Home, Sun, Moon, Coffee, Briefcase as WorkIcon,
-    Palette, Gavel, Truck, Search, Music, Camera, Scissors, MessageCircle, Sunrise, Sunset,
+    Wrench, ChevronDown, Layout, Zap, ArrowLeft,
+    Clock, Heart, User, Home, Sun, Moon, Coffee, Briefcase as WorkIcon,
+    Palette, Gavel, Truck, Music, Camera, Scissors, Sunrise, Sunset,
     Flag, Layers, Type, AlertTriangle, Calculator, Hand, MoveRight, Hash,
-    Smile, Frown, ThumbsUp, ThumbsDown, StopCircle, Play, Pause, Repeat, Mic, Headphones,
+    Smile, Frown, ThumbsUp, ThumbsDown, StopCircle, Play, Pause, Repeat, Headphones,
     Sofa, Bed, Utensils, Bath, Tv, Watch, CalendarDays, HelpCircle, Target, Battery,
     BatteryCharging, BatteryFull, Lock, Key, Baby, UserPlus, Monitor, Shield, Sprout, Landmark,
     Sparkles, ShieldCheck, Rocket, ZapIcon, Quote, Lightbulb, GraduationCap as TeacherIcon,
@@ -15,10 +16,11 @@ import {
     Ear, Zap as FastIcon, Laptop, HardHat, Camera as PhotoIcon, Music as AudioIcon,
     ChefHat, ShoppingBag, Shield as SecurityIcon, Plane, Scale, Plus, Minus, IterationCw, Eye,
     Maximize, Minimize, Activity, Compass, Navigation,
-    CheckCircle2, XCircle, Trophy, AlertCircle, LogIn, User as UserIcon, Mail, Lock as LockIcon, LogOut, Loader2
+    CheckCircle2, XCircle, Trophy, AlertCircle, LogIn, User as UserIcon, Mail, Lock as LockIcon, LogOut, Loader2,
+    LogIn as LoginIcon
 } from 'lucide-react';
 import { auth } from './firebase';
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile } from 'firebase/auth';
+import { signOut, onAuthStateChanged, updateProfile, sendSignInLinkToEmail, isSignInWithEmailLink, signInWithEmailLink } from 'firebase/auth';
 
 // --- Types ---
 interface User {
@@ -31,110 +33,146 @@ interface User {
 }
 
 // --- Auth Components ---
-const AuthModal = ({ isOpen, onClose, onLogin, onSignup, initialMode = 'signup' }: any) => {
-    const [mode, setMode] = useState<'login' | 'signup'>(initialMode);
-    const [formData, setFormData] = useState({ name: '', surname: '', age: '', email: '', phone: '', password: '' });
+const AuthModal = ({ isOpen, onClose }: any) => {
+    const [email, setEmail] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
+    const [successMessage, setSuccessMessage] = useState('');
 
     useEffect(() => {
         if (isOpen) {
-            setMode(initialMode);
             setError('');
+            setSuccessMessage('');
         }
-    }, [isOpen, initialMode]);
+    }, [isOpen]);
 
     if (!isOpen) return null;
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setError('');
+        setSuccessMessage('');
         setLoading(true);
 
-        if (mode === 'signup' && formData.password.length < 8) {
-            setError('Password must be at least 8 characters long.');
-            setLoading(false);
-            return;
-        }
+        const actionCodeSettings = {
+            url: window.location.href, // Redirect back to this same page
+            handleCodeInApp: true,
+        };
 
         try {
-            if (mode === 'signup') {
-                const userCredential = await createUserWithEmailAndPassword(auth, formData.email, formData.password);
-                // Ideally save extra data (surname, age, phone) to Firestore here
-                await updateProfile(userCredential.user, {
-                    displayName: `${formData.name} ${formData.surname}`,
-                    photoURL: `https://ui-avatars.com/api/?name=${formData.name}+${formData.surname}&background=6366f1&color=fff`
-                });
-                // Auth state change will handle the rest in App.tsx
-            } else {
-                await signInWithEmailAndPassword(auth, formData.email, formData.password);
-            }
-            onClose();
+            await sendSignInLinkToEmail(auth, email, actionCodeSettings);
+            window.localStorage.setItem('emailForSignIn', email);
+            setSuccessMessage('Magic link sent! Check your inbox to sign in.');
         } catch (err: any) {
             console.error(err);
-            if (err.code === 'auth/wrong-password') setError('Incorrect password.');
-            else if (err.code === 'auth/user-not-found') setError('No account found with this email.');
-            else if (err.code === 'auth/email-already-in-use') setError('Email already in use.');
-            else setError('Failed to authenticate. Please try again.');
+            setError('Failed to send link. Please try again.');
         } finally {
             setLoading(false);
         }
     };
 
     return (
-        <div className="fixed inset-0 z-[200] flex items-center justify-center p-4">
-            <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onClick={onClose}></div>
-            <div className="relative bg-white rounded-3xl p-8 max-w-md w-full shadow-2xl animate-fade-in">
-                <button onClick={onClose} className="absolute top-4 right-4 p-2 hover:bg-slate-100 rounded-full transition-colors"><X className="w-5 h-5 text-slate-400" /></button>
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+            <div className="bg-white rounded-3xl w-full max-w-md overflow-hidden shadow-2xl animate-fade-in-up relative">
+                <button onClick={onClose} className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 transition-colors p-2 hover:bg-slate-100 rounded-full">
+                    <XCircle className="w-6 h-6" />
+                </button>
 
-                <div className="text-center mb-8">
-                    <div className="w-16 h-16 bg-indigo-50 rounded-2xl flex items-center justify-center mx-auto mb-4 text-indigo-600">
-                        {mode === 'login' ? <LogIn className="w-8 h-8" /> : <UserPlus className="w-8 h-8" />}
-                    </div>
-                    <h3 className="text-2xl font-serif-display text-slate-900">{mode === 'login' ? 'Welcome Back' : 'Create Account'}</h3>
-                    <p className="text-slate-500 text-sm mt-2">
-                        {mode === 'login' ? 'Enter your details to access your courses.' : 'Join thousands of students learning English.'}
-                    </p>
-                </div>
-
-                <form onSubmit={handleSubmit} className="space-y-4">
-                    {mode === 'signup' && (
-                        <>
-                            <div className="grid grid-cols-2 gap-4">
-                                <input required placeholder="Name" className="p-3 bg-slate-50 rounded-xl border border-slate-200 w-full focus:outline-none focus:border-indigo-500 transition-colors" value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} />
-                                <input required placeholder="Surname" className="p-3 bg-slate-50 rounded-xl border border-slate-200 w-full focus:outline-none focus:border-indigo-500 transition-colors" value={formData.surname} onChange={e => setFormData({ ...formData, surname: e.target.value })} />
-                            </div>
-                            <div className="grid grid-cols-2 gap-4">
-                                <input required type="number" placeholder="Age" className="p-3 bg-slate-50 rounded-xl border border-slate-200 w-full focus:outline-none focus:border-indigo-500 transition-colors" value={formData.age} onChange={e => setFormData({ ...formData, age: e.target.value })} />
-                                <input required type="tel" placeholder="Phone" className="p-3 bg-slate-50 rounded-xl border border-slate-200 w-full focus:outline-none focus:border-indigo-500 transition-colors" value={formData.phone} onChange={e => setFormData({ ...formData, phone: e.target.value })} />
-                            </div>
-                        </>
-                    )}
-                    <div className="relative">
-                        <Mail className="absolute left-3 top-3.5 w-5 h-5 text-slate-400" />
-                        <input required type="email" placeholder="Email Address" className="p-3 pl-10 bg-slate-50 rounded-xl border border-slate-200 w-full focus:outline-none focus:border-indigo-500 transition-colors" value={formData.email} onChange={e => setFormData({ ...formData, email: e.target.value })} />
-                    </div>
-                    <div className="relative">
-                        <LockIcon className="absolute left-3 top-3.5 w-5 h-5 text-slate-400" />
-                        <input required type="password" placeholder="Password (min 8 chars)" minLength={8} className="p-3 pl-10 bg-slate-50 rounded-xl border border-slate-200 w-full focus:outline-none focus:border-indigo-500 transition-colors" value={formData.password} onChange={e => setFormData({ ...formData, password: e.target.value })} />
-                    </div>
-
-                    {error && (
-                        <div className="p-3 bg-red-50 text-red-600 text-sm rounded-xl flex items-center gap-2">
-                            <AlertCircle className="w-4 h-4" /> {error}
+                <div className="p-8">
+                    <div className="text-center mb-8">
+                        <div className="w-16 h-16 bg-indigo-100 text-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-inner">
+                            <Mail className="w-8 h-8" />
                         </div>
-                    )}
+                        <h2 className="text-2xl font-black text-slate-800 mb-2">Welcome Back</h2>
+                        <p className="text-slate-500">Enter your email to receive a magic login link.</p>
+                    </div>
 
-                    <button type="submit" disabled={loading} className="w-full py-4 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white font-bold rounded-xl transition-all shadow-lg shadow-indigo-500/30 flex items-center justify-center gap-2">
-                        {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : (mode === 'login' ? 'Login' : 'Create Account')}
-                    </button>
-                </form>
+                    <form onSubmit={handleSubmit} className="space-y-4">
+                        <div className="relative">
+                            <Mail className="absolute left-3 top-3.5 w-5 h-5 text-slate-400" />
+                            <input
+                                required
+                                type="email"
+                                placeholder="Email Address"
+                                className="p-3 pl-10 bg-slate-50 rounded-xl border border-slate-200 w-full focus:outline-none focus:border-indigo-500 transition-colors"
+                                value={email}
+                                onChange={e => setEmail(e.target.value)}
+                            />
+                        </div>
 
-                <div className="mt-6 text-center text-sm text-slate-500">
-                    {mode === 'login' ? "Don't have an account? " : "Already have an account? "}
-                    <button onClick={() => setMode(mode === 'login' ? 'signup' : 'login')} className="font-bold text-indigo-600 hover:underline">
-                        {mode === 'login' ? 'Sign up' : 'Login'}
-                    </button>
+                        {error && (
+                            <div className="p-3 bg-red-50 text-red-600 text-sm rounded-xl flex items-center gap-2">
+                                <AlertCircle className="w-4 h-4" /> {error}
+                            </div>
+                        )}
+
+                        {successMessage && (
+                            <div className="p-3 bg-green-50 text-green-600 text-sm rounded-xl flex items-center gap-2">
+                                <CheckCircle2 className="w-4 h-4" /> {successMessage}
+                            </div>
+                        )}
+
+                        {!successMessage && (
+                            <button type="submit" disabled={loading} className="w-full py-4 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white font-bold rounded-xl transition-all shadow-lg shadow-indigo-500/30 flex items-center justify-center gap-2">
+                                {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Send Login Link'}
+                            </button>
+                        )}
+                    </form>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+const ProfileSetupModal = ({ isOpen, user, onSave }: any) => {
+    const [formData, setFormData] = useState({ name: '', surname: '', age: '', phone: '' });
+    const [loading, setLoading] = useState(false);
+
+    if (!isOpen) return null;
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setLoading(true);
+        try {
+            if (auth.currentUser) {
+                await updateProfile(auth.currentUser, {
+                    displayName: `${formData.name} ${formData.surname}`,
+                    photoURL: `https://ui-avatars.com/api/?name=${formData.name}+${formData.surname}&background=6366f1&color=fff`
+                });
+                onSave(); // Trigger UI update in parent
+            }
+        } catch (err) {
+            console.error("Failed to update profile", err);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    return (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+            <div className="bg-white rounded-3xl w-full max-w-md overflow-hidden shadow-2xl animate-fade-in-up">
+                <div className="p-8">
+                    <div className="text-center mb-8">
+                        <div className="w-16 h-16 bg-indigo-100 text-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-inner">
+                            <UserIcon className="w-8 h-8" />
+                        </div>
+                        <h2 className="text-2xl font-black text-slate-800 mb-2">Complete Your Profile</h2>
+                        <p className="text-slate-500">Tell us a bit about yourself to get started.</p>
+                    </div>
+
+                    <form onSubmit={handleSubmit} className="space-y-4">
+                        <div className="grid grid-cols-2 gap-4">
+                            <input required placeholder="Name" className="p-3 bg-slate-50 rounded-xl border border-slate-200 w-full focus:outline-none focus:border-indigo-500" value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} />
+                            <input required placeholder="Surname" className="p-3 bg-slate-50 rounded-xl border border-slate-200 w-full focus:outline-none focus:border-indigo-500" value={formData.surname} onChange={e => setFormData({ ...formData, surname: e.target.value })} />
+                        </div>
+                        <div className="grid grid-cols-2 gap-4">
+                            <input required type="number" placeholder="Age" className="p-3 bg-slate-50 rounded-xl border border-slate-200 w-full focus:outline-none focus:border-indigo-500" value={formData.age} onChange={e => setFormData({ ...formData, age: e.target.value })} />
+                            <input required type="tel" placeholder="Phone" className="p-3 bg-slate-50 rounded-xl border border-slate-200 w-full focus:outline-none focus:border-indigo-500" value={formData.phone} onChange={e => setFormData({ ...formData, phone: e.target.value })} />
+                        </div>
+                        <button type="submit" disabled={loading} className="w-full py-4 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white font-bold rounded-xl transition-all shadow-lg shadow-indigo-500/30 flex items-center justify-center gap-2">
+                            {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <>Save Profile <ArrowRight className="w-5 h-5" /></>}
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -3948,14 +3986,39 @@ export default function App() {
     // Auth State
     const [user, setUser] = useState<User | null>(null);
     const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
-    const [authMode, setAuthMode] = useState<'login' | 'signup'>('signup');
+    const [isProfileSetupOpen, setIsProfileSetupOpen] = useState(false);
     const [loadingAuth, setLoadingAuth] = useState(true);
 
-    // Firebase Auth Listener
+    // Firebase Auth Listener & Deep Link Handler
     useEffect(() => {
+        // Deep Link Handler (Magic Link)
+        if (isSignInWithEmailLink(auth, window.location.href)) {
+            let email = window.localStorage.getItem('emailForSignIn');
+            if (!email) {
+                // If email is missing (e.g. opened in different device), ask user for it
+                email = window.prompt('Please provide your email for confirmation');
+            }
+            if (email) {
+                signInWithEmailLink(auth, email, window.location.href)
+                    .then(() => {
+                        window.localStorage.removeItem('emailForSignIn');
+                        // Remove URL parameters
+                        window.history.replaceState({}, document.title, "/");
+                    })
+                    .catch((error) => console.error(error));
+            }
+        }
+
+        // Auth State Listener
         const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
             if (firebaseUser) {
-                const [name, surname] = (firebaseUser.displayName || 'Learner ').split(' ');
+                const [name, surname] = (firebaseUser.displayName || '').split(' ');
+
+                // If user has no name (fresh magic link signup), trigger Profile Setup
+                if (!name) {
+                    setIsProfileSetupOpen(true);
+                }
+
                 setUser({
                     name: name || 'Learner',
                     surname: surname || '',
@@ -3973,6 +4036,15 @@ export default function App() {
     const handleLogout = async () => {
         await signOut(auth);
         setCurrentLevel(null);
+    };
+
+    const handleProfileSaved = () => {
+        setIsProfileSetupOpen(false);
+        // Force refresh user data state
+        if (auth.currentUser) {
+            const [name, surname] = (auth.currentUser.displayName || ' ').split(' ');
+            setUser(prev => prev ? ({ ...prev, name: name || 'Learner', surname: surname || '' }) : null);
+        }
     };
 
     const renderContent = () => {
@@ -4026,13 +4098,17 @@ export default function App() {
                 <AuthModal
                     isOpen={isAuthModalOpen}
                     onClose={() => setIsAuthModalOpen(false)}
-                    initialMode={authMode}
+                />
+                <ProfileSetupModal
+                    isOpen={isProfileSetupOpen}
+                    onSave={handleProfileSaved}
+                    user={user}
                 />
                 <WelcomeScreen
                     onSelectLevel={setCurrentLevel}
                     user={user}
-                    onLogin={() => { setAuthMode('login'); setIsAuthModalOpen(true); }}
-                    onSignup={() => { setAuthMode('signup'); setIsAuthModalOpen(true); }}
+                    onLogin={() => setIsAuthModalOpen(true)}
+                    onSignup={() => setIsAuthModalOpen(true)}
                 />
                 {user && <ProfileHeader user={user} onLogout={handleLogout} />}
             </>
