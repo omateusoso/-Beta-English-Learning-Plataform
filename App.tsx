@@ -19,8 +19,9 @@ import {
     CheckCircle2, XCircle, Trophy, AlertCircle, LogIn, User as UserIcon, Mail, Lock as LockIcon, LogOut, Loader2,
     LogIn as LoginIcon
 } from 'lucide-react';
-import { auth } from './firebase';
-import { signOut, onAuthStateChanged, updateProfile, sendSignInLinkToEmail, isSignInWithEmailLink, signInWithEmailLink } from 'firebase/auth';
+// Firebase removed for Offline Mode
+// import { auth } from './firebase';
+// import { signOut, onAuthStateChanged, updateProfile, sendSignInLinkToEmail, isSignInWithEmailLink, signInWithEmailLink } from 'firebase/auth';
 import { progressService, UserProgress } from './progressService';
 import { userService, UserProfile, UserRole } from './userService';
 
@@ -30,115 +31,52 @@ interface User extends UserProfile {
 }
 
 
-// --- Auth Components ---
-const AuthModal = ({ isOpen, onClose, initialMode = 'login' }: any) => {
-    const [mode, setMode] = useState<'login' | 'signup'>(initialMode);
-    const [formData, setFormData] = useState({ name: '', surname: '', age: '', email: '', phone: '' });
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState('');
-    const [successMessage, setSuccessMessage] = useState('');
+// --- Offline Components ---
+const OfflineWelcome = ({ onStart }: { onStart: (name: string, surname: string) => void }) => {
+    const [name, setName] = useState('');
+    const [surname, setSurname] = useState('');
 
-    useEffect(() => {
-        if (isOpen) {
-            setMode(initialMode);
-            setError('');
-            setSuccessMessage('');
-        }
-    }, [isOpen, initialMode]);
-
-    if (!isOpen) return null;
-
-    const handleSubmit = async (e: React.FormEvent) => {
+    const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        setError('');
-        setSuccessMessage('');
-        setLoading(true);
-
-        const actionCodeSettings = {
-            url: window.location.href,
-            handleCodeInApp: true,
-        };
-
-        try {
-            // For Signup, we stash the details to apply them AFTER the user clicks the email link
-            if (mode === 'signup') {
-                window.localStorage.setItem('pendingSignupData', JSON.stringify(formData));
-            }
-
-            await sendSignInLinkToEmail(auth, formData.email, actionCodeSettings);
-            window.localStorage.setItem('emailForSignIn', formData.email);
-            setSuccessMessage(`Magic link sent to ${formData.email}! Check your inbox (or spam, maybe 😉).`);
-        } catch (err: any) {
-            console.error(err);
-            setError(err.message || 'Failed to send link. Please try again.');
-        } finally {
-            setLoading(false);
+        if (name.trim()) {
+            onStart(name.trim(), surname.trim());
         }
     };
 
     return (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-            <div className="bg-white rounded-3xl w-full max-w-md overflow-hidden shadow-2xl animate-fade-in-up relative">
-                <button onClick={onClose} className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 transition-colors p-2 hover:bg-slate-100 rounded-full">
-                    <XCircle className="w-6 h-6" />
-                </button>
-
-                <div className="p-8">
-                    <div className="text-center mb-8">
-                        <div className="w-16 h-16 bg-indigo-100 text-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-inner">
-                            {mode === 'login' ? <LogIn className="w-8 h-8" /> : <UserPlus className="w-8 h-8" />}
-                        </div>
-                        <h2 className="text-2xl font-black text-slate-800 mb-2">{mode === 'login' ? 'Welcome Back' : 'Create Account'}</h2>
-                        <p className="text-slate-500">{mode === 'login' ? 'Enter your email to login instantly.' : 'Join to start your learning journey.'}</p>
-                    </div>
-
-                    {/* Toggle Removed as per user request */}
-
-                    <form onSubmit={handleSubmit} className="space-y-4">
-                        {mode === 'signup' && (
-                            <>
-                                <div className="grid grid-cols-2 gap-4">
-                                    <input required placeholder="Name" className="p-3 bg-slate-50 rounded-xl border border-slate-200 w-full focus:outline-none focus:border-indigo-500" value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} />
-                                    <input required placeholder="Surname" className="p-3 bg-slate-50 rounded-xl border border-slate-200 w-full focus:outline-none focus:border-indigo-500" value={formData.surname} onChange={e => setFormData({ ...formData, surname: e.target.value })} />
-                                </div>
-                                <div className="grid grid-cols-2 gap-4">
-                                    <input required type="number" placeholder="Age" className="p-3 bg-slate-50 rounded-xl border border-slate-200 w-full focus:outline-none focus:border-indigo-500" value={formData.age} onChange={e => setFormData({ ...formData, age: e.target.value })} />
-                                    <input required type="tel" placeholder="Phone" className="p-3 bg-slate-50 rounded-xl border border-slate-200 w-full focus:outline-none focus:border-indigo-500" value={formData.phone} onChange={e => setFormData({ ...formData, phone: e.target.value })} />
-                                </div>
-                            </>
-                        )}
-
-                        <div className="relative">
-                            <Mail className="absolute left-3 top-3.5 w-5 h-5 text-slate-400" />
-                            <input
-                                required
-                                type="email"
-                                placeholder="Email Address"
-                                className="p-3 pl-10 bg-slate-50 rounded-xl border border-slate-200 w-full focus:outline-none focus:border-indigo-500 transition-colors"
-                                value={formData.email}
-                                onChange={e => setFormData({ ...formData, email: e.target.value })}
-                            />
-                        </div>
-
-                        {error && (
-                            <div className="p-3 bg-red-50 text-red-600 text-sm rounded-xl flex items-center gap-2">
-                                <AlertCircle className="w-4 h-4" /> {error}
-                            </div>
-                        )}
-
-                        {successMessage && (
-                            <div className="p-3 bg-green-50 text-green-600 text-sm rounded-xl flex items-center gap-2">
-                                <CheckCircle2 className="w-4 h-4" /> {successMessage}
-                            </div>
-                        )}
-
-                        {!successMessage && (
-                            <button type="submit" disabled={loading} className="w-full py-4 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white font-bold rounded-xl transition-all shadow-lg shadow-indigo-500/30 flex items-center justify-center gap-2">
-                                {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Send Activation Link'} {/* Always 'Send Activation Link' */}
-                            </button>
-                        )}
-                    </form>
+        <div className="fixed inset-0 bg-[#0f172a] z-50 flex items-center justify-center p-6 text-center">
+            <div className="max-w-md w-full animate-fade-in-up">
+                <div className="w-20 h-20 bg-indigo-500 rounded-3xl mx-auto mb-8 flex items-center justify-center shadow-2xl shadow-indigo-500/30">
+                    <Sparkles className="w-10 h-10 text-white" />
                 </div>
+                <h1 className="text-4xl font-serif-display text-white mb-4">Welcome</h1>
+                <p className="text-slate-400 mb-8">Enter your name to start learning instantly. No account needed.</p>
+
+                <form onSubmit={handleSubmit} className="space-y-4">
+                    <div className="grid grid-cols-2 gap-4">
+                        <input
+                            required
+                            autoFocus
+                            placeholder="First Name"
+                            className="p-4 bg-white/10 border border-white/10 rounded-2xl text-white placeholder:text-slate-500 focus:outline-none focus:border-indigo-500 w-full transition-all"
+                            value={name}
+                            onChange={e => setName(e.target.value)}
+                        />
+                        <input
+                            placeholder="Surname (Optional)"
+                            className="p-4 bg-white/10 border border-white/10 rounded-2xl text-white placeholder:text-slate-500 focus:outline-none focus:border-indigo-500 w-full transition-all"
+                            value={surname}
+                            onChange={e => setSurname(e.target.value)}
+                        />
+                    </div>
+                    <button
+                        type="submit"
+                        disabled={!name.trim()}
+                        className="w-full py-4 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold rounded-2xl transition-all shadow-lg shadow-indigo-600/30 flex items-center justify-center gap-2"
+                    >
+                        Start Learning <ArrowRight className="w-5 h-5" />
+                    </button>
+                </form>
             </div>
         </div>
     );
@@ -4310,7 +4248,7 @@ export default function App() {
     const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
     const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
     const [isTeacherSelectorOpen, setIsTeacherSelectorOpen] = useState(false);
-    const [authMode, setAuthMode] = useState<'login' | 'signup'>('signup');
+    // const [authMode, setAuthMode] = useState<'login' | 'signup'>('signup'); // Removed
     const [progress, setProgress] = useState<UserProgress>({ completedLessons: [], unlockedLevels: [1] });
 
     // Check for Student without Teacher
@@ -4329,34 +4267,29 @@ export default function App() {
         }
     };
 
-    // Load Progress & Profile
+    // Load Progress & Profile (Offline Mode)
     useEffect(() => {
-        if (auth.currentUser) {
-            // Load Profile (Role)
-            userService.getUserProfile(auth.currentUser.uid).then(profile => {
-                if (profile) setUser(profile);
-            });
-            // Load Progress
-            progressService.getUserProgress(auth.currentUser.uid).then(setProgress);
-        } else {
-            setUser(null);
-            setProgress({ completedLessons: [], unlockedLevels: [1] });
-        }
-    }, [auth.currentUser]); // Re-run when auth object changes (login/logout)
+        const loadUser = async () => {
+            const user = await userService.getCurrentUser();
+            if (user) {
+                setUser(user);
+                // Load progress
+                const userProgress = await progressService.getUserProgress(user.uid);
+                setProgress(userProgress);
+            }
+        };
+        loadUser();
+    }, []);
 
     // Event Listeners for Panels
     useEffect(() => {
         const openProfile = () => setIsProfileModalOpen(true);
-
         document.addEventListener('openProfileModal', openProfile);
-
-        return () => {
-            document.removeEventListener('openProfileModal', openProfile);
-        };
+        return () => document.removeEventListener('openProfileModal', openProfile);
     }, []);
 
     const handleLessonComplete = async (lessonId: number) => {
-        if (!auth.currentUser) return;
+        if (!user) return; // Use local user state
 
         const isCompleted = progress.completedLessons.includes(lessonId);
         const newCompleted = isCompleted
@@ -4366,114 +4299,41 @@ export default function App() {
         // Optimistic Update
         setProgress(prev => ({ ...prev, completedLessons: newCompleted }));
 
-        await progressService.toggleLessonCompletion(auth.currentUser.uid, lessonId, !isCompleted);
+        await progressService.toggleLessonCompletion(user.uid, lessonId, !isCompleted);
 
-        // Check Level Completion (Simple Check: If > 25 lessons done, unlock Level 2)
-        // In a real app, we'd check against a specific list of IDs for Level 1.
-        // For this Beta, let's say Level 1 has 30 lessons (0-29).
+        // Check Level Completion
         if (!isCompleted && newCompleted.length >= 25 && !progress.unlockedLevels.includes(2)) {
-            await progressService.unlockLevel(auth.currentUser.uid, 2);
+            await progressService.unlockLevel(user.uid, 2);
             setProgress(prev => ({ ...prev, unlockedLevels: [...prev.unlockedLevels, 2] }));
             alert("🎉 Congratulations! You've unlocked Level 2: Pre-Intermediate!");
         }
     };
 
 
-    const [isVerifyingLink, setIsVerifyingLink] = useState(false);
+    // Removed Firebase Auth Listener
 
-    // Firebase Auth Listener & Deep Link Handler
-    useEffect(() => {
-        // Deep Link Handler (Magic Link)
-        if (isSignInWithEmailLink(auth, window.location.href)) {
-            setIsVerifyingLink(true); // Start loading
-            let email = window.localStorage.getItem('emailForSignIn');
-            if (!email) {
-                email = window.prompt('Please provide your email for confirmation');
-            }
-            if (!email) {
-                setIsVerifyingLink(false);
-                alert("Email verification cancelled. Please try again.");
-                return;
-            }
-
-            signInWithEmailLink(auth, email, window.location.href)
-                .then(async (result) => {
-                    // Success!
-                    alert("Verification successful! You are now logged in.");
-
-                    window.localStorage.removeItem('emailForSignIn');
-                    // Force reload to ensure auth state is picked up cleanly
-                    window.location.href = "/";
-
-                    // CHECK FOR PENDING SIGNUP DATA
-                    const pendingData = window.localStorage.getItem('pendingSignupData');
-                    if (pendingData) {
-                        try {
-                            const { name, surname } = JSON.parse(pendingData);
-                            if (result.user) {
-                                await updateProfile(result.user, {
-                                    displayName: `${name} ${surname}`,
-                                    photoURL: `https://ui-avatars.com/api/?name=${name}+${surname}&background=6366f1&color=fff`
-                                });
-                                // Refresh user state immediately to show name
-                                setUser(prev => prev ? ({ ...prev, name, surname }) : null);
-                            }
-                            window.localStorage.removeItem('pendingSignupData');
-                        } catch (e) {
-                            console.error("Failed to apply signup data", e);
-                        }
-                    }
-                })
-                .catch((error) => {
-                    console.error(error);
-                    alert(`Verification Failed: ${error.message}`);
-                    setAuthMode('login'); // Revert to login screen
-                    setIsAuthModalOpen(true);
-                })
-                .finally(() => {
-                    setIsVerifyingLink(false);
-                });
-
-        }
-
-        // Auth State Listener
-        const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
-            if (firebaseUser) {
-                // Try to get existing profile
-                const profile = await userService.getUserProfile(firebaseUser.uid);
-
-                if (profile) {
-                    setUser({ ...profile, avatar: profile.photoURL });
-                    // Check if student needs to select teacher
-                    if (profile.role === 'student' && !profile.teacherId) {
-                        // We'll show the selector via a specific state or effect
-                        // For now let's just use a dedicated state variable we'll add to App
-                        // Actually, we can just check this in the render or effect, 
-                        // but let's set it here if we add the state
-                    }
-                } else {
-                    // Create new profile (Student by default)
-                    const [name, surname] = (firebaseUser.displayName || 'Learner ').split(' ');
-                    const newProfile: UserProfile = {
-                        uid: firebaseUser.uid,
-                        email: firebaseUser.email || '',
-                        name: name || 'Learner',
-                        surname: surname || '',
-                        role: 'student',
-                        photoURL: firebaseUser.photoURL || undefined
-                    };
-                    await userService.createUser(newProfile);
-                    setUser({ ...newProfile, avatar: newProfile.photoURL });
-                }
-            } else {
-                setUser(null);
-            }
-        });
-        return () => unsubscribe();
-    }, []);
+    // Handle "Start" from Welcome Screen
+    const handleStart = async (name: string, surname: string) => {
+        const uid = Date.now().toString(); // Simple ID generation
+        const newUser: UserProfile = {
+            uid,
+            email: '', // No email needed
+            name,
+            surname,
+            role: 'student'
+        };
+        await userService.createUser(newUser);
+        setUser({ ...newUser });
+        setProgress({ completedLessons: [], unlockedLevels: [1] });
+    };
 
     const handleLogout = async () => {
-        await signOut(auth);
+        // Just clear state. Data persists in localStorage.
+        // To truly "reset" for a new user, we'd clear localStorage, but "Logout" usually implies just closing session.
+        // For this single-user offline app, "Logout" might mean "Switch User" (which clears localstorage) or just locked.
+        // Let's make it clear the current user session so they can enter a new name if they want.
+        localStorage.removeItem('currentUser'); // Clear persistence
+        setUser(null);
         setCurrentLevel(null);
     };
 
@@ -4513,46 +4373,37 @@ export default function App() {
         }
     };
 
-    if (!currentLevel) {
+    if (!user) {
         return (
             <>
                 <style>{globalStyles}</style>
-                <AuthModal
-                    isOpen={isAuthModalOpen}
-                    onClose={() => setIsAuthModalOpen(false)}
-                    initialMode={authMode}
-                />
-                <WelcomeScreen
-                    onSelectLevel={setCurrentLevel}
-                    user={user}
-                    onLogin={() => { setAuthMode('login'); setIsAuthModalOpen(true); }}
-                    onSignup={() => { setAuthMode('signup'); setIsAuthModalOpen(true); }}
-                    unlockedLevels={progress.unlockedLevels}
-                    completedCount={progress.completedLessons.length}
-                />
-                {user && <ProfileHeader user={user} onLogout={handleLogout} />}
-
-                {/* Admin & Teacher Panels */}
-                {/* Admin & Teacher Panels */}
-                {user && (
-                    <>
-                        <ProfileModal isOpen={isProfileModalOpen} onClose={() => setIsProfileModalOpen(false)} currentUser={user} onUpdateUser={setUser} />
-                        <TeacherSelector isOpen={isTeacherSelectorOpen} onSelect={handleAssignTeacher} />
-                    </>
-                )}
+                <OfflineWelcome onStart={handleStart} />
             </>
         );
     }
 
-    if (isVerifyingLink) {
+    if (!currentLevel) {
+        const levelNames: any = { 1: 'Beginner', 2: 'Pre-Intermediate', 3: 'Intermediate', 4: 'Advanced' };
+
+        // Temporarily, we just check unlocks. If user has completed level 1, show that.
+        // For this Beta, we only have Level 1 content fully working, so we'll show the Dashboard if currentLevel is null.
+
         return (
-            <div className="min-h-screen flex flex-col items-center justify-center bg-[#0f172a] text-center p-6 animate-fade-in">
-                <div className="w-24 h-24 bg-indigo-500/10 rounded-full flex items-center justify-center mb-8 animate-pulse">
-                    <Sparkles className="w-10 h-10 text-indigo-400 animate-spin" />
-                </div>
-                <h2 className="text-3xl font-serif-display text-white mb-2">Verifying Magic Link...</h2>
-                <p className="text-slate-400">Please wait while we log you in securely.</p>
-            </div>
+            <>
+                <style>{globalStyles}</style>
+                <WelcomeScreen
+                    onSelectLevel={setCurrentLevel}
+                    user={user}
+                    onLogin={() => { }} // No-op
+                    onSignup={() => { }} // No-op
+                    unlockedLevels={progress.unlockedLevels}
+                    completedCount={progress.completedLessons.length}
+                />
+                <ProfileHeader user={user} onLogout={handleLogout} />
+                {/* Admin & Teacher Panels */}
+                <ProfileModal isOpen={isProfileModalOpen} onClose={() => setIsProfileModalOpen(false)} currentUser={user} onUpdateUser={setUser} />
+                <TeacherSelector isOpen={isTeacherSelectorOpen} onSelect={handleAssignTeacher} />
+            </>
         );
     }
 

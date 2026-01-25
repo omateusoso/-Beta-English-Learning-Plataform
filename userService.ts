@@ -1,81 +1,86 @@
 
-import { db } from './firebase';
-import { doc, getDoc, setDoc, updateDoc, collection, getDocs, query, where } from 'firebase/firestore';
-
 export type UserRole = 'admin' | 'teacher' | 'student';
 
 export interface UserProfile {
     uid: string;
-    email: string;
+    email: string; // Not strictly needed for offline, but kept for interface compatibility
     name: string;
     surname: string;
     role: UserRole;
-    teacherId?: string; // ID of the teacher this student belongs to
+    teacherId?: string;
     photoURL?: string;
 }
 
-const ADMIN_EMAILS = ['omateusosos@gmail.com'];
+const STORAGE_KEY = 'currentUser';
 
 export const userService = {
-    // Get full user profile including role
+    // Get full user profile
     async getUserProfile(uid: string): Promise<UserProfile | null> {
-        const docRef = doc(db, 'users', uid);
-        const snapshot = await getDoc(docRef);
+        const stored = localStorage.getItem(STORAGE_KEY);
+        if (!stored) return null;
 
-        if (snapshot.exists()) {
-            const data = snapshot.data() as UserProfile;
-            // Hardcode admin check for specific emails
-            if (ADMIN_EMAILS.includes(data.email) && data.role !== 'admin') {
-                await this.updateUserRole(uid, 'admin'); // Auto-fix role
-                return { ...data, role: 'admin' };
-            }
-            return data;
+        try {
+            const user = JSON.parse(stored) as UserProfile;
+            // Ensure the requested UID matches the stored one (single user mode)
+            if (user.uid === uid) return user;
+            return null;
+        } catch (e) {
+            console.error("Failed to parse user profile", e);
+            return null;
         }
-        return null;
     },
 
-    // Get all users (Admin only)
+    // Get all users - In offline mode, this just returns the current user if they exist
     async getAllUsers(): Promise<UserProfile[]> {
-        const q = collection(db, 'users');
-        const snapshot = await getDocs(q);
-        return snapshot.docs.map(doc => ({ uid: doc.id, ...doc.data() } as UserProfile));
+        const user = await this.getCurrentUser();
+        return user ? [user] : [];
     },
 
-    // Create new user profile
+    // Helper to get the single local user without needing UID
+    async getCurrentUser(): Promise<UserProfile | null> {
+        const stored = localStorage.getItem(STORAGE_KEY);
+        return stored ? JSON.parse(stored) : null;
+    },
+
+    // Create new user profile (Saves to local storage)
     async createUser(profile: UserProfile) {
-        const docRef = doc(db, 'users', profile.uid);
-        await setDoc(docRef, profile);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(profile));
     },
 
-    // Get all teachers (For student selection)
+    // Get all teachers - Mock response for offline
     async getTeachers(): Promise<UserProfile[]> {
-        const teachersQuery = query(collection(db, 'users'), where('role', 'in', ['teacher', 'admin']));
-        const snapshot = await getDocs(teachersQuery);
-        return snapshot.docs.map(doc => ({ uid: doc.id, ...doc.data() } as UserProfile));
+        return [];
     },
 
-    // Get my students (Teacher only)
+    // Get my students - Mock response for offline
     async getMyStudents(teacherId: string): Promise<UserProfile[]> {
-        const q = query(collection(db, 'users'), where('teacherId', '==', teacherId));
-        const snapshot = await getDocs(q);
-        return snapshot.docs.map(doc => ({ uid: doc.id, ...doc.data() } as UserProfile));
+        return [];
     },
 
-    // Update Role (Admin only)
+    // Update Role - No-op / Auto-save locally
     async updateUserRole(targetUid: string, newRole: UserRole) {
-        const docRef = doc(db, 'users', targetUid);
-        await setDoc(docRef, { role: newRole }, { merge: true });
+        const user = await this.getUserProfile(targetUid);
+        if (user) {
+            user.role = newRole;
+            await this.createUser(user);
+        }
     },
 
-    // Assign Teacher
+    // Assign Teacher - No-op / Auto-save locally
     async assignTeacher(studentUid: string, teacherId: string) {
-        const docRef = doc(db, 'users', studentUid);
-        await setDoc(docRef, { teacherId }, { merge: true });
+        const user = await this.getUserProfile(studentUid);
+        if (user) {
+            user.teacherId = teacherId;
+            await this.createUser(user);
+        }
     },
 
     // Update Profile Data
     async updateProfile(uid: string, data: Partial<UserProfile>) {
-        const docRef = doc(db, 'users', uid);
-        await updateDoc(docRef, data);
+        const user = await this.getUserProfile(uid);
+        if (user) {
+            const updated = { ...user, ...data };
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
+        }
     }
 };
