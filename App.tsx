@@ -22,16 +22,13 @@ import {
 import { auth } from './firebase';
 import { signOut, onAuthStateChanged, updateProfile, sendSignInLinkToEmail, isSignInWithEmailLink, signInWithEmailLink } from 'firebase/auth';
 import { progressService, UserProgress } from './progressService';
+import { userService, UserProfile, UserRole } from './userService';
 
 // --- Types ---
-interface User {
-    name: string;
-    surname: string;
-    email: string;
-    age?: string;
-    phone?: string;
+interface User extends UserProfile {
     avatar?: string;
 }
+
 
 // --- Auth Components ---
 const AuthModal = ({ isOpen, onClose, initialMode = 'login' }: any) => {
@@ -171,20 +168,55 @@ const ProfileHeader = ({ user, onLogout }: { user: User, onLogout: () => void })
     </div>
 );
 
-const SidebarProfile = ({ user, onLogout }: { user: User, onLogout: () => void }) => (
-    <div className="p-4 mt-auto border-t border-white/5 bg-[#0f172a]/50">
-        <div className="flex items-center gap-3 mb-3">
-            <img src={user.avatar} alt={user.name} className="w-10 h-10 rounded-full border-2 border-indigo-500/30" />
-            <div className="flex-1 min-w-0">
-                <div className="text-sm font-bold text-white truncate">{user.name}</div>
-                <div className="text-xs text-slate-400 truncate">{user.email}</div>
+const SidebarProfile = ({ user, onLogout }: any) => {
+    // Only show if full profile is loaded (has role)
+    if (!user.role) return null;
+
+    return (
+        <div className="p-4 mt-auto border-t border-white/5 bg-[#0f172a]/50">
+            <div className="flex items-center gap-3 mb-3">
+                <div className="relative">
+                    <img src={user.photoURL || user.avatar || `https://ui-avatars.com/api/?name=${user.name}+${user.surname}`} alt={user.name} className="w-10 h-10 rounded-full border-2 border-indigo-500/30" />
+                    <div className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-emerald-500 border-2 border-[#0f172a] rounded-full"></div>
+                </div>
+                <div className="flex-1 min-w-0">
+                    <div className="text-sm font-bold text-white truncate">{user.name}</div>
+                    <div className="flex items-center gap-1">
+                        <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded-full uppercase tracking-wider ${user.role === 'admin' ? 'bg-indigo-500/20 text-indigo-300 border border-indigo-500/30' :
+                            user.role === 'teacher' ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30' :
+                                'bg-slate-700 text-slate-400 border border-slate-600'
+                            }`}>
+                            {user.role}
+                        </span>
+                    </div>
+                </div>
             </div>
+
+            {/* Role Specific Actions */}
+            {user.role === 'admin' && (
+                <button
+                    onClick={() => document.dispatchEvent(new CustomEvent('openAdminPanel'))}
+                    className="w-full py-2 mb-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-xs font-bold flex items-center justify-center gap-2 transition-all shadow-lg shadow-indigo-600/20"
+                >
+                    <Settings className="w-3 h-3" /> Admin Panel
+                </button>
+            )}
+
+            {user.role === 'teacher' && (
+                <button
+                    onClick={() => document.dispatchEvent(new CustomEvent('openTeacherDashboard'))}
+                    className="w-full py-2 mb-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold flex items-center justify-center gap-2 transition-all shadow-lg shadow-emerald-600/20"
+                >
+                    <Users className="w-3 h-3" /> Teacher Dashboard
+                </button>
+            )}
+
+            <button onClick={onLogout} className="w-full flex items-center justify-center gap-2 py-2 rounded-lg bg-white/5 hover:bg-white/10 text-xs font-medium text-slate-400 hover:text-white transition-colors">
+                <LogOut className="w-3 h-3" /> Sign Out
+            </button>
         </div>
-        <button onClick={onLogout} className="w-full flex items-center justify-center gap-2 py-2 rounded-lg bg-white/5 hover:bg-white/10 text-xs font-medium text-slate-400 hover:text-white transition-colors">
-            <LogOut className="w-3 h-3" /> Sign Out
-        </button>
-    </div>
-);
+    );
+};
 
 // --- Styles ---
 const globalStyles = `
@@ -3768,6 +3800,196 @@ const InteractionSection = ({ type }: { type: 'object' | 'imp' | 'can' }) => {
 
 const Placeholder = ({ title }: { title: string }) => <div className="p-12 bg-white rounded-3xl border border-slate-100 text-center text-slate-400 italic">Content for {title} coming soon.</div>;
 
+// --- ADMIN & TEACHER PANELS ---
+
+const TeacherSelector = ({ isOpen, onSelect }: { isOpen: boolean, onSelect: (teacherId: string) => void }) => {
+    const [teachers, setTeachers] = useState<UserProfile[]>([]);
+
+    useEffect(() => {
+        if (isOpen) {
+            userService.getTeachers().then(setTeachers);
+        }
+    }, [isOpen]);
+
+    if (!isOpen) return null;
+
+    return (
+        <div className="fixed inset-0 z-[150] flex items-center justify-center p-6 bg-slate-900/90 backdrop-blur-md animate-fade-in">
+            <div className="bg-white rounded-3xl w-full max-w-lg p-8 shadow-2xl text-center">
+                <div className="w-20 h-20 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <GraduationCap className="w-10 h-10" />
+                </div>
+                <h2 className="text-3xl font-black text-slate-800 mb-2">Choose Your Teacher</h2>
+                <p className="text-slate-500 mb-8">Select who will be guiding your English journey.</p>
+
+                <div className="space-y-3 max-h-[300px] overflow-y-auto">
+                    {teachers.map(t => (
+                        <button key={t.uid} onClick={() => onSelect(t.uid)}
+                            className="w-full p-4 rounded-xl border-2 border-slate-100 hover:border-indigo-500 hover:bg-indigo-50 transition-all flex items-center gap-4 group text-left"
+                        >
+                            <img src={t.photoURL || `https://ui-avatars.com/api/?name=${t.name}+${t.surname}`} className="w-12 h-12 rounded-full" />
+                            <div>
+                                <div className="font-bold text-slate-800 group-hover:text-indigo-700">{t.name} {t.surname}</div>
+                                <div className="text-xs text-slate-400">English Teacher</div>
+                            </div>
+                            <ArrowRight className="w-5 h-5 text-indigo-400 ml-auto opacity-0 group-hover:opacity-100 transition-opacity" />
+                        </button>
+                    ))}
+                </div>
+            </div>
+        </div>
+    );
+};
+
+const AdminPanel = ({ isOpen, onClose, currentUser }: { isOpen: boolean, onClose: () => void, currentUser: User }) => {
+    const [users, setUsers] = useState<UserProfile[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        if (isOpen) {
+            userService.getAllUsers().then(u => {
+                setUsers(u);
+                setLoading(false);
+            });
+        }
+    }, [isOpen]);
+
+    const handlePromote = async (uid: string, newRole: UserRole) => {
+        await userService.updateUserRole(uid, newRole);
+        setUsers(users.map(u => u.uid === uid ? { ...u, role: newRole } : u));
+    };
+
+    if (!isOpen) return null;
+
+    return (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-slate-900/80 backdrop-blur-sm animate-fade-in">
+            <div className="bg-white rounded-3xl w-full max-w-4xl max-h-[80vh] flex flex-col overflow-hidden shadow-2xl">
+                <div className="p-8 border-b border-slate-100 flex justify-between items-center bg-slate-50">
+                    <div className="flex items-center gap-3">
+                        <div className="p-3 bg-indigo-100 text-indigo-600 rounded-xl"><Settings className="w-6 h-6" /></div>
+                        <div>
+                            <h2 className="text-2xl font-bold text-slate-800">Admin Panel</h2>
+                            <p className="text-slate-500 text-sm">Manage user roles and permissions</p>
+                        </div>
+                    </div>
+                    <button onClick={onClose} className="p-2 hover:bg-slate-200 rounded-full transition-colors"><X className="w-6 h-6 text-slate-400" /></button>
+                </div>
+
+                <div className="flex-1 overflow-y-auto p-8">
+                    {loading ? (
+                        <div className="text-center py-10 text-slate-400">Loading users...</div>
+                    ) : (
+                        <table className="w-full text-left border-collapse">
+                            <thead>
+                                <tr className="text-xs font-bold text-slate-400 uppercase tracking-widest border-b border-slate-100">
+                                    <th className="pb-4 pl-4">User</th>
+                                    <th className="pb-4">Email</th>
+                                    <th className="pb-4">Role</th>
+                                    <th className="pb-4 text-right pr-4">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody className="divide-y divide-slate-50">
+                                {users.map(u => (
+                                    <tr key={u.uid} className="hover:bg-slate-50 transition-colors">
+                                        <td className="py-4 pl-4">
+                                            <div className="flex items-center gap-3">
+                                                <img src={u.photoURL || `https://ui-avatars.com/api/?name=${u.name}+${u.surname}`} alt="" className="w-10 h-10 rounded-full" />
+                                                <div className="font-bold text-slate-700">{u.name} {u.surname}</div>
+                                            </div>
+                                        </td>
+                                        <td className="py-4 text-slate-500 text-sm">{u.email}</td>
+                                        <td className="py-4">
+                                            <span className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wide ${u.role === 'admin' ? 'bg-indigo-100 text-indigo-700' :
+                                                u.role === 'teacher' ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100 text-slate-600'
+                                                }`}>
+                                                {u.role}
+                                            </span>
+                                        </td>
+                                        <td className="py-4 text-right pr-4">
+                                            {u.email !== 'omateusosos@gmail.com' && (
+                                                <div className="flex justify-end gap-2">
+                                                    {u.role !== 'admin' && (
+                                                        <button onClick={() => handlePromote(u.uid, 'admin')} className="px-3 py-1.5 bg-slate-100 hover:bg-indigo-100 text-slate-600 hover:text-indigo-600 rounded-lg text-xs font-bold transition-all">
+                                                            Make Admin
+                                                        </button>
+                                                    )}
+                                                    {u.role !== 'teacher' && (
+                                                        <button onClick={() => handlePromote(u.uid, 'teacher')} className="px-3 py-1.5 bg-slate-100 hover:bg-emerald-100 text-slate-600 hover:text-emerald-600 rounded-lg text-xs font-bold transition-all">
+                                                            Make Teacher
+                                                        </button>
+                                                    )}
+                                                    {u.role !== 'student' && (
+                                                        <button onClick={() => handlePromote(u.uid, 'student')} className="px-3 py-1.5 bg-slate-100 hover:bg-rose-100 text-slate-600 hover:text-rose-600 rounded-lg text-xs font-bold transition-all">
+                                                            Demote
+                                                        </button>
+                                                    )}
+                                                </div>
+                                            )}
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    )}
+                </div>
+            </div>
+        </div>
+    );
+};
+
+const TeacherDashboard = ({ isOpen, onClose, currentUser }: { isOpen: boolean, onClose: () => void, currentUser: User }) => {
+    const [students, setStudents] = useState<UserProfile[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        if (isOpen) {
+            userService.getMyStudents(currentUser.uid).then(s => {
+                setStudents(s);
+                setLoading(false);
+            });
+        }
+    }, [isOpen]);
+
+    if (!isOpen) return null;
+
+    return (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-slate-900/80 backdrop-blur-sm animate-fade-in">
+            <div className="bg-white rounded-3xl w-full max-w-4xl max-h-[80vh] flex flex-col overflow-hidden shadow-2xl">
+                <div className="p-8 border-b border-slate-100 flex justify-between items-center bg-slate-50">
+                    <div className="flex items-center gap-3">
+                        <div className="p-3 bg-emerald-100 text-emerald-600 rounded-xl"><Users className="w-6 h-6" /></div>
+                        <div>
+                            <h2 className="text-2xl font-bold text-slate-800">Teacher Dashboard</h2>
+                            <p className="text-slate-500 text-sm">Progress of your {students.length} students</p>
+                        </div>
+                    </div>
+                    <button onClick={onClose} className="p-2 hover:bg-slate-200 rounded-full transition-colors"><X className="w-6 h-6 text-slate-400" /></button>
+                </div>
+
+                <div className="flex-1 overflow-y-auto p-8">
+                    {loading ? (
+                        <div className="text-center py-10 text-slate-400">Loading students...</div>
+                    ) : students.length === 0 ? (
+                        <div className="text-center py-20 text-slate-400">No students assigned yet.</div>
+                    ) : (
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            {students.map(s => (
+                                <div key={s.uid} className="p-6 rounded-2xl border border-slate-100 flex items-center gap-4 hover:shadow-md transition-shadow">
+                                    <img src={s.photoURL || `https://ui-avatars.com/api/?name=${s.name}+${s.surname}`} alt="" className="w-12 h-12 rounded-full" />
+                                    <div>
+                                        <h4 className="font-bold text-slate-800">{s.name} {s.surname}</h4>
+                                        <p className="text-xs text-slate-400">{s.email}</p>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </div>
+            </div>
+        </div>
+    );
+};
+
 // --- LAYOUT COMPONENTS ---
 
 const WelcomeScreen = ({ onSelectLevel, user, onLogin, onSignup, unlockedLevels = [1], completedCount = 0 }: any) => (
@@ -4021,17 +4243,56 @@ export default function App() {
     // Auth State
     const [user, setUser] = useState<User | null>(null);
     const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+    const [isAdminPanelOpen, setIsAdminPanelOpen] = useState(false);
+    const [isTeacherDashboardOpen, setIsTeacherDashboardOpen] = useState(false);
+    const [isTeacherSelectorOpen, setIsTeacherSelectorOpen] = useState(false);
     const [authMode, setAuthMode] = useState<'login' | 'signup'>('signup');
     const [progress, setProgress] = useState<UserProgress>({ completedLessons: [], unlockedLevels: [1] });
 
-    // Load Progress
+    // Check for Student without Teacher
     useEffect(() => {
-        if (user && auth.currentUser) {
-            progressService.getUserProgress(auth.currentUser.uid).then(setProgress);
-        } else {
-            setProgress({ completedLessons: [], unlockedLevels: [1] });
+        if (user && user.role === 'student' && !user.teacherId) {
+            setIsTeacherSelectorOpen(true);
         }
     }, [user]);
+
+    const handleAssignTeacher = async (teacherId: string) => {
+        if (user) {
+            await userService.assignTeacher(user.uid, teacherId);
+            setUser({ ...user, teacherId });
+            setIsTeacherSelectorOpen(false);
+            alert("Teacher assigned successfully! 🎉");
+        }
+    };
+
+    // Load Progress & Profile
+    useEffect(() => {
+        if (auth.currentUser) {
+            // Load Profile (Role)
+            userService.getUserProfile(auth.currentUser.uid).then(profile => {
+                if (profile) setUser(profile);
+            });
+            // Load Progress
+            progressService.getUserProgress(auth.currentUser.uid).then(setProgress);
+        } else {
+            setUser(null);
+            setProgress({ completedLessons: [], unlockedLevels: [1] });
+        }
+    }, [auth.currentUser]); // Re-run when auth object changes (login/logout)
+
+    // Event Listeners for Panels
+    useEffect(() => {
+        const openAdmin = () => setIsAdminPanelOpen(true);
+        const openTeacher = () => setIsTeacherDashboardOpen(true);
+
+        document.addEventListener('openAdminPanel', openAdmin);
+        document.addEventListener('openTeacherDashboard', openTeacher);
+
+        return () => {
+            document.removeEventListener('openAdminPanel', openAdmin);
+            document.removeEventListener('openTeacherDashboard', openTeacher);
+        };
+    }, []);
 
     const handleLessonComplete = async (lessonId: number) => {
         if (!auth.currentUser) return;
@@ -4095,15 +4356,34 @@ export default function App() {
         }
 
         // Auth State Listener
-        const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
+        const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
             if (firebaseUser) {
-                const [name, surname] = (firebaseUser.displayName || 'Learner ').split(' ');
-                setUser({
-                    name: name || 'Learner',
-                    surname: surname || '',
-                    email: firebaseUser.email || '',
-                    avatar: firebaseUser.photoURL || undefined
-                });
+                // Try to get existing profile
+                const profile = await userService.getUserProfile(firebaseUser.uid);
+
+                if (profile) {
+                    setUser({ ...profile, avatar: profile.photoURL });
+                    // Check if student needs to select teacher
+                    if (profile.role === 'student' && !profile.teacherId) {
+                        // We'll show the selector via a specific state or effect
+                        // For now let's just use a dedicated state variable we'll add to App
+                        // Actually, we can just check this in the render or effect, 
+                        // but let's set it here if we add the state
+                    }
+                } else {
+                    // Create new profile (Student by default)
+                    const [name, surname] = (firebaseUser.displayName || 'Learner ').split(' ');
+                    const newProfile: UserProfile = {
+                        uid: firebaseUser.uid,
+                        email: firebaseUser.email || '',
+                        name: name || 'Learner',
+                        surname: surname || '',
+                        role: 'student',
+                        photoURL: firebaseUser.photoURL || undefined
+                    };
+                    await userService.createUser(newProfile);
+                    setUser({ ...newProfile, avatar: newProfile.photoURL });
+                }
             } else {
                 setUser(null);
             }
@@ -4170,6 +4450,15 @@ export default function App() {
                     completedCount={progress.completedLessons.length}
                 />
                 {user && <ProfileHeader user={user} onLogout={handleLogout} />}
+
+                {/* Admin & Teacher Panels */}
+                {user && (
+                    <>
+                        <AdminPanel isOpen={isAdminPanelOpen} onClose={() => setIsAdminPanelOpen(false)} currentUser={user} />
+                        <TeacherDashboard isOpen={isTeacherDashboardOpen} onClose={() => setIsTeacherDashboardOpen(false)} currentUser={user} />
+                        <TeacherSelector isOpen={isTeacherSelectorOpen} onSelect={handleAssignTeacher} />
+                    </>
+                )}
             </>
         );
     }
