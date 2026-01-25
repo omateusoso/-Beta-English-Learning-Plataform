@@ -4379,41 +4379,60 @@ export default function App() {
     };
 
 
+    const [isVerifyingLink, setIsVerifyingLink] = useState(false);
+
     // Firebase Auth Listener & Deep Link Handler
     useEffect(() => {
         // Deep Link Handler (Magic Link)
         if (isSignInWithEmailLink(auth, window.location.href)) {
+            setIsVerifyingLink(true); // Start loading
             let email = window.localStorage.getItem('emailForSignIn');
             if (!email) {
                 email = window.prompt('Please provide your email for confirmation');
             }
-            if (email) {
-                signInWithEmailLink(auth, email, window.location.href)
-                    .then(async (result) => {
-                        window.localStorage.removeItem('emailForSignIn');
-                        window.history.replaceState({}, document.title, "/");
-
-                        // CHECK FOR PENDING SIGNUP DATA
-                        const pendingData = window.localStorage.getItem('pendingSignupData');
-                        if (pendingData) {
-                            try {
-                                const { name, surname } = JSON.parse(pendingData);
-                                if (result.user) {
-                                    await updateProfile(result.user, {
-                                        displayName: `${name} ${surname}`,
-                                        photoURL: `https://ui-avatars.com/api/?name=${name}+${surname}&background=6366f1&color=fff`
-                                    });
-                                    // Refresh user state immediately to show name
-                                    setUser(prev => prev ? ({ ...prev, name, surname }) : null);
-                                }
-                                window.localStorage.removeItem('pendingSignupData');
-                            } catch (e) {
-                                console.error("Failed to apply signup data", e);
-                            }
-                        }
-                    })
-                    .catch((error) => console.error(error));
+            if (!email) {
+                setIsVerifyingLink(false);
+                alert("Email verification cancelled. Please try again.");
+                return;
             }
+
+            signInWithEmailLink(auth, email, window.location.href)
+                .then(async (result) => {
+                    // Success!
+                    alert("Verification successful! You are now logged in.");
+
+                    window.localStorage.removeItem('emailForSignIn');
+                    window.history.replaceState({}, document.title, "/");
+
+                    // CHECK FOR PENDING SIGNUP DATA
+                    const pendingData = window.localStorage.getItem('pendingSignupData');
+                    if (pendingData) {
+                        try {
+                            const { name, surname } = JSON.parse(pendingData);
+                            if (result.user) {
+                                await updateProfile(result.user, {
+                                    displayName: `${name} ${surname}`,
+                                    photoURL: `https://ui-avatars.com/api/?name=${name}+${surname}&background=6366f1&color=fff`
+                                });
+                                // Refresh user state immediately to show name
+                                setUser(prev => prev ? ({ ...prev, name, surname }) : null);
+                            }
+                            window.localStorage.removeItem('pendingSignupData');
+                        } catch (e) {
+                            console.error("Failed to apply signup data", e);
+                        }
+                    }
+                })
+                .catch((error) => {
+                    console.error(error);
+                    alert(`Verification Failed: ${error.message}`);
+                    setAuthMode('login'); // Revert to login screen
+                    setIsAuthModalOpen(true);
+                })
+                .finally(() => {
+                    setIsVerifyingLink(false);
+                });
+
         }
 
         // Auth State Listener
@@ -4521,6 +4540,18 @@ export default function App() {
                     </>
                 )}
             </>
+        );
+    }
+
+    if (isVerifyingLink) {
+        return (
+            <div className="min-h-screen flex flex-col items-center justify-center bg-[#0f172a] text-center p-6 animate-fade-in">
+                <div className="w-24 h-24 bg-indigo-500/10 rounded-full flex items-center justify-center mb-8 animate-pulse">
+                    <Sparkles className="w-10 h-10 text-indigo-400 animate-spin" />
+                </div>
+                <h2 className="text-3xl font-serif-display text-white mb-2">Verifying Magic Link...</h2>
+                <p className="text-slate-400">Please wait while we log you in securely.</p>
+            </div>
         );
     }
 
