@@ -1,18 +1,18 @@
 
 import React, { useState, useEffect } from 'react';
-import { 
-    Volume2, ArrowRight, Check, X, Globe, BookOpen, Info, RefreshCw, 
-    Users, MapPin, Briefcase, Stethoscope, GraduationCap, PenTool, 
+import {
+    Volume2, ArrowRight, Check, X, Globe, BookOpen, Info, RefreshCw,
+    Users, MapPin, Briefcase, Stethoscope, GraduationCap, PenTool,
     Wrench, ChevronDown, ChevronRight, Layout, Star, Zap, Award, ArrowLeft,
     Clock, Calendar, Heart, User, Home, Sun, Moon, Coffee, Briefcase as WorkIcon,
     Palette, Gavel, Truck, Search, Music, Camera, Scissors, MessageCircle, Sunrise, Sunset,
     Flag, Layers, Type, AlertTriangle, Calculator, Hand, MoveRight, Hash,
-    Smile, Frown, ThumbsUp, ThumbsDown, StopCircle, Play, Pause, Repeat, Mic, Headphones, 
-    Sofa, Bed, Utensils, Bath, Tv, Watch, CalendarDays, HelpCircle, Target, Battery, 
+    Smile, Frown, ThumbsUp, ThumbsDown, StopCircle, Play, Pause, Repeat, Mic, Headphones,
+    Sofa, Bed, Utensils, Bath, Tv, Watch, CalendarDays, HelpCircle, Target, Battery,
     BatteryCharging, BatteryFull, Lock, Key, Baby, UserPlus, Monitor, Shield, Sprout, Landmark,
     Sparkles, ShieldCheck, Rocket, ZapIcon, Quote, Lightbulb, GraduationCap as TeacherIcon,
     Languages, Keyboard, Fingerprint, MousePointer2, SpellCheck, UserCheck, Flame, HelpCircle as QuestionIcon,
-    Ear, Zap as FastIcon, Laptop, HardHat, Camera as PhotoIcon, Music as AudioIcon, 
+    Ear, Zap as FastIcon, Laptop, HardHat, Camera as PhotoIcon, Music as AudioIcon,
     ChefHat, ShoppingBag, Shield as SecurityIcon, Plane, Scale, Plus, Minus, IterationCw, Eye,
     Maximize, Minimize, Activity, Compass, Navigation
 } from 'lucide-react';
@@ -67,13 +67,13 @@ const speak = (text: string, lang = 'en-US', rate = 0.9) => {
     window.speechSynthesis.cancel();
     const utterance = new SpeechSynthesisUtterance(text);
     const voices = window.speechSynthesis.getVoices();
-    const preferredVoice = voices.find(voice => 
-        (voice.lang === 'en-US' && (
-            voice.name.includes('Google US English') || 
-            voice.name.includes('Samantha') ||          
-            voice.name.includes('Zira') ||              
-            voice.name.includes('Female')               
-        ))
+    const preferredVoice = voices.find(voice =>
+    (voice.lang === 'en-US' && (
+        voice.name.includes('Google US English') ||
+        voice.name.includes('Samantha') ||
+        voice.name.includes('Zira') ||
+        voice.name.includes('Female')
+    ))
     );
     if (preferredVoice) utterance.voice = preferredVoice;
     utterance.lang = lang;
@@ -115,7 +115,7 @@ const GreetingsFarewells = ({ isPortuguese }: { isPortuguese: boolean }) => {
                             {isPortuguese ? "Uma mensagem do Matthew" : "A Message from Matthew"}
                         </h3>
                         <p className="text-indigo-100 text-sm leading-relaxed italic">
-                            {isPortuguese 
+                            {isPortuguese
                                 ? "\"As saudações são a base de qualquer relacionamento. Em inglês, a forma como você diz 'olá' define o tone de toda a conversa. Hoje, vamos dominar não apenas as palavras, mas a cultura por trás delas. Preste atenção na armadilha do 'Good Night'—é o erro mais comum entre iniciantes!\""
                                 : "\"Greetings are the foundation of any relationship. In English, the way you say 'hello' defines the tone of the entire conversation. Today, we'll master not just the words, but the culture behind them. Pay attention to the 'Good Night' trap—it's the most common mistake for beginners!\""
                             }
@@ -134,8 +134,8 @@ const GreetingsFarewells = ({ isPortuguese }: { isPortuguese: boolean }) => {
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {timeGreetings.map((item, idx) => (
-                        <button 
-                            key={idx} 
+                        <button
+                            key={idx}
                             onClick={() => speak(item.phrase)}
                             className={`group relative p-6 rounded-3xl border-2 border-transparent hover:border-indigo-200 transition-all flex items-start gap-4 text-left bg-gradient-to-br ${item.bg} shadow-sm hover:shadow-md`}
                         >
@@ -159,7 +159,7 @@ const GreetingsFarewells = ({ isPortuguese }: { isPortuguese: boolean }) => {
             </section>
 
             {/* The Trap Box */}
-            <div className="p-6 bg-rose-50 border-2 border-rose-100 rounded-[2rem] flex gap-5 shadow-sm">
+            <div className="p-8 bg-rose-50 border-2 border-rose-100 rounded-[2rem] flex gap-5 shadow-sm">
                 <div className="w-12 h-12 bg-rose-500 rounded-2xl flex items-center justify-center text-white shrink-0 shadow-lg">
                     <AlertTriangle className="w-6 h-6" />
                 </div>
@@ -168,7 +168,7 @@ const GreetingsFarewells = ({ isPortuguese }: { isPortuguese: boolean }) => {
                         {isPortuguese ? "A ARMADILHA DO \"GOOD NIGHT\"" : "The \"Good Night\" Trap"}
                     </h5>
                     <p className="text-sm text-rose-700 leading-relaxed">
-                        {isPortuguese 
+                        {isPortuguese
                             ? <>Nunca diga <strong>"Good night"</strong> ao chegar em uma festa ou jantar. Use <strong>"Good evening"</strong>. Reserve o <strong>"Good night"</strong> estritamente para quando estiver <strong>indo embora</strong> ou indo dormir.</>
                             : <>Never say <strong>"Good night"</strong> when you arrive at a party or dinner. Use <strong>"Good evening"</strong>. Save <strong>"Good night"</strong> strictly for when you are <strong>leaving</strong> or going to sleep.</>
                         }
@@ -191,7 +191,7 @@ const GreetingsFarewells = ({ isPortuguese }: { isPortuguese: boolean }) => {
                             <div key={i} className="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow group">
                                 <div className="flex justify-between items-center mb-1">
                                     <span className="font-bold text-slate-700 text-lg">{g.phrase}</span>
-                                    <button onClick={() => speak(g.phrase)} className="p-2 rounded-full hover:bg-slate-50 text-slate-300 hover:text-indigo-600"><Volume2 className="w-4 h-4"/></button>
+                                    <button onClick={() => speak(g.phrase)} className="p-2 rounded-full hover:bg-slate-50 text-slate-300 hover:text-indigo-600"><Volume2 className="w-4 h-4" /></button>
                                 </div>
                                 <div className="flex gap-2 items-center mb-3">
                                     <span className="text-[10px] text-slate-400 font-mono italic">{g.ipa}</span>
@@ -221,7 +221,7 @@ const GreetingsFarewells = ({ isPortuguese }: { isPortuguese: boolean }) => {
                             <div key={i} className="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow group">
                                 <div className="flex justify-between items-center mb-1">
                                     <span className="font-bold text-slate-700 text-lg">{g.phrase}</span>
-                                    <button onClick={() => speak(g.phrase)} className="p-2 rounded-full hover:bg-slate-50 text-slate-300 hover:text-indigo-600"><Volume2 className="w-4 h-4"/></button>
+                                    <button onClick={() => speak(g.phrase)} className="p-2 rounded-full hover:bg-slate-50 text-slate-300 hover:text-indigo-600"><Volume2 className="w-4 h-4" /></button>
                                 </div>
                                 <div className="flex gap-2 items-center mb-3">
                                     <span className="text-[10px] text-slate-400 font-mono italic">{g.ipa}</span>
@@ -253,7 +253,7 @@ const GreetingsFarewells = ({ isPortuguese }: { isPortuguese: boolean }) => {
                                     {isPortuguese ? "Linguagem Corporal importa" : "Body Language Matters"}
                                 </h6>
                                 <p className="text-sm text-amber-800 leading-relaxed">
-                                    {isPortuguese 
+                                    {isPortuguese
                                         ? "Em culturas de língua inglesa, um aperto de mão firme e contato visual são esperados ao cumprimentar alguém formalmente. 🤝"
                                         : "In many English-speaking cultures, a firm handshake and eye contact are expected when greeting someone formally. 🤝"
                                     }
@@ -267,7 +267,7 @@ const GreetingsFarewells = ({ isPortuguese }: { isPortuguese: boolean }) => {
                                     {isPortuguese ? "O Segredo do \"What's up?\"" : "The \"What's up?\" Secret"}
                                 </h6>
                                 <p className="text-sm text-amber-800 leading-relaxed">
-                                    {isPortuguese 
+                                    {isPortuguese
                                         ? "Quando alguém diz \"What's up?\", nem sempre quer um relatório completo. Uma resposta comum é apenas: \"Not much, you?\" 🤙"
                                         : "When someone says \"What's up?\", they aren't always asking for a full report. A common reply is simply: \"Not much, you?\" 🤙"
                                     }
@@ -277,11 +277,11 @@ const GreetingsFarewells = ({ isPortuguese }: { isPortuguese: boolean }) => {
                     </div>
                     <div className="bg-white p-6 rounded-3xl shadow-inner border border-amber-200/50">
                         <h6 className="font-bold text-slate-800 mb-4 flex items-center gap-2">
-                            <Quote className="w-4 h-4 text-amber-400" /> 
+                            <Quote className="w-4 h-4 text-amber-400" />
                             {isPortuguese ? "Foco na Pronúncia" : "Pronunciation Focus"}
                         </h6>
                         <p className="text-sm text-slate-600 leading-relaxed">
-                            {isPortuguese 
+                            {isPortuguese
                                 ? "Preste atenção no \"H\" de \"Hello\" e \"Hi\". Deve ser um sopro suave, como se estivesse limpando óculos. Evite o som de 'R' forte do português! 🌬️"
                                 : "Watch the \"H\" in \"Hello\" and \"Hi\". It should be a soft breath of air, like you're cleaning glasses. Avoid the strong Brazilian 'R' sound! 🌬️"
                             }
@@ -331,7 +331,7 @@ const AlphabetSpelling = ({ isPortuguese }: { isPortuguese: boolean }) => {
                             {isPortuguese ? "O Código de Matthew" : "Matthew's Code"}
                         </h3>
                         <p className="text-indigo-100 text-sm leading-relaxed italic">
-                            {isPortuguese 
+                            {isPortuguese
                                 ? "\"O alfabeto é o código secreto do inglês. Se você não sabe soletrar, você não sabe se comunicar profissionalmente. Mas aqui está o segredo: não tente decorar a ordem, tente decorar os SONS. Vamos transformar essas 26 letras em sua primeira vitória!\""
                                 : "\"The alphabet is the secret code of English. If you can't spell, you can't communicate professionally. But here's the secret: don't try to memorize the order, try to memorize the SOUNDS. Let's turn these 26 letters into your first victory!\""
                             }
@@ -353,10 +353,10 @@ const AlphabetSpelling = ({ isPortuguese }: { isPortuguese: boolean }) => {
                         26 {isPortuguese ? "Letras" : "Letters"}
                     </span>
                 </div>
-                
+
                 <div className="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-9 gap-3">
                     {alphabet.map(letter => (
-                        <button 
+                        <button
                             key={letter}
                             onClick={() => speak(letter)}
                             className="group bg-white p-4 rounded-2xl border border-slate-100 shadow-sm hover:border-indigo-500 hover:shadow-md transition-all flex flex-col items-center justify-center relative overflow-hidden"
@@ -385,12 +385,12 @@ const AlphabetSpelling = ({ isPortuguese }: { isPortuguese: boolean }) => {
                 <div className="bg-emerald-50/50 p-4 rounded-2xl border border-emerald-100 text-sm text-emerald-800 mb-6 flex items-center gap-3">
                     <Info className="w-5 h-5 shrink-0" />
                     <p className="leading-relaxed">
-                        {isPortuguese 
+                        {isPortuguese
                             ? "As letras nestes grupos compartilham o mesmo som de vogal. Memorizar o alfabeto através destes grupos é 7x mais eficiente do que tentar decorar a ordem de A a Z!"
                             : "Letters in these groups share the same vowel sound. Memorizing the alphabet through these groups is 7x more efficient than trying to memorize the A-Z order!"}
                     </p>
                 </div>
-                
+
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {phoneticGroups.map((group, idx) => (
                         <div key={idx} className={`p-6 rounded-3xl border ${group.color} flex flex-col gap-4 shadow-sm hover:shadow-md transition-shadow`}>
@@ -400,8 +400,8 @@ const AlphabetSpelling = ({ isPortuguese }: { isPortuguese: boolean }) => {
                             </div>
                             <div className="flex flex-wrap gap-2">
                                 {group.letters.map(l => (
-                                    <button 
-                                        key={l} 
+                                    <button
+                                        key={l}
                                         onClick={() => speak(l)}
                                         className="w-12 h-12 rounded-xl bg-white/40 border border-current/10 font-black text-xl hover:bg-white shadow-sm transition-all flex items-center justify-center group/letter"
                                     >
@@ -423,7 +423,7 @@ const AlphabetSpelling = ({ isPortuguese }: { isPortuguese: boolean }) => {
                         {isPortuguese ? "Aplicações Reais" : "Real-World Applications"}
                     </h4>
                 </div>
-                
+
                 <div className="grid md:grid-cols-2 gap-6">
                     <div className="bg-white p-8 rounded-[2.5rem] shadow-sm border border-slate-100 relative overflow-hidden group">
                         <div className="absolute -right-8 -bottom-8 w-32 h-32 bg-slate-50 rounded-full group-hover:scale-150 transition-transform"></div>
@@ -432,7 +432,7 @@ const AlphabetSpelling = ({ isPortuguese }: { isPortuguese: boolean }) => {
                         </h5>
                         <div className="space-y-4 relative">
                             {acronyms.map(a => (
-                                <button 
+                                <button
                                     key={a.name}
                                     onClick={() => speak(a.name.split("").join(", "))}
                                     className="w-full flex items-center justify-between p-4 bg-slate-50 rounded-2xl hover:bg-indigo-50 hover:border-indigo-200 border border-transparent transition-all"
@@ -460,8 +460,8 @@ const AlphabetSpelling = ({ isPortuguese }: { isPortuguese: boolean }) => {
                                 </p>
                                 <div className="flex flex-wrap gap-2">
                                     {["M", "A", "T", "T", "H", "E", "W"].map((l, i) => (
-                                        <button 
-                                            key={i} 
+                                        <button
+                                            key={i}
                                             onClick={() => speak(l)}
                                             className="w-10 h-10 bg-white text-indigo-900 rounded-lg font-black hover:scale-110 hover:shadow-[0_0_15px_rgba(255,255,255,0.4)] transition-all shadow-lg flex items-center justify-center"
                                         >
@@ -476,7 +476,7 @@ const AlphabetSpelling = ({ isPortuguese }: { isPortuguese: boolean }) => {
                             <div className="bg-indigo-500/10 p-4 rounded-xl border border-indigo-500/20 flex gap-4 items-start">
                                 <Quote className="w-5 h-5 text-indigo-400 shrink-0" />
                                 <p className="text-xs text-indigo-100 leading-relaxed">
-                                    {isPortuguese 
+                                    {isPortuguese
                                         ? "Dica de Mestre: Em hotéis, aeroportos e chamadas de vídeo, pedir para soletrar é vital. Se não entender algo, diga: \"Could you spell that, please?\""
                                         : "Master Tip: In hotels, airports, and video calls, asking to spell is vital. If you don't understand something, say: \"Could you spell that, please?\""}
                                 </p>
@@ -497,7 +497,7 @@ const AlphabetSpelling = ({ isPortuguese }: { isPortuguese: boolean }) => {
                         <div>
                             <h6 className="font-black text-rose-900 uppercase text-xs tracking-widest mb-2">The 'Z' Dilemma</h6>
                             <p className="text-sm text-rose-800 leading-relaxed">
-                                {isPortuguese 
+                                {isPortuguese
                                     ? <>No <strong>Inglês Americano</strong> (EUA), dizemos <strong>"Zee"</strong> (/ziː/). No <strong>Inglês Britânico</strong> (Reino Unido), dizemos <strong>"Zed"</strong> (/zɛd/). Ambos estão corretos!</>
                                     : <>In <strong>American English</strong> (USA), we say <strong>"Zee"</strong> (/ziː/). In <strong>British English</strong> (UK), we say <strong>"Zed"</strong> (/zɛd/). Both are correct!</>}
                             </p>
@@ -508,7 +508,7 @@ const AlphabetSpelling = ({ isPortuguese }: { isPortuguese: boolean }) => {
                         <div>
                             <h6 className="font-black text-rose-900 uppercase text-xs tracking-widest mb-2">The 'W' Identity</h6>
                             <p className="text-sm text-rose-800 leading-relaxed">
-                                {isPortuguese 
+                                {isPortuguese
                                     ? <>A letra <strong>'W'</strong> é a única com três sílabas no nome: <strong>Double-U</strong>. Literalmente significa \"U Duplo\".</>
                                     : <>The letter <strong>'W'</strong> is the only one with three syllables in its name: <strong>Double-U</strong>. It literally means \"Double U\".</>}
                             </p>
@@ -517,11 +517,11 @@ const AlphabetSpelling = ({ isPortuguese }: { isPortuguese: boolean }) => {
                 </div>
                 <div className="mt-10 p-6 bg-white/50 rounded-2xl border border-rose-200/50">
                     <h6 className="font-black text-rose-900 uppercase text-xs tracking-widest mb-3 flex items-center gap-2">
-                        <Lightbulb className="w-4 h-4" /> 
+                        <Lightbulb className="w-4 h-4" />
                         {isPortuguese ? "Exercício Final de Mestre" : "Master Final Exercise"}
                     </h6>
                     <p className="text-sm text-rose-800">
-                        {isPortuguese 
+                        {isPortuguese
                             ? "Tente soletrar seu e-mail em voz alta agora. Lembre-se: o ponto (.) se diz 'DOT' e o arroba (@) se diz 'AT'. Pratique até soar natural!"
                             : "Try spelling your email out loud right now. Remember: the dot (.) is said 'DOT' and the at (@) is said 'AT'. Practice until it sounds natural!"}
                     </p>
@@ -558,7 +558,7 @@ const SubjectPronouns = ({ isPortuguese }: { isPortuguese: boolean }) => {
                             {isPortuguese ? "Os Protagonistas da Frase" : "The Sentence Protagonists"}
                         </h3>
                         <p className="text-indigo-100 text-sm leading-relaxed italic">
-                            {isPortuguese 
+                            {isPortuguese
                                 ? "\"Pronomes sujeitos são as palavras que executam a ação. Em inglês, você NUNCA pode esconder o sujeito como fazemos em português. Cada frase precisa de um dono! Vamos conhecer quem manda na conversa.\""
                                 : "\"Subject pronouns are the words that perform the action. In English, you can NEVER hide the subject like we sometimes do in Portuguese. Every sentence needs an owner! Let's meet who's in charge of the conversation.\""
                             }
@@ -595,10 +595,10 @@ const SubjectPronouns = ({ isPortuguese }: { isPortuguese: boolean }) => {
                     </div>
                     <div className="space-y-3">
                         {singularPronouns.map((p, idx) => (
-                            <button 
-                                key={idx} 
+                            <button
+                                key={idx}
                                 onClick={() => speak(p.word)}
-                                className={`w-full group relative p-5 rounded-3xl border-2 border-transparent hover:border-indigo-200 transition-all flex items-center gap-4 text-left ${p.bg} shadow-sm`}
+                                className={`w-full group relative p-6 rounded-3xl border-2 border-transparent hover:border-indigo-200 transition-all flex items-center gap-4 text-left ${p.bg} shadow-sm`}
                             >
                                 <span className="text-3xl">{p.icon}</span>
                                 <div className="flex-1">
@@ -627,10 +627,10 @@ const SubjectPronouns = ({ isPortuguese }: { isPortuguese: boolean }) => {
                     </div>
                     <div className="space-y-3">
                         {pluralPronouns.map((p, idx) => (
-                            <button 
-                                key={idx} 
+                            <button
+                                key={idx}
                                 onClick={() => speak(p.word)}
-                                className={`w-full group relative p-5 rounded-3xl border-2 border-transparent hover:border-blue-200 transition-all flex items-center gap-4 text-left ${p.bg} shadow-sm`}
+                                className={`w-full group relative p-6 rounded-3xl border-2 border-transparent hover:border-blue-200 transition-all flex items-center gap-4 text-left ${p.bg} shadow-sm`}
                             >
                                 <span className="text-3xl">{p.icon}</span>
                                 <div className="flex-1">
@@ -647,14 +647,14 @@ const SubjectPronouns = ({ isPortuguese }: { isPortuguese: boolean }) => {
                             </button>
                         ))}
                     </div>
-                    
+
                     {/* The You/You Distinction */}
                     <div className="p-5 bg-emerald-50 rounded-3xl border border-emerald-100">
                         <h5 className="font-bold text-emerald-800 text-xs uppercase tracking-widest mb-2">
                             {isPortuguese ? "Curiosidade: O Duplo 'You'" : "Fun Fact: The Double 'You'"}
                         </h5>
                         <p className="text-xs text-emerald-700 leading-relaxed">
-                            {isPortuguese 
+                            {isPortuguese
                                 ? "Reparou que 'You' está nas duas colunas? Em inglês, a palavra é a mesma para 'você' e 'vocês'. O contexto da frase dirá se estamos falando com uma ou mais pessoas."
                                 : "Did you notice 'You' is in both columns? In English, the word is the same for singular and plural 'you'. The context will tell us if we are talking to one or more people."
                             }
@@ -675,7 +675,7 @@ const SubjectPronouns = ({ isPortuguese }: { isPortuguese: boolean }) => {
                             {isPortuguese ? "O Pronome Neutro" : "The Neutral Pronoun"}
                         </h5>
                         <p className="text-sm text-amber-800 leading-relaxed mb-4">
-                            {isPortuguese 
+                            {isPortuguese
                                 ? "Usamos 'It' para tudo que não seja um ser humano específico. Animais de estimação podem ser 'he' ou 'she', mas um animal na rua ou um objeto inanimado (como uma mesa) é sempre 'IT'."
                                 : "We use 'It' for everything that isn't a specific human being. Pets can be 'he' or 'she', but a stray animal or an inanimate object (like a table) is always 'IT'."
                             }
@@ -705,7 +705,7 @@ const SubjectPronouns = ({ isPortuguese }: { isPortuguese: boolean }) => {
                             {isPortuguese ? "Sujeito Inexistente? Não no Inglês!" : "No Dropped Subjects!"}
                         </h5>
                         <p className="text-sm text-rose-800 leading-relaxed">
-                            {isPortuguese 
+                            {isPortuguese
                                 ? <>Em português dizemos: "(Ele) É professor". Em inglês, <strong>nunca</strong> começamos com o verbo direto. Precisamos do pronome: "<strong>He</strong> is a teacher." Mesmo para o tempo: "<strong>It</strong> is raining."</>
                                 : <>In Portuguese, you can say "(Ele) É professor". In English, you <strong>never</strong> start directly with the verb. We need the pronoun: "<strong>He</strong> is a teacher." Even for weather: "<strong>It</strong> is raining."</>
                             }
@@ -750,7 +750,7 @@ const VerbToBeAffirmative = ({ isPortuguese }: { isPortuguese: boolean }) => {
                             {isPortuguese ? "O Motor do Inglês" : "The Engine of English"}
                         </h3>
                         <p className="text-slate-300 text-sm leading-relaxed italic">
-                            {isPortuguese 
+                            {isPortuguese
                                 ? "\"O 'Verb To Be' é o verbo mais importante que você vai aprender. Ele funciona como o sinal de 'IGUAL' (=). Ele diz quem somos, como estamos e onde estamos. Entenda este verbo e você abrirá 50% das portas da conversação!\""
                                 : "\"The 'Verb To Be' is the most important verb you will learn. It works like an 'EQUALS' sign (=). It says who we are, how we are, and where we are. Understand this verb and you'll open 50% of conversation doors!\""
                             }
@@ -770,9 +770,9 @@ const VerbToBeAffirmative = ({ isPortuguese }: { isPortuguese: boolean }) => {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {conjugations.map((c, idx) => (
-                        <div 
+                        <div
                             key={idx}
-                            className={`p-6 rounded-[2rem] border-2 transition-all hover:shadow-lg flex flex-col items-center text-center ${colors[c.color]}`}
+                            className={`p-8 rounded-[2rem] border-2 transition-all hover:shadow-lg flex flex-col items-center text-center ${colors[c.color]}`}
                         >
                             <span className="text-4xl mb-4 grayscale hover:grayscale-0 transition-all cursor-default">{c.icon}</span>
                             <div className="flex items-baseline gap-2 mb-1">
@@ -783,10 +783,10 @@ const VerbToBeAffirmative = ({ isPortuguese }: { isPortuguese: boolean }) => {
                                 <span className="text-[10px] font-mono opacity-50">{c.ipa}</span>
                                 <span className="text-[10px] font-bold uppercase tracking-tighter opacity-70">{c.trans}</span>
                             </div>
-                            
+
                             <div className="w-full h-px bg-current opacity-10 mb-4"></div>
-                            
-                            <button 
+
+                            <button
                                 onClick={() => speak(c.ex)}
                                 className="group w-full p-3 bg-white/40 hover:bg-white rounded-2xl flex items-center justify-between border border-current/5 transition-all"
                             >
@@ -812,13 +812,13 @@ const VerbToBeAffirmative = ({ isPortuguese }: { isPortuguese: boolean }) => {
                         <h4 className="text-xl font-bold">{isPortuguese ? "Contrações (Agilidade)" : "Contractions (Fluency)"}</h4>
                     </div>
                     <p className="text-indigo-200 text-sm mb-8 max-w-lg leading-relaxed">
-                        {isPortuguese 
+                        {isPortuguese
                             ? "No dia a dia e em ambientes profissionais, falantes nativos raramente dizem 'I am'. Eles preferem a contração. É mais rápido e natural."
                             : "In daily life and professional settings, native speakers rarely say 'I am'. They prefer the contraction. It's faster and more natural."}
                     </p>
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                         {conjugations.slice(0, 4).map((c, i) => (
-                            <button 
+                            <button
                                 key={i}
                                 onClick={() => speak(`${c.person}${c.contract}`)}
                                 className="bg-indigo-800/40 border border-indigo-700 p-4 rounded-2xl hover:bg-indigo-700 transition-all flex flex-col items-center group"
@@ -901,7 +901,7 @@ const VerbToBeAffirmative = ({ isPortuguese }: { isPortuguese: boolean }) => {
                             {isPortuguese ? "A Lógica do 'Igual' (=)" : "The 'Equals' Logic"}
                         </h5>
                         <p className="text-sm text-emerald-800 leading-relaxed">
-                            {isPortuguese 
+                            {isPortuguese
                                 ? <>Pense no Verb To Be como uma balança equilibrada. <strong>Sujeito = Qualidade/Lugar</strong>. Ele não indica uma ação em movimento (como correr ou comer), mas sim um estado fixo ou permanente. No português temos dois verbos (ser/estar), mas no inglês temos apenas um para os dois casos!</>
                                 : <>Think of the Verb To Be as a balanced scale. <strong>Subject = Quality/Place</strong>. It doesn't indicate a moving action (like running or eating), but rather a fixed or permanent state. In many languages you have two different verbs for 'to be', but in English, one verb rules them all!</>
                             }
@@ -938,7 +938,7 @@ const VerbToBeNegInt = ({ isPortuguese }: { isPortuguese: boolean }) => {
                             {isPortuguese ? "Negando e Perguntando" : "Denying and Asking"}
                         </h3>
                         <p className="text-slate-300 text-sm leading-relaxed italic">
-                            {isPortuguese 
+                            {isPortuguese
                                 ? "\"Dizer 'não' e fazer perguntas são as ferramentas de sobrevivência em qualquer idioma. O inglês usa regras de posicionamento muito rígidas para isso. Aprenda o 'lugar' de cada palavra e você nunca mais terá medo de errar!\""
                                 : "\"Saying 'no' and asking questions are the survival tools of any language. English uses very strict positioning rules for this. Learn the 'place' of each word and you'll never fear making a mistake again!\""
                             }
@@ -949,18 +949,18 @@ const VerbToBeNegInt = ({ isPortuguese }: { isPortuguese: boolean }) => {
 
             {/* Mode Switcher */}
             <div className="flex bg-slate-200 p-1.5 rounded-2xl w-full max-w-md mx-auto shadow-inner">
-                <button 
-                    onClick={() => setMode('neg')} 
+                <button
+                    onClick={() => setMode('neg')}
                     className={`flex-1 py-3 rounded-xl text-sm font-black transition-all flex items-center justify-center gap-2 ${mode === 'neg' ? 'bg-white text-rose-600 shadow-md' : 'text-slate-500 hover:text-slate-700'}`}
                 >
-                    <X className="w-4 h-4"/> 
+                    <X className="w-4 h-4" />
                     {isPortuguese ? "Negativa" : "Negative"}
                 </button>
-                <button 
-                    onClick={() => setMode('int')} 
+                <button
+                    onClick={() => setMode('int')}
                     className={`flex-1 py-3 rounded-xl text-sm font-black transition-all flex items-center justify-center gap-2 ${mode === 'int' ? 'bg-white text-indigo-600 shadow-md' : 'text-slate-500 hover:text-slate-700'}`}
                 >
-                    <QuestionIcon className="w-4 h-4"/> 
+                    <QuestionIcon className="w-4 h-4" />
                     {isPortuguese ? "Interrogativa" : "Interrogative"}
                 </button>
             </div>
@@ -977,7 +977,7 @@ const VerbToBeNegInt = ({ isPortuguese }: { isPortuguese: boolean }) => {
                                 {isPortuguese ? "A Regra de Ouro da Negação" : "The Golden Rule of Negation"}
                             </h5>
                             <p className="text-rose-800 text-sm leading-relaxed mb-4">
-                                {isPortuguese 
+                                {isPortuguese
                                     ? "Para negar no Verb To Be, basta colocar a palavra 'NOT' logo após o verbo (am, is, are). É um processo mecânico e simples."
                                     : "To negate in Verb To Be, simply place the word 'NOT' right after the verb (am, is, are). It's a mechanical and simple process."}
                             </p>
@@ -1045,7 +1045,7 @@ const VerbToBeNegInt = ({ isPortuguese }: { isPortuguese: boolean }) => {
                             </div>
                         </div>
                         <p className="mt-8 text-indigo-700 text-sm max-w-lg mx-auto leading-relaxed">
-                            {isPortuguese 
+                            {isPortuguese
                                 ? "Em inglês, não basta mudar a entonação. O verbo deve vir ANTES do sujeito para indicar que é uma pergunta."
                                 : "In English, changing your tone isn't enough. The verb MUST come BEFORE the subject to indicate a question."}
                         </p>
@@ -1101,7 +1101,7 @@ const VerbToBeNegInt = ({ isPortuguese }: { isPortuguese: boolean }) => {
                             {isPortuguese ? "A Contração de Am Not" : "The 'Am Not' Contraction"}
                         </h5>
                         <p className="text-sm text-amber-800 leading-relaxed">
-                            {isPortuguese 
+                            {isPortuguese
                                 ? <>Diferente de <strong>is not (isn't)</strong> e <strong>are not (aren't)</strong>, a combinação <strong>am + not</strong> não pode ser contraída em uma única palavra (<s>amn't</s> não existe). Você deve sempre contrair o sujeito com o verbo: <strong>I'm not</strong>.</>
                                 : <>Unlike <strong>is not (isn't)</strong> and <strong>are not (aren't)</strong>, the combination <strong>am + not</strong> cannot be contracted into a single word (<s>amn't</s> doesn't exist). You must always contract the subject with the verb: <strong>I'm not</strong>.</>
                             }
@@ -1141,7 +1141,7 @@ const IndefiniteArticles = ({ isPortuguese }: { isPortuguese: boolean }) => {
                             {isPortuguese ? "O Segredo está no Ouvido" : "The Secret is in the Ear"}
                         </h3>
                         <p className="text-emerald-100 text-sm leading-relaxed italic">
-                            {isPortuguese 
+                            {isPortuguese
                                 ? "\"A e AN significam a mesma coisa: 'um' ou 'uma'. O segredo para não errar nunca é ouvir o SOM da próxima palavra, não olhar a letra. Se o som travar na garganta, use AN. Se o som fluir, use A.\""
                                 : "\"A and AN mean the same thing: 'a' or 'an'. The secret to never missing is listening to the SOUND of the next word, not looking at the letter. If the sound blocks in your throat, use AN. If it flows, use A.\""
                             }
@@ -1243,7 +1243,7 @@ const IndefiniteArticles = ({ isPortuguese }: { isPortuguese: boolean }) => {
                             <div>
                                 <h6 className="font-bold text-rose-900 mb-1">{isPortuguese ? "Apenas no Singular" : "Singular Only"}</h6>
                                 <p className="text-xs text-rose-800 leading-relaxed">
-                                    {isPortuguese 
+                                    {isPortuguese
                                         ? "A e AN significam 'UM/UMA'. Por isso, nunca use com palavras no plural. Diga 'Cars', não 'A cars'."
                                         : "A and AN mean 'ONE'. Therefore, never use them with plural words. Say 'Cars', not 'A cars'."}
                                 </p>
@@ -1254,7 +1254,7 @@ const IndefiniteArticles = ({ isPortuguese }: { isPortuguese: boolean }) => {
                             <div>
                                 <h6 className="font-bold text-rose-900 mb-1">{isPortuguese ? "Profissões" : "Jobs & Titles"}</h6>
                                 <p className="text-xs text-rose-800 leading-relaxed">
-                                    {isPortuguese 
+                                    {isPortuguese
                                         ? "Em inglês, somos obrigados a usar artigos com profissões. 'I am a doctor', não 'I am doctor'."
                                         : "In English, we MUST use articles with jobs. 'I am a doctor', not 'I am doctor'."}
                                 </p>
@@ -1267,7 +1267,7 @@ const IndefiniteArticles = ({ isPortuguese }: { isPortuguese: boolean }) => {
                             {isPortuguese ? "Desafio de Mestre" : "Master Challenge"}
                         </h6>
                         <p className="text-xs text-rose-700 leading-relaxed italic">
-                            {isPortuguese 
+                            {isPortuguese
                                 ? "\"Como você diria 'um agente do FBI'? Pense no som da letra F (/ɛf/). A resposta correta é AN FBI AGENT. Viu como o som manda em tudo?\""
                                 : "\"How would you say 'an FBI agent'? Think of the sound of the letter F (/ɛf/). The correct answer is AN FBI AGENT. See how sound rules everything?\""}
                         </p>
@@ -1375,7 +1375,7 @@ const JobsOccupations = ({ isPortuguese }: { isPortuguese: boolean }) => {
                             {isPortuguese ? "O Que Você Faz?" : "What Do You Do?"}
                         </h3>
                         <p className="text-slate-300 text-sm leading-relaxed italic">
-                            {isPortuguese 
+                            {isPortuguese
                                 ? "\"Falar sobre o trabalho é o início de qualquer networking. Hoje vamos aprender como nomear as profissões e, o mais importante: a regra gramatical obrigatória que muitos esquecem. Prepare-se para atualizar seu 'LinkedIn' mental!\""
                                 : "\"Talking about work is the beginning of any networking. Today we'll learn how to name professions and, most importantly: the mandatory grammatical rule many forget. Get ready to update your mental 'LinkedIn'!\""
                             }
@@ -1393,10 +1393,10 @@ const JobsOccupations = ({ isPortuguese }: { isPortuguese: boolean }) => {
                         </div>
                         <h4 className="text-xl font-bold text-slate-800">{category.name}</h4>
                     </div>
-                    
+
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                         {category.jobs.map((job, jobIdx) => (
-                            <button 
+                            <button
                                 key={jobIdx}
                                 onClick={() => speak(`I am a ${job.title}`)}
                                 className={`group p-6 rounded-[2rem] border-2 transition-all hover:shadow-lg flex items-center gap-4 text-left ${colorClasses[category.color]}`}
@@ -1429,7 +1429,7 @@ const JobsOccupations = ({ isPortuguese }: { isPortuguese: boolean }) => {
                         {isPortuguese ? "A Regra de Ouro: O Artigo Obrigatório" : "The Golden Rule: Mandatory Articles"}
                     </h5>
                     <p className="text-indigo-800 text-sm leading-relaxed mb-6">
-                        {isPortuguese 
+                        {isPortuguese
                             ? <>Diferente do português, em inglês <strong>sempre</strong> usamos <strong>A</strong> ou <strong>AN</strong> antes de uma profissão no singular.</>
                             : <>Unlike in some languages, in English you <strong>must always</strong> use <strong>A</strong> or <strong>AN</strong> before a singular profession.</>
                         }
@@ -1453,13 +1453,13 @@ const JobsOccupations = ({ isPortuguese }: { isPortuguese: boolean }) => {
                     {isPortuguese ? "Hora de Praticar" : "Practice Time"}
                 </h5>
                 <p className="text-slate-500 text-sm mb-10 max-w-md mx-auto">
-                    {isPortuguese 
+                    {isPortuguese
                         ? "Quando alguém perguntar sua profissão, use a estrutura abaixo. Clique para ouvir a pergunta mais comum:"
                         : "When someone asks your job, use the structure below. Click to hear the most common question:"}
                 </p>
-                
+
                 <div className="grid md:grid-cols-2 gap-8 items-center max-w-3xl mx-auto">
-                    <button 
+                    <button
                         onClick={() => speak("What do you do?")}
                         className="p-8 bg-indigo-600 text-white rounded-3xl shadow-xl hover:scale-105 transition-all group"
                     >
@@ -1505,7 +1505,7 @@ const JobsOccupations = ({ isPortuguese }: { isPortuguese: boolean }) => {
                             {isPortuguese ? "Gênero Neutro" : "Gender Neutrality"}
                         </h5>
                         <p className="text-sm text-amber-800 leading-relaxed">
-                            {isPortuguese 
+                            {isPortuguese
                                 ? <>Diferente do português, a maioria das profissões em inglês não tem gênero. <strong>"Teacher"</strong> serve para professor e professora. <strong>"Doctor"</strong> para médico e médica. Apenas alguns casos raros como <strong>Actor/Actress</strong> ou <strong>Waiter/Waitress</strong> ainda mantêm distinção, mas a tendência moderna é usar a forma neutra para todos!</>
                                 : <>Unlike many languages, most jobs in English are gender-neutral. <strong>"Teacher"</strong> works for everyone. <strong>"Doctor"</strong> works for everyone. Only rare cases like <strong>Actor/Actress</strong> still have distinctions, but the modern trend is to use one form for all!</>
                             }
@@ -1586,7 +1586,7 @@ const SingularPlural = ({ isPortuguese }: { isPortuguese: boolean }) => {
                             {isPortuguese ? "Mais de Um!" : "More Than One!"}
                         </h3>
                         <p className="text-indigo-100 text-sm leading-relaxed italic">
-                            {isPortuguese 
+                            {isPortuguese
                                 ? "\"Plural em inglês parece simples—basta colocar um 'S', certo? Quase sempre! Mais existem grupos de palavras que gostam de ser diferentes. Hoje vamos dominar as 4 regras principais e os famosos irregulares que pegam todo mundo de surpresa.\""
                                 : "\"Plural in English seems simple—just add an 'S', right? Most of the time! But there are groups of words that like to be different. Today we'll master the 4 main rules and the famous irregulars that catch everyone by surprise.\""
                             }
@@ -1644,14 +1644,14 @@ const SingularPlural = ({ isPortuguese }: { isPortuguese: boolean }) => {
                         <h4 className="text-xl font-bold">{isPortuguese ? "Os Irregulares (Sem 'S')" : "The Irregulars (No 'S')"}</h4>
                     </div>
                     <p className="text-slate-400 text-sm mb-10 max-w-lg leading-relaxed">
-                        {isPortuguese 
+                        {isPortuguese
                             ? "Essas palavras são 'rebeldes' e não seguem regras. Elas mudam completamente de forma no plural. Estes são os mais comuns que você DEVE memorizar."
                             : "These words are 'rebels' and don't follow rules. They change form completely in plural. These are the most common ones you MUST memorize."}
                     </p>
-                    
+
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                         {irregulars.map((ex, i) => (
-                            <button 
+                            <button
                                 key={i}
                                 onClick={() => speak(`${ex.s}, ${ex.p}`)}
                                 className="flex items-center gap-4 p-4 bg-white/5 border border-white/10 rounded-2xl hover:bg-white/10 transition-all text-left group"
@@ -1685,7 +1685,7 @@ const SingularPlural = ({ isPortuguese }: { isPortuguese: boolean }) => {
                         {isPortuguese ? "Palavras que Não Mudam" : "Unchanging Words"}
                     </h5>
                     <p className="text-emerald-800 text-sm leading-relaxed mb-4">
-                        {isPortuguese 
+                        {isPortuguese
                             ? "Algumas palavras (geralmente animais) têm a mesma forma para o singular e para o plural. O contexto dirá de quantos estamos falando."
                             : "Some words (usually animals) have the same form for singular and plural. Context will tell you how many we are talking about."}
                     </p>
@@ -1713,7 +1713,7 @@ const SingularPlural = ({ isPortuguese }: { isPortuguese: boolean }) => {
                             {isPortuguese ? "Os 3 Sons do 'S'" : "The 3 Sounds of 'S'"}
                         </h5>
                         <p className="text-sm text-amber-800 leading-relaxed mb-6">
-                            {isPortuguese 
+                            {isPortuguese
                                 ? "O 'S' final nem sempre soa como 'S'. Dependendo do som anterior, ele pode soar como /s/, /z/ ou /ɪz/."
                                 : "The final 'S' doesn't always sound like 'S'. Depending on the previous sound, it can sound like /s/, /z/, or /ɪz/."}
                         </p>
@@ -1749,7 +1749,7 @@ const SingularPlural = ({ isPortuguese }: { isPortuguese: boolean }) => {
                             {isPortuguese ? "O Erro que Entrega o Iniciante" : "The Beginner's Tell"}
                         </h5>
                         <p className="text-sm text-rose-800 italic leading-relaxed italic">
-                            {isPortuguese 
+                            {isPortuguese
                                 ? "\"Muitos alunos esquecem que Adjetivos (cores, tamanhos) NUNCA vão para o plural. Dizemos 'The red cars', nunca 'The reds cars'. O plural fica guardado apenas no substantivo!\""
                                 : "\"Many students forget that Adjectives (colors, sizes) NEVER go into plural. We say 'The red cars', never 'The reds cars'. The plural is only kept in the noun!\""}
                         </p>
@@ -1854,7 +1854,7 @@ const ColorsAdjectives = ({ isPortuguese }: { isPortuguese: boolean }) => {
                             {isPortuguese ? "Dando Vida ao Mundo" : "Giving Life to the World"}
                         </h3>
                         <p className="text-indigo-100 text-sm leading-relaxed italic">
-                            {isPortuguese 
+                            {isPortuguese
                                 ? "\"Adjetivos são os temperos da língua. Sem eles, as frases são insossas. Hoje vamos colorir seu vocabulário com dezenas de cores e os opostos mais importantes. Preste atenção: em inglês, a descrição vem ANTES da coisa!\""
                                 : "\"Adjectives are the spices of language. Without them, sentences are bland. Today we will color your vocabulary with dozens of colors and the most important opposites. Pay attention: in English, the description comes BEFORE the thing!\""
                             }
@@ -1877,7 +1877,7 @@ const ColorsAdjectives = ({ isPortuguese }: { isPortuguese: boolean }) => {
                         <h5 className="text-xs font-black uppercase tracking-widest text-slate-400 pl-2">{lib.category}</h5>
                         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-6 gap-3">
                             {lib.colors.map(c => (
-                                <button 
+                                <button
                                     key={c.name}
                                     onClick={() => speak(c.name)}
                                     className={`group h-24 rounded-2xl flex flex-col items-center justify-center shadow-sm hover:scale-105 transition-all relative overflow-hidden border ${c.border ? 'border-slate-200' : 'border-transparent'}`}
@@ -1986,7 +1986,7 @@ const ColorsAdjectives = ({ isPortuguese }: { isPortuguese: boolean }) => {
                     <div className="grid md:grid-cols-2 gap-10">
                         <div>
                             <p className="text-indigo-800 text-sm leading-relaxed mb-6">
-                                {isPortuguese 
+                                {isPortuguese
                                     ? <>Em inglês, o adjetivo (qualidade) quase sempre vem <strong>ANTES</strong> do substantivo (objeto/pessoa). No português dizemos "carro azul", no inglês dizemos "azul carro".</>
                                     : <>In English, the adjective (quality) almost always comes <strong>BEFORE</strong> the noun (object/person). We don't say "car blue", we say "blue car".</>
                                 }
@@ -2015,7 +2015,7 @@ const ColorsAdjectives = ({ isPortuguese }: { isPortuguese: boolean }) => {
                                 {isPortuguese ? "Exceção: Com o Verb TO BE" : "Exception: With Verb TO BE"}
                             </h6>
                             <p className="text-xs text-indigo-700 leading-relaxed mb-4">
-                                {isPortuguese 
+                                {isPortuguese
                                     ? "Se estivermos usando o Verb To Be, o adjetivo vem depois do verbo, assim como no português."
                                     : "If we are using the Verb To Be, the adjective comes after the verb, just like in many other languages."}
                             </p>
@@ -2049,7 +2049,7 @@ const ColorsAdjectives = ({ isPortuguese }: { isPortuguese: boolean }) => {
                                 {isPortuguese ? "Sem Plural para Adjetivos!" : "No Plural for Adjectives!"}
                             </h5>
                             <p className="text-sm text-amber-800 leading-relaxed">
-                                {isPortuguese 
+                                {isPortuguese
                                     ? <>Nunca coloque adjetivos no plural. O "S" vai apenas no substantivo. Dizemos <b>"Big houses"</b>, não <s>"Bigs houses"</s>.</>
                                     : <>Never put adjectives in plural. The "S" only goes on the noun. We say <b>"Big houses"</b>, not <s>"Bigs houses"</s>.</>
                                 }
@@ -2065,7 +2065,7 @@ const ColorsAdjectives = ({ isPortuguese }: { isPortuguese: boolean }) => {
                                 {isPortuguese ? "Aumentando a Intensidade" : "Boosting Intensity"}
                             </h5>
                             <p className="text-sm text-amber-800 leading-relaxed mb-3">
-                                {isPortuguese 
+                                {isPortuguese
                                     ? "Use estas palavras para dar mais força aos seus adjetivos:"
                                     : "Use these words to give more strength to your adjectives:"}
                             </p>
@@ -2085,7 +2085,7 @@ const ColorsAdjectives = ({ isPortuguese }: { isPortuguese: boolean }) => {
                 <div>
                     <h6 className="font-black text-rose-900 uppercase text-xs tracking-widest mb-1">{isPortuguese ? "Desafio Final" : "Final Challenge"}</h6>
                     <p className="text-sm text-rose-800 italic leading-relaxed">
-                        {isPortuguese 
+                        {isPortuguese
                             ? "\"Olhe ao seu redor agora. Escolha 3 objetos e tente descrevê-los usando uma cor e um adjetivo. Por exemplo: 'A blue small phone'. Pratique isso todo dia e você pensará em inglês em semanas!\""
                             : "\"Look around you now. Pick 3 objects and try to describe them using a color and an adjective. For example: 'A blue small phone'. Practice this every day and you'll be thinking in English in weeks!\""}
                     </p>
@@ -2134,7 +2134,7 @@ const NumbersZeroToTwenty = ({ isPortuguese }: { isPortuguese: boolean }) => {
                             {isPortuguese ? "Matthew's Counting Lab" : "Matthew's Counting Lab"}
                         </h3>
                         <p className="text-indigo-100 text-sm leading-relaxed italic">
-                            {isPortuguese 
+                            {isPortuguese
                                 ? "\"Números são a batida do coração da lógica. Sem eles, você não sabe sua idade, não paga o café e não dá seu telefone. O segredo de hoje está no sufixo '-teen'. Se você acentuar o som final corretamente, o mundo te entenderá perfeitamente!\""
                                 : "\"Numbers are the heartbeat of logic. Without them, you don't know your age, you can't pay for coffee, and you can't give your phone number. Today's secret lies in the '-teen' suffix. If you stress that final sound correctly, the world will understand you perfectly!\""
                             }
@@ -2153,8 +2153,8 @@ const NumbersZeroToTwenty = ({ isPortuguese }: { isPortuguese: boolean }) => {
                 </div>
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
                     {basicNumbers.map(item => (
-                        <button 
-                            key={item.n} 
+                        <button
+                            key={item.n}
                             onClick={() => speak(item.w)}
                             className="group bg-white p-5 rounded-[2rem] border border-slate-100 shadow-sm hover:border-indigo-500 hover:shadow-xl transition-all flex flex-col items-center relative overflow-hidden"
                         >
@@ -2183,8 +2183,8 @@ const NumbersZeroToTwenty = ({ isPortuguese }: { isPortuguese: boolean }) => {
                 </div>
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
                     {teenNumbers.map(item => (
-                        <button 
-                            key={item.n} 
+                        <button
+                            key={item.n}
                             onClick={() => speak(item.w)}
                             className="group bg-white p-6 rounded-[2.5rem] border-2 border-emerald-50 shadow-sm hover:border-emerald-500 hover:shadow-2xl transition-all flex flex-col items-center text-center relative"
                         >
@@ -2210,10 +2210,10 @@ const NumbersZeroToTwenty = ({ isPortuguese }: { isPortuguese: boolean }) => {
                     <div className="text-center md:text-left flex-1">
                         <div className="flex items-center gap-3 justify-center md:justify-start mb-2">
                             <h4 className="text-4xl font-serif-display">Twenty</h4>
-                            <button onClick={() => speak("Twenty")} className="p-2 bg-indigo-700 rounded-full hover:bg-indigo-500 transition-colors"><Volume2 className="w-5 h-5"/></button>
+                            <button onClick={() => speak("Twenty")} className="p-2 bg-indigo-700 rounded-full hover:bg-indigo-500 transition-colors"><Volume2 className="w-5 h-5" /></button>
                         </div>
                         <p className="text-indigo-200 text-sm leading-relaxed max-w-lg">
-                            {isPortuguese 
+                            {isPortuguese
                                 ? "O número 20 marca o início das dezenas. Note a diferença no som final '-TY' em vez de '-TEEN'. Em muitos sotaques americanos, o 'T' quase não é pronunciado, soando como 'twenny'!"
                                 : "The number 20 marks the beginning of the tens. Note the difference in the final sound '-TY' instead of '-TEEN'. In many American accents, the 'T' is barely pronounced, sounding like 'twenny'!"
                             }
@@ -2233,7 +2233,7 @@ const NumbersZeroToTwenty = ({ isPortuguese }: { isPortuguese: boolean }) => {
                         {isPortuguese ? "Dica de Pronúncia: O Estresse Tônico" : "Pronunciation Tip: The Tonic Stress"}
                     </h5>
                     <p className="text-amber-800 text-sm leading-relaxed mb-6">
-                        {isPortuguese 
+                        {isPortuguese
                             ? <>Não confunda <b>13 (Thirteen)</b> com <b>30 (Thirty)</b>. Nos números "teen", a força da voz vai para o final: thir-<b>TEEN</b>. Nos números de dezena, a força vai para o início: <b>THIR</b>-ty.</>
                             : <>Don't confuse <b>13 (Thirteen)</b> with <b>30 (Thirty)</b>. In "teen" numbers, the stress is at the end: thir-<b>TEEN</b>. In tens, the stress is at the beginning: <b>THIR</b>-ty.</>
                         }
@@ -2256,7 +2256,7 @@ const NumbersZeroToTwenty = ({ isPortuguese }: { isPortuguese: boolean }) => {
                             <Baby className="w-5 h-5 text-indigo-400" />
                             {isPortuguese ? "Sua Idade" : "Your Age"}
                         </h5>
-                        <button 
+                        <button
                             onClick={() => speak("I am eighteen years old.")}
                             className="p-4 bg-slate-50 rounded-2xl hover:bg-indigo-50 transition-all text-left group"
                         >
@@ -2264,7 +2264,7 @@ const NumbersZeroToTwenty = ({ isPortuguese }: { isPortuguese: boolean }) => {
                             <p className="text-[10px] text-slate-400 mt-1">{isPortuguese ? "(Eu tenho 18 anos)" : "(Literal: I am 18 years old)"}</p>
                         </button>
                         <p className="text-xs text-slate-500 bg-indigo-50/50 p-3 rounded-xl border border-indigo-100">
-                            {isPortuguese 
+                            {isPortuguese
                                 ? "Lembre-se: em inglês não 'temos' idade, nós 'somos' idade (use o Verb TO BE)."
                                 : "Remember: in English we don't 'have' age, we 'are' age (use Verb TO BE)."}
                         </p>
@@ -2276,7 +2276,7 @@ const NumbersZeroToTwenty = ({ isPortuguese }: { isPortuguese: boolean }) => {
                             <Hash className="w-5 h-5 text-emerald-400" />
                             {isPortuguese ? "Número de Telefone" : "Phone Numbers"}
                         </h5>
-                        <button 
+                        <button
                             onClick={() => speak("Oh nine eight seven six")}
                             className="p-4 bg-slate-50 rounded-2xl hover:bg-emerald-50 transition-all text-left"
                         >
@@ -2310,7 +2310,7 @@ const NumbersZeroToTwenty = ({ isPortuguese }: { isPortuguese: boolean }) => {
                             {isPortuguese ? "O Som Fantasma: 'TH' em Three" : "The Ghost Sound: 'TH' in Three"}
                         </h5>
                         <p className="text-sm text-rose-800 leading-relaxed">
-                            {isPortuguese 
+                            {isPortuguese
                                 ? <>O número <b>3 (Three)</b> é um dos sons mais difíceis para brasileiros. Coloque a ponta da língua entre os dentes e sopre levemente. Se você disser "tree" (/triː/), você está dizendo <b>Árvore</b>. Pratique o sopro!</>
                                 : <>The number <b>3 (Three)</b> is a tricky sound. Place the tip of your tongue between your teeth and blow gently. If you say "tree" (/triː/), you're saying <b>Árvore</b>. Practice the blow!</>
                             }
@@ -2322,25 +2322,531 @@ const NumbersZeroToTwenty = ({ isPortuguese }: { isPortuguese: boolean }) => {
     );
 };
 
-const NumbersTwentyHundred = () => (
-    <div className="space-y-6 animate-fade-in">
-        <div className="grid grid-cols-3 gap-4">
-            {[20, 30, 40, 50, 60, 70, 80, 90, 100].map(n => (
-                <button key={n} onClick={() => speak(n.toString())} className="p-6 bg-white rounded-2xl shadow-sm font-bold text-xl text-center hover:bg-indigo-600 hover:text-white transition-all">{n}</button>
-            ))}
-        </div>
-    </div>
-);
+const NumbersTwentyHundred = ({ isPortuguese }: { isPortuguese: boolean }) => {
+    const tens = [
+        { n: 20, w: 'Twenty', ipa: '/ˈtwenti/', trans: 'Vinte', icon: '2️⃣0️⃣', hint: 'twen-y' },
+        { n: 30, w: 'Thirty', ipa: '/ˈθɜːrti/', trans: 'Trinta', icon: '3️⃣0️⃣', hint: 'thir-ty' },
+        { n: 40, w: 'Forty', ipa: '/ˈfɔːrti/', trans: 'Quarenta', icon: '4️⃣0️⃣', hint: 'for-ty' },
+        { n: 50, w: 'Fifty', ipa: '/ˈfɪfti/', trans: 'Cinquenta', icon: '5️⃣0️⃣', hint: 'fif-ty' },
+        { n: 60, w: 'Sixty', ipa: '/ˈsɪksti/', trans: 'Sessenta', icon: '6️⃣0️⃣', hint: 'six-ty' },
+        { n: 70, w: 'Seventy', ipa: '/ˈsevnti/', trans: 'Setenta', icon: '7️⃣0️⃣', hint: 'seven-ty' },
+        { n: 80, w: 'Eighty', ipa: '/ˈeɪti/', trans: 'Oitenta', icon: '8️⃣0️⃣', hint: 'ei-ty' },
+        { n: 90, w: 'Ninety', ipa: '/ˈnaɪnti/', trans: 'Noventa', icon: '9️⃣0️⃣', hint: 'nain-ty' },
+    ];
 
-const DemonstrativesNew = () => (
-    <div className="grid grid-cols-2 gap-6 animate-fade-in">
-        {['This', 'That', 'These', 'Those'].map(word => (
-            <button key={word} onClick={() => speak(word)} className="p-8 bg-white rounded-3xl border border-slate-100 text-center shadow-sm hover:border-indigo-400 transition-all">
-                <h4 className="font-bold text-indigo-600 text-3xl">{word}</h4>
-            </button>
-        ))}
-    </div>
-);
+    return (
+        <div className="space-y-12 animate-fade-in pb-20">
+            {/* Senior Teacher Intro */}
+            <div className="relative p-8 rounded-[2rem] bg-indigo-900 text-white overflow-hidden shadow-2xl">
+                <div className="absolute top-0 right-0 p-4 opacity-10"><Calculator className="w-32 h-32" /></div>
+                <div className="relative z-10 flex flex-col md:flex-row gap-6 items-center">
+                    <div className="w-20 h-20 rounded-full bg-indigo-500 flex items-center justify-center text-4xl shadow-lg border-2 border-indigo-400">👨‍🏫</div>
+                    <div className="flex-1">
+                        <h3 className="text-2xl font-serif-display mb-2">
+                            {isPortuguese ? "Dominando as Dezenas" : "Mastering the Tens"}
+                        </h3>
+                        <p className="text-indigo-100 text-sm leading-relaxed italic">
+                            {isPortuguese
+                                ? "\"Parabéns! Você já sabe contar até 19. Agora, o segredo é simples: aprenda 8 palavras (20, 30... 90) e você saberá contar até 99 instantaneamente! O padrão é sempre o mesmo: Dezena + Unidade. Vamos desbloquear esse superpoder?\""
+                                : "\"Congratulations! You can already count to 19. Now, the secret is simple: learn 8 words (20, 30... 90) and you'll know how to count to 99 instantly! The pattern is always the same: Ten + Unit. Let's unlock this superpower?\""
+                            }
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            {/* The Tens Grid */}
+            <section className="space-y-6">
+                <div className="flex items-center gap-3">
+                    <div className="p-2 bg-indigo-100 rounded-lg text-indigo-600"><Layers className="w-5 h-5" /></div>
+                    <h4 className="text-2xl font-bold text-slate-800">
+                        {isPortuguese ? "As Dezenas Cheias" : "The Round Tens"}
+                    </h4>
+                </div>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    {tens.map(item => (
+                        <button
+                            key={item.n}
+                            onClick={() => speak(item.w)}
+                            className="group bg-white p-8 rounded-[2rem] border border-slate-100 shadow-sm hover:border-indigo-500 hover:shadow-xl transition-all flex flex-col items-center relative overflow-hidden"
+                        >
+                            <span className="text-3xl mb-3 tracking-widest">{item.icon}</span>
+                            <h5 className="font-black text-slate-800 text-2xl group-hover:text-indigo-600 transition-colors">{item.w}</h5>
+                            <div className="flex flex-col items-center mt-1">
+                                <span className="text-[10px] font-mono text-slate-400">{item.ipa}</span>
+                                {isPortuguese && <span className="text-[9px] font-bold text-indigo-300 uppercase mt-0.5">({item.trans})</span>}
+                            </div>
+                            <Volume2 className="w-4 h-4 text-indigo-200 mt-3 opacity-0 group-hover:opacity-100 transition-opacity" />
+                        </button>
+                    ))}
+                </div>
+            </section>
+
+            {/* The Logic: Building Numbers */}
+            <div className="p-8 bg-white rounded-[2.5rem] border border-slate-100 shadow-sm">
+                <h4 className="font-bold text-slate-800 text-lg mb-6 flex items-center gap-2">
+                    <Wrench className="w-5 h-5 text-emerald-500" />
+                    {isPortuguese ? "Como montar qualquer número" : "How to build any number"}
+                </h4>
+                <div className="flex flex-col md:flex-row items-center justify-center gap-4 text-center">
+                    <div className="p-6 bg-indigo-50 rounded-2xl border-2 border-indigo-100 w-full md:w-auto">
+                        <span className="block text-xs font-black uppercase text-indigo-400 mb-1">DECIMAL</span>
+                        <div className="text-2xl font-black text-indigo-800">Twenty</div>
+                    </div>
+                    <div className="text-slate-300 text-2xl font-black">+</div>
+                    <div className="p-6 bg-emerald-50 rounded-2xl border-2 border-emerald-100 w-full md:w-auto">
+                        <span className="block text-xs font-black uppercase text-emerald-400 mb-1">UNIT</span>
+                        <div className="text-2xl font-black text-emerald-800">One</div>
+                    </div>
+                    <div className="text-slate-300 text-2xl font-black">=</div>
+                    <button onClick={() => speak("Twenty-one")} className="p-6 bg-slate-800 text-white rounded-2xl shadow-xl hover:scale-105 transition-transform w-full md:w-auto">
+                        <span className="block text-xs font-black uppercase text-slate-500 mb-1">RESULT</span>
+                        <div className="text-3xl font-black">Twenty-one</div>
+                    </button>
+                </div>
+                <p className="text-center text-slate-500 text-sm mt-6 italic bg-slate-50 p-4 rounded-xl">
+                    {isPortuguese
+                        ? "Simples assim! Basta juntar a dezena com a unidade. Exemplo: 45 = Forty-five. 99 = Ninety-nine."
+                        : "Simple as that! Just combine the ten with the unit. Example: 45 = Forty-five. 99 = Ninety-nine."}
+                </p>
+            </div>
+
+            {/* The Big Boss: 100 */}
+            <div className="bg-gradient-to-r from-amber-500 to-orange-500 rounded-[2.5rem] p-1 text-white shadow-xl transform hover:scale-[1.02] transition-transform cursor-pointer" onClick={() => speak("One hundred")}>
+                <div className="bg-white/10 backdrop-blur-lg rounded-[2.3rem] p-8 flex items-center justify-between">
+                    <div className="flex items-center gap-6">
+                        <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center text-4xl font-black text-amber-500 shadow-md">100</div>
+                        <div>
+                            <h3 className="text-3xl font-black mb-1">One Hundred</h3>
+                            <p className="text-white/80 text-sm font-medium">
+                                {isPortuguese ? "O primeiro número de três dígitos!" : "The first three-digit number!"}
+                            </p>
+                        </div>
+                    </div>
+                    <Volume2 className="w-8 h-8 text-white/50" />
+                </div>
+            </div>
+
+            {/* Real World Applications */}
+            <section className="grid md:grid-cols-2 gap-6">
+                <div className="p-8 bg-white rounded-[2rem] border border-slate-100 shadow-sm hover:border-indigo-200 transition-all">
+                    <h5 className="font-bold text-slate-700 mb-4 flex items-center gap-2">
+                        <User className="w-5 h-5 text-indigo-500" />
+                        {isPortuguese ? "Idades Avançadas" : "Older Ages"}
+                    </h5>
+                    <button onClick={() => speak("My father is fifty-two years old.")} className="w-full text-left space-y-2 group">
+                        <p className="text-lg font-medium text-slate-600 leading-relaxed italic">"My father is <span className="font-black text-indigo-600 underline">fifty-two</span> years old."</p>
+                        <Volume2 className="w-4 h-4 text-slate-300 group-hover:text-indigo-400" />
+                    </button>
+                </div>
+                <div className="p-8 bg-white rounded-[2rem] border border-slate-100 shadow-sm hover:border-emerald-200 transition-all">
+                    <h5 className="font-bold text-slate-700 mb-4 flex items-center gap-2">
+                        <ShoppingBag className="w-5 h-5 text-emerald-500" />
+                        {isPortuguese ? "Preços" : "Prices"}
+                    </h5>
+                    <button onClick={() => speak("That costs ninety-nine dollars.")} className="w-full text-left space-y-2 group">
+                        <p className="text-lg font-medium text-slate-600 leading-relaxed italic">"That costs <span className="font-black text-emerald-600 underline">ninety-nine</span> dollars."</p>
+                        <Volume2 className="w-4 h-4 text-slate-300 group-hover:text-emerald-400" />
+                    </button>
+                    <div className="mt-3 inline-block px-3 py-1 bg-emerald-50 text-emerald-700 text-xs font-bold rounded-lg transform -rotate-2">
+                        $99.00
+                    </div>
+                </div>
+            </section>
+        </div>
+    );
+};
+
+const BigNumbers = ({ isPortuguese }: { isPortuguese: boolean }) => {
+    return (
+        <div className="space-y-12 animate-fade-in pb-20">
+            {/* Senior Teacher Intro */}
+            <div className="relative p-8 rounded-[2rem] bg-indigo-900 text-white overflow-hidden shadow-2xl">
+                <div className="absolute top-0 right-0 p-4 opacity-10"><Globe className="w-32 h-32" /></div>
+                <div className="relative z-10 flex flex-col md:flex-row gap-6 items-center">
+                    <div className="w-20 h-20 rounded-full bg-indigo-500 flex items-center justify-center text-4xl shadow-lg border-2 border-indigo-400">👨‍🏫</div>
+                    <div className="flex-1">
+                        <h3 className="text-2xl font-serif-display mb-2">
+                            {isPortuguese ? "O Universo dos Grandes Números" : "The Universe of Big Numbers"}
+                        </h3>
+                        <p className="text-indigo-100 text-sm leading-relaxed italic">
+                            {isPortuguese
+                                ? "\"Você dominou até 100. Agora vamos olhar para o horizonte infinito! Centenas, Milhares, Milhões... A lógica se mantém: é tudo um jogo de padrões. E cuidado: sua conta bancária depende de saber usar a vírgula certa!\""
+                                : "\"You mastered up to 100. Now let's look at the infinite horizon! Hundreds, Thousands, Millions... The logic holds: it's all a game of patterns. And be careful: your bank account depends on using the right comma!\""
+                            }
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            {/* The Hundreds (100-900) */}
+            <section className="space-y-6">
+                <div className="flex items-center gap-3">
+                    <div className="p-2 bg-amber-100 rounded-lg text-amber-600"><Layout className="w-5 h-5" /></div>
+                    <h4 className="text-2xl font-bold text-slate-800">
+                        {isPortuguese ? "As Centenas" : "The Hundreds"}
+                    </h4>
+                </div>
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                    {[100, 200, 300, 400, 500, 600, 700, 800, 900].map(n => (
+                        <button
+                            key={n}
+                            onClick={() => speak(n === 100 ? "One Hundred" : `${n.toString()[0]} Hundred`)}
+                            className="p-4 bg-white rounded-2xl border border-slate-100 shadow-sm hover:border-amber-400 transition-all flex items-center justify-between group"
+                        >
+                            <span className="font-black text-slate-700 text-xl">{n}</span>
+                            <div className="text-right">
+                                <span className="block text-xs font-bold text-amber-600 group-hover:text-amber-700">
+                                    {n === 100 ? "One" : n.toString()[0]} Hundred
+                                </span>
+                            </div>
+                        </button>
+                    ))}
+                </div>
+            </section>
+
+            {/* The Titans: Big Numbers */}
+            <section className="space-y-6">
+                <div className="flex items-center gap-3">
+                    <div className="p-2 bg-rose-100 rounded-lg text-rose-600"><Globe className="w-5 h-5" /></div>
+                    <h4 className="text-2xl font-bold text-slate-800">
+                        {isPortuguese ? "Os Titãs (Números Grandes)" : "The Titans (Big Numbers)"}
+                    </h4>
+                </div>
+                <div className="grid gap-4">
+                    {[
+                        { n: "1,000", w: "One Thousand", p: "Mil", icon: "🏘️" },
+                        { n: "1,000,000", w: "One Million", p: "Milhão", icon: "🏙️" },
+                        { n: "1,000,000,000", w: "One Billion", p: "Bilhão", icon: "🌎" },
+                        { n: "1,000,000,000,000", w: "One Trillion", p: "Trilhão", icon: "🌌" },
+                        { n: "1,000,000,000,000,000", w: "One Quadrillion", p: "Quadrilhão", icon: "🪐" },
+                    ].map((item, idx) => (
+                        <button
+                            key={idx}
+                            onClick={() => speak(item.w)}
+                            className="w-full p-6 bg-slate-900 rounded-3xl text-white flex flex-col md:flex-row items-center justify-between gap-4 hover:scale-[1.01] transition-transform shadow-xl"
+                        >
+                            <div className="flex items-center gap-4">
+                                <span className="text-4xl">{item.icon}</span>
+                                <div className="text-left">
+                                    <h5 className="text-2xl font-black text-rose-400">{item.w}</h5>
+                                    <p className="text-slate-400 text-sm">{isPortuguese ? item.p : "Scale"}</p>
+                                </div>
+                            </div>
+                            <div className="px-4 py-2 bg-white/10 rounded-xl font-mono text-lg md:text-xl tracking-widest text-emerald-300 border border-white/5">
+                                {item.n}
+                            </div>
+                        </button>
+                    ))}
+                </div>
+            </section>
+
+            {/* The Architect's Rule: Logic of Big Numbers */}
+            <div className="p-8 bg-slate-50 rounded-[2.5rem] border border-slate-200 shadow-inner">
+                <div className="flex items-center gap-3 mb-8">
+                    <div className="p-2 bg-indigo-600 rounded-lg text-white"><Wrench className="w-5 h-5" /></div>
+                    <h4 className="text-2xl font-bold text-slate-800">
+                        {isPortuguese ? "A Regra do Arquiteto" : "The Architect's Rule"}
+                    </h4>
+                </div>
+
+                <div className="grid md:grid-cols-2 gap-8">
+                    {/* Rule 1: The Comma Breath */}
+                    <div className="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm hover:border-indigo-300 transition-all">
+                        <div className="w-12 h-12 bg-indigo-50 rounded-full flex items-center justify-center text-2xl mb-4 font-serif text-indigo-600">1</div>
+                        <h5 className="font-bold text-slate-800 mb-2">
+                            {isPortuguese ? "O Truque da Vírgula" : "The 'Name-Your-Comma' Trick"}
+                        </h5>
+                        <p className="text-slate-500 text-sm leading-relaxed mb-4">
+                            {isPortuguese
+                                ? "Em inglês, a vírgula não é silêncio. Ela tem NOME! Ao ver uma vírgula, diga o nome da escala."
+                                : "In English, the comma isn't silent. It has a NAME! When you see a comma, say the scale name."}
+                        </p>
+                        <div className="p-4 bg-slate-900 rounded-xl text-center">
+                            <span className="text-white font-mono text-lg">1<span className="text-amber-400 font-bold">,</span>000</span>
+                            <div className="text-[10px] text-amber-400 font-black uppercase tracking-widest mt-1">SAY "THOUSAND"</div>
+                        </div>
+                    </div>
+
+                    {/* Rule 2: No 'E' */}
+                    <div className="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm hover:border-rose-300 transition-all">
+                        <div className="w-12 h-12 bg-rose-50 rounded-full flex items-center justify-center text-2xl mb-4 font-serif text-rose-600">2</div>
+                        <h5 className="font-bold text-slate-800 mb-2">
+                            {isPortuguese ? "A Conexão Silenciosa" : "The Silent Connection"}
+                        </h5>
+                        <p className="text-slate-500 text-sm leading-relaxed mb-4">
+                            {isPortuguese
+                                ? "Cuidado! Não usamos 'E' entre milhares e centenas. Seja direto."
+                                : "Watch out! We don't use 'And' between thousands and hundreds. Be direct."}
+                        </p>
+                        <div className="space-y-2">
+                            <div className="flex items-center gap-2 text-xs font-mono text-rose-400 line-through opacity-60">
+                                🇧🇷 Mil <span className="font-bold border-b-2 border-rose-400">E</span> quinhentos
+                            </div>
+                            <div className="flex items-center gap-2 text-sm font-bold text-emerald-600 bg-emerald-50 px-3 py-2 rounded-lg">
+                                🇺🇸 One thousand <span className="w-4 h-4 rounded-full border border-emerald-200 bg-white flex items-center justify-center text-[8px] text-slate-300">∅</span> five hundred
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Visual Assembly Line */}
+                <div className="mt-8 pt-8 border-t border-slate-200">
+                    <p className="text-center text-xs font-bold text-slate-400 uppercase tracking-widest mb-6">
+                        {isPortuguese ? "Linha de Montagem: 1,234" : "Assembly Line: 1,234"}
+                    </p>
+                    <div className="flex flex-wrap items-center justify-center gap-2 md:gap-4">
+                        <div className="px-4 py-2 bg-white border-2 border-slate-200 rounded-xl font-black text-slate-700 shadow-sm">One</div>
+                        <div className="px-4 py-2 bg-amber-100 border-2 border-amber-200 text-amber-700 rounded-xl font-black text-xs uppercase tracking-widest shadow-sm">Thousand</div>
+                        <div className="px-4 py-2 bg-white border-2 border-slate-200 rounded-xl font-black text-slate-700 shadow-sm">Two</div>
+                        <div className="px-4 py-2 bg-emerald-100 border-2 border-emerald-200 text-emerald-700 rounded-xl font-black text-xs uppercase tracking-widest shadow-sm">Hundred</div>
+                        <div className="px-4 py-2 bg-white border-2 border-slate-200 rounded-xl font-black text-slate-700 shadow-sm">Thirty-four</div>
+                    </div>
+                </div>
+            </div>
+
+            {/* Mental Gymnastics: Compound Numbers */}
+            <section className="space-y-6">
+                <div className="flex items-center gap-3">
+                    <div className="p-2 bg-indigo-100 rounded-lg text-indigo-600"><ZapIcon className="w-5 h-5" /></div>
+                    <h4 className="text-2xl font-bold text-slate-800">
+                        {isPortuguese ? "Ginástica Mental (Números Compostos)" : "Mental Gymnastics (Compound Numbers)"}
+                    </h4>
+                </div>
+                <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
+                    {[
+                        { n: "150", w: "One hundred fifty", h: "100 + 50" },
+                        { n: "342", w: "Three hundred forty-two", h: "300 + 42" },
+                        { n: "1,500", w: "One thousand five hundred", h: "1000 + 500" },
+                        { n: "2,024", w: "Two thousand twenty-four", h: "Year / 2000 + 24" },
+                        { n: "10,500", w: "Ten thousand five hundred", h: "10k + 500" },
+                        { n: "150,000", w: "One hundred fifty thousand", h: "150k" },
+                    ].map(item => (
+                        <button
+                            key={item.n}
+                            onClick={() => speak(item.w)}
+                            className="p-6 bg-white rounded-3xl border border-slate-100 shadow-sm hover:border-indigo-400 hover:shadow-md transition-all text-left group"
+                        >
+                            <span className="block text-3xl font-black text-slate-700 mb-1 group-hover:text-indigo-600 transition-colors">{item.n}</span>
+                            <div className="h-0.5 w-8 bg-indigo-100 mb-3 group-hover:w-full transition-all duration-500"></div>
+                            <p className="text-sm font-bold text-slate-500 mb-1">{item.w}</p>
+                            <p className="text-[10px] font-mono text-indigo-300 bg-indigo-50 inline-block px-2 py-1 rounded-lg">{item.h}</p>
+                        </button>
+                    ))}
+                </div>
+            </section>
+
+            {/* Critical Tip: Comma vs Dot */}
+            <div className="p-8 bg-rose-50 border-2 border-rose-100 rounded-[2.5rem] flex flex-col md:flex-row gap-8 items-center relative overflow-hidden">
+                <div className="absolute top-0 right-0 p-4 opacity-5 rotate-12"><AlertTriangle className="w-32 h-32 text-rose-900" /></div>
+                <div className="w-20 h-20 bg-rose-500 rounded-[1.5rem] flex items-center justify-center text-white shadow-xl shrink-0">
+                    <span className="text-5xl font-black">,</span>
+                </div>
+                <div className="relative z-10">
+                    <h5 className="font-bold text-rose-900 text-lg mb-2">
+                        {isPortuguese ? "Perigo Financeiro: Vírgula vs Ponto!" : "Financial Danger: Comma vs Dot!"}
+                    </h5>
+                    <p className="text-rose-800 text-sm leading-relaxed mb-4">
+                        {isPortuguese
+                            ? <>Em inglês, invertemos tudo! Usamos <b>VÍRGULA (,)</b> para separar milhares e <b>PONTO (.)</b> para separar centavos. Se você escrever <b>1.000</b> em um cheque nos EUA, eles vão ler como <b>UM dólar</b>!</>
+                            : <>In English, we invert everything! We use <b>COMMA (,)</b> to separate thousands and <b>DOT (.)</b> to separate cents. If you write <b>1.000</b> on a check in the USA, they will read it as <b>ONE dollar</b>!</>
+                        }
+                    </p>
+                    <div className="flex gap-4">
+                        <div className="px-4 py-2 bg-white border border-rose-200 rounded-xl text-rose-900 font-mono text-sm">
+                            🇺🇸 $1,234.56
+                        </div>
+                        <div className="px-4 py-2 bg-white border border-rose-200 rounded-xl text-rose-900 font-mono text-sm">
+                            🇧🇷 R$ 1.234,56
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+
+const DemonstrativesNew = ({ isPortuguese }: { isPortuguese: boolean }) => {
+    const demos = [
+        {
+            word: 'This',
+            ipa: '/ðɪs/',
+            type: 'Singular',
+            dist: 'Near',
+            icon: '👇',
+            desc: isPortuguese ? 'Perto + Singular' : 'Near + Singular',
+            ex: 'This is my book.',
+            trans: 'Este é meu livro.'
+        },
+        {
+            word: 'That',
+            ipa: '/ðæt/',
+            type: 'Singular',
+            dist: 'Far',
+            icon: '👉',
+            desc: isPortuguese ? 'Longe + Singular' : 'Far + Singular',
+            ex: 'That is my car.',
+            trans: 'Aquele é meu carro.'
+        },
+        {
+            word: 'These',
+            ipa: '/ðiːz/',
+            type: 'Plural',
+            dist: 'Near',
+            icon: '👇👇',
+            desc: isPortuguese ? 'Perto + Plural' : 'Near + Plural',
+            ex: 'These are my keys.',
+            trans: 'Estas são minhas chaves.'
+        },
+        {
+            word: 'Those',
+            ipa: '/ðəʊz/',
+            type: 'Plural',
+            dist: 'Far',
+            icon: '👉👉',
+            desc: isPortuguese ? 'Longe + Plural' : 'Far + Plural',
+            ex: 'Those are stars.',
+            trans: 'Aquelas são estrelas.'
+        },
+    ];
+
+    return (
+        <div className="space-y-12 animate-fade-in pb-20">
+            {/* Senior Teacher Intro */}
+            <div className="relative p-8 rounded-[2rem] bg-indigo-900 text-white overflow-hidden shadow-2xl">
+                <div className="absolute top-0 right-0 p-4 opacity-10"><MapPin className="w-32 h-32" /></div>
+                <div className="relative z-10 flex flex-col md:flex-row gap-6 items-center">
+                    <div className="w-20 h-20 rounded-full bg-indigo-500 flex items-center justify-center text-4xl shadow-lg border-2 border-indigo-400">👨‍🏫</div>
+                    <div className="flex-1">
+                        <h3 className="text-2xl font-serif-display mb-2">
+                            {isPortuguese ? "O 'Laser' do Inglês" : "The 'Laser Pointer' of English"}
+                        </h3>
+                        <p className="text-indigo-100 text-sm leading-relaxed italic">
+                            {isPortuguese
+                                ? "\"Imagine que sua mão é um laser. Se você toca no objeto, usa THIS/THESE. Se você precisa apontar longe, usa THAT/THOSE. Não é sobre gramática, é sobre distância física. Vamos calibrar seu GPS mental?\""
+                                : "\"Imagine your hand is a laser. If you touch the object, use THIS/THESE. If you need to point far away, use THAT/THOSE. It's not about grammar, it's about physical distance. Let's calibrate your mental GPS?\""
+                            }
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            {/* The Logic Matrix */}
+            <section className="space-y-6">
+                <div className="flex items-center gap-3">
+                    <div className="p-2 bg-indigo-100 rounded-lg text-indigo-600"><Layout className="w-5 h-5" /></div>
+                    <h4 className="text-2xl font-bold text-slate-800">
+                        {isPortuguese ? "A Matriz da Distância" : "The Distance Matrix"}
+                    </h4>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                    {/* Header Row */}
+                    <div className="hidden md:block"></div>
+                    <div className="text-center font-black text-slate-400 uppercase tracking-widest text-xs mb-2 md:mb-0 col-span-2 md:col-span-1 flex justify-around">
+                        <span className="bg-emerald-50 text-emerald-600 px-3 py-1 rounded-lg">SINGULAR (1)</span>
+                        <span className="bg-blue-50 text-blue-600 px-3 py-1 rounded-lg">PLURAL (2+)</span>
+                    </div>
+
+                    {/* Near Row */}
+                    <div className="flex flex-col md:flex-row items-center justify-center gap-2 md:gap-4 p-8 bg-white rounded-[2rem] border-l-4 border-indigo-500 shadow-sm col-span-2">
+                        <div className="flex items-center gap-2 w-full md:w-32">
+                            <span className="text-2xl">👇</span>
+                            <div>
+                                <span className="block font-bold text-slate-700">{isPortuguese ? "PERTO" : "NEAR"}</span>
+                                <span className="text-[10px] text-slate-400 uppercase tracking-widest">HERE</span>
+                            </div>
+                        </div>
+                        <div className="flex-1 grid grid-cols-2 gap-4 w-full">
+                            <button onClick={() => speak("This")} className="p-4 bg-indigo-50 rounded-xl text-center hover:bg-indigo-100 transition-colors border border-indigo-100">
+                                <span className="block text-2xl font-black text-indigo-700">THIS</span>
+                                <span className="text-[10px] text-indigo-400 italic">/ðɪs/</span>
+                            </button>
+                            <button onClick={() => speak("These")} className="p-4 bg-indigo-50 rounded-xl text-center hover:bg-indigo-100 transition-colors border border-indigo-100">
+                                <span className="block text-2xl font-black text-indigo-700">THESE</span>
+                                <span className="text-[10px] text-indigo-400 italic">/ðiːz/</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    {/* Far Row */}
+                    <div className="flex flex-col md:flex-row items-center justify-center gap-2 md:gap-4 p-8 bg-white rounded-[2rem] border-l-4 border-amber-500 shadow-sm col-span-2">
+                        <div className="flex items-center gap-2 w-full md:w-32">
+                            <span className="text-2xl">👉</span>
+                            <div>
+                                <span className="block font-bold text-slate-700">{isPortuguese ? "LONGE" : "FAR"}</span>
+                                <span className="text-[10px] text-slate-400 uppercase tracking-widest">THERE</span>
+                            </div>
+                        </div>
+                        <div className="flex-1 grid grid-cols-2 gap-4 w-full">
+                            <button onClick={() => speak("That")} className="p-4 bg-amber-50 rounded-xl text-center hover:bg-amber-100 transition-colors border border-amber-100">
+                                <span className="block text-2xl font-black text-amber-700">THAT</span>
+                                <span className="text-[10px] text-amber-400 italic">/ðæt/</span>
+                            </button>
+                            <button onClick={() => speak("Those")} className="p-4 bg-amber-50 rounded-xl text-center hover:bg-amber-100 transition-colors border border-amber-100">
+                                <span className="block text-2xl font-black text-amber-700">THOSE</span>
+                                <span className="text-[10px] text-amber-400 italic">/ðəʊz/</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* Deep Dive Cards */}
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+                {demos.map((d, i) => (
+                    <button
+                        key={d.word}
+                        onClick={() => speak(d.ex)}
+                        className="group relative p-6 bg-white rounded-[2rem] border border-slate-100 hover:border-indigo-400 hover:shadow-xl transition-all text-left overflow-hidden flex flex-col h-full"
+                    >
+                        <div className="absolute top-0 right-0 p-3 opacity-5 text-4xl group-hover:scale-110 transition-transform">{d.icon}</div>
+
+                        <div className="mb-4">
+                            <span className={`inline-block px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest mb-2 ${d.dist === 'Near' ? 'bg-indigo-100 text-indigo-600' : 'bg-amber-100 text-amber-600'}`}>
+                                {d.dist.toUpperCase()}
+                            </span>
+                            <h4 className="text-3xl font-black text-slate-800 mb-1">{d.word}</h4>
+                            <span className="text-xs text-slate-400 font-mono">{d.ipa}</span>
+                        </div>
+
+                        <div className="flex-1">
+                            <p className="text-sm font-bold text-slate-500 mb-4 pb-4 border-b border-slate-50">
+                                {d.desc}
+                            </p>
+                            <p className="text-indigo-600 font-medium text-lg leading-snug mb-1 group-hover:translate-x-1 transition-transform">
+                                "{d.ex}"
+                            </p>
+                            {isPortuguese && (
+                                <p className="text-slate-400 text-xs italic">
+                                    "{d.trans}"
+                                </p>
+                            )}
+                        </div>
+                        <Volume2 className="absolute bottom-6 right-6 w-5 h-5 text-indigo-200 opacity-0 group-hover:opacity-100 transition-opacity" />
+                    </button>
+                ))}
+            </div>
+
+            {/* Pronunciation Tip - Zzz Sound */}
+            <div className="p-6 bg-emerald-50 rounded-3xl border border-emerald-100 flex items-start gap-4">
+                <div className="p-3 bg-white rounded-xl text-emerald-500 shadow-sm"><Mic className="w-6 h-6" /></div>
+                <div>
+                    <h5 className="font-bold text-emerald-800 mb-1">
+                        {isPortuguese ? "Dica de Mestre: O Som da Abelha 🐝" : "Pro Tip: The Bee Sound 🐝"}
+                    </h5>
+                    <p className="text-emerald-700 text-sm leading-relaxed">
+                        {isPortuguese
+                            ? <>Todos esses 4 começam com <b>TH</b> vibrante! Ponha a língua entre os dentes e faça um som de "ZZZ". Não é som de "D" e nem de "F". É <b>/ð/</b>!</>
+                            : <>All these 4 start with a voiced <b>TH</b>! Put your tongue between your teeth and make a "ZZZ" sound. It's not a "D" sound. It's <b>/ð/</b>!</>
+                        }
+                    </p>
+                </div>
+            </div>
+        </div>
+    );
+};
 
 const CountriesNationalities = ({ isPortuguese }: { isPortuguese: boolean }) => {
     const regionalData = [
@@ -2414,7 +2920,7 @@ const CountriesNationalities = ({ isPortuguese }: { isPortuguese: boolean }) => 
                             {isPortuguese ? "Matthew's Global Tour" : "Matthew's Global Tour"}
                         </h3>
                         <p className="text-indigo-100 text-sm leading-relaxed italic">
-                            {isPortuguese 
+                            {isPortuguese
                                 ? "\"De onde você é? Essa é a chave para abrir portas em qualquer conversa internacional. Hoje vamos mapear o mundo. Preste atenção nos sufixos: eles revelam padrões! Ah, e lembre-se: nacionalidades são SEMPRE com letra maiúscula!\""
                                 : "\"Where are you from? That's the key to opening doors in any international conversation. Today we map the world. Pay attention to the suffixes: they reveal patterns! Oh, and remember: nationalities are ALWAYS capitalized!\""
                             }
@@ -2453,10 +2959,10 @@ const CountriesNationalities = ({ isPortuguese }: { isPortuguese: boolean }) => 
                     </div>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                         {reg.items.map((item, i) => (
-                            <button 
+                            <button
                                 key={i}
                                 onClick={() => speak(`I am from ${item.country}. I am ${item.nat}.`)}
-                                className="group p-5 bg-white rounded-[2rem] border border-slate-100 shadow-sm hover:shadow-xl hover:border-indigo-300 transition-all text-left relative overflow-hidden"
+                                className="group p-8 bg-white rounded-[2rem] border border-slate-100 shadow-sm hover:shadow-xl hover:border-indigo-300 transition-all text-left relative overflow-hidden"
                             >
                                 <div className="flex justify-between items-start mb-4">
                                     <span className="text-3xl grayscale group-hover:grayscale-0 transition-all">{item.flag}</span>
@@ -2504,7 +3010,7 @@ const CountriesNationalities = ({ isPortuguese }: { isPortuguese: boolean }) => 
                                 {isPortuguese ? "Maiúsculas Obrigatórias" : "Mandatory Capitals"}
                             </h5>
                             <p className="text-sm text-amber-800 leading-relaxed">
-                                {isPortuguese 
+                                {isPortuguese
                                     ? <>Diferente do português, em inglês <strong>Nacionalidades</strong> e <strong>Idiomas</strong> são sempre escritos com letra maiúscula. Escreva <b>"Brazilian"</b> e <b>"English"</b>, nunca <s>"brazilian"</s>.</>
                                     : <>Unlike in some languages, in English <strong>Nationalities</strong> and <strong>Languages</strong> are always capitalized. Write <b>"Brazilian"</b> and <b>"English"</b>, never lowercase.</>
                                 }
@@ -2520,7 +3026,7 @@ const CountriesNationalities = ({ isPortuguese }: { isPortuguese: boolean }) => 
                                 {isPortuguese ? "O Artigo 'THE'" : "The 'THE' Article"}
                             </h5>
                             <p className="text-sm text-amber-800 leading-relaxed">
-                                {isPortuguese 
+                                {isPortuguese
                                     ? <>Geralmente não usamos "The" antes de nomes de países (<s>The Brazil</s>). Mas usamos se o país for uma coleção de estados ou ilhas: <b>The USA</b>, <b>The UK</b>, <b>The Bahamas</b>.</>
                                     : <>We usually don't use "The" before country names (<s>The Brazil</s>). However, we do use it if the country is a collection of states or islands: <b>The USA</b>, <b>The UK</b>, <b>The Bahamas</b>.</>
                                 }
@@ -2537,13 +3043,13 @@ const CountriesNationalities = ({ isPortuguese }: { isPortuguese: boolean }) => 
                     {isPortuguese ? "Hora de Aplicar!" : "Time to Apply!"}
                 </h5>
                 <p className="text-slate-400 text-sm mb-12 max-w-md mx-auto relative z-10 leading-relaxed italic">
-                    {isPortuguese 
+                    {isPortuguese
                         ? "\"Imagine que você está em um aeroporto internacional. Clique na pergunta para ouvir e tente responder usando seu país e nacionalidade!\""
                         : "\"Imagine you are at an international airport. Click the question to listen and try to answer using your country and nationality!\""}
                 </p>
-                
+
                 <div className="flex flex-col md:flex-row justify-center gap-8 relative z-10">
-                    <button 
+                    <button
                         onClick={() => speak("Where are you from?")}
                         className="p-8 bg-white/10 backdrop-blur-xl rounded-3xl border border-white/20 hover:bg-white/20 transition-all group"
                     >
@@ -2571,19 +3077,145 @@ const CountriesNationalities = ({ isPortuguese }: { isPortuguese: boolean }) => 
     );
 };
 
-const FamilyVocabulary = () => (
-    <div className="grid grid-cols-2 md:grid-cols-3 gap-4 animate-fade-in">
-        {['Mother', 'Father', 'Sister', 'Brother', 'Daughter', 'Son', 'Grandmother', 'Grandfather'].map(word => (
-            <button key={word} onClick={() => speak(word)} className="p-6 bg-white rounded-2xl shadow-sm font-bold text-slate-700 hover:text-indigo-600 border border-slate-100 transition-all">{word}</button>
-        ))}
-    </div>
-);
+const FamilyVocabulary = ({ isPortuguese }: { isPortuguese: boolean }) => {
+    const categories = [
+        {
+            id: 'nuclear',
+            label: isPortuguese ? 'Família Nuclear' : 'Nuclear Family',
+            icon: '🏠',
+            desc: isPortuguese ? 'Os alicerces da casa.' : 'The foundation of the house.',
+            color: 'indigo',
+            items: [
+                { w: 'Mother', p: 'Mãe', i: '👩', s: 'My mother is incredible.' },
+                { w: 'Father', p: 'Pai', i: '👨', s: 'My father is tall.' },
+                { w: 'Sister', p: 'Irmã', i: '👧', s: 'I have one sister.' },
+                { w: 'Brother', p: 'Irmão', i: '👦', s: 'He is my brother.' },
+                { w: 'Daughter', p: 'Filha', i: '👱‍♀️', s: 'She is my daughter.' },
+                { w: 'Son', p: 'Filho', i: '👱‍♂️', s: 'He is my son.' },
+                { w: 'Parents', p: 'Pais', i: '👪', s: 'I love my parents.' },
+                { w: 'Siblings', p: 'Irmãos (geral)', i: '👫', s: 'Do you have siblings?' },
+            ]
+        },
+        {
+            id: 'extended',
+            label: isPortuguese ? 'Família Estendida' : 'Extended Family',
+            icon: '🌳',
+            desc: isPortuguese ? 'Raízes e galhos.' : 'Roots and branches.',
+            color: 'emerald',
+            items: [
+                { w: 'Grandmother', p: 'Avó', i: '👵', s: 'My grandma is kind.' },
+                { w: 'Grandfather', p: 'Avô', i: '👴', s: 'My grandpa is wise.' },
+                { w: 'Aunt', p: 'Tia', i: '👩‍🦰', s: "My mother's sister." },
+                { w: 'Uncle', p: 'Tio', i: '👨‍🦰', s: "My father's brother." },
+                { w: 'Cousin', p: 'Primo(a)', i: '👯', s: 'My aunt\'s child.' },
+                { w: 'Nephew', p: 'Sobrinho', i: '👦', s: 'My sister\'s son.' },
+                { w: 'Niece', p: 'Sobrinha', i: '👧', s: 'My brother\'s daughter.' },
+            ]
+        },
+        {
+            id: 'inlaws',
+            label: isPortuguese ? 'Por Afinidade (Lei)' : 'In-Laws (The Law)',
+            icon: '⚖️',
+            desc: isPortuguese ? 'A família que a lei te deu.' : 'Family by marriage.',
+            color: 'amber',
+            items: [
+                { w: 'Mother-in-law', p: 'Sogra', i: '👵', s: "My spouse's mother." },
+                { w: 'Father-in-law', p: 'Sogro', i: '👴', s: "My spouse's father." },
+                { w: 'Brother-in-law', p: 'Cunhado', i: '🤵', s: "My sister's husband." },
+                { w: 'Sister-in-law', p: 'Cunhada', i: '👰', s: "My brother's wife." },
+            ]
+        }
+    ];
+
+    return (
+        <div className="space-y-12 animate-fade-in pb-20">
+            {/* Senior Teacher Intro */}
+            <div className="relative p-8 rounded-[2rem] bg-indigo-900 text-white overflow-hidden shadow-2xl">
+                <div className="absolute top-0 right-0 p-4 opacity-10"><Users className="w-32 h-32" /></div>
+                <div className="relative z-10 flex flex-col md:flex-row gap-6 items-center">
+                    <div className="w-20 h-20 rounded-full bg-indigo-500 flex items-center justify-center text-4xl shadow-lg border-2 border-indigo-400">👨‍🏫</div>
+                    <div className="flex-1">
+                        <h3 className="text-2xl font-serif-display mb-2">
+                            {isPortuguese ? "Quem é quem na festa?" : "Who is who at the party?"}
+                        </h3>
+                        <p className="text-indigo-100 text-sm leading-relaxed italic">
+                            {isPortuguese
+                                ? "\"Família em inglês é lógica pura! Usamos sufixos como '-in-law' (pela lei/casamento) e prefixos como 'Grand-' (uma geração acima). Vamos organizar essa árvore genealógica?\""
+                                : "\"Family in English is pure logic! We use suffixes like '-in-law' (by marriage) and prefixes like 'Grand-' (one generation up). Let's organize this family tree?\""
+                            }
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            {/* Categories */}
+            <div className="space-y-12">
+                {categories.map((cat) => (
+                    <section key={cat.id} className="space-y-6">
+                        <div className={`p-8 rounded-[2rem] border-l-4 shadow-sm bg-white ${cat.color === 'indigo' ? 'border-indigo-500' :
+                            cat.color === 'emerald' ? 'border-emerald-500' : 'border-amber-500'
+                            }`}>
+                            <div className="flex items-center gap-4 mb-2">
+                                <span className="text-3xl">{cat.icon}</span>
+                                <div>
+                                    <h4 className="text-2xl font-bold text-slate-800">{cat.label}</h4>
+                                    <p className="text-slate-400 text-sm font-medium uppercase tracking-widest">{cat.desc}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                            {cat.items.map((item) => (
+                                <button
+                                    key={item.w}
+                                    onClick={() => speak(`${item.w}. ${item.s}`)}
+                                    className="group relative p-8 bg-white rounded-[2rem] border border-slate-100 hover:border-indigo-400 hover:shadow-xl transition-all text-left flex flex-col h-full"
+                                >
+                                    <div className="text-4xl mb-4 group-hover:scale-110 transition-transform">{item.i}</div>
+                                    <div className="mb-2">
+                                        <h5 className="text-lg font-black text-slate-800 leading-tight">{item.w}</h5>
+                                        {isPortuguese && <span className="text-sm font-medium text-slate-400">{item.p}</span>}
+                                    </div>
+                                    <p className="text-[10px] text-indigo-400 font-mono mt-auto opacity-0 group-hover:opacity-100 transition-opacity">
+                                        "{item.s}"
+                                    </p>
+                                    <Volume2 className="absolute top-4 right-4 w-4 h-4 text-slate-200 group-hover:text-indigo-500 transition-colors" />
+                                </button>
+                            ))}
+                        </div>
+                    </section>
+                ))}
+            </div>
+
+            {/* Pro Tip: Grand & Great */}
+            <div className="p-8 bg-slate-50 rounded-[2.5rem] border border-slate-200 flex flex-col md:flex-row gap-8 items-center">
+                <div className="flex-1">
+                    <h5 className="font-bold text-xl text-slate-800 mb-4 flex items-center gap-2">
+                        <Star className="w-5 h-5 text-amber-500 shadow-sm" />
+                        {isPortuguese ? "O Poder do 'Great'" : "The Power of 'Great'"}
+                    </h5>
+                    <p className="text-slate-600 leading-relaxed mb-4">
+                        {isPortuguese
+                            ? "Quer subir mais uma geração? É só adicionar 'Great'! Grandfather (Avô) -> Great-grandfather (Bisavô) -> Great-great-grandfather (Tataravô). Funciona para o futuro também (Great-grandson)."
+                            : "Want to go up another generation? Just add 'Great'! Grandfather -> Great-grandfather. It works for the future too (Great-grandson)."
+                        }
+                    </p>
+                </div>
+                <div className="flex gap-2">
+                    <div className="px-4 py-2 bg-white rounded-xl border border-slate-200 text-xs font-mono text-slate-400">Grand</div>
+                    <div className="px-4 py-2 bg-indigo-100 rounded-xl border border-indigo-200 text-xs font-black text-indigo-600">Great</div>
+                    <div className="px-4 py-2 bg-indigo-600 rounded-xl border border-indigo-700 text-xs font-black text-white">Great-Great...</div>
+                </div>
+            </div>
+        </div>
+    );
+};
 
 const PossessiveAdjectives = () => (
     <div className="space-y-3 animate-fade-in">
         {[
-            {s: 'I', p: 'My'}, {s: 'You', p: 'Your'}, {s: 'He', p: 'His'}, {s: 'She', p: 'Her'},
-            {s: 'It', p: 'Its'}, {s: 'We', p: 'Our'}, {s: 'They', p: 'Their'}
+            { s: 'I', p: 'My' }, { s: 'You', p: 'Your' }, { s: 'He', p: 'His' }, { s: 'She', p: 'Her' },
+            { s: 'It', p: 'Its' }, { s: 'We', p: 'Our' }, { s: 'They', p: 'Their' }
         ].map(item => (
             <div key={item.s} onClick={() => speak(`This is ${item.p} book.`)} className="flex justify-between items-center p-4 bg-white rounded-xl border border-slate-100 cursor-pointer hover:bg-slate-50 transition-all">
                 <span className="text-slate-500 font-medium">Subject: <strong className="text-slate-800">{item.s}</strong></span>
@@ -2644,7 +3276,7 @@ const DaysMonths = () => (
         </div>
         <div>
             <h4 className="font-bold text-xl mb-4 text-slate-800">Months</h4>
-             <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                 {['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'].map(month => (
                     <button key={month} onClick={() => speak(month)} className="p-3 bg-white rounded-xl shadow-sm border border-slate-100 font-bold text-slate-600 hover:text-indigo-600 transition-all text-sm">{month}</button>
                 ))}
@@ -2664,8 +3296,8 @@ const TellingTime = () => (
 const WhQuestions = () => (
     <div className="space-y-3 animate-fade-in">
         {[
-            {q: 'What', a: 'Thing / Object'}, {q: 'Where', a: 'Place / Location'}, {q: 'When', a: 'Time / Date'},
-            {q: 'Who', a: 'Person'}, {q: 'Why', a: 'Reason'}, {q: 'How', a: 'Method / Manner'}
+            { q: 'What', a: 'Thing / Object' }, { q: 'Where', a: 'Place / Location' }, { q: 'When', a: 'Time / Date' },
+            { q: 'Who', a: 'Person' }, { q: 'Why', a: 'Reason' }, { q: 'How', a: 'Method / Manner' }
         ].map(item => (
             <button key={item.q} onClick={() => speak(item.q)} className="w-full flex justify-between items-center p-6 bg-white rounded-2xl border border-slate-100 shadow-sm hover:border-indigo-400 transition-all">
                 <span className="font-bold text-3xl text-indigo-600">{item.q}</span>
@@ -2698,11 +3330,11 @@ const DailyRoutine = () => (
 
 const AdverbsFrequency = () => (
     <div className="space-y-4 animate-fade-in">
-        {[{w: 'Always', p: '100%'}, {w: 'Usually', p: '80%'}, {w: 'Often', p: '60%'}, {w: 'Sometimes', p: '40%'}, {w: 'Never', p: '0%'}].map(item => (
+        {[{ w: 'Always', p: '100%' }, { w: 'Usually', p: '80%' }, { w: 'Often', p: '60%' }, { w: 'Sometimes', p: '40%' }, { w: 'Never', p: '0%' }].map(item => (
             <button key={item.w} onClick={() => speak(`I ${item.w.toLowerCase()} study English.`)} className="flex items-center gap-6 w-full p-6 bg-white rounded-3xl border border-slate-100 hover:shadow-md transition-all">
                 <div className="font-bold text-2xl text-indigo-600 w-32 text-left">{item.w}</div>
                 <div className="flex-1 bg-slate-100 h-3 rounded-full overflow-hidden">
-                    <div className="bg-gradient-to-r from-indigo-500 to-indigo-400 h-full" style={{width: item.p}}></div>
+                    <div className="bg-gradient-to-r from-indigo-500 to-indigo-400 h-full" style={{ width: item.p }}></div>
                 </div>
                 <div className="text-sm font-black text-slate-400 tracking-tighter w-12">{item.p}</div>
             </button>
@@ -2801,26 +3433,26 @@ const UnderConstruction = ({ title, onBack }: any) => (
 
 const Sidebar = ({ activeModule, onToggleModule, activeSection, onSelectSection, onBack, currentLevel }: any) => {
     const modules = [
-        { id: 1, title: 'First Steps', icon: <Star className="w-4 h-4"/>, range: [0, 4] },
-        { id: 2, title: 'Nouns & Characteristics', icon: <BookOpen className="w-4 h-4"/>, range: [5, 9] },
-        { id: 3, title: 'Quantity & Pointers', icon: <Hash className="w-4 h-4"/>, range: [10, 12] },
-        { id: 4, title: 'Belonging & Family', icon: <User className="w-4 h-4"/>, range: [13, 15] },
-        { id: 5, title: 'Space & Existence', icon: <MapPin className="w-4 h-4"/>, range: [16, 18] },
-        { id: 6, title: 'Time & Routine', icon: <Clock className="w-4 h-4"/>, range: [19, 25] },
-        { id: 7, title: 'Interaction & Ability', icon: <MessageCircle className="w-4 h-4"/>, range: [26, 28] },
+        { id: 1, title: 'First Steps', icon: <Star className="w-4 h-4" />, range: [0, 4] },
+        { id: 2, title: 'Nouns & Characteristics', icon: <BookOpen className="w-4 h-4" />, range: [5, 9] },
+        { id: 3, title: 'Quantity & Pointers', icon: <Hash className="w-4 h-4" />, range: [10, 13] },
+        { id: 4, title: 'Belonging & Family', icon: <User className="w-4 h-4" />, range: [14, 16] },
+        { id: 5, title: 'Space & Existence', icon: <MapPin className="w-4 h-4" />, range: [17, 19] },
+        { id: 6, title: 'Time & Routine', icon: <Clock className="w-4 h-4" />, range: [20, 26] },
+        { id: 7, title: 'Interaction & Ability', icon: <MessageCircle className="w-4 h-4" />, range: [27, 29] },
     ];
-    
+
     const levelNames: any = { 1: 'Basic', 2: 'Pre-Intermediate', 3: 'Intermediate', 4: 'Advanced' };
 
     const getTitle = (idx: number) => {
         const titles: Record<number, string> = {
             0: 'Greetings & Farewells', 1: 'Alphabet & Spelling', 2: 'Subject Pronouns', 3: 'Verb To Be (+)', 4: 'Verb To Be (-/?)',
             5: 'Indefinite Articles', 6: 'Jobs & Occupations', 7: 'Singular/Plural', 8: 'Colors & Adjectives', 9: 'Countries & Nationalities',
-            10: 'Numbers 0-20', 11: 'Numbers 20-100', 12: 'Demonstratives',
-            13: 'Family Vocabulary', 14: 'Possessive Adjectives', 15: "Genitive Case ('s)",
-            16: 'House & Furniture', 17: 'Prepositions of Place', 18: 'There Is / There Are',
-            19: 'Days & Months', 20: 'Telling Time', 21: 'Wh- Questions', 22: 'Present Simple Rules', 23: 'Third Person S', 24: 'Daily Routine', 25: 'Adverbs of Frequency',
-            26: 'Object Pronouns', 27: 'Imperatives', 28: "Can / Can't"
+            10: 'Numbers 0-20', 11: 'Numbers 20-100', 12: 'Big Numbers', 13: 'Demonstrative Pronouns',
+            14: 'Family Members', 15: 'Possessive Adjectives', 16: "Genitive Case ('s)",
+            17: 'House & Furniture', 18: 'Prepositions of Place', 19: 'There Is / There Are',
+            20: 'Days & Months', 21: 'Telling Time', 22: 'Wh- Questions', 23: 'Present Simple Rules', 24: 'Third Person S', 25: 'Daily Routine', 26: 'Adverbs of Frequency',
+            27: 'Object Pronouns', 28: 'Imperatives', 29: "Can / Can't"
         };
         return titles[idx] || `Lesson ${idx + 1}`;
     };
@@ -2829,7 +3461,7 @@ const Sidebar = ({ activeModule, onToggleModule, activeSection, onSelectSection,
         <aside className="w-full md:w-80 sidebar-glass h-screen overflow-y-auto flex flex-col shadow-2xl relative z-20">
             <div className="p-8 border-b border-white/5 flex flex-col gap-6 sticky top-0 bg-[#0f172a]/80 backdrop-blur-xl z-10">
                 <button onClick={onBack} className="group flex items-center gap-2 text-slate-400 hover:text-indigo-400 transition-all text-xs font-bold tracking-widest uppercase">
-                    <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform"/> Back to Menu
+                    <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> Back to Menu
                 </button>
                 <div className="flex items-center gap-4">
                     <div className="w-1.5 h-10 bg-indigo-500 rounded-full shadow-[0_0_15px_rgba(99,102,241,0.5)]"></div>
@@ -2855,16 +3487,16 @@ const Sidebar = ({ activeModule, onToggleModule, activeSection, onSelectSection,
                                     <span className="truncate">{m.title}</span>
                                 </div>
                             </div>
-                            {activeModule === m.id ? <ChevronDown className="w-4 h-4 text-indigo-400"/> : <ChevronRight className="w-4 h-4 opacity-30"/>}
+                            {activeModule === m.id ? <ChevronDown className="w-4 h-4 text-indigo-400" /> : <ChevronRight className="w-4 h-4 opacity-30" />}
                         </button>
-                        
+
                         {activeModule === m.id && (
                             <div className="mt-1 ml-4 border-l border-white/5 space-y-1 pl-2 animate-fade-in">
                                 {Array.from({ length: m.range[1] - m.range[0] + 1 }, (_, i) => m.range[0] + i).map(idx => (
                                     <button key={idx} onClick={() => onSelectSection(idx)}
                                         className={`w-full text-left px-4 py-3 rounded-xl text-xs font-medium transition-all flex items-center gap-3 ${activeSection === idx ? 'bg-white/10 text-indigo-400 shadow-inner' : 'text-slate-500 hover:text-slate-300'}`}
                                     >
-                                        <div className={`w-1 h-1 rounded-full transition-all ${activeSection === idx ? 'bg-indigo-400 scale-150 shadow-[0_0_8px_rgba(129,140,248,0.8)]' : 'bg-slate-700'}`}/>
+                                        <div className={`w-1 h-1 rounded-full transition-all ${activeSection === idx ? 'bg-indigo-400 scale-150 shadow-[0_0_8px_rgba(129,140,248,0.8)]' : 'bg-slate-700'}`} />
                                         {getTitle(idx)}
                                     </button>
                                 ))}
@@ -2882,13 +3514,13 @@ const FloatingLanguageToggle = ({ isPortuguese, onToggle }: { isPortuguese: bool
     return (
         <div className="fixed bottom-10 left-1/2 -translate-x-1/2 md:left-auto md:right-12 md:translate-x-0 z-[100] animate-slide-up" style={{ animationDelay: '1s' }}>
             <div className="bg-white/80 backdrop-blur-xl p-1.5 rounded-2xl border border-indigo-100 flex items-center gap-1 shadow-2xl language-toggle-shadow">
-                <button 
+                <button
                     onClick={() => onToggle(false)}
                     className={`px-5 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 ${!isPortuguese ? 'bg-indigo-600 text-white shadow-lg' : 'text-slate-400 hover:text-slate-600'}`}
                 >
                     <span className="text-base">🇺🇸</span> English
                 </button>
-                <button 
+                <button
                     onClick={() => onToggle(true)}
                     className={`px-5 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 ${isPortuguese ? 'bg-indigo-600 text-white shadow-lg' : 'text-slate-400 hover:text-slate-600'}`}
                 >
@@ -2900,13 +3532,13 @@ const FloatingLanguageToggle = ({ isPortuguese, onToggle }: { isPortuguese: bool
 }
 
 export default function App() {
-    const [currentLevel, setCurrentLevel] = useState<number | null>(null); 
+    const [currentLevel, setCurrentLevel] = useState<number | null>(null);
     const [activeModule, setActiveModule] = useState<number | null>(1);
-    const [activeSection, setActiveSection] = useState(0); 
+    const [activeSection, setActiveSection] = useState(0);
     const [isPortuguese, setIsPortuguese] = useState(false);
 
     const renderContent = () => {
-        switch(activeSection) {
+        switch (activeSection) {
             case 0: return <GreetingsFarewells isPortuguese={isPortuguese} />;
             case 1: return <AlphabetSpelling isPortuguese={isPortuguese} />;
             case 2: return <SubjectPronouns isPortuguese={isPortuguese} />;
@@ -2918,24 +3550,25 @@ export default function App() {
             case 8: return <ColorsAdjectives isPortuguese={isPortuguese} />;
             case 9: return <CountriesNationalities isPortuguese={isPortuguese} />;
             case 10: return <NumbersZeroToTwenty isPortuguese={isPortuguese} />;
-            case 11: return <NumbersTwentyHundred />;
-            case 12: return <DemonstrativesNew />;
-            case 13: return <FamilyVocabulary />;
-            case 14: return <PossessiveAdjectives />;
-            case 15: return <GenitiveCase />;
-            case 16: return <HouseFurniture />;
-            case 17: return <PrepositionsPlace />;
-            case 18: return <ThereIsAre />;
-            case 19: return <DaysMonths />;
-            case 20: return <TellingTime />;
-            case 21: return <WhQuestions />;
-            case 22: return <PresentSimpleRules mode="base" />;
-            case 23: return <PresentSimpleRules mode="third" />;
-            case 24: return <DailyRoutine />;
-            case 25: return <AdverbsFrequency />;
-            case 26: return <InteractionSection type="object" />;
-            case 27: return <InteractionSection type="imp" />;
-            case 28: return <InteractionSection type="can" />;
+            case 11: return <NumbersTwentyHundred isPortuguese={isPortuguese} />;
+            case 12: return <BigNumbers isPortuguese={isPortuguese} />;
+            case 13: return <DemonstrativesNew isPortuguese={isPortuguese} />;
+            case 14: return <FamilyVocabulary isPortuguese={isPortuguese} />;
+            case 15: return <PossessiveAdjectives />;
+            case 16: return <GenitiveCase />;
+            case 17: return <HouseFurniture />;
+            case 18: return <PrepositionsPlace />;
+            case 19: return <ThereIsAre />;
+            case 20: return <DaysMonths />;
+            case 21: return <TellingTime />;
+            case 22: return <WhQuestions />;
+            case 23: return <PresentSimpleRules mode="base" />;
+            case 24: return <PresentSimpleRules mode="third" />;
+            case 25: return <DailyRoutine />;
+            case 26: return <AdverbsFrequency />;
+            case 27: return <InteractionSection type="object" />;
+            case 28: return <InteractionSection type="imp" />;
+            case 29: return <InteractionSection type="can" />;
             default: return <Placeholder title={`Lesson ${activeSection + 1}`} />;
         }
     };
@@ -2953,7 +3586,7 @@ export default function App() {
         <>
             <style>{globalStyles}</style>
             <div className="min-h-screen flex flex-col md:flex-row bg-[#f8fafc] relative">
-                <Sidebar 
+                <Sidebar
                     activeModule={activeModule}
                     onToggleModule={(id: any) => setActiveModule(activeModule === id ? null : id)}
                     activeSection={activeSection}
@@ -2977,7 +3610,7 @@ export default function App() {
                         </div>
                     </div>
                 </main>
-                
+
                 {/* Floating Language Switcher */}
                 <FloatingLanguageToggle isPortuguese={isPortuguese} onToggle={setIsPortuguese} />
             </div>
