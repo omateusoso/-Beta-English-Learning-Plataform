@@ -1,20 +1,34 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# Beta English Learning Platform
 
-# Run and deploy your AI Studio app
+Este é o repositório oficial da plataforma de inglês criada com Antigravity.
 
-This contains everything you need to run your app locally.
+## Como Retomar o Trabalho (Resuming Work)
 
-View your app in AI Studio: https://ai.studio/apps/drive/15mNMpUmlcvRefVUaPrZvqGoWxEnd-BlS
+Para continuar trabalhando neste projeto na próxima vez:
 
-## Run Locally
+1. **Abra a Pasta**: No Antigravity (ou VS Code), vá em `File > Open Folder` e selecione esta pasta:
+   `/Users/omateusosos/.gemini/antigravity/scratch/beta-english-platform`
+   
+2. **Inicie o Servidor**: Abra o terminal integrado e rode:
+   ```bash
+   npm run dev
+   ```
+   Acesse no navegador: `http://localhost:3000`
 
-**Prerequisites:**  Node.js
+## Como Salvar (Backup)
 
+Sempre que terminar uma sessão de trabalho, rode o "Ciclo de 3 Passos" no terminal para salvar no GitHub:
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+```bash
+git add .
+git commit -m "descrição do que fez hoje"
+git push
+```
+
+## Estrutura do Projeto
+- `App.tsx`: Contém todo o código principal (Conteúdo, Lógica, UI).
+- `index.css`: Estilos globais.
+- `.gemini/`: Onde ficam as anotações do Antigravity (Tarefas, Planos, Walkthroughs).
+
+---
+*Criado com Google DeepMind Antigravity*

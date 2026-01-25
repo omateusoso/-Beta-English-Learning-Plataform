@@ -15,8 +15,170 @@ import {
     Ear, Zap as FastIcon, Laptop, HardHat, Camera as PhotoIcon, Music as AudioIcon,
     ChefHat, ShoppingBag, Shield as SecurityIcon, Plane, Scale, Plus, Minus, IterationCw, Eye,
     Maximize, Minimize, Activity, Compass, Navigation,
-    CheckCircle2, XCircle, Trophy, AlertCircle
+    CheckCircle2, XCircle, Trophy, AlertCircle, LogIn, User as UserIcon, Mail, Lock as LockIcon, LogOut, Loader2
 } from 'lucide-react';
+import { auth } from './firebase';
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile } from 'firebase/auth';
+
+// --- Types ---
+interface User {
+    name: string;
+    surname: string;
+    email: string;
+    age?: string;
+    phone?: string;
+    avatar?: string;
+}
+
+// --- Auth Components ---
+const AuthModal = ({ isOpen, onClose, onLogin, onSignup, initialMode = 'signup' }: any) => {
+    const [mode, setMode] = useState<'login' | 'signup'>(initialMode);
+    const [formData, setFormData] = useState({ name: '', surname: '', age: '', email: '', phone: '', password: '' });
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState('');
+
+    useEffect(() => {
+        if (isOpen) {
+            setMode(initialMode);
+            setError('');
+        }
+    }, [isOpen, initialMode]);
+
+    if (!isOpen) return null;
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setError('');
+        setLoading(true);
+
+        if (mode === 'signup' && formData.password.length < 8) {
+            setError('Password must be at least 8 characters long.');
+            setLoading(false);
+            return;
+        }
+
+        try {
+            if (mode === 'signup') {
+                const userCredential = await createUserWithEmailAndPassword(auth, formData.email, formData.password);
+                // Ideally save extra data (surname, age, phone) to Firestore here
+                await updateProfile(userCredential.user, {
+                    displayName: `${formData.name} ${formData.surname}`,
+                    photoURL: `https://ui-avatars.com/api/?name=${formData.name}+${formData.surname}&background=6366f1&color=fff`
+                });
+                // Auth state change will handle the rest in App.tsx
+            } else {
+                await signInWithEmailAndPassword(auth, formData.email, formData.password);
+            }
+            onClose();
+        } catch (err: any) {
+            console.error(err);
+            if (err.code === 'auth/wrong-password') setError('Incorrect password.');
+            else if (err.code === 'auth/user-not-found') setError('No account found with this email.');
+            else if (err.code === 'auth/email-already-in-use') setError('Email already in use.');
+            else setError('Failed to authenticate. Please try again.');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    return (
+        <div className="fixed inset-0 z-[200] flex items-center justify-center p-4">
+            <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onClick={onClose}></div>
+            <div className="relative bg-white rounded-3xl p-8 max-w-md w-full shadow-2xl animate-fade-in">
+                <button onClick={onClose} className="absolute top-4 right-4 p-2 hover:bg-slate-100 rounded-full transition-colors"><X className="w-5 h-5 text-slate-400" /></button>
+
+                <div className="text-center mb-8">
+                    <div className="w-16 h-16 bg-indigo-50 rounded-2xl flex items-center justify-center mx-auto mb-4 text-indigo-600">
+                        {mode === 'login' ? <LogIn className="w-8 h-8" /> : <UserPlus className="w-8 h-8" />}
+                    </div>
+                    <h3 className="text-2xl font-serif-display text-slate-900">{mode === 'login' ? 'Welcome Back' : 'Create Account'}</h3>
+                    <p className="text-slate-500 text-sm mt-2">
+                        {mode === 'login' ? 'Enter your details to access your courses.' : 'Join thousands of students learning English.'}
+                    </p>
+                </div>
+
+                <form onSubmit={handleSubmit} className="space-y-4">
+                    {mode === 'signup' && (
+                        <>
+                            <div className="grid grid-cols-2 gap-4">
+                                <input required placeholder="Name" className="p-3 bg-slate-50 rounded-xl border border-slate-200 w-full focus:outline-none focus:border-indigo-500 transition-colors" value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} />
+                                <input required placeholder="Surname" className="p-3 bg-slate-50 rounded-xl border border-slate-200 w-full focus:outline-none focus:border-indigo-500 transition-colors" value={formData.surname} onChange={e => setFormData({ ...formData, surname: e.target.value })} />
+                            </div>
+                            <div className="grid grid-cols-2 gap-4">
+                                <input required type="number" placeholder="Age" className="p-3 bg-slate-50 rounded-xl border border-slate-200 w-full focus:outline-none focus:border-indigo-500 transition-colors" value={formData.age} onChange={e => setFormData({ ...formData, age: e.target.value })} />
+                                <input required type="tel" placeholder="Phone" className="p-3 bg-slate-50 rounded-xl border border-slate-200 w-full focus:outline-none focus:border-indigo-500 transition-colors" value={formData.phone} onChange={e => setFormData({ ...formData, phone: e.target.value })} />
+                            </div>
+                        </>
+                    )}
+                    <div className="relative">
+                        <Mail className="absolute left-3 top-3.5 w-5 h-5 text-slate-400" />
+                        <input required type="email" placeholder="Email Address" className="p-3 pl-10 bg-slate-50 rounded-xl border border-slate-200 w-full focus:outline-none focus:border-indigo-500 transition-colors" value={formData.email} onChange={e => setFormData({ ...formData, email: e.target.value })} />
+                    </div>
+                    <div className="relative">
+                        <LockIcon className="absolute left-3 top-3.5 w-5 h-5 text-slate-400" />
+                        <input required type="password" placeholder="Password (min 8 chars)" minLength={8} className="p-3 pl-10 bg-slate-50 rounded-xl border border-slate-200 w-full focus:outline-none focus:border-indigo-500 transition-colors" value={formData.password} onChange={e => setFormData({ ...formData, password: e.target.value })} />
+                    </div>
+
+                    {error && (
+                        <div className="p-3 bg-red-50 text-red-600 text-sm rounded-xl flex items-center gap-2">
+                            <AlertCircle className="w-4 h-4" /> {error}
+                        </div>
+                    )}
+
+                    <button type="submit" disabled={loading} className="w-full py-4 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white font-bold rounded-xl transition-all shadow-lg shadow-indigo-500/30 flex items-center justify-center gap-2">
+                        {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : (mode === 'login' ? 'Login' : 'Create Account')}
+                    </button>
+                </form>
+
+                <div className="mt-6 text-center text-sm text-slate-500">
+                    {mode === 'login' ? "Don't have an account? " : "Already have an account? "}
+                    <button onClick={() => setMode(mode === 'login' ? 'signup' : 'login')} className="font-bold text-indigo-600 hover:underline">
+                        {mode === 'login' ? 'Sign up' : 'Login'}
+                    </button>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+const ProfileHeader = ({ user, onLogout }: { user: User, onLogout: () => void }) => (
+    <div className="fixed top-6 right-6 z-50 animate-fade-in hidden md:block">
+        <div className="group relative">
+            <button className="flex items-center gap-3 bg-white/90 backdrop-blur pl-2 pr-4 py-1.5 rounded-full shadow-sm border border-slate-100 hover:shadow-md transition-all">
+                <img src={user.avatar} alt={user.name} className="w-8 h-8 rounded-full bg-indigo-100" />
+                <div className="text-left hidden lg:block">
+                    <div className="text-xs font-bold text-slate-700">{user.name}</div>
+                    <div className="text-[10px] text-slate-400">{user.email}</div>
+                </div>
+                <ChevronDown className="w-3 h-3 text-slate-300" />
+            </button>
+            <div className="absolute right-0 top-full mt-2 w-48 bg-white rounded-2xl shadow-xl border border-slate-100 p-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all transform origin-top-right">
+                <div className="p-3 border-b border-slate-50 mb-1 lg:hidden">
+                    <div className="text-sm font-bold text-slate-700">{user.name}</div>
+                    <div className="text-xs text-slate-400">{user.email}</div>
+                </div>
+                <button onClick={onLogout} className="w-full text-left flex items-center gap-2 p-2 rounded-xl text-sm font-medium text-rose-600 hover:bg-rose-50 transition-colors">
+                    <LogOut className="w-4 h-4" /> Logout
+                </button>
+            </div>
+        </div>
+    </div>
+);
+
+const SidebarProfile = ({ user, onLogout }: { user: User, onLogout: () => void }) => (
+    <div className="p-4 mt-auto border-t border-white/5 bg-[#0f172a]/50">
+        <div className="flex items-center gap-3 mb-3">
+            <img src={user.avatar} alt={user.name} className="w-10 h-10 rounded-full border-2 border-indigo-500/30" />
+            <div className="flex-1 min-w-0">
+                <div className="text-sm font-bold text-white truncate">{user.name}</div>
+                <div className="text-xs text-slate-400 truncate">{user.email}</div>
+            </div>
+        </div>
+        <button onClick={onLogout} className="w-full flex items-center justify-center gap-2 py-2 rounded-lg bg-white/5 hover:bg-white/10 text-xs font-medium text-slate-400 hover:text-white transition-colors">
+            <LogOut className="w-3 h-3" /> Sign Out
+        </button>
+    </div>
+);
 
 // --- Styles ---
 const globalStyles = `
@@ -3602,7 +3764,7 @@ const Placeholder = ({ title }: { title: string }) => <div className="p-12 bg-wh
 
 // --- LAYOUT COMPONENTS ---
 
-const WelcomeScreen = ({ onSelectLevel }: { onSelectLevel: (level: number) => void }) => (
+const WelcomeScreen = ({ onSelectLevel, user, onLogin, onSignup }: { onSelectLevel: (level: number) => void, user: User | null, onLogin: () => void, onSignup: () => void }) => (
     <div className="min-h-screen relative flex items-center justify-center overflow-hidden bg-[#0f172a]">
         <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-indigo-600/20 blur-[120px] rounded-full pointer-events-none"></div>
         <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-blue-600/10 blur-[150px] rounded-full pointer-events-none"></div>
@@ -3619,12 +3781,24 @@ const WelcomeScreen = ({ onSelectLevel }: { onSelectLevel: (level: number) => vo
                     Master the global language with a structured, high-level curriculum designed for clarity, rapid fluency, and professional growth.
                 </p>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 w-full max-w-7xl animate-fade-in">
-                <LevelCard title="Basic" desc="Essential foundations: Grammar, phonetics & basic vocabulary." icon={<ZapIcon className="w-6 h-6" />} onClick={() => onSelectLevel(1)} available color="from-indigo-600 to-indigo-700" />
-                <LevelCard title="Pre-Intermediate" desc="Expanding reach with complex structures." icon={<Layers className="w-6 h-6" />} onClick={() => onSelectLevel(2)} color="from-blue-600 to-blue-700" />
-                <LevelCard title="Intermediate" desc="Fluent conversations & professional writing." icon={<Globe className="w-6 h-6" />} onClick={() => onSelectLevel(3)} color="from-emerald-600 to-emerald-700" />
-                <LevelCard title="Advanced" desc="Native-level nuance & logic." icon={<Award className="w-6 h-6" />} onClick={() => onSelectLevel(4)} color="from-rose-600 to-rose-700" />
-            </div>
+
+            {!user ? (
+                <div className="flex gap-4 animate-fade-in">
+                    <button onClick={onLogin} className="px-8 py-4 bg-white/10 text-white border border-white/20 rounded-2xl font-bold hover:bg-white/20 transition-all flex items-center gap-2">
+                        <LogIn className="w-5 h-5" /> Login
+                    </button>
+                    <button onClick={onSignup} className="px-8 py-4 bg-indigo-600 text-white rounded-2xl font-bold hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-600/30 flex items-center gap-2">
+                        <UserPlus className="w-5 h-5" /> Create Account
+                    </button>
+                </div>
+            ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 w-full max-w-7xl animate-fade-in">
+                    <LevelCard title="Basic" desc="Essential foundations: Grammar, phonetics & basic vocabulary." icon={<ZapIcon className="w-6 h-6" />} onClick={() => onSelectLevel(1)} available color="from-indigo-600 to-indigo-700" />
+                    <LevelCard title="Pre-Intermediate" desc="Expanding reach with complex structures." icon={<Layers className="w-6 h-6" />} onClick={() => onSelectLevel(2)} color="from-blue-600 to-blue-700" />
+                    <LevelCard title="Intermediate" desc="Fluent conversations & professional writing." icon={<Globe className="w-6 h-6" />} onClick={() => onSelectLevel(3)} color="from-emerald-600 to-emerald-700" />
+                    <LevelCard title="Advanced" desc="Native-level nuance & logic." icon={<Award className="w-6 h-6" />} onClick={() => onSelectLevel(4)} color="from-rose-600 to-rose-700" />
+                </div>
+            )}
         </div>
     </div>
 );
@@ -3659,7 +3833,7 @@ const UnderConstruction = ({ title, onBack }: any) => (
     </div>
 );
 
-const Sidebar = ({ activeModule, onToggleModule, activeSection, onSelectSection, onBack, currentLevel }: any) => {
+const Sidebar = ({ activeModule, onToggleModule, activeSection, onSelectSection, onBack, currentLevel, user, onLogout }: any) => {
     const modules = [
         { id: 1, title: 'First Steps', icon: <Star className="w-4 h-4" />, range: [0, 4] },
         { id: 2, title: 'Nouns & Characteristics', icon: <BookOpen className="w-4 h-4" />, range: [5, 9] },
@@ -3733,6 +3907,9 @@ const Sidebar = ({ activeModule, onToggleModule, activeSection, onSelectSection,
                     </div>
                 ))}
             </div>
+
+            {/* Profile Footer */}
+            {user && <SidebarProfile user={user} onLogout={onLogout} />}
         </aside>
     );
 };
@@ -3764,6 +3941,39 @@ export default function App() {
     const [activeModule, setActiveModule] = useState<number | null>(1);
     const [activeSection, setActiveSection] = useState(0);
     const [isPortuguese, setIsPortuguese] = useState(false);
+
+    // Auth State
+    // Auth State
+    // Auth State
+    // Auth State
+    const [user, setUser] = useState<User | null>(null);
+    const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+    const [authMode, setAuthMode] = useState<'login' | 'signup'>('signup');
+    const [loadingAuth, setLoadingAuth] = useState(true);
+
+    // Firebase Auth Listener
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
+            if (firebaseUser) {
+                const [name, surname] = (firebaseUser.displayName || 'Learner ').split(' ');
+                setUser({
+                    name: name || 'Learner',
+                    surname: surname || '',
+                    email: firebaseUser.email || '',
+                    avatar: firebaseUser.photoURL || undefined
+                });
+            } else {
+                setUser(null);
+            }
+            setLoadingAuth(false);
+        });
+        return () => unsubscribe();
+    }, []);
+
+    const handleLogout = async () => {
+        await signOut(auth);
+        setCurrentLevel(null);
+    };
 
     const renderContent = () => {
         switch (activeSection) {
@@ -3801,8 +4011,32 @@ export default function App() {
         }
     };
 
+    if (loadingAuth) {
+        return (
+            <div className="min-h-screen flex items-center justify-center bg-slate-900 text-white">
+                <Loader2 className="w-8 h-8 animate-spin text-indigo-500" />
+            </div>
+        );
+    }
+
     if (!currentLevel) {
-        return <><style>{globalStyles}</style><WelcomeScreen onSelectLevel={setCurrentLevel} /></>;
+        return (
+            <>
+                <style>{globalStyles}</style>
+                <AuthModal
+                    isOpen={isAuthModalOpen}
+                    onClose={() => setIsAuthModalOpen(false)}
+                    initialMode={authMode}
+                />
+                <WelcomeScreen
+                    onSelectLevel={setCurrentLevel}
+                    user={user}
+                    onLogin={() => { setAuthMode('login'); setIsAuthModalOpen(true); }}
+                    onSignup={() => { setAuthMode('signup'); setIsAuthModalOpen(true); }}
+                />
+                {user && <ProfileHeader user={user} onLogout={handleLogout} />}
+            </>
+        );
     }
 
     if (currentLevel !== 1) {
@@ -3821,6 +4055,8 @@ export default function App() {
                     onSelectSection={setActiveSection}
                     onBack={() => setCurrentLevel(null)}
                     currentLevel={currentLevel}
+                    user={user}
+                    onLogout={handleLogout}
                 />
                 <main className="flex-1 h-screen overflow-y-auto p-6 md:p-12 lg:p-20 relative scroll-smooth no-scrollbar">
                     <div className="max-w-4xl mx-auto">
