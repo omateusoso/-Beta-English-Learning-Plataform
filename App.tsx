@@ -94,11 +94,7 @@ const AuthModal = ({ isOpen, onClose, initialMode = 'login' }: any) => {
                         <p className="text-slate-500">{mode === 'login' ? 'Enter your email to login instantly.' : 'Join to start your learning journey.'}</p>
                     </div>
 
-                    {/* Toggle */}
-                    <div className="flex bg-slate-100 p-1.5 rounded-xl mb-6">
-                        <button type="button" onClick={() => setMode('login')} className={`flex-1 py-2 rounded-lg text-sm font-bold transition-all ${mode === 'login' ? 'bg-white text-indigo-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}>Login</button>
-                        <button type="button" onClick={() => setMode('signup')} className={`flex-1 py-2 rounded-lg text-sm font-bold transition-all ${mode === 'signup' ? 'bg-white text-indigo-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}>Sign Up</button>
-                    </div>
+                    {/* Toggle Removed as per user request */}
 
                     <form onSubmit={handleSubmit} className="space-y-4">
                         {mode === 'signup' && (
@@ -140,7 +136,7 @@ const AuthModal = ({ isOpen, onClose, initialMode = 'login' }: any) => {
 
                         {!successMessage && (
                             <button type="submit" disabled={loading} className="w-full py-4 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white font-bold rounded-xl transition-all shadow-lg shadow-indigo-500/30 flex items-center justify-center gap-2">
-                                {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : (mode === 'login' ? 'Send Login Link' : 'Send Activation Link')}
+                                {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Send Activation Link'} {/* Always 'Send Activation Link' */}
                             </button>
                         )}
                     </form>
