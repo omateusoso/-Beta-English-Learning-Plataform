@@ -21,6 +21,7 @@ import {
 } from 'lucide-react';
 import { auth } from './firebase';
 import { signOut, onAuthStateChanged, updateProfile, sendSignInLinkToEmail, isSignInWithEmailLink, signInWithEmailLink } from 'firebase/auth';
+import { progressService, UserProgress } from './progressService';
 
 // --- Types ---
 interface User {
@@ -69,7 +70,7 @@ const AuthModal = ({ isOpen, onClose, initialMode = 'login' }: any) => {
 
             await sendSignInLinkToEmail(auth, formData.email, actionCodeSettings);
             window.localStorage.setItem('emailForSignIn', formData.email);
-            setSuccessMessage(`Magic link sent to ${formData.email}! Check your inbox.`);
+            setSuccessMessage(`Magic link sent to ${formData.email}! Check your inbox (or spam, maybe 😉).`);
         } catch (err: any) {
             console.error(err);
             setError('Failed to send link. Please try again.');
@@ -3769,7 +3770,7 @@ const Placeholder = ({ title }: { title: string }) => <div className="p-12 bg-wh
 
 // --- LAYOUT COMPONENTS ---
 
-const WelcomeScreen = ({ onSelectLevel, user, onLogin, onSignup }: { onSelectLevel: (level: number) => void, user: User | null, onLogin: () => void, onSignup: () => void }) => (
+const WelcomeScreen = ({ onSelectLevel, user, onLogin, onSignup, unlockedLevels = [1], completedCount = 0 }: any) => (
     <div className="min-h-screen relative flex items-center justify-center overflow-hidden bg-[#0f172a]">
         <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-indigo-600/20 blur-[120px] rounded-full pointer-events-none"></div>
         <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-blue-600/10 blur-[150px] rounded-full pointer-events-none"></div>
@@ -3798,17 +3799,46 @@ const WelcomeScreen = ({ onSelectLevel, user, onLogin, onSignup }: { onSelectLev
                 </div>
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 w-full max-w-7xl animate-fade-in">
-                    <LevelCard title="Basic" desc="Essential foundations: Grammar, phonetics & basic vocabulary." icon={<ZapIcon className="w-6 h-6" />} onClick={() => onSelectLevel(1)} available color="from-indigo-600 to-indigo-700" />
-                    <LevelCard title="Pre-Intermediate" desc="Expanding reach with complex structures." icon={<Layers className="w-6 h-6" />} onClick={() => onSelectLevel(2)} color="from-blue-600 to-blue-700" />
-                    <LevelCard title="Intermediate" desc="Fluent conversations & professional writing." icon={<Globe className="w-6 h-6" />} onClick={() => onSelectLevel(3)} color="from-emerald-600 to-emerald-700" />
-                    <LevelCard title="Advanced" desc="Native-level nuance & logic." icon={<Award className="w-6 h-6" />} onClick={() => onSelectLevel(4)} color="from-rose-600 to-rose-700" />
+                    <LevelCard
+                        title="Basic"
+                        desc="Essential foundations: Grammar, phonetics & basic vocabulary."
+                        icon={<ZapIcon className="w-6 h-6" />}
+                        onClick={() => onSelectLevel(1)}
+                        available={unlockedLevels.includes(1)}
+                        color="from-indigo-600 to-indigo-700"
+                        progress={unlockedLevels.includes(1) ? Math.min(100, Math.round((completedCount / 30) * 100)) : 0}
+                    />
+                    <LevelCard
+                        title="Pre-Intermediate"
+                        desc="Expanding reach with complex structures."
+                        icon={<Layers className="w-6 h-6" />}
+                        onClick={() => unlockedLevels.includes(2) && onSelectLevel(2)}
+                        available={unlockedLevels.includes(2)}
+                        color="from-blue-600 to-blue-700"
+                    />
+                    <LevelCard
+                        title="Intermediate"
+                        desc="Fluent conversations & professional writing."
+                        icon={<Globe className="w-6 h-6" />}
+                        onClick={() => unlockedLevels.includes(3) && onSelectLevel(3)}
+                        available={unlockedLevels.includes(3)}
+                        color="from-emerald-600 to-emerald-700"
+                    />
+                    <LevelCard
+                        title="Advanced"
+                        desc="Native-level nuance & logic."
+                        icon={<Award className="w-6 h-6" />}
+                        onClick={() => unlockedLevels.includes(4) && onSelectLevel(4)}
+                        available={unlockedLevels.includes(4)}
+                        color="from-rose-600 to-rose-700"
+                    />
                 </div>
             )}
         </div>
     </div>
 );
 
-const LevelCard = ({ title, desc, icon, onClick, available, color }: any) => (
+const LevelCard = ({ title, desc, icon, onClick, available, color, progress = 0 }: any) => (
     <button onClick={onClick} className={`group relative p-8 glass-card rounded-[2rem] text-left transition-all duration-500 flex flex-col h-full ${available ? 'hover:translate-y-[-8px] hover:shadow-2xl hover:shadow-indigo-500/20' : 'opacity-60 cursor-not-allowed'}`}>
         <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${available ? color : 'from-slate-700 to-slate-800'} flex items-center justify-center text-white mb-6 shadow-lg group-hover:scale-110 transition-transform`}>
             {icon}
@@ -3817,8 +3847,19 @@ const LevelCard = ({ title, desc, icon, onClick, available, color }: any) => (
             {title} {!available && <Lock className="w-4 h-4 text-slate-500" />}
         </h3>
         <p className="text-slate-400 text-sm leading-relaxed mb-8 flex-1">{desc}</p>
+
+        {/* Progress Bar */}
+        {available && progress > 0 && (
+            <div className="mb-6 w-full bg-slate-700/50 rounded-full h-2 overflow-hidden">
+                <div className="bg-gradient-to-r from-emerald-400 to-emerald-500 h-full rounded-full transition-all duration-1000" style={{ width: `${progress}%` }}></div>
+            </div>
+        )}
+
         {available ? (
-            <div className="inline-flex items-center gap-2 text-indigo-400 font-bold text-sm">Start Learning <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" /></div>
+            <div className="inline-flex items-center gap-2 text-indigo-400 font-bold text-sm">
+                {progress > 0 ? (progress === 100 ? 'Completed' : 'Continue Learning') : 'Start Learning'}
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            </div>
         ) : (
             <div className="inline-flex items-center gap-2 text-slate-600 font-bold text-sm">Locked</div>
         )}
@@ -3838,7 +3879,7 @@ const UnderConstruction = ({ title, onBack }: any) => (
     </div>
 );
 
-const Sidebar = ({ activeModule, onToggleModule, activeSection, onSelectSection, onBack, currentLevel, user, onLogout }: any) => {
+const Sidebar = ({ activeModule, onToggleModule, activeSection, onSelectSection, onBack, currentLevel, user, onLogout, completedLessons = [] }: any) => {
     const modules = [
         { id: 1, title: 'First Steps', icon: <Star className="w-4 h-4" />, range: [0, 4] },
         { id: 2, title: 'Nouns & Characteristics', icon: <BookOpen className="w-4 h-4" />, range: [5, 9] },
@@ -3905,6 +3946,7 @@ const Sidebar = ({ activeModule, onToggleModule, activeSection, onSelectSection,
                                     >
                                         <div className={`w-1 h-1 rounded-full transition-all ${activeSection === idx ? 'bg-indigo-400 scale-150 shadow-[0_0_8px_rgba(129,140,248,0.8)]' : 'bg-slate-700'}`} />
                                         {getTitle(idx)}
+                                        {completedLessons.includes(idx) && <CheckCircle2 className="w-3 h-3 text-emerald-500 ml-auto" />}
                                     </button>
                                 ))}
                             </div>
@@ -3953,6 +3995,40 @@ export default function App() {
     const [user, setUser] = useState<User | null>(null);
     const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
     const [authMode, setAuthMode] = useState<'login' | 'signup'>('signup');
+    const [progress, setProgress] = useState<UserProgress>({ completedLessons: [], unlockedLevels: [1] });
+
+    // Load Progress
+    useEffect(() => {
+        if (user && auth.currentUser) {
+            progressService.getUserProgress(auth.currentUser.uid).then(setProgress);
+        } else {
+            setProgress({ completedLessons: [], unlockedLevels: [1] });
+        }
+    }, [user]);
+
+    const handleLessonComplete = async (lessonId: number) => {
+        if (!auth.currentUser) return;
+
+        const isCompleted = progress.completedLessons.includes(lessonId);
+        const newCompleted = isCompleted
+            ? progress.completedLessons.filter(id => id !== lessonId)
+            : [...progress.completedLessons, lessonId];
+
+        // Optimistic Update
+        setProgress(prev => ({ ...prev, completedLessons: newCompleted }));
+
+        await progressService.toggleLessonCompletion(auth.currentUser.uid, lessonId, !isCompleted);
+
+        // Check Level Completion (Simple Check: If > 25 lessons done, unlock Level 2)
+        // In a real app, we'd check against a specific list of IDs for Level 1.
+        // For this Beta, let's say Level 1 has 30 lessons (0-29).
+        if (!isCompleted && newCompleted.length >= 25 && !progress.unlockedLevels.includes(2)) {
+            await progressService.unlockLevel(auth.currentUser.uid, 2);
+            setProgress(prev => ({ ...prev, unlockedLevels: [...prev.unlockedLevels, 2] }));
+            alert("🎉 Congratulations! You've unlocked Level 2: Pre-Intermediate!");
+        }
+    };
+
 
     // Firebase Auth Listener & Deep Link Handler
     useEffect(() => {
@@ -4063,6 +4139,8 @@ export default function App() {
                     user={user}
                     onLogin={() => { setAuthMode('login'); setIsAuthModalOpen(true); }}
                     onSignup={() => { setAuthMode('signup'); setIsAuthModalOpen(true); }}
+                    unlockedLevels={progress.unlockedLevels}
+                    completedCount={progress.completedLessons.length}
                 />
                 {user && <ProfileHeader user={user} onLogout={handleLogout} />}
             </>
@@ -4101,6 +4179,27 @@ export default function App() {
                         </header>
                         <div className="pb-32">
                             {renderContent()}
+
+                            {/* Completion Button */}
+                            <div className="mt-16 pt-8 border-t border-slate-200 flex justify-end">
+                                <button
+                                    onClick={() => handleLessonComplete(activeSection)}
+                                    className={`flex items-center gap-3 px-8 py-4 rounded-2xl font-bold transition-all ${progress.completedLessons.includes(activeSection)
+                                        ? 'bg-green-100 text-green-700 hover:bg-green-200 border border-green-200'
+                                        : 'bg-indigo-600 text-white hover:bg-indigo-700 shadow-xl shadow-indigo-500/30'
+                                        }`}
+                                >
+                                    {progress.completedLessons.includes(activeSection) ? (
+                                        <>
+                                            <CheckCircle2 className="w-6 h-6" /> Lesson Completed
+                                        </>
+                                    ) : (
+                                        <>
+                                            Mark as Complete <ArrowRight className="w-5 h-5" />
+                                        </>
+                                    )}
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </main>
