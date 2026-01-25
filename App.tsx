@@ -168,19 +168,19 @@ const ProfileHeader = ({ user, onLogout }: { user: User, onLogout: () => void })
     </div>
 );
 
-const SidebarProfile = ({ user, onLogout }: any) => {
+const SidebarProfile = ({ user, onLogout, onOpenProfile }: { user: User, onLogout: () => void, onOpenProfile?: () => void }) => {
     // Only show if full profile is loaded (has role)
     if (!user.role) return null;
 
     return (
         <div className="p-4 mt-auto border-t border-white/5 bg-[#0f172a]/50">
-            <div className="flex items-center gap-3 mb-3">
+            <button onClick={onOpenProfile} className="flex items-center gap-3 mb-3 w-full text-left group hover:bg-white/5 p-2 rounded-xl transition-all">
                 <div className="relative">
-                    <img src={user.photoURL || user.avatar || `https://ui-avatars.com/api/?name=${user.name}+${user.surname}`} alt={user.name} className="w-10 h-10 rounded-full border-2 border-indigo-500/30" />
+                    <img src={user.photoURL || user.avatar || `https://ui-avatars.com/api/?name=${user.name}+${user.surname}`} alt={user.name} className="w-10 h-10 rounded-full border-2 border-indigo-500/30 group-hover:border-indigo-400 transition-colors" />
                     <div className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-emerald-500 border-2 border-[#0f172a] rounded-full"></div>
                 </div>
                 <div className="flex-1 min-w-0">
-                    <div className="text-sm font-bold text-white truncate">{user.name}</div>
+                    <div className="text-sm font-bold text-white truncate group-hover:text-indigo-300 transition-colors">{user.name}</div>
                     <div className="flex items-center gap-1">
                         <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded-full uppercase tracking-wider ${user.role === 'admin' ? 'bg-indigo-500/20 text-indigo-300 border border-indigo-500/30' :
                             user.role === 'teacher' ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30' :
@@ -190,28 +190,12 @@ const SidebarProfile = ({ user, onLogout }: any) => {
                         </span>
                     </div>
                 </div>
-            </div>
+                <div title="Open Profile" className="text-indigo-400 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <Settings className="w-4 h-4" />
+                </div>
+            </button>
 
-            {/* Role Specific Actions */}
-            {user.role === 'admin' && (
-                <button
-                    onClick={() => document.dispatchEvent(new CustomEvent('openAdminPanel'))}
-                    className="w-full py-2 mb-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-xs font-bold flex items-center justify-center gap-2 transition-all shadow-lg shadow-indigo-600/20"
-                >
-                    <Settings className="w-3 h-3" /> Admin Panel
-                </button>
-            )}
-
-            {user.role === 'teacher' && (
-                <button
-                    onClick={() => document.dispatchEvent(new CustomEvent('openTeacherDashboard'))}
-                    className="w-full py-2 mb-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold flex items-center justify-center gap-2 transition-all shadow-lg shadow-emerald-600/20"
-                >
-                    <Users className="w-3 h-3" /> Teacher Dashboard
-                </button>
-            )}
-
-            <button onClick={onLogout} className="w-full flex items-center justify-center gap-2 py-2 rounded-lg bg-white/5 hover:bg-white/10 text-xs font-medium text-slate-400 hover:text-white transition-colors">
+            <button onClick={onLogout} className="w-full flex items-center justify-center gap-2 p-2 rounded-xl text-xs font-bold text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors">
                 <LogOut className="w-3 h-3" /> Sign Out
             </button>
         </div>
@@ -3841,147 +3825,222 @@ const TeacherSelector = ({ isOpen, onSelect }: { isOpen: boolean, onSelect: (tea
     );
 };
 
-const AdminPanel = ({ isOpen, onClose, currentUser }: { isOpen: boolean, onClose: () => void, currentUser: User }) => {
+// --- UNIFIED PROFILE MODAL ---
+
+const ProfileModal = ({ isOpen, onClose, currentUser, onUpdateUser }: { isOpen: boolean, onClose: () => void, currentUser: User, onUpdateUser: (u: User) => void }) => {
+    const [activeTab, setActiveTab] = useState<'profile' | 'directory' | 'students'>('profile');
     const [users, setUsers] = useState<UserProfile[]>([]);
-    const [loading, setLoading] = useState(true);
+    const [myStudents, setMyStudents] = useState<UserProfile[]>([]);
+    const [loading, setLoading] = useState(false);
+
+    // Edit State
+    const [editName, setEditName] = useState(currentUser.name);
+    const [editSurname, setEditSurname] = useState(currentUser.surname);
+    const [isSaving, setIsSaving] = useState(false);
 
     useEffect(() => {
         if (isOpen) {
+            setActiveTab('profile'); // Reset to profile on open
+            setEditName(currentUser.name);
+            setEditSurname(currentUser.surname);
+        }
+    }, [isOpen, currentUser]);
+
+    // Fetch Lists based on Tab
+    useEffect(() => {
+        if (!isOpen) return;
+
+        if (activeTab === 'directory' && currentUser.role === 'admin') {
+            setLoading(true);
             userService.getAllUsers().then(u => {
                 setUsers(u);
                 setLoading(false);
             });
         }
-    }, [isOpen]);
+
+        if (activeTab === 'students' && currentUser.role === 'teacher') {
+            setLoading(true);
+            userService.getMyStudents(currentUser.uid).then(s => {
+                setMyStudents(s);
+                setLoading(false);
+            });
+        }
+    }, [activeTab, isOpen, currentUser]);
+
+    const handleSaveProfile = async () => {
+        setIsSaving(true);
+        try {
+            await userService.updateProfile(currentUser.uid, { name: editName, surname: editSurname });
+            onUpdateUser({ ...currentUser, name: editName, surname: editSurname });
+            alert('Profile updated successfully!');
+        } catch (e) {
+            console.error(e);
+            alert('Failed to update profile.');
+        } finally {
+            setIsSaving(false);
+        }
+    };
 
     const handlePromote = async (uid: string, newRole: UserRole) => {
+        if (currentUser.role !== 'admin') return;
         await userService.updateUserRole(uid, newRole);
         setUsers(users.map(u => u.uid === uid ? { ...u, role: newRole } : u));
     };
 
     if (!isOpen) return null;
 
-    return (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-slate-900/80 backdrop-blur-sm animate-fade-in">
-            <div className="bg-white rounded-3xl w-full max-w-4xl max-h-[80vh] flex flex-col overflow-hidden shadow-2xl">
-                <div className="p-8 border-b border-slate-100 flex justify-between items-center bg-slate-50">
-                    <div className="flex items-center gap-3">
-                        <div className="p-3 bg-indigo-100 text-indigo-600 rounded-xl"><Settings className="w-6 h-6" /></div>
-                        <div>
-                            <h2 className="text-2xl font-bold text-slate-800">Admin Panel</h2>
-                            <p className="text-slate-500 text-sm">Manage user roles and permissions</p>
-                        </div>
-                    </div>
-                    <button onClick={onClose} className="p-2 hover:bg-slate-200 rounded-full transition-colors"><X className="w-6 h-6 text-slate-400" /></button>
-                </div>
-
-                <div className="flex-1 overflow-y-auto p-8">
-                    {loading ? (
-                        <div className="text-center py-10 text-slate-400">Loading users...</div>
-                    ) : (
-                        <table className="w-full text-left border-collapse">
-                            <thead>
-                                <tr className="text-xs font-bold text-slate-400 uppercase tracking-widest border-b border-slate-100">
-                                    <th className="pb-4 pl-4">User</th>
-                                    <th className="pb-4">Email</th>
-                                    <th className="pb-4">Role</th>
-                                    <th className="pb-4 text-right pr-4">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody className="divide-y divide-slate-50">
-                                {users.map(u => (
-                                    <tr key={u.uid} className="hover:bg-slate-50 transition-colors">
-                                        <td className="py-4 pl-4">
-                                            <div className="flex items-center gap-3">
-                                                <img src={u.photoURL || `https://ui-avatars.com/api/?name=${u.name}+${u.surname}`} alt="" className="w-10 h-10 rounded-full" />
-                                                <div className="font-bold text-slate-700">{u.name} {u.surname}</div>
-                                            </div>
-                                        </td>
-                                        <td className="py-4 text-slate-500 text-sm">{u.email}</td>
-                                        <td className="py-4">
-                                            <span className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wide ${u.role === 'admin' ? 'bg-indigo-100 text-indigo-700' :
-                                                u.role === 'teacher' ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100 text-slate-600'
-                                                }`}>
-                                                {u.role}
-                                            </span>
-                                        </td>
-                                        <td className="py-4 text-right pr-4">
-                                            {u.email !== 'omateusosos@gmail.com' && (
-                                                <div className="flex justify-end gap-2">
-                                                    {u.role !== 'admin' && (
-                                                        <button onClick={() => handlePromote(u.uid, 'admin')} className="px-3 py-1.5 bg-slate-100 hover:bg-indigo-100 text-slate-600 hover:text-indigo-600 rounded-lg text-xs font-bold transition-all">
-                                                            Make Admin
-                                                        </button>
-                                                    )}
-                                                    {u.role !== 'teacher' && (
-                                                        <button onClick={() => handlePromote(u.uid, 'teacher')} className="px-3 py-1.5 bg-slate-100 hover:bg-emerald-100 text-slate-600 hover:text-emerald-600 rounded-lg text-xs font-bold transition-all">
-                                                            Make Teacher
-                                                        </button>
-                                                    )}
-                                                    {u.role !== 'student' && (
-                                                        <button onClick={() => handlePromote(u.uid, 'student')} className="px-3 py-1.5 bg-slate-100 hover:bg-rose-100 text-slate-600 hover:text-rose-600 rounded-lg text-xs font-bold transition-all">
-                                                            Demote
-                                                        </button>
-                                                    )}
-                                                </div>
-                                            )}
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    )}
-                </div>
-            </div>
-        </div>
-    );
-};
-
-const TeacherDashboard = ({ isOpen, onClose, currentUser }: { isOpen: boolean, onClose: () => void, currentUser: User }) => {
-    const [students, setStudents] = useState<UserProfile[]>([]);
-    const [loading, setLoading] = useState(true);
-
-    useEffect(() => {
-        if (isOpen) {
-            userService.getMyStudents(currentUser.uid).then(s => {
-                setStudents(s);
-                setLoading(false);
-            });
-        }
-    }, [isOpen]);
-
-    if (!isOpen) return null;
+    // Filter directory list
+    const admins = users.filter(u => u.role === 'admin');
+    const teachers = users.filter(u => u.role === 'teacher');
+    const studentsList = users.filter(u => u.role === 'student');
 
     return (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-slate-900/80 backdrop-blur-sm animate-fade-in">
-            <div className="bg-white rounded-3xl w-full max-w-4xl max-h-[80vh] flex flex-col overflow-hidden shadow-2xl">
-                <div className="p-8 border-b border-slate-100 flex justify-between items-center bg-slate-50">
-                    <div className="flex items-center gap-3">
-                        <div className="p-3 bg-emerald-100 text-emerald-600 rounded-xl"><Users className="w-6 h-6" /></div>
-                        <div>
-                            <h2 className="text-2xl font-bold text-slate-800">Teacher Dashboard</h2>
-                            <p className="text-slate-500 text-sm">Progress of your {students.length} students</p>
+        <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 md:p-8 bg-slate-900/90 backdrop-blur-md animate-fade-in">
+            <div className="bg-white rounded-[2rem] w-full max-w-5xl h-[85vh] flex overflow-hidden shadow-2xl relative">
+                <button onClick={onClose} className="absolute top-6 right-6 p-2 hover:bg-slate-100 rounded-full z-10">
+                    <X className="w-6 h-6 text-slate-400" />
+                </button>
+
+                {/* Sidebar Navigation */}
+                <div className="w-64 bg-slate-50 p-6 flex flex-col border-r border-slate-100 hidden md:flex">
+                    <div className="flex items-center gap-3 mb-10">
+                        <div className="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center text-white">
+                            <UserIcon className="w-6 h-6" />
                         </div>
+                        <div className="font-bold text-slate-800">Account</div>
                     </div>
-                    <button onClick={onClose} className="p-2 hover:bg-slate-200 rounded-full transition-colors"><X className="w-6 h-6 text-slate-400" /></button>
+
+                    <nav className="space-y-2">
+                        <button onClick={() => setActiveTab('profile')} className={`w-full p-3 rounded-xl text-left text-sm font-bold flex items-center gap-3 transition-all ${activeTab === 'profile' ? 'bg-white shadow-sm text-indigo-600' : 'text-slate-500 hover:text-slate-700 hover:bg-slate-100'}`}>
+                            <UserIcon className="w-4 h-4" /> My Profile
+                        </button>
+
+                        {currentUser.role === 'teacher' && (
+                            <button onClick={() => setActiveTab('students')} className={`w-full p-3 rounded-xl text-left text-sm font-bold flex items-center gap-3 transition-all ${activeTab === 'students' ? 'bg-white shadow-sm text-emerald-600' : 'text-slate-500 hover:text-slate-700 hover:bg-slate-100'}`}>
+                                <Users className="w-4 h-4" /> My Students
+                            </button>
+                        )}
+
+                        {currentUser.role === 'admin' && (
+                            <button onClick={() => setActiveTab('directory')} className={`w-full p-3 rounded-xl text-left text-sm font-bold flex items-center gap-3 transition-all ${activeTab === 'directory' ? 'bg-white shadow-sm text-indigo-600' : 'text-slate-500 hover:text-slate-700 hover:bg-slate-100'}`}>
+                                <Settings className="w-4 h-4" /> User Directory
+                            </button>
+                        )}
+                    </nav>
                 </div>
 
-                <div className="flex-1 overflow-y-auto p-8">
-                    {loading ? (
-                        <div className="text-center py-10 text-slate-400">Loading students...</div>
-                    ) : students.length === 0 ? (
-                        <div className="text-center py-20 text-slate-400">No students assigned yet.</div>
-                    ) : (
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            {students.map(s => (
-                                <div key={s.uid} className="p-6 rounded-2xl border border-slate-100 flex items-center gap-4 hover:shadow-md transition-shadow">
-                                    <img src={s.photoURL || `https://ui-avatars.com/api/?name=${s.name}+${s.surname}`} alt="" className="w-12 h-12 rounded-full" />
-                                    <div>
-                                        <h4 className="font-bold text-slate-800">{s.name} {s.surname}</h4>
-                                        <p className="text-xs text-slate-400">{s.email}</p>
+                {/* Content Area */}
+                <div className="flex-1 overflow-y-auto p-8 lg:p-12 relative">
+
+                    {/* --- TAB: PROFILE --- */}
+                    {activeTab === 'profile' && (
+                        <div className="max-w-xl mx-auto animate-fade-in">
+                            <h2 className="text-3xl font-serif-display text-slate-900 mb-2">My Profile</h2>
+                            <p className="text-slate-500 mb-8">Manage your personal information.</p>
+
+                            <div className="flex flex-col items-center mb-8">
+                                <div className="relative mb-4 group cursor-pointer">
+                                    <img src={currentUser.photoURL || currentUser.avatar || `https://ui-avatars.com/api/?name=${currentUser.name}+${currentUser.surname}`} className="w-24 h-24 rounded-full border-4 border-slate-50 shadow-xl" />
+                                    <div className="absolute inset-0 bg-black/40 rounded-full opacity-0 group-hover:opacity-100 flex items-center justify-center transition-all text-white font-bold text-xs">Change</div>
+                                </div>
+                                <div className="px-3 py-1 bg-slate-100 rounded-full text-xs font-bold text-slate-500 uppercase tracking-widest">{currentUser.role}</div>
+                            </div>
+
+                            <div className="space-y-4">
+                                <div className="grid grid-cols-2 gap-4">
+                                    <div className="space-y-1">
+                                        <label className="text-xs font-bold text-slate-400 uppercase">First Name</label>
+                                        <input value={editName} onChange={e => setEditName(e.target.value)} className="w-full p-4 bg-slate-50 rounded-2xl font-bold text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500/20" />
+                                    </div>
+                                    <div className="space-y-1">
+                                        <label className="text-xs font-bold text-slate-400 uppercase">Surname</label>
+                                        <input value={editSurname} onChange={e => setEditSurname(e.target.value)} className="w-full p-4 bg-slate-50 rounded-2xl font-bold text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500/20" />
                                     </div>
                                 </div>
-                            ))}
+                                <div className="space-y-1">
+                                    <label className="text-xs font-bold text-slate-400 uppercase">Email Address</label>
+                                    <input value={currentUser.email} disabled className="w-full p-4 bg-slate-100 rounded-2xl font-bold text-slate-500 cursor-not-allowed" />
+                                </div>
+
+                                <div className="pt-6">
+                                    <button onClick={handleSaveProfile} disabled={isSaving} className="w-full p-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-2xl font-bold shadow-xl shadow-indigo-600/20 transition-all flex items-center justify-center gap-2">
+                                        {isSaving ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Save Changes'}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* --- TAB: DIRECTORY --- */}
+                    {activeTab === 'directory' && currentUser.role === 'admin' && (
+                        <div className="animate-fade-in space-y-8">
+                            <div>
+                                <h2 className="text-3xl font-serif-display text-slate-900 mb-2">User Directory</h2>
+                                <p className="text-slate-500">Manage {users.length} registered users.</p>
+                            </div>
+
+                            {loading ? <div className="text-center py-10 text-slate-400">Loading directory...</div> : (
+                                <div className="space-y-8">
+                                    {[
+                                        { title: 'Administrators', list: admins, color: 'text-indigo-600', bg: 'bg-indigo-50' },
+                                        { title: 'Teachers', list: teachers, color: 'text-emerald-600', bg: 'bg-emerald-50' },
+                                        { title: 'Students', list: studentsList, color: 'text-slate-600', bg: 'bg-slate-50' }
+                                    ].map(group => group.list.length > 0 && (
+                                        <div key={group.title}>
+                                            <h3 className={`text-xs font-black uppercase tracking-widest mb-4 ${group.color}`}>{group.title}</h3>
+                                            <div className="grid gap-3">
+                                                {group.list.map(u => (
+                                                    <div key={u.uid} className="flex items-center justify-between p-4 rounded-2xl border border-slate-100 hover:border-slate-300 transition-all">
+                                                        <div className="flex items-center gap-4">
+                                                            <img src={u.photoURL || `https://ui-avatars.com/api/?name=${u.name}+${u.surname}`} className="w-10 h-10 rounded-full" />
+                                                            <div>
+                                                                <div className="font-bold text-slate-800">{u.name} {u.surname}</div>
+                                                                <div className="text-xs text-slate-400">{u.email}</div>
+                                                            </div>
+                                                        </div>
+
+                                                        {currentUser.email !== u.email && (
+                                                            <div className="flex items-center gap-2">
+                                                                {u.role !== 'admin' && (
+                                                                    <button onClick={() => handlePromote(u.uid, 'admin')} title="Make Admin" className="p-2 hover:bg-indigo-50 text-slate-400 hover:text-indigo-600 rounded-lg transition-colors"><Settings className="w-4 h-4" /></button>
+                                                                )}
+                                                                {u.role !== 'teacher' && (
+                                                                    <button onClick={() => handlePromote(u.uid, 'teacher')} title="Make Teacher" className="p-2 hover:bg-emerald-50 text-slate-400 hover:text-emerald-600 rounded-lg transition-colors"><GraduationCap className="w-4 h-4" /></button>
+                                                                )}
+                                                                {u.role !== 'student' && (
+                                                                    <button onClick={() => handlePromote(u.uid, 'student')} title="Demote to Student" className="p-2 hover:bg-rose-50 text-slate-400 hover:text-rose-600 rounded-lg transition-colors"><ArrowRight className="w-4 h-4 rotate-90" /></button>
+                                                                )}
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+                    )}
+
+                    {/* --- TAB: MY STUDENTS --- */}
+                    {activeTab === 'students' && currentUser.role === 'teacher' && (
+                        <div className="animate-fade-in">
+                            <h2 className="text-3xl font-serif-display text-slate-900 mb-2">My Students</h2>
+                            <p className="text-slate-500 mb-8">Tracking {myStudents.length} learners.</p>
+
+                            {loading ? <div className="text-center py-10 text-slate-400">Loading students...</div> : (
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    {myStudents.map(s => (
+                                        <div key={s.uid} className="p-6 rounded-2xl border border-slate-100 flex items-center gap-4 hover:shadow-lg transition-all bg-white hover:-translate-y-1">
+                                            <img src={s.photoURL || `https://ui-avatars.com/api/?name=${s.name}+${s.surname}`} className="w-14 h-14 rounded-full border-4 border-slate-50" />
+                                            <div>
+                                                <h4 className="font-bold text-slate-800 text-lg">{s.name} {s.surname}</h4>
+                                                <p className="text-xs text-slate-400 font-medium bg-slate-100 px-2 py-1 rounded-md inline-block mt-1">{s.email}</p>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
                         </div>
                     )}
                 </div>
@@ -3989,6 +4048,12 @@ const TeacherDashboard = ({ isOpen, onClose, currentUser }: { isOpen: boolean, o
         </div>
     );
 };
+
+
+
+
+
+
 
 // --- LAYOUT COMPONENTS ---
 
@@ -4205,7 +4270,7 @@ const Sidebar = ({ activeModule, onToggleModule, activeSection, onSelectSection,
             </div>
 
             {/* Profile Footer */}
-            {user && <SidebarProfile user={user} onLogout={onLogout} />}
+            {user && <SidebarProfile user={user} onLogout={onLogout} onOpenProfile={() => document.dispatchEvent(new Event('openProfileModal'))} />}
         </aside>
     );
 };
@@ -4243,8 +4308,7 @@ export default function App() {
     // Auth State
     const [user, setUser] = useState<User | null>(null);
     const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
-    const [isAdminPanelOpen, setIsAdminPanelOpen] = useState(false);
-    const [isTeacherDashboardOpen, setIsTeacherDashboardOpen] = useState(false);
+    const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
     const [isTeacherSelectorOpen, setIsTeacherSelectorOpen] = useState(false);
     const [authMode, setAuthMode] = useState<'login' | 'signup'>('signup');
     const [progress, setProgress] = useState<UserProgress>({ completedLessons: [], unlockedLevels: [1] });
@@ -4282,15 +4346,12 @@ export default function App() {
 
     // Event Listeners for Panels
     useEffect(() => {
-        const openAdmin = () => setIsAdminPanelOpen(true);
-        const openTeacher = () => setIsTeacherDashboardOpen(true);
+        const openProfile = () => setIsProfileModalOpen(true);
 
-        document.addEventListener('openAdminPanel', openAdmin);
-        document.addEventListener('openTeacherDashboard', openTeacher);
+        document.addEventListener('openProfileModal', openProfile);
 
         return () => {
-            document.removeEventListener('openAdminPanel', openAdmin);
-            document.removeEventListener('openTeacherDashboard', openTeacher);
+            document.removeEventListener('openProfileModal', openProfile);
         };
     }, []);
 
@@ -4452,10 +4513,10 @@ export default function App() {
                 {user && <ProfileHeader user={user} onLogout={handleLogout} />}
 
                 {/* Admin & Teacher Panels */}
+                {/* Admin & Teacher Panels */}
                 {user && (
                     <>
-                        <AdminPanel isOpen={isAdminPanelOpen} onClose={() => setIsAdminPanelOpen(false)} currentUser={user} />
-                        <TeacherDashboard isOpen={isTeacherDashboardOpen} onClose={() => setIsTeacherDashboardOpen(false)} currentUser={user} />
+                        <ProfileModal isOpen={isProfileModalOpen} onClose={() => setIsProfileModalOpen(false)} currentUser={user} onUpdateUser={setUser} />
                         <TeacherSelector isOpen={isTeacherSelectorOpen} onSelect={handleAssignTeacher} />
                     </>
                 )}

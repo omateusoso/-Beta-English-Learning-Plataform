@@ -71,5 +71,11 @@ export const userService = {
     async assignTeacher(studentUid: string, teacherId: string) {
         const docRef = doc(db, 'users', studentUid);
         await setDoc(docRef, { teacherId }, { merge: true });
+    },
+
+    // Update Profile Data
+    async updateProfile(uid: string, data: Partial<UserProfile>) {
+        const docRef = doc(db, 'users', uid);
+        await updateDoc(docRef, data);
     }
 };
