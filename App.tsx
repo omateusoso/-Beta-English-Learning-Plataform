@@ -70,7 +70,7 @@ const AuthModal = ({ isOpen, onClose, initialMode = 'login' }: any) => {
             setSuccessMessage(`Magic link sent to ${formData.email}! Check your inbox (or spam, maybe 😉).`);
         } catch (err: any) {
             console.error(err);
-            setError('Failed to send link. Please try again.');
+            setError(err.message || 'Failed to send link. Please try again.');
         } finally {
             setLoading(false);
         }
