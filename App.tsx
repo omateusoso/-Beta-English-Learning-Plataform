@@ -3838,34 +3838,45 @@ const WelcomeScreen = ({ onSelectLevel, user, onLogin, onSignup, unlockedLevels 
     </div>
 );
 
-const LevelCard = ({ title, desc, icon, onClick, available, color, progress = 0 }: any) => (
-    <button onClick={onClick} className={`group relative p-8 glass-card rounded-[2rem] text-left transition-all duration-500 flex flex-col h-full ${available ? 'hover:translate-y-[-8px] hover:shadow-2xl hover:shadow-indigo-500/20' : 'opacity-60 cursor-not-allowed'}`}>
-        <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${available ? color : 'from-slate-700 to-slate-800'} flex items-center justify-center text-white mb-6 shadow-lg group-hover:scale-110 transition-transform`}>
-            {icon}
-        </div>
-        <h3 className="text-2xl font-bold text-white mb-3 flex items-center justify-between">
-            {title} {!available && <Lock className="w-4 h-4 text-slate-500" />}
-        </h3>
-        <p className="text-slate-400 text-sm leading-relaxed mb-8 flex-1">{desc}</p>
+const LevelCard = ({ title, desc, icon, onClick, available, color, progress = 0 }: any) => {
+    // Victory State Logic
+    const isCompleted = progress === 100;
 
-        {/* Progress Bar */}
-        {available && progress > 0 && (
-            <div className="mb-6 w-full bg-slate-700/50 rounded-full h-2 overflow-hidden">
-                <div className="bg-gradient-to-r from-emerald-400 to-emerald-500 h-full rounded-full transition-all duration-1000" style={{ width: `${progress}%` }}></div>
+    return (
+        <button onClick={onClick} className={`group relative p-8 glass-card rounded-[2rem] text-left transition-all duration-500 flex flex-col h-full ${available ? 'hover:translate-y-[-8px] hover:shadow-2xl hover:shadow-indigo-500/20' : 'opacity-60 cursor-not-allowed'}`}>
+            <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${available ? (isCompleted ? 'from-emerald-500 to-emerald-600' : color) : 'from-slate-700 to-slate-800'} flex items-center justify-center text-white mb-6 shadow-lg group-hover:scale-110 transition-transform`}>
+                {isCompleted ? <Trophy className="w-8 h-8" /> : icon}
             </div>
-        )}
 
-        {available ? (
-            <div className="inline-flex items-center gap-2 text-indigo-400 font-bold text-sm">
-                {progress > 0 ? (progress === 100 ? 'Completed' : 'Continue Learning') : 'Start Learning'}
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-            </div>
-        ) : (
-            <div className="inline-flex items-center gap-2 text-slate-600 font-bold text-sm">Locked</div>
-        )}
-        <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-[2rem]"></div>
-    </button>
-);
+            <h3 className="text-2xl font-bold text-white mb-3 flex items-center justify-between">
+                {title}
+                {!available && <Lock className="w-4 h-4 text-slate-500" />}
+                {isCompleted && <CheckCircle2 className="w-6 h-6 text-emerald-400" />}
+            </h3>
+
+            <p className={`text-sm leading-relaxed mb-8 flex-1 ${isCompleted ? 'text-emerald-200 font-medium' : 'text-slate-400'}`}>
+                {isCompleted ? "Level Conquered! You are unstoppable. 🏆" : desc}
+            </p>
+
+            {/* Progress Bar */}
+            {available && progress > 0 && (
+                <div className="mb-6 w-full bg-slate-700/50 rounded-full h-2 overflow-hidden">
+                    <div className="bg-gradient-to-r from-emerald-400 to-emerald-500 h-full rounded-full transition-all duration-1000" style={{ width: `${progress}%` }}></div>
+                </div>
+            )}
+
+            {available ? (
+                <div className={`inline-flex items-center gap-2 font-bold text-sm ${isCompleted ? 'text-emerald-400' : 'text-indigo-400'}`}>
+                    {progress > 0 ? (isCompleted ? 'Review Level' : 'Continue Learning') : 'Start Learning'}
+                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </div>
+            ) : (
+                <div className="inline-flex items-center gap-2 text-slate-600 font-bold text-sm">Locked</div>
+            )}
+            <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-[2rem]"></div>
+        </button>
+    );
+};
 
 const UnderConstruction = ({ title, onBack }: any) => (
     <div className="min-h-screen flex flex-col items-center justify-center bg-[#0f172a] text-center p-6">
@@ -3905,6 +3916,12 @@ const Sidebar = ({ activeModule, onToggleModule, activeSection, onSelectSection,
         return titles[idx] || `Lesson ${idx + 1}`;
     };
 
+    const isModuleCompleted = (m: any) => {
+        const totalLessons = m.range[1] - m.range[0] + 1;
+        const lessonsInModule = Array.from({ length: totalLessons }, (_, i) => m.range[0] + i);
+        return lessonsInModule.every(id => completedLessons.includes(id));
+    };
+
     return (
         <aside className="w-full md:w-80 sidebar-glass h-screen overflow-y-auto flex flex-col shadow-2xl relative z-20">
             <div className="p-8 border-b border-white/5 flex flex-col gap-6 sticky top-0 bg-[#0f172a]/80 backdrop-blur-xl z-10">
@@ -3921,38 +3938,48 @@ const Sidebar = ({ activeModule, onToggleModule, activeSection, onSelectSection,
             </div>
 
             <div className="flex-1 overflow-y-auto p-4 space-y-4 pt-6">
-                {modules.map(m => (
-                    <div key={m.id} className="rounded-2xl overflow-hidden transition-all duration-300">
-                        <button onClick={() => onToggleModule(m.id)}
-                            className={`w-full p-4 flex items-center justify-between text-sm font-semibold transition-all ${activeModule === m.id ? 'bg-indigo-500/10 text-white' : 'text-slate-400 hover:text-white hover:bg-white/5'}`}
-                        >
-                            <div className="flex items-center gap-4">
-                                <div className={`p-2 rounded-lg ${activeModule === m.id ? 'bg-indigo-500 text-white' : 'bg-slate-800 text-slate-500'}`}>
-                                    {m.icon}
+                {modules.map(m => {
+                    const completed = isModuleCompleted(m);
+                    return (
+                        <div key={m.id} className="rounded-2xl overflow-hidden transition-all duration-300">
+                            <button onClick={() => onToggleModule(m.id)}
+                                className={`w-full p-4 flex items-center justify-between text-sm font-semibold transition-all ${activeModule === m.id ? 'bg-indigo-500/10 text-white' : 'text-slate-400 hover:text-white hover:bg-white/5'}`}
+                            >
+                                <div className="flex items-center gap-4">
+                                    <div className={`p-2 rounded-lg relative ${activeModule === m.id ? 'bg-indigo-500 text-white' : (completed ? 'bg-emerald-500/20 text-emerald-500' : 'bg-slate-800 text-slate-500')}`}>
+                                        {completed ? <CheckCircle2 className="w-4 h-4" /> : m.icon}
+                                    </div>
+                                    <div className="flex flex-col text-left">
+                                        <span className={`text-[11px] font-black tracking-widest uppercase ${completed ? 'text-emerald-500' : 'text-indigo-400'}`}>
+                                            {completed ? 'COMPLETED' : `M${m.id}`}
+                                        </span>
+                                        <span className={`truncate ${completed ? 'line-through opacity-50' : ''}`}>{m.title}</span>
+                                    </div>
                                 </div>
-                                <div className="flex flex-col text-left">
-                                    <span className="text-[11px] font-black text-indigo-400 tracking-widest uppercase">M{m.id}</span>
-                                    <span className="truncate">{m.title}</span>
-                                </div>
-                            </div>
-                            {activeModule === m.id ? <ChevronDown className="w-4 h-4 text-indigo-400" /> : <ChevronRight className="w-4 h-4 opacity-30" />}
-                        </button>
+                                {activeModule === m.id ? <ChevronDown className="w-4 h-4 text-indigo-400" /> : <ChevronRight className="w-4 h-4 opacity-30" />}
+                            </button>
 
-                        {activeModule === m.id && (
-                            <div className="mt-1 ml-4 border-l border-white/5 space-y-1 pl-2 animate-fade-in">
-                                {Array.from({ length: m.range[1] - m.range[0] + 1 }, (_, i) => m.range[0] + i).map(idx => (
-                                    <button key={idx} onClick={() => onSelectSection(idx)}
-                                        className={`w-full text-left px-4 py-3 rounded-xl text-xs font-medium transition-all flex items-center gap-3 ${activeSection === idx ? 'bg-white/10 text-indigo-400 shadow-inner' : 'text-slate-500 hover:text-slate-300'}`}
-                                    >
-                                        <div className={`w-1 h-1 rounded-full transition-all ${activeSection === idx ? 'bg-indigo-400 scale-150 shadow-[0_0_8px_rgba(129,140,248,0.8)]' : 'bg-slate-700'}`} />
-                                        {getTitle(idx)}
-                                        {completedLessons.includes(idx) && <CheckCircle2 className="w-3 h-3 text-emerald-500 ml-auto" />}
-                                    </button>
-                                ))}
-                            </div>
-                        )}
-                    </div>
-                ))}
+                            {activeModule === m.id && (
+                                <div className="mt-1 ml-4 border-l border-white/5 space-y-1 pl-2 animate-fade-in">
+                                    {Array.from({ length: m.range[1] - m.range[0] + 1 }, (_, i) => m.range[0] + i).map(idx => {
+                                        const isLessonCompleted = completedLessons.includes(idx);
+                                        return (
+                                            <button key={idx} onClick={() => onSelectSection(idx)}
+                                                className={`w-full text-left px-4 py-3 rounded-xl text-xs font-medium transition-all flex items-center gap-3 ${activeSection === idx ? 'bg-white/10 text-indigo-400 shadow-inner' : 'text-slate-500 hover:text-slate-300'}`}
+                                            >
+                                                <div className={`w-1 h-1 rounded-full transition-all ${activeSection === idx ? 'bg-indigo-400 scale-150 shadow-[0_0_8px_rgba(129,140,248,0.8)]' : 'bg-slate-700'}`} />
+                                                <span className={isLessonCompleted ? 'line-through opacity-50 decoration-slate-500' : ''}>
+                                                    {getTitle(idx)}
+                                                </span>
+                                                {isLessonCompleted && <CheckCircle2 className="w-3 h-3 text-emerald-500 ml-auto" />}
+                                            </button>
+                                        );
+                                    })}
+                                </div>
+                            )}
+                        </div>
+                    );
+                })}
             </div>
 
             {/* Profile Footer */}
