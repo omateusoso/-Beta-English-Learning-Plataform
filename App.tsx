@@ -4192,6 +4192,7 @@ export default function App() {
                     currentLevel={currentLevel}
                     user={user}
                     onLogout={handleLogout}
+                    completedLessons={progress.completedLessons}
                 />
                 <main className="flex-1 h-screen overflow-y-auto p-6 md:p-12 lg:p-20 relative scroll-smooth no-scrollbar">
                     <div className="max-w-4xl mx-auto">
