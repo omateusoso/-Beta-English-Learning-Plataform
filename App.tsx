@@ -3468,23 +3468,479 @@ const PossessiveAdjectives = ({ isPortuguese }: { isPortuguese: boolean }) => {
     );
 };
 
-const GenitiveCase = () => (
-    <div className="p-12 bg-white rounded-3xl text-center space-y-8 animate-fade-in shadow-sm border border-slate-100">
-        <h3 className="font-bold text-2xl text-slate-800">Ownership with ('s)</h3>
-        <div className="grid gap-4 max-w-sm mx-auto">
-            <button onClick={() => speak("John's car")} className="p-6 bg-slate-50 rounded-2xl font-bold text-xl hover:bg-indigo-50 border border-transparent hover:border-indigo-200 transition-all">John's Car</button>
-            <button onClick={() => speak("The teacher's book")} className="p-6 bg-slate-50 rounded-2xl font-bold text-xl hover:bg-indigo-50 border border-transparent hover:border-indigo-200 transition-all">Teacher's Book</button>
-        </div>
-    </div>
-);
+const GenitiveCase = ({ isPortuguese }: { isPortuguese: boolean }) => {
+    const examples = [
+        { owner: 'John', thing: 'Car', phrase: "John's Car", ipa: "/dʒɒnz kɑːr/", trans: "O carro do John", icon: '🚗' },
+        { owner: 'The Teacher', thing: 'Book', phrase: "The Teacher's Book", ipa: "/ðə ˈtiːtʃərz bʊk/", trans: "O livro do professor", icon: '📖' },
+        { owner: 'My Mom', thing: 'House', phrase: "My Mom's House", ipa: "/maɪ mɒmz haʊs/", trans: "A casa da minha mãe", icon: '🏠' },
+        { owner: 'The Dog', thing: 'Bone', phrase: "The Dog's Bone", ipa: "/ðə dɒɡz boʊn/", trans: "O osso do cachorro", icon: '🦴' },
+    ];
 
-const HouseFurniture = () => (
-    <div className="grid grid-cols-2 md:grid-cols-3 gap-4 animate-fade-in">
-        {['Kitchen', 'Bedroom', 'Bathroom', 'Living Room', 'Sofa', 'Bed', 'Fridge', 'Chair'].map(item => (
-            <button key={item} onClick={() => speak(item)} className="p-6 bg-white rounded-2xl shadow-sm font-bold text-slate-700 border border-slate-100 hover:text-indigo-600 transition-all">{item}</button>
-        ))}
-    </div>
-);
+    const rules = [
+        {
+            title: isPortuguese ? "Regra 1: Singular ('s)" : "Rule 1: Singular ('s)",
+            desc: isPortuguese ? "Para uma pessoa ou animal, adicione 's." : "For one person or animal, add 's.",
+            ex: "Sarah's phone",
+            wrong: "The phone of Sarah"
+        },
+        {
+            title: isPortuguese ? "Regra 2: Plural com S (')" : "Rule 2: Plural ending in S (')",
+            desc: isPortuguese ? "Se a palavra já termina em S no plural, adicione apenas o apóstrofo (')." : "If the word ends in S (plural), just add the apostrophe (').",
+            ex: "My parents' house",
+            wrong: "My parents's house"
+        },
+        {
+            title: isPortuguese ? "Regra 3: Plural Irregular ('s)" : "Rule 3: Irregular Plural ('s)",
+            desc: isPortuguese ? "Se o plural NÃO termina em S (como Children), adicione 's." : "If plural does NOT end in S (like Children), add 's.",
+            ex: "The children's toys",
+            wrong: "The childrens' toys"
+        }
+    ];
+
+    return (
+        <div className="space-y-12 animate-fade-in pb-20">
+            {/* Senior Teacher Intro */}
+            <div className="relative p-8 rounded-[2rem] bg-indigo-900 text-white overflow-hidden shadow-2xl">
+                <div className="absolute top-0 right-0 p-4 opacity-10"><Key className="w-32 h-32" /></div>
+                <div className="relative z-10 flex flex-col md:flex-row gap-6 items-center">
+                    <div className="w-20 h-20 rounded-full bg-indigo-500 flex items-center justify-center text-4xl shadow-lg border-2 border-indigo-400">👨‍🏫</div>
+                    <div className="flex-1">
+                        <h3 className="text-2xl font-serif-display mb-2">
+                            {isPortuguese ? "O Apóstrofo Mágico" : "The Magic Apostrophe"}
+                        </h3>
+                        <p className="text-indigo-100 text-sm leading-relaxed italic">
+                            {isPortuguese
+                                ? "\"Em português, usamos muito 'de/do/da' (O carro do João). Em inglês, isso soa robótico! Nós amamos usar o apóstrofo 'S ('s) para mostrar posse. É como se colássemos o dono no objeto. Vamos aprender a usar esse superpoder sem errar!\""
+                                : "\"In many languages, we use 'of' a lot (The car of John). In English, that sounds robotic! We love using the apostrophe 'S ('s) to show ownership. It's like gluing the owner to the object. Let's learn to use this superpower perfectly!\""
+                            }
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            {/* Visual Formula */}
+            <section className="bg-white p-8 rounded-[2.5rem] shadow-sm border border-slate-100 flex flex-col items-center">
+                <div className="flex items-center gap-4 text-3xl md:text-5xl font-black mb-6 flex-wrap justify-center">
+                    <span className="text-indigo-600">Owner</span>
+                    <span className="text-amber-500">+</span>
+                    <span className="bg-slate-800 text-white px-4 py-2 rounded-xl border-b-4 border-slate-600 shadow-lg">'s</span>
+                    <span className="text-amber-500">+</span>
+                    <span className="text-emerald-500">Thing</span>
+                </div>
+                <p className="text-slate-400 text-sm text-center max-w-md">
+                    {isPortuguese
+                        ? "Esqueça 'Of'. Pense: [Dono] [Apóstrofo] [Coisa]. Simples assim!"
+                        : "Forget 'Of'. Think: [Owner] [Apostrophe] [Thing]. Simple as that!"}
+                </p>
+            </section>
+
+            {/* Interactive Examples */}
+            <section className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {examples.map((ex, i) => (
+                    <button
+                        key={i}
+                        onClick={() => speak(ex.phrase)}
+                        className="group bg-white p-6 rounded-3xl border border-slate-100 hover:border-indigo-500 shadow-sm hover:shadow-xl transition-all flex items-center gap-6 text-left"
+                    >
+                        <div className="w-16 h-16 bg-slate-50 rounded-2xl flex items-center justify-center text-3xl group-hover:scale-110 transition-transform">
+                            {ex.icon}
+                        </div>
+                        <div>
+                            <h4 className="text-xl font-black text-slate-800 group-hover:text-indigo-600 transition-colors mb-1">{ex.phrase}</h4>
+                            <div className="flex flex-col gap-0.5">
+                                <span className="text-[10px] font-mono text-slate-400">{ex.ipa}</span>
+                                {isPortuguese && <span className="text-[10px] font-bold text-slate-300 uppercase tracking-wide">{ex.trans}</span>}
+                            </div>
+                        </div>
+                        <Volume2 className="w-5 h-5 text-indigo-200 ml-auto group-hover:text-indigo-500" />
+                    </button>
+                ))}
+            </section>
+
+            {/* The Rules Breakdown */}
+            <section className="space-y-8">
+                <div className="flex items-center gap-3">
+                    <div className="p-2 bg-indigo-100 rounded-lg text-indigo-600"><Scale className="w-5 h-5" /></div>
+                    <h4 className="text-2xl font-bold text-slate-800">
+                        {isPortuguese ? "As 3 Regras de Ouro" : "The 3 Golden Rules"}
+                    </h4>
+                </div>
+                <div className="grid md:grid-cols-3 gap-6">
+                    {rules.map((rule, idx) => (
+                        <div key={idx} className="bg-white p-6 rounded-[2rem] border border-slate-100 flex flex-col h-full shadow-sm hover:-translate-y-1 transition-transform">
+                            <div className="w-10 h-10 bg-indigo-50 rounded-full flex items-center justify-center font-black text-indigo-600 mb-4">{idx + 1}</div>
+                            <h5 className="font-bold text-slate-800 mb-2 min-h-[3rem]">{rule.title}</h5>
+                            <p className="text-xs text-slate-500 leading-relaxed mb-6 flex-1">{rule.desc}</p>
+
+                            <div className="space-y-3 bg-slate-50 p-4 rounded-xl">
+                                <div className="flex items-center gap-2">
+                                    <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
+                                    <span className="text-sm font-bold text-emerald-700">{rule.ex}</span>
+                                </div>
+                                <div className="flex items-center gap-2 opacity-50">
+                                    <XCircle className="w-4 h-4 text-rose-500 shrink-0" />
+                                    <span className="text-xs font-medium text-rose-700 line-through">{rule.wrong}</span>
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </section>
+
+            {/* Master Tip: The 'Of' Trap */}
+            <div className="bg-rose-50 rounded-[2.5rem] p-10 relative border border-rose-100">
+                <div className="absolute top-0 right-10 -translate-y-1/2 bg-rose-500 text-white px-6 py-2 rounded-full font-black text-xs uppercase tracking-widest shadow-lg">
+                    {isPortuguese ? "A Armadilha Comum" : "The Common Trap"}
+                </div>
+                <div className="flex flex-col md:flex-row gap-8 items-center">
+                    <div className="w-20 h-20 bg-white rounded-3xl flex items-center justify-center text-4xl shadow-sm shrink-0">🚫</div>
+                    <div className="flex-1">
+                        <h5 className="font-bold text-rose-900 mb-2 uppercase tracking-wide text-sm">
+                            {isPortuguese ? "Pare de dizer 'OF'!" : "Stop saying 'OF'!"}
+                        </h5>
+                        <p className="text-sm text-rose-800 leading-relaxed mb-4">
+                            {isPortuguese
+                                ? "Muitos brasileiros traduzem 'O carro do meu pai' como 'The car OF my father'. Gramaticalmente não é proibido, mas soa arcaico e estranho. Nativos usam 'My father's car' 99% das vezes para pessoas!"
+                                : "Many students translate 'The car of my father' directly. While not forbidden, it sounds archaic and strange. Natives use 'My father's car' 99% of the time for people!"}
+                        </p>
+                        <div className="flex gap-4">
+                            <button onClick={() => speak("My father's car")} className="px-4 py-2 bg-rose-200 text-rose-800 rounded-lg text-xs font-bold hover:bg-rose-300 transition-colors flex items-center gap-2">
+                                <Volume2 className="w-3 h-3" /> Correct Way
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* Final Exercise */}
+            <div className="bg-indigo-50 border-2 border-indigo-100 rounded-[2.5rem] p-10 relative overflow-hidden">
+                <div className="absolute top-0 left-0 p-4 opacity-10"><Brain className="w-32 h-32 text-indigo-900" /></div>
+                <div className="relative z-10 text-center">
+                    <h5 className="font-black text-indigo-900 uppercase text-xs tracking-widest mb-4">
+                        {isPortuguese ? "Seu Turno" : "Your Turn"}
+                    </h5>
+                    <p className="text-lg font-serif-display text-indigo-800 mb-8">
+                        {isPortuguese ? "Como você diria: 'A casa da Sarah'?" : "How would you say: 'Sarah's house'?"}
+                    </p>
+                    <div className="flex justify-center gap-4 flex-wrap">
+                        <button onClick={() => speak("The house of Sarah")} className="px-6 py-3 bg-white border border-rose-200 text-rose-400 rounded-xl font-bold hover:bg-rose-50 transition-all opacity-50 hover:opacity-100">
+                            The house of Sarah...
+                        </button>
+                        <button onClick={() => { speak("Sarah's house"); alert("Correct! 🎉"); }} className="px-6 py-3 bg-indigo-600 text-white rounded-xl font-bold shadow-lg shadow-indigo-600/20 hover:scale-105 transition-transform flex items-center gap-2">
+                            <Sparkles className="w-4 h-4" /> Sarah's House
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+const HouseFurniture = ({ isPortuguese }: { isPortuguese: boolean }) => {
+    const activeRooms = [
+        {
+            name: 'House Structure',
+            trans: 'Estrutura da Casa',
+            icon: <Home className="w-6 h-6" />,
+            color: 'bg-slate-50 border-slate-200 text-slate-700',
+            desc: isPortuguese ? "Partes fundamentais da casa." : "Fundamental parts of the house.",
+            items: [
+                { w: 'Door', ipa: '/dɔːr/', trans: 'Porta', icon: '🚪' },
+                { w: 'Window', ipa: '/ˈwɪndoʊ/', trans: 'Janela', icon: '🪟' },
+                { w: 'Garden', ipa: '/ˈɡɑːrdn/', trans: 'Jardim', icon: '🏡' },
+                { w: 'Garage', ipa: '/ɡəˈrɑːʒ/', trans: 'Garagem', icon: '🚗' },
+                { w: 'Roof', ipa: '/ruːf/', trans: 'Telhado', icon: '🏠' },
+                { w: 'Stairway', ipa: '/ˈsterweɪ/', trans: 'Escada', icon: '🪜' },
+                { w: 'Balcony', ipa: '/ˈbælkəni/', trans: 'Sacada/Varanda', icon: '🌇' },
+                { w: 'Elevator', ipa: '/ˈelɪveɪtər/', trans: 'Elevador', icon: '🛗' },
+                { w: 'Lobby', ipa: '/ˈlɒbi/', trans: 'Corredor/Hall', icon: '🏨' },
+                { w: 'Intercom', ipa: '/ˈɪntərkɒm/', trans: 'Interfone', icon: '📞' },
+                { w: 'Doorbell', ipa: '/ˈdɔːrbel/', trans: 'Campainha', icon: '🔔' },
+                { w: 'Upstairs', ipa: '/ˌʌpˈsterz/', trans: 'Andar Superior', icon: '⬆️' },
+                { w: 'Downstairs', ipa: '/ˌdaʊnˈsterz/', trans: 'Andar Inferior', icon: '⬇️' },
+            ]
+        },
+        {
+            name: 'Living Room',
+            trans: 'Sala de Estar',
+            icon: <Sofa className="w-6 h-6" />,
+            color: 'bg-indigo-50 border-indigo-100 text-indigo-700',
+            desc: isPortuguese ? "Onde relaxamos e recebemos visitas." : "Where we relax and welcome guests.",
+            items: [
+                { w: 'Sofa', ipa: '/ˈsoʊfə/', trans: 'Sofá', icon: '🛋️' },
+                { w: 'Television', ipa: '/ˈtelɪvɪʒn/', trans: 'Televisão', icon: '📺' },
+                { w: 'Picture', ipa: '/ˈpɪktʃər/', trans: 'Quadro/Pintura', icon: '🖼️' },
+                { w: 'Easy Chair', ipa: '/ˈiːzi tʃer/', trans: 'Poltrona', icon: '💺' },
+            ]
+        },
+        {
+            name: 'Dining Room',
+            trans: 'Sala de Jantar',
+            icon: <Utensils className="w-6 h-6" />,
+            color: 'bg-amber-50 border-amber-100 text-amber-700',
+            desc: isPortuguese ? "Lugar de refeições em família." : "Place for family meals.",
+            items: [
+                { w: 'Table', ipa: '/ˈteɪbl/', trans: 'Mesa', icon: '🍽️' },
+                { w: 'Chair', ipa: '/tʃer/', trans: 'Cadeira', icon: '🪑' },
+                { w: 'Sideboard', ipa: '/ˈsaɪdbɔːrd/', trans: 'Aparador', icon: '🗄️' },
+            ]
+        },
+        {
+            name: 'Kitchen',
+            trans: 'Cozinha',
+            icon: <Utensils className="w-6 h-6" />,
+            color: 'bg-emerald-50 border-emerald-100 text-emerald-700',
+            desc: isPortuguese ? "O coração da casa." : "The heart of the house.",
+            items: [
+                { w: 'Refrigerator', ipa: '/rɪˈfrɪdʒəreɪtər/', trans: 'Refrigerador', icon: '❄️' },
+                { w: 'Freezer', ipa: '/ˈfriːzər/', trans: 'Congelador', icon: '🧊' },
+                { w: 'Stove', ipa: '/stoʊv/', trans: 'Fogão', icon: '🍳' },
+                { w: 'Microwave', ipa: '/ˈmaɪkroʊweɪv/', trans: 'Microondas', icon: '⚡' },
+                { w: 'Cabinet', ipa: '/ˈkæbɪnət/', trans: 'Armário', icon: '🚪' },
+                { w: 'Pot', ipa: '/pɒt/', trans: 'Panela', icon: '🍲' },
+                { w: 'Fork', ipa: '/fɔːrk/', trans: 'Garfo', icon: '🍴' },
+                { w: 'Knife', ipa: '/naɪf/', trans: 'Faca', icon: '🔪' },
+                { w: 'Tablespoon', ipa: '/ˈteɪblspuːn/', trans: 'Colher de Mesa', icon: '🥄' },
+                { w: 'Teaspoon', ipa: '/ˈtiːspuːn/', trans: 'Colher de Chá', icon: '🥄' },
+                { w: 'Glass', ipa: '/ɡlæs/', trans: 'Copo', icon: '🥛' },
+                { w: 'Cup', ipa: '/kʌp/', trans: 'Xícara', icon: '☕' },
+                { w: 'Plate', ipa: '/pleɪt/', trans: 'Prato', icon: '🍽️' },
+                { w: 'Bowl', ipa: '/boʊl/', trans: 'Tigela', icon: '🥣' },
+            ]
+        },
+        {
+            name: 'Bedroom',
+            trans: 'Quarto',
+            icon: <Bed className="w-6 h-6" />,
+            color: 'bg-rose-50 border-rose-100 text-rose-700',
+            desc: isPortuguese ? "Seu refúgio pessoal." : "Your personal sanctuary.",
+            items: [
+                { w: 'Bed', ipa: '/bed/', trans: 'Cama', icon: '🛏️' },
+                { w: 'Mattress', ipa: '/ˈmætrəs/', trans: 'Colchão', icon: '🛏️' },
+                { w: 'Pillow', ipa: '/ˈpɪloʊ/', trans: 'Travesseiro', icon: '☁️' },
+                { w: 'Blanket', ipa: '/ˈblæŋkɪt/', trans: 'Cobertor', icon: '🛌' },
+                { w: 'Dresser', ipa: '/ˈdresər/', trans: 'Cômoda', icon: '🗄️' },
+                { w: 'Night Table', ipa: '/naɪt ˈteɪbl/', trans: 'Criado-mudo', icon: '🌙' },
+                { w: 'Lamp', ipa: '/læmp/', trans: 'Abajur', icon: '💡' },
+                { w: 'Rug', ipa: '/rʌɡ/', trans: 'Tapete', icon: '🧶' },
+                { w: 'Closet', ipa: '/ˈklɒzɪt/', trans: 'Guarda-roupa', icon: '🚪' },
+            ]
+        },
+        {
+            name: 'Bathroom',
+            trans: 'Banheiro',
+            icon: <Bath className="w-6 h-6" />,
+            color: 'bg-blue-50 border-blue-100 text-blue-700',
+            desc: isPortuguese ? "Higiene pessoal." : "Personal hygiene.",
+            items: [
+                { w: 'Shower', ipa: '/ˈʃaʊər/', trans: 'Chuveiro', icon: '🚿' },
+                { w: 'Bathtub', ipa: '/ˈbæθtʌb/', trans: 'Banheira', icon: '🛁' },
+                { w: 'Toilet', ipa: '/ˈtɔɪlət/', trans: 'Vaso Sanitário', icon: '🚽' },
+                { w: 'Sink', ipa: '/sɪŋk/', trans: 'Pia', icon: '🚰' },
+                { w: 'Mirror', ipa: '/ˈmɪrər/', trans: 'Espelho', icon: '🪞' },
+                { w: 'Towels', ipa: '/ˈtaʊəlz/', trans: 'Toalhas', icon: '🧖' },
+                { w: 'Toothbrush', ipa: '/ˈtuːθbrʌʃ/', trans: 'Escova de Dente', icon: '🪥' },
+                { w: 'Toothpaste', ipa: '/ˈtuːθpeɪst/', trans: 'Pasta de Dente', icon: '🦷' },
+                { w: 'Medicine Cabinet', ipa: '/...ˈkæbɪnət/', trans: 'Armarinho', icon: '💊' },
+            ]
+        },
+        {
+            name: 'Office',
+            trans: 'Escritório',
+            icon: <BookOpen className="w-6 h-6" />,
+            color: 'bg-slate-50 border-slate-200 text-slate-700',
+            desc: isPortuguese ? "Espaço de trabalho." : "Workspace.",
+            items: [
+                { w: 'Desk', ipa: '/desk/', trans: 'Escrivaninha', icon: '🖥️' },
+                { w: 'Computer', ipa: '/kəmˈpjuːtər/', trans: 'Computador', icon: '💻' },
+                { w: 'Printer', ipa: '/ˈprɪntər/', trans: 'Impressora', icon: '🖨️' },
+                { w: 'File Cabinet', ipa: '/faɪl ˈkæbɪnət/', trans: 'Arquivo', icon: '🗄️' },
+                { w: 'Telephone', ipa: '/ˈtelɪfoʊn/', trans: 'Telefone', icon: '☎️' },
+                { w: 'Cellphone', ipa: '/ˈselfoʊn/', trans: 'Celular', icon: '📱' },
+            ]
+        }
+    ];
+    const rooms_unused = [
+        {
+            name: 'Living Room',
+            trans: 'Sala de Estar',
+            icon: <Sofa className="w-6 h-6" />,
+            color: 'bg-indigo-50 border-indigo-100 text-indigo-700',
+            desc: isPortuguese ? "Onde relaxamos e recebemos visitas." : "Where we relax and welcome guests.",
+            items: [
+                { w: 'Sofa', ipa: '/ˈsoʊfə/', trans: 'Sofá', icon: '🛋️' },
+                { w: 'Armchair', ipa: '/ˈɑːrmtʃer/', trans: 'Poltrona', icon: '💺' },
+                { w: 'TV Stand', ipa: '/ˌtiːˈviː stænd/', trans: 'Rack da TV', icon: '📺' },
+                { w: 'Curtains', ipa: '/ˈkɜːrtnz/', trans: 'Cortinas', icon: '🪟' },
+                { w: 'Rug', ipa: '/rʌɡ/', trans: 'Tapete', icon: '🧶' },
+                { w: 'Cushion', ipa: '/ˈkʊʃn/', trans: 'Almofada', icon: '🟦' },
+                { w: 'Bookshelf', ipa: '/ˈbʊkʃelf/', trans: 'Estante', icon: '📚' },
+                { w: 'Fireplace', ipa: '/ˈfaɪərpleɪs/', trans: 'Lareira', icon: '🔥' },
+            ]
+        },
+        {
+            name: 'Kitchen',
+            trans: 'Cozinha',
+            icon: <Utensils className="w-6 h-6" />,
+            color: 'bg-emerald-50 border-emerald-100 text-emerald-700',
+            desc: isPortuguese ? "O coração da casa. Cuidado para não confundir com 'Chicken' (Galinha)!" : "The heart of the house. Don't confuse with 'Chicken'!",
+            items: [
+                { w: 'Fridge', ipa: '/frɪdʒ/', trans: 'Geladeira', icon: '❄️' },
+                { w: 'Stove', ipa: '/stoʊv/', trans: 'Fogão', icon: '🍳' },
+                { w: 'Oven', ipa: '/ˈʌvn/', trans: 'Forno', icon: '🥧' },
+                { w: 'Sink', ipa: '/sɪŋk/', trans: 'Pia', icon: '🚰' },
+                { w: 'Cabinet', ipa: '/ˈkæbɪnət/', trans: 'Armário', icon: '🚪' },
+                { w: 'Microwave', ipa: '/ˈmaɪkroʊweɪv/', trans: 'Microondas', icon: '⚡' },
+                { w: 'Table', ipa: '/ˈteɪbl/', trans: 'Mesa', icon: '🍽️' },
+                { w: 'Chair', ipa: '/tʃer/', trans: 'Cadeira', icon: '🪑' },
+            ]
+        },
+        {
+            name: 'Bedroom',
+            trans: 'Quarto',
+            icon: <Bed className="w-6 h-6" />,
+            color: 'bg-rose-50 border-rose-100 text-rose-700',
+            desc: isPortuguese ? "Seu refúgio pessoal." : "Your personal sanctuary.",
+            items: [
+                { w: 'Bed', ipa: '/bed/', trans: 'Cama', icon: '🛏️' },
+                { w: 'Wardrobe', ipa: '/ˈwɔːrdroʊb/', trans: 'Guarda-roupa', icon: '🚪' },
+                { w: 'Pillow', ipa: '/ˈpɪloʊ/', trans: 'Travesseiro', icon: '☁️' },
+                { w: 'Blanket', ipa: '/ˈblæŋkɪt/', trans: 'Cobertor', icon: '🛌' },
+                { w: 'Lamp', ipa: '/læmp/', trans: 'Abajur/Lâmpada', icon: '💡' },
+                { w: 'Mirror', ipa: '/ˈmɪrər/', trans: 'Espelho', icon: '🪞' },
+                { w: 'Drawer', ipa: '/ˈdrɔːer/', trans: 'Gaveta', icon: '📥' },
+                { w: 'Alarm Clock', ipa: '/əˈlɑːrm klɒk/', trans: 'Despertador', icon: '⏰' },
+            ]
+        },
+        {
+            name: 'Bathroom',
+            trans: 'Banheiro',
+            icon: <Bath className="w-6 h-6" />,
+            color: 'bg-blue-50 border-blue-100 text-blue-700',
+            desc: isPortuguese ? "Onde a mágica da higiene acontece." : "Where hygiene magic happens.",
+            items: [
+                { w: 'Shower', ipa: '/ˈʃaʊər/', trans: 'Chuveiro', icon: '🚿' },
+                { w: 'Toilet', ipa: '/ˈtɔɪlət/', trans: 'Vaso Sanitário', icon: '🚽' },
+                { w: 'Sink', ipa: '/sɪŋk/', trans: 'Pia', icon: '🚰' },
+                { w: 'Towel', ipa: '/ˈtaʊəl/', trans: 'Toalha', icon: '🧖' },
+                { w: 'Bathtub', ipa: '/ˈbæθtʌb/', trans: 'Banheira', icon: '🛁' },
+                { w: 'Mirror', ipa: '/ˈmɪrər/', trans: 'Espelho', icon: '🪞' },
+                { w: 'Toilet Paper', ipa: '/...peɪpər/', trans: 'Papel Higiênico', icon: '🧻' },
+                { w: 'Soap', ipa: '/soʊp/', trans: 'Sabonete', icon: '🧼' },
+            ]
+        }
+    ];
+
+    return (
+        <div className="space-y-12 animate-fade-in pb-20">
+            {/* Senior Teacher Intro */}
+            <div className="relative p-8 rounded-[2rem] bg-indigo-900 text-white overflow-hidden shadow-2xl">
+                <div className="absolute top-0 right-0 p-4 opacity-10"><Home className="w-32 h-32" /></div>
+                <div className="relative z-10 flex flex-col md:flex-row gap-6 items-center">
+                    <div className="w-20 h-20 rounded-full bg-indigo-500 flex items-center justify-center text-4xl shadow-lg border-2 border-indigo-400">👨‍🏫</div>
+                    <div className="flex-1">
+                        <h3 className="text-2xl font-serif-display mb-2">
+                            {isPortuguese ? "Bem-vindo ao Lar" : "Welcome Home"}
+                        </h3>
+                        <p className="text-indigo-100 text-sm leading-relaxed italic">
+                            {isPortuguese
+                                ? "\"Hoje não vamos apenas aprender palavras; vamos mobiliar sua casa mental em inglês! Saber nomear o que está ao seu redor é o primeiro passo para pensar em inglês. Do quarto à cozinha, vamos explorar cada canto!\""
+                                : "\"Today we won't just learn words; we will furnish your mental home in English! Knowing how to name what is around you is the first step to thinking in English. From the bedroom to the kitchen, let's explore every corner!\""
+                            }
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            {/* Room by Room Guide */}
+            <div className="space-y-12">
+                {activeRooms.map((room, idx) => (
+                    <section key={idx} className="space-y-6">
+                        <div className="flex items-center gap-3">
+                            <div className={`p-2 rounded-lg ${room.color.split(' ')[0]} ${room.color.split(' ')[2]}`}>
+                                {room.icon}
+                            </div>
+                            <div>
+                                <h4 className="text-2xl font-bold text-slate-800">{room.name}</h4>
+                                <p className="text-xs text-slate-400 font-medium uppercase tracking-wide">{room.desc}</p>
+                            </div>
+                        </div>
+
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                            {room.items.map((item, i) => (
+                                <button
+                                    key={i}
+                                    onClick={() => speak(item.w)}
+                                    className="group bg-white p-4 rounded-3xl border border-slate-100 hover:border-indigo-500 hover:shadow-xl transition-all flex flex-col items-center text-center relative overflow-hidden"
+                                >
+                                    <span className="text-4xl mb-3 group-hover:scale-110 transition-transform">{item.icon}</span>
+                                    <h5 className="font-bold text-slate-800 mb-1">{item.w}</h5>
+
+                                    <div className="flex flex-col items-center">
+                                        <span className="text-[10px] font-mono text-slate-400 opacity-60">{item.ipa}</span>
+                                        {isPortuguese && <span className="text-[10px] font-bold text-indigo-400 uppercase mt-1">{item.trans}</span>}
+                                    </div>
+
+                                    <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                                        <Volume2 className="w-3 h-3 text-indigo-300" />
+                                    </div>
+                                </button>
+                            ))}
+                        </div>
+                    </section>
+                ))}
+            </div>
+
+            {/* Master Tip: Pronunciation */}
+            <div className="bg-amber-50 rounded-[2.5rem] p-10 relative border border-amber-100">
+                <div className="absolute top-0 right-10 -translate-y-1/2 bg-amber-400 text-white px-6 py-2 rounded-full font-black text-xs uppercase tracking-widest shadow-lg">
+                    {isPortuguese ? "Alerta de Pronúncia" : "Pronunciation Alert"}
+                </div>
+                <div className="flex flex-col md:flex-row gap-8 items-center">
+                    <div className="w-20 h-20 bg-white rounded-3xl flex items-center justify-center text-4xl shadow-sm shrink-0">⚠️</div>
+                    <div className="flex-1">
+                        <h5 className="font-bold text-amber-900 mb-2">
+                            {isPortuguese ? "Cozinha vs. Galinha" : "Kitchen vs. Chicken"}
+                        </h5>
+                        <p className="text-sm text-amber-800 leading-relaxed mb-6">
+                            {isPortuguese
+                                ? "Muitos alunos confundem. 'Kitchen' (/ˈkɪtʃɪn/) é onde você cozinha. 'Chicken' (/ˈtʃɪkɪn/) é o que você come. Não diga 'I am in the chicken' (Estou dentro da galinha)!"
+                                : "Many students confuse these. 'Kitchen' (/ˈkɪtʃɪn/) is where you cook. 'Chicken' (/ˈtʃɪkɪn/) is what you eat. Don't say 'I am in the chicken'!"}
+                        </p>
+                        <div className="flex gap-4">
+                            <button onClick={() => speak("I am in the kitchen.")} className="px-5 py-3 bg-white border border-amber-200 rounded-xl font-bold text-amber-900 text-xs hover:bg-amber-100 transition-colors flex items-center gap-2">
+                                <Volume2 className="w-3 h-3" /> "I am in the kitchen"
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* Application Practice */}
+            <div className="bg-indigo-50 border-2 border-indigo-100 rounded-[2.5rem] p-10 relative overflow-hidden">
+                <div className="absolute top-0 left-0 p-4 opacity-10"><MessageCircle className="w-32 h-32 text-indigo-900" /></div>
+                <div className="relative z-10 text-center">
+                    <h5 className="font-black text-indigo-900 uppercase text-xs tracking-widest mb-4">
+                        {isPortuguese ? "Pratique Agora" : "Practice Now"}
+                    </h5>
+                    <p className="text-lg font-serif-display text-indigo-800 mb-8 max-w-xl mx-auto">
+                        {isPortuguese
+                            ? "Descreva seu ambiente atual. Onde você está? O que você vê?"
+                            : "Describe your current environment. Where are you? What do you see?"}
+                    </p>
+                    <div className="grid md:grid-cols-2 gap-4 max-w-2xl mx-auto">
+                        <button onClick={() => speak("I am in the living room.")} className="p-4 bg-white rounded-xl shadow-sm border border-indigo-100 font-medium text-slate-600 hover:text-indigo-600 hover:border-indigo-400 transition-all flex justify-between items-center group">
+                            "I am in the living room." <Volume2 className="w-4 h-4 opacity-20 group-hover:opacity-100" />
+                        </button>
+                        <button onClick={() => speak("There is a computer on my table.")} className="p-4 bg-white rounded-xl shadow-sm border border-indigo-100 font-medium text-slate-600 hover:text-indigo-600 hover:border-indigo-400 transition-all flex justify-between items-center group">
+                            "There is a computer on my table." <Volume2 className="w-4 h-4 opacity-20 group-hover:opacity-100" />
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+};
 
 const PrepositionsPlace = () => (
     <div className="grid grid-cols-2 md:grid-cols-3 gap-6 animate-fade-in">
@@ -3917,32 +4373,31 @@ const WelcomeScreen = ({ onSelectLevel, user, onLogin, onSignup, unlockedLevels 
                         desc="Essential foundations: Grammar, phonetics & basic vocabulary."
                         icon={<ZapIcon className="w-6 h-6" />}
                         onClick={() => onSelectLevel(1)}
-                        available={unlockedLevels.includes(1)}
+                        available={true}
                         color="from-indigo-600 to-indigo-700"
-                        progress={unlockedLevels.includes(1) ? Math.min(100, Math.round((completedCount / 30) * 100)) : 0}
                     />
                     <LevelCard
                         title="Pre-Intermediate"
                         desc="Expanding reach with complex structures."
                         icon={<Layers className="w-6 h-6" />}
-                        onClick={() => unlockedLevels.includes(2) && onSelectLevel(2)}
-                        available={unlockedLevels.includes(2)}
+                        onClick={() => onSelectLevel(2)}
+                        available={true}
                         color="from-blue-600 to-blue-700"
                     />
                     <LevelCard
                         title="Intermediate"
                         desc="Fluent conversations & professional writing."
                         icon={<Globe className="w-6 h-6" />}
-                        onClick={() => unlockedLevels.includes(3) && onSelectLevel(3)}
-                        available={unlockedLevels.includes(3)}
+                        onClick={() => onSelectLevel(3)}
+                        available={true}
                         color="from-emerald-600 to-emerald-700"
                     />
                     <LevelCard
                         title="Advanced"
                         desc="Native-level nuance & logic."
                         icon={<Award className="w-6 h-6" />}
-                        onClick={() => unlockedLevels.includes(4) && onSelectLevel(4)}
-                        available={unlockedLevels.includes(4)}
+                        onClick={() => onSelectLevel(4)}
+                        available={true}
                         color="from-rose-600 to-rose-700"
                     />
                 </div>
@@ -3951,41 +4406,25 @@ const WelcomeScreen = ({ onSelectLevel, user, onLogin, onSignup, unlockedLevels 
     </div>
 );
 
-const LevelCard = ({ title, desc, icon, onClick, available, color, progress = 0 }: any) => {
-    // Victory State Logic
-    const isCompleted = progress === 100;
-
+const LevelCard = ({ title, desc, icon, onClick, available, color }: any) => {
     return (
-        <button onClick={onClick} className={`group relative p-8 glass-card rounded-[2rem] text-left transition-all duration-500 flex flex-col h-full ${available ? 'hover:translate-y-[-8px] hover:shadow-2xl hover:shadow-indigo-500/20' : 'opacity-60 cursor-not-allowed'}`}>
-            <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${available ? (isCompleted ? 'from-emerald-500 to-emerald-600' : color) : 'from-slate-700 to-slate-800'} flex items-center justify-center text-white mb-6 shadow-lg group-hover:scale-110 transition-transform`}>
-                {isCompleted ? <Trophy className="w-8 h-8" /> : icon}
+        <button onClick={onClick} className={`group relative p-8 glass-card rounded-[2rem] text-left transition-all duration-500 flex flex-col h-full hover:translate-y-[-8px] hover:shadow-2xl hover:shadow-indigo-500/20`}>
+            <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${color} flex items-center justify-center text-white mb-6 shadow-lg group-hover:scale-110 transition-transform`}>
+                {icon}
             </div>
 
             <h3 className="text-2xl font-bold text-white mb-3 flex items-center justify-between">
                 {title}
-                {!available && <Lock className="w-4 h-4 text-slate-500" />}
-                {isCompleted && <CheckCircle2 className="w-6 h-6 text-emerald-400" />}
             </h3>
 
-            <p className={`text-sm leading-relaxed mb-8 flex-1 ${isCompleted ? 'text-emerald-200 font-medium' : 'text-slate-400'}`}>
-                {isCompleted ? "Level Conquered! You are unstoppable. 🏆" : desc}
+            <p className="text-sm leading-relaxed mb-8 flex-1 text-slate-400">
+                {desc}
             </p>
 
-            {/* Progress Bar */}
-            {available && progress > 0 && (
-                <div className="mb-6 w-full bg-slate-700/50 rounded-full h-2 overflow-hidden">
-                    <div className="bg-gradient-to-r from-emerald-400 to-emerald-500 h-full rounded-full transition-all duration-1000" style={{ width: `${progress}%` }}></div>
-                </div>
-            )}
-
-            {available ? (
-                <div className={`inline-flex items-center gap-2 font-bold text-sm ${isCompleted ? 'text-emerald-400' : 'text-indigo-400'}`}>
-                    {progress > 0 ? (isCompleted ? 'Review Level' : 'Continue Learning') : 'Start Learning'}
-                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                </div>
-            ) : (
-                <div className="inline-flex items-center gap-2 text-slate-600 font-bold text-sm">Locked</div>
-            )}
+            <div className="inline-flex items-center gap-2 font-bold text-sm text-indigo-400">
+                Start Learning
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            </div>
             <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-[2rem]"></div>
         </button>
     );
@@ -4052,21 +4491,20 @@ const Sidebar = ({ activeModule, onToggleModule, activeSection, onSelectSection,
 
             <div className="flex-1 overflow-y-auto p-4 space-y-4 pt-6">
                 {modules.map(m => {
-                    const completed = isModuleCompleted(m);
                     return (
                         <div key={m.id} className="rounded-2xl overflow-hidden transition-all duration-300">
                             <button onClick={() => onToggleModule(m.id)}
                                 className={`w-full p-4 flex items-center justify-between text-sm font-semibold transition-all ${activeModule === m.id ? 'bg-indigo-500/10 text-white' : 'text-slate-400 hover:text-white hover:bg-white/5'}`}
                             >
                                 <div className="flex items-center gap-4">
-                                    <div className={`p-2 rounded-lg relative ${activeModule === m.id ? 'bg-indigo-500 text-white' : (completed ? 'bg-emerald-500/20 text-emerald-500' : 'bg-slate-800 text-slate-500')}`}>
-                                        {completed ? <CheckCircle2 className="w-4 h-4" /> : m.icon}
+                                    <div className={`p-2 rounded-lg relative ${activeModule === m.id ? 'bg-indigo-500 text-white' : 'bg-slate-800 text-slate-500'}`}>
+                                        {m.icon}
                                     </div>
                                     <div className="flex flex-col text-left">
-                                        <span className={`text-[11px] font-black tracking-widest uppercase ${completed ? 'text-emerald-500' : 'text-indigo-400'}`}>
-                                            {completed ? 'COMPLETED' : `M${m.id}`}
+                                        <span className="text-[11px] font-black tracking-widest uppercase text-indigo-400">
+                                            {`M${m.id}`}
                                         </span>
-                                        <span className={`truncate ${completed ? 'line-through opacity-50' : ''}`}>{m.title}</span>
+                                        <span className="truncate">{m.title}</span>
                                     </div>
                                 </div>
                                 {activeModule === m.id ? <ChevronDown className="w-4 h-4 text-indigo-400" /> : <ChevronRight className="w-4 h-4 opacity-30" />}
@@ -4075,16 +4513,14 @@ const Sidebar = ({ activeModule, onToggleModule, activeSection, onSelectSection,
                             {activeModule === m.id && (
                                 <div className="mt-1 ml-4 border-l border-white/5 space-y-1 pl-2 animate-fade-in">
                                     {Array.from({ length: m.range[1] - m.range[0] + 1 }, (_, i) => m.range[0] + i).map(idx => {
-                                        const isLessonCompleted = completedLessons.includes(idx);
                                         return (
                                             <button key={idx} onClick={() => onSelectSection(idx)}
                                                 className={`w-full text-left px-4 py-3 rounded-xl text-xs font-medium transition-all flex items-center gap-3 ${activeSection === idx ? 'bg-white/10 text-indigo-400 shadow-inner' : 'text-slate-500 hover:text-slate-300'}`}
                                             >
                                                 <div className={`w-1 h-1 rounded-full transition-all ${activeSection === idx ? 'bg-indigo-400 scale-150 shadow-[0_0_8px_rgba(129,140,248,0.8)]' : 'bg-slate-700'}`} />
-                                                <span className={isLessonCompleted ? 'line-through opacity-50 decoration-slate-500' : ''}>
+                                                <span>
                                                     {getTitle(idx)}
                                                 </span>
-                                                {isLessonCompleted && <CheckCircle2 className="w-3 h-3 text-emerald-500 ml-auto" />}
                                             </button>
                                         );
                                     })}
@@ -4174,8 +4610,8 @@ export default function App() {
 
             // Load State
             setUser(user);
-            const userProgress = await progressService.getUserProgress(user.uid);
-            setProgress(userProgress);
+            // Default to all levels unlocked for reference mode
+            setProgress({ completedLessons: [], unlockedLevels: [1, 2, 3, 4] });
         };
         initUser();
     }, []);
@@ -4232,8 +4668,8 @@ export default function App() {
             case 13: return <DemonstrativesNew isPortuguese={isPortuguese} />;
             case 14: return <FamilyVocabulary isPortuguese={isPortuguese} />;
             case 15: return <PossessiveAdjectives isPortuguese={isPortuguese} />;
-            case 16: return <GenitiveCase />;
-            case 17: return <HouseFurniture />;
+            case 16: return <GenitiveCase isPortuguese={isPortuguese} />;
+            case 17: return <HouseFurniture isPortuguese={isPortuguese} />;
             case 18: return <PrepositionsPlace />;
             case 19: return <ThereIsAre />;
             case 20: return <DaysMonths />;
@@ -4307,26 +4743,7 @@ export default function App() {
                         <div className="pb-32">
                             {renderContent()}
 
-                            {/* Completion Button */}
-                            <div className="mt-16 pt-8 border-t border-slate-200 flex justify-end">
-                                <button
-                                    onClick={() => handleLessonComplete(activeSection)}
-                                    className={`flex items-center gap-3 px-8 py-4 rounded-2xl font-bold transition-all ${progress.completedLessons.includes(activeSection)
-                                        ? 'bg-green-100 text-green-700 hover:bg-green-200 border border-green-200'
-                                        : 'bg-indigo-600 text-white hover:bg-indigo-700 shadow-xl shadow-indigo-500/30'
-                                        }`}
-                                >
-                                    {progress.completedLessons.includes(activeSection) ? (
-                                        <>
-                                            <CheckCircle2 className="w-6 h-6" /> Lesson Completed
-                                        </>
-                                    ) : (
-                                        <>
-                                            Mark as Complete <ArrowRight className="w-5 h-5" />
-                                        </>
-                                    )}
-                                </button>
-                            </div>
+
                         </div>
                     </div>
                 </main>
