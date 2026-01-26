@@ -4586,6 +4586,15 @@ export default function App() {
         }
     }, [user]);
 
+    // --- VOICE WARM-UP FIX ---
+    useEffect(() => {
+        const loadVoices = () => window.speechSynthesis.getVoices();
+        loadVoices();
+        // Some browsers need the event listener to trigger the load
+        window.speechSynthesis.onvoiceschanged = loadVoices;
+        return () => { window.speechSynthesis.onvoiceschanged = null; };
+    }, []);
+
     const handleAssignTeacher = async (teacherId: string) => {
         if (user) {
             await userService.assignTeacher(user.uid, teacherId);
@@ -4735,11 +4744,11 @@ export default function App() {
                     isMobileMenuOpen={isMobileMenuOpen}
                     onCloseMobileMenu={() => setIsMobileMenuOpen(false)}
                 />
-                
+
                 <main className={`flex-1 h-screen overflow-y-auto p-6 md:p-12 lg:p-20 relative scroll-smooth no-scrollbar ${!isMobileMenuOpen ? 'block' : 'hidden'} md:block`}>
                     <div className="max-w-4xl mx-auto">
                         <header className="mb-16 animate-fade-in">
-                            <button 
+                            <button
                                 onClick={() => setIsMobileMenuOpen(true)}
                                 className="md:hidden flex items-center gap-2 text-indigo-500 mb-6 font-bold text-sm bg-indigo-50 px-4 py-2 rounded-lg"
                             >
