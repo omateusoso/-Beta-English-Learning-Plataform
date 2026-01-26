@@ -4442,7 +4442,7 @@ const UnderConstruction = ({ title, onBack }: any) => (
     </div>
 );
 
-const Sidebar = ({ activeModule, onToggleModule, activeSection, onSelectSection, onBack, currentLevel, user, onLogout, completedLessons = [] }: any) => {
+const Sidebar = ({ activeModule, onToggleModule, activeSection, onSelectSection, onBack, currentLevel, user, onLogout, completedLessons = [], isMobileMenuOpen, onCloseMobileMenu }: any) => {
     const modules = [
         { id: 1, title: 'First Steps', icon: <Star className="w-4 h-4" />, range: [0, 4] },
         { id: 2, title: 'Nouns & Characteristics', icon: <BookOpen className="w-4 h-4" />, range: [5, 9] },
@@ -4475,7 +4475,7 @@ const Sidebar = ({ activeModule, onToggleModule, activeSection, onSelectSection,
     };
 
     return (
-        <aside className="w-full md:w-80 sidebar-glass h-screen overflow-y-auto flex flex-col shadow-2xl relative z-20">
+        <aside className={`${isMobileMenuOpen ? 'flex' : 'hidden'} md:flex w-full lg:w-80 sidebar-glass h-screen overflow-y-auto flex-col shadow-2xl relative z-20`}>
             <div className="p-8 border-b border-white/5 flex flex-col gap-6 sticky top-0 bg-[#0f172a]/80 backdrop-blur-xl z-10">
                 <button onClick={onBack} className="group flex items-center gap-2 text-slate-400 hover:text-indigo-400 transition-all text-xs font-bold tracking-widest uppercase">
                     <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> Back to Menu
@@ -4517,7 +4517,7 @@ const Sidebar = ({ activeModule, onToggleModule, activeSection, onSelectSection,
                                 <div className="mt-1 ml-4 border-l border-white/5 space-y-1 pl-2 animate-fade-in">
                                     {Array.from({ length: m.range[1] - m.range[0] + 1 }, (_, i) => m.range[0] + i).map(idx => {
                                         return (
-                                            <button key={idx} onClick={() => onSelectSection(idx)}
+                                            <button key={idx} onClick={() => { onSelectSection(idx); onCloseMobileMenu(); }}
                                                 className={`w-full text-left px-4 py-3 rounded-xl text-xs font-medium transition-all flex items-center gap-3 ${activeSection === idx ? 'bg-white/10 text-indigo-400 shadow-inner' : 'text-slate-500 hover:text-slate-500'}`} // Fixed hover text color on inner buttons generally or relevant logic
                                             >
                                                 <div className={`w-1 h-1 rounded-full transition-all ${activeSection === idx ? 'bg-indigo-400 scale-150 shadow-[0_0_8px_rgba(129,140,248,0.8)]' : 'bg-slate-700'}`} />
@@ -4567,6 +4567,7 @@ export default function App() {
     const [activeModule, setActiveModule] = useState<number | null>(1);
     const [activeSection, setActiveSection] = useState(0);
     const [isPortuguese, setIsPortuguese] = useState(false);
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(true);
 
     // Auth State
     // Auth State
@@ -4720,7 +4721,7 @@ export default function App() {
     return (
         <>
             <style>{globalStyles}</style>
-            <div className="min-h-screen flex flex-col md:flex-row bg-[#f8fafc] relative">
+            <div className="min-h-screen flex flex-col lg:flex-row bg-[#f8fafc] relative">
                 <Sidebar
                     activeModule={activeModule}
                     onToggleModule={(id: any) => setActiveModule(activeModule === id ? null : id)}
@@ -4731,10 +4732,20 @@ export default function App() {
                     user={user}
                     onLogout={() => { }} // No-op
                     completedLessons={progress.completedLessons}
+                    isMobileMenuOpen={isMobileMenuOpen}
+                    onCloseMobileMenu={() => setIsMobileMenuOpen(false)}
                 />
-                <main className="flex-1 h-screen overflow-y-auto p-6 md:p-12 lg:p-20 relative scroll-smooth no-scrollbar">
+                
+                <main className={`flex-1 h-screen overflow-y-auto p-6 md:p-12 lg:p-20 relative scroll-smooth no-scrollbar ${!isMobileMenuOpen ? 'block' : 'hidden'} md:block`}>
                     <div className="max-w-4xl mx-auto">
                         <header className="mb-16 animate-fade-in">
+                            <button 
+                                onClick={() => setIsMobileMenuOpen(true)}
+                                className="md:hidden flex items-center gap-2 text-indigo-500 mb-6 font-bold text-sm bg-indigo-50 px-4 py-2 rounded-lg"
+                            >
+                                <ChevronLeft className="w-4 h-4" /> Back to Menu
+                            </button>
+
                             <div className="flex items-center gap-2 text-indigo-500 text-xs font-bold uppercase tracking-widest mb-4">
                                 <Sparkles className="w-4 h-4" /> Matthew's Curriculum
                             </div>
