@@ -3269,240 +3269,229 @@ const FamilyVocabulary = ({ isPortuguese }: { isPortuguese: boolean }) => {
 
 
 const PossessiveAdjectives = ({ isPortuguese }: { isPortuguese: boolean }) => {
+    // Group 1: Possessive Adjectives (Always before a noun)
     const adjectives = [
         {
             s: 'I', sT: 'Eu',
             p: 'My', pT: isPortuguese ? 'Meu(s)/Minha(s)' : 'My',
             ipa: '/maɪ/',
             icon: '🙋‍♂️',
+            color: 'indigo',
             ex: 'This is my house.',
             exT: isPortuguese ? 'Esta é minha casa.' : 'This is my house.',
-            tip: isPortuguese ? 'Sempre concorda com o dono (Eu).' : 'Always agrees with the owner (Me).'
+            tip: isPortuguese ? 'Sempre antes da coisa!' : 'Always before the noun!'
         },
         {
             s: 'You', sT: 'Você',
             p: 'Your', pT: isPortuguese ? 'Seu(s)/Sua(s)' : 'Your',
             ipa: '/jɔːr/',
             icon: '👉',
+            color: 'emerald',
             ex: 'What is your name?',
             exT: isPortuguese ? 'Qual é o seu nome?' : 'What is your name?',
             tip: 'Standard'
         },
         {
             s: 'He', sT: 'Ele',
-            p: 'His', pT: isPortuguese ? 'Do "Ele"' : 'His',
+            p: 'His', pT: isPortuguese ? 'Dele' : 'His',
             ipa: '/hɪz/',
             icon: '👨',
+            color: 'blue',
             ex: 'His car is blue.',
             exT: isPortuguese ? 'O carro dele é azul.' : 'His car is blue.',
-            tip: isPortuguese ? '⚠️ Atenção: HIS é "dele". Não importa se o objeto é feminino!' : '⚠️ Attention: HIS belongs to HIM.'
+            tip: isPortuguese ? 'Cuidado! HIS vem de HE.' : 'Careful! HIS comes from HE.'
         },
         {
             s: 'She', sT: 'Ela',
-            p: 'Her', pT: isPortuguese ? 'Da "Ela"' : 'Her',
+            p: 'Her', pT: isPortuguese ? 'Dela' : 'Her',
             ipa: '/hɜːr/',
             icon: '👩',
+            color: 'rose',
             ex: 'Her eyes are green.',
             exT: isPortuguese ? 'Os olhos dela são verdes.' : 'Her eyes are green.',
-            tip: isPortuguese ? '⚠️ Atenção: HER é "dela".' : '⚠️ Attention: HER belongs to HER.'
+            tip: isPortuguese ? 'Cuidado! HER vem de SHE.' : 'Careful! HER comes from SHE.'
         },
         {
-            s: 'It', sT: 'Ele/Ela (Neutro)',
-            p: 'Its', pT: isPortuguese ? 'Dele/Dela (Neutro)' : 'Its',
+            s: 'It', sT: 'Neutro',
+            p: 'Its', pT: isPortuguese ? 'Dele/Dela (Coisas)' : 'Its',
             ipa: '/ɪts/',
-            icon: '🐶',
+            icon: '🐱',
+            color: 'amber',
             ex: 'Its tail is long.',
-            exT: isPortuguese ? 'O rabo dele (do cachorro) é longo.' : 'Its tail is long.',
-            tip: isPortuguese ? 'Sem apóstrofo! It\'s = It is.' : 'No apostrophe! It\'s = It is.'
+            exT: isPortuguese ? 'O rabo dele é longo.' : 'Its tail is long.',
+            tip: isPortuguese ? 'SEM apóstrofo!' : 'NO apostrophe!'
         },
         {
             s: 'We', sT: 'Nós',
-            p: 'Our', pT: isPortuguese ? 'Nosso(s)/Nossa(s)' : 'Our',
+            p: 'Our', pT: isPortuguese ? 'Nosso(s)' : 'Our',
             ipa: '/ˈaʊ.ər/',
             icon: '🫂',
-            ex: 'This is our planet.',
-            exT: isPortuguese ? 'Este é nosso planeta.' : 'This is our planet.',
+            color: 'purple',
+            ex: 'Our planet is big.',
+            exT: isPortuguese ? 'Nosso planeta é grande.' : 'Our planet is big.',
             tip: 'Standard'
         },
         {
-            s: 'They', sT: 'Eles/Elas',
+            s: 'They', sT: 'Eles',
             p: 'Their', pT: isPortuguese ? 'Deles/Delas' : 'Their',
             ipa: '/ðeər/',
             icon: '👥',
-            ex: 'Their children are happy.',
-            exT: isPortuguese ? 'Os filhos deles estão felizes.' : 'Their children are happy.',
+            color: 'slate',
+            ex: 'Their house is new.',
+            exT: isPortuguese ? 'A casa deles é nova.' : 'Their house is new.',
             tip: 'Standard'
         }
     ];
 
+    // Group 2: Possessive Pronouns (Replaces the noun)
     const pronouns = [
         {
-            s: 'I', p: 'Mine', pT: isPortuguese ? 'Meu/Minha (O objeto é meu)' : 'Mine',
-            ipa: '/maɪn/', icon: '👑', ex: 'The car is mine.', exT: isPortuguese ? 'O carro é meu.' : 'The car is mine.'
+            s: 'I', p: 'Mine', ipa: '/maɪn/', icon: '👑', color: 'indigo',
+            ex: 'The car is mine.',
+            pT: isPortuguese ? 'Meu/Minha' : 'Mine',
+            exT: isPortuguese ? 'O carro é meu.' : 'The car is mine.'
         },
         {
-            s: 'You', p: 'Yours', pT: isPortuguese ? 'Seu/Sua (O objeto é seu)' : 'Yours',
-            ipa: '/jɔːrz/', icon: '🫵', ex: 'Is this pen yours?', exT: isPortuguese ? 'Esta caneta é sua?' : 'Is this pen yours?'
+            s: 'You', p: 'Yours', ipa: '/jɔːrz/', icon: '🫵', color: 'emerald',
+            ex: 'Is this yours?',
+            pT: isPortuguese ? 'Seu/Sua' : 'Yours',
+            exT: isPortuguese ? 'Isso é seu?' : 'Is this yours?'
         },
         {
-            s: 'He', p: 'His', pT: isPortuguese ? 'Dele (O objeto é dele)' : 'His',
-            ipa: '/hɪz/', icon: '🎩', ex: 'The decision is his.', exT: isPortuguese ? 'A decisão é dele.' : 'The decision is his.'
+            s: 'He', p: 'His', ipa: '/hɪz/', icon: '🎩', color: 'blue',
+            ex: 'The decision is his.',
+            pT: isPortuguese ? 'Dele' : 'His',
+            exT: isPortuguese ? 'A decisão é dele.' : 'The decision is his.'
         },
         {
-            s: 'She', p: 'Hers', pT: isPortuguese ? 'Dela (O objeto é dela)' : 'Hers',
-            ipa: '/hɜːrz/', icon: '👠', ex: 'The ring is hers.', exT: isPortuguese ? 'O anel é dela.' : 'The ring is hers.'
+            s: 'She', p: 'Hers', ipa: '/hɜːrz/', icon: '👠', color: 'rose',
+            ex: 'The ring is hers.',
+            pT: isPortuguese ? 'Dela' : 'Hers',
+            exT: isPortuguese ? 'O anel é dela.' : 'The ring is hers.'
         },
         {
-            s: 'We', p: 'Ours', pT: isPortuguese ? 'Nosso/Nossa (O objeto é nosso)' : 'Ours',
-            ipa: '/ˈaʊ.ərz/', icon: '🏠', ex: 'The future is ours.', exT: isPortuguese ? 'O futuro é nosso.' : 'The future is ours.'
+            s: 'We', p: 'Ours', ipa: '/ˈaʊ.ərz/', icon: '🏠', color: 'purple',
+            ex: 'The future is ours.',
+            pT: isPortuguese ? 'Nosso/Nossa' : 'Ours',
+            exT: isPortuguese ? 'O futuro é nosso.' : 'The future is ours.'
         },
         {
-            s: 'They', p: 'Theirs', pT: isPortuguese ? 'Deles/Delas (O objeto é deles)' : 'Theirs',
-            ipa: '/ðeərz/', icon: '🌍', ex: 'The choice is theirs.', exT: isPortuguese ? 'A escolha é deles.' : 'The choice is theirs.'
+            s: 'They', p: 'Theirs', ipa: '/ðeərz/', icon: '🌍', color: 'slate',
+            ex: 'The choice is theirs.',
+            pT: isPortuguese ? 'Deles/Delas' : 'Theirs',
+            exT: isPortuguese ? 'A escolha é deles.' : 'The choice is theirs.'
         }
     ];
 
     return (
         <div className="space-y-16 animate-fade-in pb-20">
+            {/* Senior Teacher Intro */}
+            <div className="relative p-8 rounded-[2rem] bg-indigo-900 text-white overflow-hidden shadow-2xl">
+                <div className="absolute top-0 right-0 p-4 opacity-10"><LockIcon className="w-32 h-32" /></div>
+                <div className="relative z-10 flex flex-col md:flex-row gap-6 items-center">
+                    <div className="w-20 h-20 rounded-full bg-indigo-500 flex items-center justify-center text-4xl shadow-lg border-2 border-indigo-400">👨‍🏫</div>
+                    <div className="flex-1">
+                        <h3 className="text-2xl font-serif-display mb-2">
+                            {isPortuguese ? "Quem é o dono?" : "Who is the owner?"}
+                        </h3>
+                        <p className="text-indigo-100 text-sm leading-relaxed italic">
+                            {isPortuguese
+                                ? "\"Diferente do português, onde 'Seu' serve pra todo mundo, o inglês é ciumento! Cada pessoa tem seu próprio possessivo. O segredo? Olhe sempre para o DONO, não para o objeto.\""
+                                : "\"Unlike other languages, English is possessive! Each person has their own possessive word. The secret? Always look at the OWNER, not the object.\""
+                            }
+                        </p>
+                    </div>
+                </div>
+            </div>
+
             {/* PART 1: ADJECTIVES */}
             <section className="space-y-8">
                 <div className="flex items-center gap-3">
                     <div className="p-2 bg-indigo-100 rounded-lg text-indigo-600"><Briefcase className="w-5 h-5" /></div>
                     <h4 className="text-2xl font-bold text-slate-800">
-                        {isPortuguese ? "Possessive Adjectives (Os Dependentes)" : "Possessive Adjectives (The Dependents)"}
+                        {isPortuguese ? "Possessivos Adjetivos" : "Possessive Adjectives"}
+                        <span className="block text-sm font-normal text-slate-400 mt-1">
+                            {isPortuguese ? "(Sempre vêm ANTES do objeto)" : "(Always come BEFORE the object)"}
+                        </span>
                     </h4>
                 </div>
 
-                {/* Teacher's Pro Tip Block */}
-                <div className="p-8 bg-amber-50 rounded-[2rem] border-l-4 border-amber-400 shadow-sm relative overflow-hidden">
-                    <div className="absolute top-0 right-0 p-8 opacity-5"><UserCheck className="w-40 h-40" /></div>
-                    <div className="relative z-10 flex items-start gap-4">
-                        <div className="text-4xl">🎓</div>
-                        <div>
-                            <h4 className="font-black text-amber-900 text-lg mb-2">
-                                {isPortuguese ? "A Regra de Ouro do Dono" : "The Golden Owner Rule"}
-                            </h4>
-                            <p className="text-amber-800 leading-relaxed text-sm">
-                                {isPortuguese
-                                    ? <>Em inglês, o adjetivo concorda com o <strong>DONO</strong>, não com o objeto. <br />Se o dono é <b>HE</b>, use <b>HIS</b> (HIS car, HIS mother). Se é <b>SHE</b>, use <b>HER</b>.</>
-                                    : "In English, the adjective agrees with the OWNER, not the object. If the owner is HE, use HIS (HIS car, HIS mother). If SHE, use HER."
-                                }
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
-                <div className="grid gap-4">
-                    {adjectives.map((item) => (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {adjectives.map((item, idx) => (
                         <button
-                            key={item.s}
-                            onClick={() => speak(item.ex)}
-                            className="group relative flex flex-col md:flex-row items-center gap-6 p-6 bg-white rounded-[2rem] border border-slate-100 hover:border-indigo-400 hover:shadow-xl transition-all text-left"
+                            key={idx}
+                            onClick={() => speak(`${item.ex}`)}
+                            className={`group relative p-6 rounded-3xl border border-slate-100 hover:border-${item.color}-200 bg-white hover:shadow-lg transition-all text-left flex flex-col`}
                         >
-                            {/* Subject Block */}
-                            <div className="flex flex-col items-center justify-center w-full md:w-24 shrink-0 pb-4 md:pb-0 md:border-r border-slate-100">
-                                <span className="text-3xl mb-1">{item.icon}</span>
-                                <span className="font-bold text-slate-400 text-xs uppercase tracking-widest">{item.s}</span>
-                                {isPortuguese && <span className="text-[10px] text-slate-300 font-medium">({item.sT})</span>}
-                            </div>
-
-                            {/* Possessive Content */}
-                            <div className="flex-1 w-full text-center md:text-left">
-                                <div className="flex flex-col md:flex-row items-center md:items-baseline gap-2 mb-2">
-                                    <h3 className="text-3xl font-black text-indigo-600 tracking-tight">{item.p}</h3>
-                                    <div className="flex items-baseline gap-2">
-                                        <span className="text-xs font-mono text-slate-400 border border-slate-100 px-2 py-0.5 rounded-full bg-slate-50">{item.ipa}</span>
-                                        {isPortuguese && <span className="text-sm font-bold text-slate-500 italic bg-amber-50 px-2 py-0.5 rounded-md text-amber-700">{item.pT}</span>}
-                                    </div>
+                            <div className="flex justify-between items-start mb-4">
+                                <span className="text-3xl">{item.icon}</span>
+                                <div className={`px-2 py-1 rounded bg-${item.color}-50 text-${item.color}-600 text-[10px] font-bold uppercase tracking-widest`}>
+                                    {item.s}
                                 </div>
-
-                                <p className="text-slate-600 font-medium text-lg leading-snug group-hover:text-indigo-800 transition-colors">
-                                    "{item.ex}"
-                                </p>
-                                {isPortuguese && <p className="text-xs text-slate-400 mt-1 italic">"{item.exT}"</p>}
                             </div>
 
-                            <Volume2 className="absolute top-6 right-6 w-5 h-5 text-indigo-200 group-hover:text-indigo-500 transition-colors" />
+                            <div className="mb-2">
+                                <h5 className={`text-2xl font-serif-display text-${item.color}-600 mb-1`}>{item.p}</h5>
+                                <div className="flex items-baseline gap-2">
+                                    <span className="text-[10px] font-mono text-slate-400 bg-slate-50 px-1.5 py-0.5 rounded">{item.ipa}</span>
+                                    {isPortuguese && <span className="text-xs font-bold text-slate-400">{item.pT}</span>}
+                                </div>
+                            </div>
+
+                            <div className="mt-auto pt-4 border-t border-slate-50">
+                                <p className="text-sm text-slate-600 italic">"{item.ex}"</p>
+                                {isPortuguese && <p className="text-xs text-slate-400 mt-1">{item.exT}</p>}
+                            </div>
                         </button>
                     ))}
                 </div>
             </section>
 
+            {/* PRO TIP: HIS vs HER */}
+            <div className="bg-rose-50 rounded-[2.5rem] p-8 border border-rose-100 flex flex-col md:flex-row gap-8 items-center">
+                <div className="flex-1">
+                    <h5 className="font-bold text-xl text-rose-800 mb-2 flex items-center gap-2">
+                        <AlertTriangle className="w-5 h-5" />
+                        {isPortuguese ? "O Erro Clássico: His vs Her" : "The Classic Mistake: His vs Her"}
+                    </h5>
+                    <p className="text-rose-900 text-sm leading-relaxed mb-4">
+                        {isPortuguese
+                            ? "Em português falamos 'O carro dela' (foca no dono). Em inglês, o possessivo também foca no DONO. Se o dono é HOMEM = HIS. Se é MULHER = HER."
+                            : "In English, the possessive always agrees with the OWNER. If the owner is MAN = HIS. If WOMAN = HER."
+                        }
+                    </p>
+                    <div className="flex gap-4 text-xs font-bold">
+                        <div className="bg-white px-3 py-2 rounded-lg text-blue-600 shadow-sm">👨 Him → His Car</div>
+                        <div className="bg-white px-3 py-2 rounded-lg text-rose-600 shadow-sm">👩 Her → Her Car</div>
+                    </div>
+                </div>
+                <div className="text-4xl">🚗</div>
+            </div>
+
             {/* PART 2: PRONOUNS */}
-            <section className="space-y-8">
+            <section className="space-y-8 bg-slate-50 p-8 rounded-[3rem]">
                 <div className="flex items-center gap-3">
-                    <div className="p-2 bg-rose-100 rounded-lg text-rose-600"><Trophy className="w-5 h-5" /></div>
+                    <div className="p-2 bg-emerald-100 rounded-lg text-emerald-600"><CheckCircle2 className="w-5 h-5" /></div>
                     <h4 className="text-2xl font-bold text-slate-800">
-                        {isPortuguese ? "Possessive Pronouns (Os Independentes)" : "Possessive Pronouns (The Independents)"}
+                        {isPortuguese ? "Possessivos Pronomes" : "Possessive Pronouns"}
+                        <span className="block text-sm font-normal text-slate-400 mt-1">
+                            {isPortuguese ? "(Substituem o objeto - ótimos para respostas curtas!)" : "(They replace the object - great for short answers!)"}
+                        </span>
                     </h4>
                 </div>
 
-                {/* The Independence Rule */}
-                <div className="bg-rose-900 text-white p-8 rounded-[2.5rem] relative overflow-hidden shadow-xl">
-                    <div className="absolute -left-10 -bottom-10 w-64 h-64 bg-rose-500 rounded-full blur-3xl opacity-20"></div>
-                    <div className="relative z-10 flex flex-col md:flex-row gap-8 items-center">
-                        <div className="w-20 h-20 bg-rose-500 rounded-2xl flex items-center justify-center text-4xl shadow-lg border-2 border-rose-400 shrink-0">💪</div>
-                        <div>
-                            <h5 className="text-xl font-bold font-serif-display mb-3">
-                                {isPortuguese ? "A Regra da Independência" : "The Independence Rule"}
-                            </h5>
-                            <p className="text-rose-100 text-sm leading-relaxed mb-6">
-                                {isPortuguese
-                                    ? "\"Imagine que 'MY' é fraco: ele cai se não tiver um substantivo para se apoiar (My car). Mas 'MINE' é forte e independente: ele aguenta o peso da frase sozinho (The car is mine). Nunca coloque um nome depois de um pronome possessivo!\""
-                                    : "\"Imagine 'MY' is weak: it falls if it doesn't have a noun to lean on (My car). But 'MINE' is strong and independent: it holds the sentence alone (The car is mine). Never put a noun after a possessive pronoun!\""}
-                            </p>
-                            <div className="flex gap-4 p-4 bg-rose-800/50 rounded-xl border border-rose-700/50 text-xs font-mono">
-                                <div className="space-y-1">
-                                    <span className="text-rose-300 block opacity-50">WEAK (ADJECTIVE)</span>
-                                    <span className="text-white">This is <span className="text-rose-300 border-b border-rose-300">my</span> house.</span>
-                                </div>
-                                <div className="w-px bg-rose-700"></div>
-                                <div className="space-y-1">
-                                    <span className="text-emerald-300 block opacity-50">STRONG (PRONOUN)</span>
-                                    <span className="text-white">The house is <span className="text-emerald-300 font-bold border-b-2 border-emerald-300">mine</span>.</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {pronouns.map((item) => (
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
+                    {pronouns.map((item, idx) => (
                         <button
-                            key={item.p}
-                            onClick={() => speak(item.ex)}
-                            className="bg-white p-6 rounded-[2rem] border border-slate-100 hover:border-rose-300 hover:shadow-lg transition-all text-left flex flex-col gap-4 group"
+                            key={idx}
+                            onClick={() => speak(`${item.ex}`)}
+                            className="p-4 bg-white rounded-2xl shadow-sm hover:scale-105 transition-transform text-center border border-slate-100"
                         >
-                            <div className="flex justify-between items-start">
-                                <span className="text-4xl filter grayscale group-hover:grayscale-0 transition-all">{item.icon}</span>
-                                <Volume2 className="w-4 h-4 text-slate-300 group-hover:text-rose-500 transition-colors" />
-                            </div>
-                            <div>
-                                <h5 className="text-2xl font-black text-rose-600 mb-1">{item.p}</h5>
-                                <div className="flex items-center gap-2 mb-2">
-                                    <span className="text-[10px] font-mono text-slate-400 bg-slate-50 px-2 rounded-full">{item.ipa}</span>
-                                    {isPortuguese && <span className="text-[10px] font-bold text-rose-400 uppercase">{item.pT.split('(')[0]}</span>}
-                                </div>
-                                <div className="p-3 bg-rose-50 rounded-xl border border-rose-100">
-                                    <p className="text-rose-900 font-bold text-sm leading-tight">"{item.ex}"</p>
-                                    {isPortuguese && <p className="text-[10px] text-rose-700/60 mt-1 italic">{item.exT}</p>}
-                                </div>
-                            </div>
+                            <div className="text-2xl mb-2">{item.icon}</div>
+                            <div className={`font-bold text-${item.color}-600 mb-1`}>{item.p}</div>
+                            <div className="text-[8px] font-mono text-slate-400">{item.ipa}</div>
                         </button>
                     ))}
-                </div>
-
-                {/* Master Warning */}
-                <div className="flex gap-4 items-start p-6 bg-slate-800 rounded-3xl text-slate-300 text-xs leading-relaxed border border-slate-700">
-                    <AlertCircle className="w-5 h-5 text-rose-400 shrink-0" />
-                    <div>
-                        <strong className="text-white block mb-1 uppercase tracking-widest text-[10px]">
-                            {isPortuguese ? "Erro Comum de Estudantes" : "Common Student Mistake"}
-                        </strong>
-                        {isPortuguese
-                            ? "Nunca diga 'It is mine house'. Isso é redundante. Ou você diz 'My House' ou diz 'Mine'. Escolha um!"
-                            : "Never say 'It is mine house'. That's redundant. Either say 'My House' or 'Mine'. Pick one!"}
-                    </div>
                 </div>
             </section>
         </div>
