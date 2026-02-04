@@ -3094,51 +3094,43 @@ const CountriesNationalities = ({ isPortuguese }: { isPortuguese: boolean }) => 
 };
 
 const FamilyVocabulary = ({ isPortuguese }: { isPortuguese: boolean }) => {
-    const categories = [
+    const familyGroups = [
         {
-            id: 'nuclear',
-            label: isPortuguese ? 'Família Nuclear' : 'Nuclear Family',
-            icon: '🏠',
-            desc: isPortuguese ? 'Os alicerces da casa.' : 'The foundation of the house.',
-            color: 'indigo',
-            items: [
-                { w: 'Mother', p: 'Mãe', i: '👩', s: 'My mother is incredible.' },
-                { w: 'Father', p: 'Pai', i: '👨', s: 'My father is tall.' },
-                { w: 'Sister', p: 'Irmã', i: '👧', s: 'I have one sister.' },
-                { w: 'Brother', p: 'Irmão', i: '👦', s: 'He is my brother.' },
-                { w: 'Daughter', p: 'Filha', i: '👱‍♀️', s: 'She is my daughter.' },
-                { w: 'Son', p: 'Filho', i: '👱‍♂️', s: 'He is my son.' },
-                { w: 'Parents', p: 'Pais', i: '👪', s: 'I love my parents.' },
-                { w: 'Siblings', p: 'Irmãos (geral)', i: '👫', s: 'Do you have siblings?' },
+            title: isPortuguese ? "A Base (Nuclear)" : "The Core (Nuclear)",
+            color: "indigo",
+            icon: <Home className="w-5 h-5" />,
+            members: [
+                { word: "Father", ipa: "/ˈfɑːðər/", trans: "Pai", icon: "👨", ex: "My father is my hero." },
+                { word: "Mother", ipa: "/ˈmʌðər/", trans: "Mãe", icon: "👩", ex: "My mother is beautiful." },
+                { word: "Son", ipa: "/sʌn/", trans: "Filho", icon: "👦", ex: "He is my son." },
+                { word: "Daughter", ipa: "/ˈdɔːtər/", trans: "Filha", icon: "👧", ex: "She is my daughter." },
+                { word: "Brother", ipa: "/ˈbrʌðər/", trans: "Irmão", icon: "👱‍♂️", ex: "I have one brother." },
+                { word: "Sister", ipa: "/ˈsɪstər/", trans: "Irmã", icon: "👱‍♀️", ex: "My sister is funny." },
             ]
         },
         {
-            id: 'extended',
-            label: isPortuguese ? 'Família Estendida' : 'Extended Family',
-            icon: '🌳',
-            desc: isPortuguese ? 'Raízes e galhos.' : 'Roots and branches.',
-            color: 'emerald',
-            items: [
-                { w: 'Grandmother', p: 'Avó', i: '👵', s: 'My grandma is kind.' },
-                { w: 'Grandfather', p: 'Avô', i: '👴', s: 'My grandpa is wise.' },
-                { w: 'Aunt', p: 'Tia', i: '👩‍🦰', s: "My mother's sister." },
-                { w: 'Uncle', p: 'Tio', i: '👨‍🦰', s: "My father's brother." },
-                { w: 'Cousin', p: 'Primo(a)', i: '👯', s: 'My aunt\'s child.' },
-                { w: 'Nephew', p: 'Sobrinho', i: '👦', s: 'My sister\'s son.' },
-                { w: 'Niece', p: 'Sobrinha', i: '👧', s: 'My brother\'s daughter.' },
+            title: isPortuguese ? "Os Parentes (Extended)" : "The Relatives (Extended)",
+            color: "emerald",
+            icon: <Users className="w-5 h-5" />,
+            members: [
+                { word: "Grandfather", ipa: "/ˈɡrænˌfɑːðər/", trans: "Avô", icon: "👴", ex: "Grandpa loves chess." },
+                { word: "Grandmother", ipa: "/ˈɡrænˌmʌðər/", trans: "Avó", icon: "👵", ex: "Grandma cooks well." },
+                { word: "Uncle", ipa: "/ˈʌŋkəl/", trans: "Tio", icon: "👨‍🦰", ex: "My uncle is cool." },
+                { word: "Aunt", ipa: "/ænt/", trans: "Tia", icon: "👩‍🦰", ex: "My aunt lives in NY." },
+                { word: "Cousin", ipa: "/ˈkʌzən/", trans: "Primo(a)", icon: "👯", ex: "We are cousins." },
+                { word: "Nephew", ipa: "/ˈnɛfjuː/", trans: "Sobrinho", icon: "🧒", ex: "He is my nephew." },
+                { word: "Niece", ipa: "/niːs/", trans: "Sobrinha", icon: "👧", ex: "She is my niece." },
             ]
         },
         {
-            id: 'inlaws',
-            label: isPortuguese ? 'Por Afinidade (Lei)' : 'In-Laws (The Law)',
-            icon: '⚖️',
-            desc: isPortuguese ? 'A família que a lei te deu.' : 'Family by marriage.',
-            color: 'amber',
-            items: [
-                { w: 'Mother-in-law', p: 'Sogra', i: '👵', s: "My spouse's mother." },
-                { w: 'Father-in-law', p: 'Sogro', i: '👴', s: "My spouse's father." },
-                { w: 'Brother-in-law', p: 'Cunhado', i: '🤵', s: "My sister's husband." },
-                { w: 'Sister-in-law', p: 'Cunhada', i: '👰', s: "My brother's wife." },
+            title: isPortuguese ? "Pela Lei (In-Laws)" : "By Law (In-Laws)",
+            color: "rose",
+            icon: <Scale className="w-5 h-5" />,
+            members: [
+                { word: "Father-in-law", ipa: "/ˈfɑːðər ɪn lɔː/", trans: "Sogro", icon: "👴", ex: "My father-in-law is nice." },
+                { word: "Mother-in-law", ipa: "/ˈmʌðər ɪn lɔː/", trans: "Sogra", icon: "👵", ex: "My mother-in-law helps us." },
+                { word: "Brother-in-law", ipa: "/ˈbrʌðər ɪn lɔː/", trans: "Cunhado", icon: "🤵", ex: "He is my brother-in-law." },
+                { word: "Sister-in-law", ipa: "/ˈsɪstər ɪn lɔː/", trans: "Cunhada", icon: "👰", ex: "She is my sister-in-law." },
             ]
         }
     ];
@@ -3147,55 +3139,57 @@ const FamilyVocabulary = ({ isPortuguese }: { isPortuguese: boolean }) => {
         <div className="space-y-12 animate-fade-in pb-20">
             {/* Senior Teacher Intro */}
             <div className="relative p-8 rounded-[2rem] bg-indigo-900 text-white overflow-hidden shadow-2xl">
-                <div className="absolute top-0 right-0 p-4 opacity-10"><Users className="w-32 h-32" /></div>
+                <div className="absolute top-0 right-0 p-4 opacity-10"><UserPlus className="w-32 h-32" /></div>
                 <div className="relative z-10 flex flex-col md:flex-row gap-6 items-center">
                     <div className="w-20 h-20 rounded-full bg-indigo-500 flex items-center justify-center text-4xl shadow-lg border-2 border-indigo-400">👨‍🏫</div>
                     <div className="flex-1">
                         <h3 className="text-2xl font-serif-display mb-2">
-                            {isPortuguese ? "Quem é quem na festa?" : "Who is who at the party?"}
+                            {isPortuguese ? "A Árvore da Vida" : "The Tree of Life"}
                         </h3>
                         <p className="text-indigo-100 text-sm leading-relaxed italic">
                             {isPortuguese
-                                ? "\"Família em inglês é lógica pura! Usamos sufixos como '-in-law' (pela lei/casamento) e prefixos como 'Grand-' (uma geração acima). Vamos organizar essa árvore genealógica?\""
-                                : "\"Family in English is pure logic! We use suffixes like '-in-law' (by marriage) and prefixes like 'Grand-' (one generation up). Let's organize this family tree?\""
+                                ? "\"Cuidado com os falsos amigos! Em inglês, 'Parents' NÃO é parentes (isso seria 'Relatives'). 'Parents' são apenas seu pai e sua mãe. Hoje vamos mapear toda sua família, do núcleo até aqueles que a lei trouxe para sua vida (the in-laws)!\""
+                                : "\"Beware of false friends! In English, 'Parents' are NOT 'parentes' (that would be 'Relatives'). 'Parents' are just your father and mother. Today we'll map out your entire family, from the core to those the law brought into your life (the in-laws)!\""
                             }
                         </p>
                     </div>
                 </div>
             </div>
 
-            {/* Categories */}
-            <div className="space-y-12">
-                {categories.map((cat) => (
-                    <section key={cat.id} className="space-y-6">
-                        <div className={`p-8 rounded-[2rem] border-l-4 shadow-sm bg-white ${cat.color === 'indigo' ? 'border-indigo-500' :
-                            cat.color === 'emerald' ? 'border-emerald-500' : 'border-amber-500'
-                            }`}>
-                            <div className="flex items-center gap-4 mb-2">
-                                <span className="text-3xl">{cat.icon}</span>
-                                <div>
-                                    <h4 className="text-2xl font-bold text-slate-800">{cat.label}</h4>
-                                    <p className="text-slate-400 text-sm font-medium uppercase tracking-widest">{cat.desc}</p>
-                                </div>
+            {/* Main Vocabulary Groups */}
+            <div className="space-y-10">
+                {familyGroups.map((group, idx) => (
+                    <section key={idx} className="space-y-6">
+                        <div className="flex items-center gap-3">
+                            <div className={`p-2 rounded-lg text-${group.color}-600 bg-${group.color}-50`}>
+                                {group.icon}
                             </div>
+                            <h4 className="text-2xl font-bold text-slate-800">{group.title}</h4>
                         </div>
 
-                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                            {cat.items.map((item) => (
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            {group.members.map((m, i) => (
                                 <button
-                                    key={item.w}
-                                    onClick={() => speak(`${item.w}. ${item.s}`)}
-                                    className="group relative p-8 bg-white rounded-[2rem] border border-slate-100 hover:border-indigo-400 hover:shadow-xl transition-all text-left flex flex-col h-full"
+                                    key={i}
+                                    onClick={() => speak(m.word)}
+                                    className={`group relative p-6 rounded-3xl border border-slate-100 hover:border-${group.color}-200 bg-white hover:shadow-lg transition-all text-left flex items-start gap-4`}
                                 >
-                                    <div className="text-4xl mb-4 group-hover:scale-110 transition-transform">{item.i}</div>
-                                    <div className="mb-2">
-                                        <h5 className="text-lg font-black text-slate-800 leading-tight">{item.w}</h5>
-                                        {isPortuguese && <span className="text-sm font-medium text-slate-400">{item.p}</span>}
+                                    <div className={`w-12 h-12 rounded-2xl bg-${group.color}-50 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform`}>
+                                        {m.icon}
                                     </div>
-                                    <p className="text-[10px] text-indigo-400 font-mono mt-auto opacity-0 group-hover:opacity-100 transition-opacity">
-                                        "{item.s}"
-                                    </p>
-                                    <Volume2 className="absolute top-4 right-4 w-4 h-4 text-slate-200 group-hover:text-indigo-500 transition-colors" />
+                                    <div className="flex-1">
+                                        <div className="flex justify-between items-start">
+                                            <h5 className="text-lg font-bold text-slate-700 mb-1">{m.word}</h5>
+                                            <Volume2 className={`w-4 h-4 text-slate-300 group-hover:text-${group.color}-500`} />
+                                        </div>
+                                        <div className="flex items-baseline gap-2 mb-2">
+                                            <span className="text-[10px] font-mono text-slate-400 bg-slate-50 px-1.5 py-0.5 rounded">{m.ipa}</span>
+                                            {isPortuguese && <span className={`text-[10px] font-bold text-${group.color}-400 uppercase tracking-wide`}>{m.trans}</span>}
+                                        </div>
+                                        <p className="text-xs text-slate-500 italic border-l-2 border-slate-100 pl-2">
+                                            "{m.ex}"
+                                        </p>
+                                    </div>
                                 </button>
                             ))}
                         </div>
@@ -3203,29 +3197,76 @@ const FamilyVocabulary = ({ isPortuguese }: { isPortuguese: boolean }) => {
                 ))}
             </div>
 
-            {/* Pro Tip: Grand & Great */}
-            <div className="p-8 bg-slate-50 rounded-[2.5rem] border border-slate-200 flex flex-col md:flex-row gap-8 items-center">
-                <div className="flex-1">
-                    <h5 className="font-bold text-xl text-slate-800 mb-4 flex items-center gap-2">
-                        <Star className="w-5 h-5 text-amber-500 shadow-sm" />
-                        {isPortuguese ? "O Poder do 'Great'" : "The Power of 'Great'"}
-                    </h5>
-                    <p className="text-slate-600 leading-relaxed mb-4">
-                        {isPortuguese
-                            ? "Quer subir mais uma geração? É só adicionar 'Great'! Grandfather (Avô) -> Great-grandfather (Bisavô) -> Great-great-grandfather (Tataravô). Funciona para o futuro também (Great-grandson)."
-                            : "Want to go up another generation? Just add 'Great'! Grandfather -> Great-grandfather. It works for the future too (Great-grandson)."
-                        }
-                    </p>
+            {/* Pro Tip: Parents vs Relatives */}
+            <div className="bg-amber-50 rounded-[2.5rem] p-10 relative border border-amber-100 mt-8">
+                <div className="absolute top-0 right-10 -translate-y-1/2 bg-amber-500 text-white px-6 py-2 rounded-full font-black text-xs uppercase tracking-widest shadow-lg">
+                    {isPortuguese ? "Dica de Mestre" : "Master Tip"}
                 </div>
-                <div className="flex gap-2">
-                    <div className="px-4 py-2 bg-white rounded-xl border border-slate-200 text-xs font-mono text-slate-400">Grand</div>
-                    <div className="px-4 py-2 bg-indigo-100 rounded-xl border border-indigo-200 text-xs font-black text-indigo-600">Great</div>
-                    <div className="px-4 py-2 bg-indigo-600 rounded-xl border border-indigo-700 text-xs font-black text-white">Great-Great...</div>
+                <div className="flex gap-6 items-start">
+                    <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center shadow-sm shrink-0 text-3xl">🚫</div>
+                    <div>
+                        <h5 className="font-bold text-amber-900 mb-2 text-lg">
+                            {isPortuguese ? "A Grande Confusão: Parents" : "The Big Confusion: Parents"}
+                        </h5>
+                        <p className="text-sm text-amber-800 leading-relaxed mb-4">
+                            {isPortuguese
+                                ? <>Nunca use "Parents" para dizer "Parentes".<br />
+                                    • <strong>Parents</strong> = Pai e Mãe (Pais).<br />
+                                    • <strong>Relatives</strong> = Tios, Primos, Avós (Parentes).</>
+                                : <>Never use "Parents" to say "Parentes" (Relatives).<br />
+                                    • <strong>Parents</strong> = Father and Mother.<br />
+                                    • <strong>Relatives</strong> = Uncles, Cousins, Grandparents.</>
+                            }
+                        </p>
+                        <div className="flex gap-2">
+                            <button onClick={() => speak("I love my parents.")} className="px-4 py-2 bg-white rounded-xl text-xs font-bold text-amber-700 shadow-sm hover:shadow-md transition-all">
+                                🔊 "I love my parents."
+                            </button>
+                            <button onClick={() => speak("I have many relatives.")} className="px-4 py-2 bg-white rounded-xl text-xs font-bold text-amber-700 shadow-sm hover:shadow-md transition-all">
+                                🔊 "I have many relatives."
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* Cultural Note: Suffixes */}
+            <div className="bg-indigo-50 rounded-[2.5rem] p-8 border border-indigo-100">
+                <h5 className="font-bold text-indigo-900 mb-4 flex items-center gap-2">
+                    <BookOpen className="w-5 h-5" />
+                    {isPortuguese ? "Matemática da Família" : "Family Math"}
+                </h5>
+                <div className="grid md:grid-cols-2 gap-4 text-sm">
+                    <div className="bg-white p-4 rounded-xl shadow-sm">
+                        <span className="font-black text-indigo-500">GRAND-</span>
+                        <p className="text-slate-600 mt-1">
+                            {isPortuguese ? "Adiciona 1 geração (Avô/Avó). Grandfather, Grandmother." : "Adds 1 generation up. Grandfather, Grandmother."}
+                        </p>
+                    </div>
+                    <div className="bg-white p-4 rounded-xl shadow-sm">
+                        <span className="font-black text-rose-500">-IN-LAW</span>
+                        <p className="text-slate-600 mt-1">
+                            {isPortuguese ? "Vínculo por lei (casamento). Mother-in-law (Sogra)." : "Bond by law (marriage). Mother-in-law."}
+                        </p>
+                    </div>
+                    <div className="bg-white p-4 rounded-xl shadow-sm">
+                        <span className="font-black text-emerald-500">STEP-</span>
+                        <p className="text-slate-600 mt-1">
+                            {isPortuguese ? "Vínculo por novo casamento. Stepmother (Madrasta)." : "Bond by remarriage. Stepmother."}
+                        </p>
+                    </div>
+                    <div className="bg-white p-4 rounded-xl shadow-sm">
+                        <span className="font-black text-amber-500">GOD-</span>
+                        <p className="text-slate-600 mt-1">
+                            {isPortuguese ? "Vínculo religioso/espiritual. Godfather (Padrinho)." : "Religious bond. Godfather."}
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
     );
 };
+
 
 const PossessiveAdjectives = ({ isPortuguese }: { isPortuguese: boolean }) => {
     const adjectives = [
@@ -4069,6 +4110,104 @@ const InteractionSection = ({ type }: { type: 'object' | 'imp' | 'can' }) => {
     );
 };
 
+const FoodAndDrink = ({ isPortuguese }: { isPortuguese: boolean }) => {
+    const foods = [
+        { word: 'Water', ipa: '/ˈwɔːtər/', trans: 'Água', icon: '💧', bg: 'bg-blue-50', text: 'text-blue-700' },
+        { word: 'Coffee', ipa: '/ˈkɔːfi/', trans: 'Café', icon: '☕', bg: 'bg-amber-50', text: 'text-amber-900' },
+        { word: 'Tea', ipa: '/tiː/', trans: 'Chá', icon: '🍵', bg: 'bg-emerald-50', text: 'text-emerald-700' },
+        { word: 'Juice', ipa: '/dʒuːs/', trans: 'Suco', icon: '🧃', bg: 'bg-orange-50', text: 'text-orange-700' },
+        { word: 'Bread', ipa: '/brɛd/', trans: 'Pão', icon: '🍞', bg: 'bg-amber-100', text: 'text-amber-800' },
+        { word: 'Cheese', ipa: '/tʃiːz/', trans: 'Queijo', icon: '🧀', bg: 'bg-yellow-50', text: 'text-yellow-600' },
+        { word: 'Apple', ipa: '/ˈæpəl/', trans: 'Maçã', icon: '🍎', bg: 'bg-red-50', text: 'text-red-700' },
+        { word: 'Banana', ipa: '/bəˈnænə/', trans: 'Banana', icon: '🍌', bg: 'bg-yellow-50', text: 'text-yellow-700' },
+        { word: 'Pizza', ipa: '/ˈpiːtsə/', trans: 'Pizza', icon: '🍕', bg: 'bg-orange-50', text: 'text-orange-600' },
+        { word: 'Burger', ipa: '/ˈbɜːrɡər/', trans: 'Hambúrguer', icon: '🍔', bg: 'bg-orange-100', text: 'text-orange-800' },
+    ];
+
+    const orderingPhrases = [
+        { phrase: "Can I have a water, please?", trans: "Posso pedir uma água, por favor?", icon: "🗣️" },
+        { phrase: "I would like a coffee.", trans: "Eu gostaria de um café.", icon: "☕" },
+        { phrase: "Do you have pizza?", trans: "Vocês têm pizza?", icon: "🍕" },
+        { phrase: "The bill, please.", trans: "A conta, por favor.", icon: "🧾" },
+    ];
+
+    return (
+        <div className="space-y-12 animate-fade-in pb-20">
+            {/* Intro */}
+            <div className="relative p-8 rounded-[2rem] bg-orange-900 text-white overflow-hidden shadow-2xl">
+                <div className="absolute top-0 right-0 p-4 opacity-10"><Utensils className="w-32 h-32" /></div>
+                <div className="relative z-10 flex flex-col md:flex-row gap-6 items-center">
+                    <div className="w-20 h-20 rounded-full bg-orange-600 flex items-center justify-center text-4xl shadow-lg border-2 border-orange-400">🍽️</div>
+                    <div className="flex-1">
+                        <h3 className="text-2xl font-serif-display mb-2">
+                            {isPortuguese ? "Comida e Bebida" : "Food & Drink"}
+                        </h3>
+                        <p className="text-orange-100 text-sm leading-relaxed italic">
+                            {isPortuguese
+                                ? "\"Pedir comida é uma das primeiras coisas que você fará em uma viagem. Não passe fome! Vamos aprender o vocabulário essencial para sobreviver em qualquer restaurante.\""
+                                : "\"Ordering food is one of the first things you'll do on a trip. Don't go hungry! Let's learn the essential vocabulary to survive in any restaurant.\""
+                            }
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            {/* Food Grid */}
+            <section className="space-y-6">
+                <div className="flex items-center gap-3">
+                    <div className="p-2 bg-orange-100 rounded-lg text-orange-600"><Utensils className="w-5 h-5" /></div>
+                    <h4 className="text-2xl font-bold text-slate-800">
+                        {isPortuguese ? "Menu Essencial" : "Essential Menu"}
+                    </h4>
+                </div>
+                <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                    {foods.map((item, idx) => (
+                        <button
+                            key={idx}
+                            onClick={() => speak(item.word)}
+                            className={`group p-4 rounded-3xl border-2 border-transparent hover:border-orange-200 transition-all flex flex-col items-center gap-3 text-center ${item.bg} shadow-sm hover:shadow-md`}
+                        >
+                            <span className="text-4xl group-hover:scale-110 transition-transform">{item.icon}</span>
+                            <div>
+                                <h5 className={`font-bold ${item.text}`}>{item.word}</h5>
+                                <div className="text-[10px] font-mono text-slate-400 opacity-80">{item.ipa}</div>
+                                {isPortuguese && <div className="text-[10px] font-bold text-slate-400 uppercase tracking-tighter mt-1">{item.trans}</div>}
+                            </div>
+                        </button>
+                    ))}
+                </div>
+            </section>
+
+            {/* Ordering Section */}
+            <section className="space-y-6">
+                <div className="flex items-center gap-3">
+                    <div className="p-2 bg-indigo-100 rounded-lg text-indigo-600"><MessageCircle className="w-5 h-5" /></div>
+                    <h4 className="text-xl font-bold text-slate-800">
+                        {isPortuguese ? "Como Pedir (Ordering)" : "How to Order"}
+                    </h4>
+                </div>
+                <div className="grid md:grid-cols-2 gap-4">
+                    {orderingPhrases.map((p, idx) => (
+                        <button
+                            key={idx}
+                            onClick={() => speak(p.phrase)}
+                            className="text-left bg-white p-6 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md hover:border-indigo-200 transition-all group"
+                        >
+                            <div className="flex justify-between items-start mb-2">
+                                <span className="text-2xl">{p.icon}</span>
+                                <Volume2 className="w-4 h-4 text-slate-300 group-hover:text-indigo-500" />
+                            </div>
+                            <div className="font-bold text-slate-700 text-lg mb-1">{p.phrase}</div>
+                            {isPortuguese && <div className="text-xs text-slate-400 font-medium italic">{p.trans}</div>}
+                        </button>
+                    ))}
+                </div>
+            </section>
+        </div>
+    );
+};
+
+
 const Placeholder = ({ title }: { title: string }) => <div className="p-12 bg-white rounded-3xl border border-slate-100 text-center text-slate-400 italic">Content for {title} coming soon.</div>;
 
 // --- ADMIN & TEACHER PANELS ---
@@ -4451,6 +4590,7 @@ const Sidebar = ({ activeModule, onToggleModule, activeSection, onSelectSection,
         { id: 5, title: 'Space & Existence', icon: <MapPin className="w-4 h-4" />, range: [17, 19] },
         { id: 6, title: 'Time & Routine', icon: <Clock className="w-4 h-4" />, range: [20, 26] },
         { id: 7, title: 'Interaction & Ability', icon: <MessageCircle className="w-4 h-4" />, range: [27, 29] },
+        { id: 8, title: 'Daily Life', icon: <Utensils className="w-4 h-4" />, range: [30, 30] },
     ];
 
     const levelNames: any = { 1: 'Basic', 2: 'Pre-Intermediate', 3: 'Intermediate', 4: 'Advanced' };
@@ -4463,7 +4603,8 @@ const Sidebar = ({ activeModule, onToggleModule, activeSection, onSelectSection,
             14: 'Family Members', 15: 'Possessive Adjectives', 16: "Genitive Case ('s)",
             17: 'House & Furniture', 18: 'Prepositions of Place', 19: 'There Is / There Are',
             20: 'Days & Months', 21: 'Telling Time', 22: 'Wh- Questions', 23: 'Present Simple Rules', 24: 'Third Person S', 25: 'Daily Routine', 26: 'Adverbs of Frequency',
-            27: 'Object Pronouns', 28: 'Imperatives', 29: "Can / Can't"
+            27: 'Object Pronouns', 28: 'Imperatives', 29: "Can / Can't",
+            30: 'Food & Drink'
         };
         return titles[idx] || `Lesson ${idx + 1}`;
     };
@@ -4491,7 +4632,7 @@ const Sidebar = ({ activeModule, onToggleModule, activeSection, onSelectSection,
 
             <div className="flex-1 overflow-y-auto p-4 space-y-4 pt-6">
                 {modules.map(m => {
-                    const isLocked = currentLevel === 1 && m.id >= 4;
+                    const isLocked = currentLevel === 1 && m.id >= 5;
 
                     return (
                         <div key={m.id} className={`rounded-2xl overflow-hidden transition-all duration-300 ${isLocked ? 'opacity-50 grayscale' : ''}`}>
@@ -4695,6 +4836,7 @@ export default function App() {
             case 27: return <InteractionSection type="object" />;
             case 28: return <InteractionSection type="imp" />;
             case 29: return <InteractionSection type="can" />;
+            case 30: return <FoodAndDrink isPortuguese={isPortuguese} />;
             default: return <Placeholder title={`Lesson ${activeSection + 1}`} />;
         }
     };
