@@ -2,6 +2,7 @@
   "name": "english-learning-platform",
   "private": true,
   "version": "0.0.0",
+  "homepage": "https://omateusosos.github.io/-Beta-English-Learning-Plataform/",
   "type": "module",
   "scripts": {
     "dev": "vite",

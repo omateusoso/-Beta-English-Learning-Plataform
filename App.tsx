@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import {
-    Menu, BookOpen, Star, Brain, ArrowRight, PlayCircle, Settings, Globe, Mic,
+    Box, Menu, BookOpen, Star, Brain, ArrowRight, PlayCircle, Settings, Globe, Mic,
     MessageCircle, Volume2, Award, Calendar, ChevronRight, ChevronLeft, Search, Check, X, Info, RefreshCw,
     Users, MapPin, Briefcase, Stethoscope, GraduationCap, PenTool,
     Wrench, ChevronDown, Layout, Zap, ArrowLeft,
@@ -3268,242 +3268,327 @@ const FamilyVocabulary = ({ isPortuguese }: { isPortuguese: boolean }) => {
 };
 
 
-const PossessiveAdjectives = ({ isPortuguese }: { isPortuguese: boolean }) => {
-    // Group 1: Possessive Adjectives (Always before a noun)
-    const adjectives = [
-        {
-            s: 'I', sT: 'Eu',
-            p: 'My', pT: isPortuguese ? 'Meu(s)/Minha(s)' : 'My',
-            ipa: '/maɪ/',
-            icon: '🙋‍♂️',
-            color: 'indigo',
-            ex: 'This is my house.',
-            exT: isPortuguese ? 'Esta é minha casa.' : 'This is my house.',
-            tip: isPortuguese ? 'Sempre antes da coisa!' : 'Always before the noun!'
-        },
-        {
-            s: 'You', sT: 'Você',
-            p: 'Your', pT: isPortuguese ? 'Seu(s)/Sua(s)' : 'Your',
-            ipa: '/jɔːr/',
-            icon: '👉',
-            color: 'emerald',
-            ex: 'What is your name?',
-            exT: isPortuguese ? 'Qual é o seu nome?' : 'What is your name?',
-            tip: 'Standard'
-        },
-        {
-            s: 'He', sT: 'Ele',
-            p: 'His', pT: isPortuguese ? 'Dele' : 'His',
-            ipa: '/hɪz/',
-            icon: '👨',
-            color: 'blue',
-            ex: 'His car is blue.',
-            exT: isPortuguese ? 'O carro dele é azul.' : 'His car is blue.',
-            tip: isPortuguese ? 'Cuidado! HIS vem de HE.' : 'Careful! HIS comes from HE.'
-        },
-        {
-            s: 'She', sT: 'Ela',
-            p: 'Her', pT: isPortuguese ? 'Dela' : 'Her',
-            ipa: '/hɜːr/',
-            icon: '👩',
-            color: 'rose',
-            ex: 'Her eyes are green.',
-            exT: isPortuguese ? 'Os olhos dela são verdes.' : 'Her eyes are green.',
-            tip: isPortuguese ? 'Cuidado! HER vem de SHE.' : 'Careful! HER comes from SHE.'
-        },
-        {
-            s: 'It', sT: 'Neutro',
-            p: 'Its', pT: isPortuguese ? 'Dele/Dela (Coisas)' : 'Its',
-            ipa: '/ɪts/',
-            icon: '🐱',
-            color: 'amber',
-            ex: 'Its tail is long.',
-            exT: isPortuguese ? 'O rabo dele é longo.' : 'Its tail is long.',
-            tip: isPortuguese ? 'SEM apóstrofo!' : 'NO apostrophe!'
-        },
-        {
-            s: 'We', sT: 'Nós',
-            p: 'Our', pT: isPortuguese ? 'Nosso(s)' : 'Our',
-            ipa: '/ˈaʊ.ər/',
-            icon: '🫂',
-            color: 'purple',
-            ex: 'Our planet is big.',
-            exT: isPortuguese ? 'Nosso planeta é grande.' : 'Our planet is big.',
-            tip: 'Standard'
-        },
-        {
-            s: 'They', sT: 'Eles',
-            p: 'Their', pT: isPortuguese ? 'Deles/Delas' : 'Their',
-            ipa: '/ðeər/',
-            icon: '👥',
-            color: 'slate',
-            ex: 'Their house is new.',
-            exT: isPortuguese ? 'A casa deles é nova.' : 'Their house is new.',
-            tip: 'Standard'
-        }
+const VerbToHave = ({ isPortuguese }: { isPortuguese: boolean }) => {
+    const [subject, setSubject] = useState('I');
+
+    // Configurações dos sujeitos
+    const subjects = [
+        { id: 'I', label: 'I', form: 'have', color: 'blue', icon: '🙋' },
+        { id: 'You', label: 'You', form: 'have', color: 'blue', icon: '🫵' },
+        { id: 'He', label: 'He', form: 'has', color: 'rose', icon: '👨' },
+        { id: 'She', label: 'She', form: 'has', color: 'rose', icon: '👩' },
+        { id: 'It', label: 'It', form: 'has', color: 'rose', icon: '🤖' },
+        { id: 'We', label: 'We', form: 'have', color: 'blue', icon: '👥' },
+        { id: 'They', label: 'They', form: 'have', color: 'blue', icon: '👯' },
     ];
 
-    // Group 2: Possessive Pronouns (Replaces the noun)
-    const pronouns = [
-        {
-            s: 'I', p: 'Mine', ipa: '/maɪn/', icon: '👑', color: 'indigo',
-            ex: 'The car is mine.',
-            pT: isPortuguese ? 'Meu/Minha' : 'Mine',
-            exT: isPortuguese ? 'O carro é meu.' : 'The car is mine.'
-        },
-        {
-            s: 'You', p: 'Yours', ipa: '/jɔːrz/', icon: '🫵', color: 'emerald',
-            ex: 'Is this yours?',
-            pT: isPortuguese ? 'Seu/Sua' : 'Yours',
-            exT: isPortuguese ? 'Isso é seu?' : 'Is this yours?'
-        },
-        {
-            s: 'He', p: 'His', ipa: '/hɪz/', icon: '🎩', color: 'blue',
-            ex: 'The decision is his.',
-            pT: isPortuguese ? 'Dele' : 'His',
-            exT: isPortuguese ? 'A decisão é dele.' : 'The decision is his.'
-        },
-        {
-            s: 'She', p: 'Hers', ipa: '/hɜːrz/', icon: '👠', color: 'rose',
-            ex: 'The ring is hers.',
-            pT: isPortuguese ? 'Dela' : 'Hers',
-            exT: isPortuguese ? 'O anel é dela.' : 'The ring is hers.'
-        },
-        {
-            s: 'We', p: 'Ours', ipa: '/ˈaʊ.ərz/', icon: '🏠', color: 'purple',
-            ex: 'The future is ours.',
-            pT: isPortuguese ? 'Nosso/Nossa' : 'Ours',
-            exT: isPortuguese ? 'O futuro é nosso.' : 'The future is ours.'
-        },
-        {
-            s: 'They', p: 'Theirs', ipa: '/ðeərz/', icon: '🌍', color: 'slate',
-            ex: 'The choice is theirs.',
-            pT: isPortuguese ? 'Deles/Delas' : 'Theirs',
-            exT: isPortuguese ? 'A escolha é deles.' : 'The choice is theirs.'
-        }
+    const currentSubject = subjects.find(s => s.id === subject) || subjects[0];
+    const isHas = currentSubject.form === 'has';
+
+    const items = [
+        { name: 'a car', icon: '🚗', trans: 'um carro' },
+        { name: 'a dog', icon: '🐕', trans: 'um cachorro' },
+        { name: 'an idea', icon: '💡', trans: 'uma ideia' },
+        { name: 'money', icon: '💵', trans: 'dinheiro' }
     ];
+
+    const [activeItem, setActiveItem] = useState(0);
+    const item = items[activeItem];
+
+    const sentence = `${currentSubject.label} ${currentSubject.form} ${item.name}.`;
+    const translation = isPortuguese
+        ? `${currentSubject.icon} ${currentSubject.label === 'I' ? 'Eu tenho' : currentSubject.label === 'You' ? 'Você tem' : currentSubject.label === 'He' ? 'Ele tem' : currentSubject.label === 'She' ? 'Ela tem' : currentSubject.label === 'It' ? 'Ele/Ela (coisa/animal) tem' : currentSubject.label === 'We' ? 'Nós temos' : 'Eles têm'} ${item.trans}.`
+        : '';
 
     return (
-        <div className="space-y-16 animate-fade-in pb-20">
+        <div className="space-y-12 animate-fade-in pb-20">
             {/* Senior Teacher Intro */}
-            <div className="relative p-8 rounded-[2rem] bg-indigo-900 text-white overflow-hidden shadow-2xl">
-                <div className="absolute top-0 right-0 p-4 opacity-10"><LockIcon className="w-32 h-32" /></div>
-                <div className="relative z-10 flex flex-col md:flex-row gap-6 items-center">
-                    <div className="w-20 h-20 rounded-full bg-indigo-500 flex items-center justify-center text-4xl shadow-lg border-2 border-indigo-400">👨‍🏫</div>
+            <div className="bg-indigo-900 rounded-[2.5rem] p-8 md:p-10 relative overflow-hidden text-white shadow-2xl">
+                <div className="absolute top-0 right-0 p-8 opacity-10"><Briefcase className="w-64 h-64" /></div>
+
+                <div className="relative z-10 flex flex-col md:flex-row gap-8 items-center">
+                    <div className="w-24 h-24 bg-indigo-500 rounded-full flex items-center justify-center text-5xl shadow-lg border-4 border-indigo-400">🎒</div>
                     <div className="flex-1">
-                        <h3 className="text-2xl font-serif-display mb-2">
-                            {isPortuguese ? "Quem é o dono?" : "Who is the owner?"}
+                        <h3 className="text-3xl font-serif-display mb-3">
+                            {isPortuguese ? "O Verbo 'Ter' (Posse)" : "The Verb To Have (Possession)"}
                         </h3>
-                        <p className="text-indigo-100 text-sm leading-relaxed italic">
+                        <p className="text-indigo-100 text-lg leading-relaxed">
                             {isPortuguese
-                                ? "\"Diferente do português, onde 'Seu' serve pra todo mundo, o inglês é ciumento! Cada pessoa tem seu próprio possessivo. O segredo? Olhe sempre para o DONO, não para o objeto.\""
-                                : "\"Unlike other languages, English is possessive! Each person has their own possessive word. The secret? Always look at the OWNER, not the object.\""
-                            }
+                                ? "Em inglês, usamos 'HAVE' para falar das coisas que possuímos. Imagine que cada pessoa tem uma mochila. O que tem dentro dela?"
+                                : "In English, we use 'HAVE' to talk about things we own. Imagine everyone has a backpack. What is inside it?"}
                         </p>
                     </div>
                 </div>
             </div>
 
-            {/* PART 1: ADJECTIVES */}
-            <section className="space-y-8">
-                <div className="flex items-center gap-3">
-                    <div className="p-2 bg-indigo-100 rounded-lg text-indigo-600"><Briefcase className="w-5 h-5" /></div>
-                    <h4 className="text-2xl font-bold text-slate-800">
-                        {isPortuguese ? "Possessivos Adjetivos" : "Possessive Adjectives"}
-                        <span className="block text-sm font-normal text-slate-400 mt-1">
-                            {isPortuguese ? "(Sempre vêm ANTES do objeto)" : "(Always come BEFORE the object)"}
-                        </span>
-                    </h4>
-                </div>
+            {/* Interactive Conjugator */}
+            <div className="grid lg:grid-cols-2 gap-8">
+                {/* Controls */}
+                <div className="bg-white rounded-[3rem] p-8 shadow-sm border border-slate-100 flex flex-col justify-center">
+                    <h4 className="font-bold text-slate-400 uppercase tracking-widest text-xs mb-6">Select a Person</h4>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {adjectives.map((item, idx) => (
-                        <button
-                            key={idx}
-                            onClick={() => speak(`${item.ex}`)}
-                            className={`group relative p-6 rounded-3xl border border-slate-100 hover:border-${item.color}-200 bg-white hover:shadow-lg transition-all text-left flex flex-col`}
-                        >
-                            <div className="flex justify-between items-start mb-4">
-                                <span className="text-3xl">{item.icon}</span>
-                                <div className={`px-2 py-1 rounded bg-${item.color}-50 text-${item.color}-600 text-[10px] font-bold uppercase tracking-widest`}>
-                                    {item.s}
-                                </div>
-                            </div>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                        {subjects.map(s => (
+                            <button
+                                key={s.id}
+                                onClick={() => { setSubject(s.id); speak(`${s.label} ${s.form} ${item.name}`); }}
+                                className={`
+                                    p-4 rounded-2xl border-2 transition-all flex flex-col items-center gap-2
+                                    ${subject === s.id
+                                        ? `bg-${s.color}-50 border-${s.color}-400 text-${s.color}-700 scale-105 shadow-md`
+                                        : 'bg-slate-50 border-slate-100 text-slate-500 hover:bg-white hover:border-slate-300'
+                                    }
+                                `}
+                            >
+                                <span className="text-3xl">{s.icon}</span>
+                                <span className="font-bold">{s.label}</span>
+                            </button>
+                        ))}
+                    </div>
 
-                            <div className="mb-2">
-                                <h5 className={`text-2xl font-serif-display text-${item.color}-600 mb-1`}>{item.p}</h5>
-                                <div className="flex items-baseline gap-2">
-                                    <span className="text-[10px] font-mono text-slate-400 bg-slate-50 px-1.5 py-0.5 rounded">{item.ipa}</span>
-                                    {isPortuguese && <span className="text-xs font-bold text-slate-400">{item.pT}</span>}
-                                </div>
-                            </div>
-
-                            <div className="mt-auto pt-4 border-t border-slate-50">
-                                <p className="text-sm text-slate-600 italic">"{item.ex}"</p>
-                                {isPortuguese && <p className="text-xs text-slate-400 mt-1">{item.exT}</p>}
-                            </div>
-                        </button>
-                    ))}
-                </div>
-            </section>
-
-            {/* PRO TIP: HIS vs HER */}
-            <div className="bg-rose-50 rounded-[2.5rem] p-8 border border-rose-100 flex flex-col md:flex-row gap-8 items-center">
-                <div className="flex-1">
-                    <h5 className="font-bold text-xl text-rose-800 mb-2 flex items-center gap-2">
-                        <AlertTriangle className="w-5 h-5" />
-                        {isPortuguese ? "O Erro Clássico: His vs Her" : "The Classic Mistake: His vs Her"}
-                    </h5>
-                    <p className="text-rose-900 text-sm leading-relaxed mb-4">
-                        {isPortuguese
-                            ? "Em português falamos 'O carro dela' (foca no dono). Em inglês, o possessivo também foca no DONO. Se o dono é HOMEM = HIS. Se é MULHER = HER."
-                            : "In English, the possessive always agrees with the OWNER. If the owner is MAN = HIS. If WOMAN = HER."
-                        }
-                    </p>
-                    <div className="flex gap-4 text-xs font-bold">
-                        <div className="bg-white px-3 py-2 rounded-lg text-blue-600 shadow-sm">👨 Him → His Car</div>
-                        <div className="bg-white px-3 py-2 rounded-lg text-rose-600 shadow-sm">👩 Her → Her Car</div>
+                    <div className="mt-8 pt-8 border-t border-slate-100">
+                        <h4 className="font-bold text-slate-400 uppercase tracking-widest text-xs mb-6">Change Item</h4>
+                        <div className="flex gap-4 overflow-x-auto pb-2">
+                            {items.map((it, idx) => (
+                                <button
+                                    key={it.name}
+                                    onClick={() => setActiveItem(idx)}
+                                    className={`
+                                        flex-shrink-0 px-4 py-2 rounded-xl border text-sm font-bold flex items-center gap-2 transition-all
+                                        ${activeItem === idx ? 'bg-amber-100 border-amber-300 text-amber-800' : 'bg-white border-slate-200 text-slate-600 hover:border-amber-200'}
+                                    `}
+                                >
+                                    <span>{it.icon}</span> {it.name}
+                                </button>
+                            ))}
+                        </div>
                     </div>
                 </div>
-                <div className="text-4xl">🚗</div>
-            </div>
 
-            {/* PART 2: PRONOUNS */}
-            <section className="space-y-8 bg-slate-50 p-8 rounded-[3rem]">
-                <div className="flex items-center gap-3">
-                    <div className="p-2 bg-emerald-100 rounded-lg text-emerald-600"><CheckCircle2 className="w-5 h-5" /></div>
-                    <h4 className="text-2xl font-bold text-slate-800">
-                        {isPortuguese ? "Possessivos Pronomes" : "Possessive Pronouns"}
-                        <span className="block text-sm font-normal text-slate-400 mt-1">
-                            {isPortuguese ? "(Substituem o objeto - ótimos para respostas curtas!)" : "(They replace the object - great for short answers!)"}
-                        </span>
-                    </h4>
-                </div>
+                {/* Visual Output */}
+                <div className={`
+                    rounded-[3rem] p-8 md:p-12 flex flex-col items-center justify-center relative transition-all duration-500
+                    ${isHas ? 'bg-rose-50 border-2 border-rose-100' : 'bg-blue-50 border-2 border-blue-100'}
+                `}>
+                    <div className="text-center space-y-8 relative z-10">
 
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
-                    {pronouns.map((item, idx) => (
-                        <button
-                            key={idx}
-                            onClick={() => speak(`${item.ex}`)}
-                            className="p-4 bg-white rounded-2xl shadow-sm hover:scale-105 transition-transform text-center border border-slate-100"
+                        {/* The Big Form */}
+                        <div>
+                            <span className={`
+                                inline-block px-4 py-1 rounded-full text-[10px] font-black uppercase tracking-[0.2em] mb-4
+                                ${isHas ? 'bg-rose-200 text-rose-700' : 'bg-blue-200 text-blue-700'}
+                            `}>
+                                {isHas ? 'Third Person (Alert!)' : 'Standard Form'}
+                            </span>
+                            <div className="flex items-center justify-center gap-4 text-7xl mb-2">
+                                <span className="opacity-50 grayscale">{currentSubject.icon}</span>
+                                <ArrowRight className={`w-8 h-8 ${isHas ? 'text-rose-300' : 'text-blue-300'}`} />
+                                <span>{item.icon}</span>
+                            </div>
+                        </div>
+
+                        {/* Sentence */}
+                        <div
+                            className="cursor-pointer group"
+                            onClick={() => speak(sentence)}
                         >
-                            <div className="text-2xl mb-2">{item.icon}</div>
-                            <div className={`font-bold text-${item.color}-600 mb-1`}>{item.p}</div>
-                            <div className="text-[8px] font-mono text-slate-400">{item.ipa}</div>
-                        </button>
-                    ))}
+                            <h2 className={`text-4xl md:text-5xl font-black mb-2 transition-colors ${isHas ? 'text-rose-600' : 'text-blue-600'}`}>
+                                {currentSubject.form}
+                            </h2>
+                            <p className="text-2xl text-slate-700 font-medium group-hover:text-indigo-600 transition-colors flex items-center justify-center gap-2">
+                                {sentence}
+                                <Volume2 className="w-5 h-5 opacity-30 group-hover:opacity-100" />
+                            </p>
+                            {isPortuguese && <p className="text-slate-400 mt-2 text-sm font-medium">{translation}</p>}
+                        </div>
+
+                        {/* Alert for Has */}
+                        {isHas && (
+                            <div className="bg-white/80 backdrop-blur-sm p-4 rounded-2xl border border-rose-200 text-rose-600 text-sm font-bold flex items-center gap-3 max-w-xs mx-auto animate-bounce-short">
+                                <AlertTriangle className="w-5 h-5 flex-shrink-0" />
+                                {isPortuguese ? "Cuidado! He/She/It muda para HAS!" : "Watch out! He/She/It changes to HAS!"}
+                            </div>
+                        )}
+                    </div>
                 </div>
-            </section>
+            </div>
         </div>
     );
 };
+const PossessivesLesson = ({ isPortuguese }: { isPortuguese: boolean }) => {
+    const [activeTab, setActiveTab] = useState<'adjectives' | 'pronouns'>('adjectives');
 
+    const adjectives = [
+        { id: 'my', word: 'My', example: 'My car', trans: 'Meu carro', icon: '🚗' },
+        { id: 'your', word: 'Your', example: 'Your dog', trans: 'Seu cachorro', icon: '🐕' },
+        { id: 'his', word: 'His', example: 'His book', trans: 'O livro dele', icon: '📘' },
+        { id: 'her', word: 'Her', example: 'Her bag', trans: 'A bolsa dela', icon: '👜' },
+        { id: 'its', word: 'Its', example: 'Its food', trans: 'A comida dele(a)', icon: '🦴' },
+        { id: 'our', word: 'Our', example: 'Our home', trans: 'Nossa casa', icon: '🏠' },
+        { id: 'their', word: 'Their', example: 'Their idea', trans: 'A ideia deles', icon: '💡' }
+    ];
+
+    const pronouns = [
+        { id: 'mine', word: 'Mine', example: "It's mine", trans: 'É meu', icon: '🙋‍♂️' },
+        { id: 'yours', word: 'Yours', example: "It's yours", trans: 'É seu', icon: '🫵' },
+        { id: 'his', word: 'His', example: "It's his", trans: 'É dele', icon: '👨' },
+        { id: 'hers', word: 'Hers', example: "It's hers", trans: 'É dela', icon: '👩' },
+        { id: 'ours', word: 'Ours', example: "It's ours", trans: 'É nosso', icon: '👥' },
+        { id: 'theirs', word: 'Theirs', example: "It's theirs", trans: 'É deles', icon: '👯' }
+    ];
+
+    return (
+        <div className="space-y-12 animate-fade-in pb-20">
+            {/* Context Header */}
+            <div className="bg-indigo-900 rounded-[2.5rem] p-8 md:p-10 relative overflow-hidden text-white shadow-2xl">
+                <div className="absolute top-0 right-0 p-8 opacity-10"><Lock className="w-64 h-64" /></div>
+
+                <div className="relative z-10 flex flex-col md:flex-row gap-8 items-center">
+                    <div className="w-24 h-24 bg-rose-500 rounded-full flex items-center justify-center text-5xl shadow-lg border-4 border-rose-400">🔑</div>
+                    <div className="flex-1">
+                        <h3 className="text-3xl font-serif-display mb-3">
+                            {isPortuguese ? "O Caso Possessivo" : "The Possessive Case"}
+                        </h3>
+                        <p className="text-indigo-100 text-lg leading-relaxed">
+                            {isPortuguese
+                                ? "Temos duas formas de dizer que algo é de alguém: Adjetivos (Meu carro) e Pronomes (É meu). Vamos aprender a diferença!"
+                                : "We have two ways to say something belongs to someone: Adjectives (My car) and Pronouns (It's mine). Let's learn the difference!"}
+                        </p>
+                    </div>
+                </div>
+
+                {/* Tab Switcher */}
+                <div className="flex p-2 bg-indigo-950/50 rounded-2xl mt-8 max-w-lg mx-auto">
+                    <button
+                        onClick={() => setActiveTab('adjectives')}
+                        className={`flex-1 py-3 px-6 rounded-xl font-bold transition-all text-sm uppercase tracking-wider flex items-center justify-center gap-2 ${activeTab === 'adjectives' ? 'bg-white text-indigo-900 shadow-lg' : 'text-indigo-300 hover:text-white'}`}
+                    >
+                        Adjectives (My)
+                    </button>
+                    <button
+                        onClick={() => setActiveTab('pronouns')}
+                        className={`flex-1 py-3 px-6 rounded-xl font-bold transition-all text-sm uppercase tracking-wider flex items-center justify-center gap-2 ${activeTab === 'pronouns' ? 'bg-white text-indigo-900 shadow-lg' : 'text-indigo-300 hover:text-white'}`}
+                    >
+                        Pronouns (Mine)
+                    </button>
+                </div>
+            </div>
+
+            {/* The Golden Rule */}
+            <div className={`
+                p-8 rounded-[2rem] border-2 transition-all duration-500 relative overflow-hidden
+                ${activeTab === 'adjectives' ? 'bg-blue-50 border-blue-200' : 'bg-emerald-50 border-emerald-200'}
+            `}>
+                <div className="absolute top-4 right-4 text-6xl opacity-10">
+                    {activeTab === 'adjectives' ? '🤝' : '🧘'}
+                </div>
+
+                <h4 className={`text-xs font-black uppercase tracking-[0.2em] mb-4 ${activeTab === 'adjectives' ? 'text-blue-500' : 'text-emerald-500'}`}>Teacher's Rule</h4>
+                <div className="flex flex-col md:flex-row gap-8 items-center">
+                    <div className={`
+                        w-16 h-16 rounded-2xl flex items-center justify-center text-3xl font-bold shrink-0
+                         ${activeTab === 'adjectives' ? 'bg-blue-500 text-white shadow-lg shadow-blue-500/30' : 'bg-emerald-500 text-white shadow-lg shadow-emerald-500/30'}
+                    `}>?</div>
+                    <div>
+                        <h5 className={`text-2xl font-bold mb-2 ${activeTab === 'adjectives' ? 'text-blue-900' : 'text-emerald-900'}`}>
+                            {activeTab === 'adjectives'
+                                ? (isPortuguese ? "Eles são tímidos... precisam de um amigo!" : "They are shy... they need a friend!")
+                                : (isPortuguese ? "Eles são fortes! Ficam sozinhos." : "They are strong! They stand alone.")
+                            }
+                        </h5>
+                        <p className={`text-lg font-medium leading-relaxed ${activeTab === 'adjectives' ? 'text-blue-700' : 'text-emerald-700'}`}>
+                            {activeTab === 'adjectives' ? (
+                                <span>
+                                    Use Adjectives <b>BEFORE</b> the noun. <br />
+                                    Example: <i>This is <u>MY</u> <b>Car</b>.</i>
+                                </span>
+                            ) : (
+                                <span>
+                                    Use Pronouns <b>WITHOUT</b> a noun. <br />
+                                    Example: <i>This car is <u>MINE</u>.</i> (No word after it!)
+                                </span>
+                            )}
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            {/* List of Items */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {(activeTab === 'adjectives' ? adjectives : pronouns).map((item) => (
+                    <button
+                        key={item.id}
+                        onClick={() => speak(item.example)}
+                        className={`
+                            group p-6 rounded-2xl border-2 text-left transition-all hover:-translate-y-1 hover:shadow-lg
+                            ${activeTab === 'adjectives'
+                                ? 'bg-white border-blue-50 hover:border-blue-200'
+                                : 'bg-white border-emerald-50 hover:border-emerald-200'
+                            }
+                        `}
+                    >
+                        <div className="flex justify-between items-start mb-4">
+                            <span className={`
+                                text-4xl p-3 rounded-2xl
+                                ${activeTab === 'adjectives' ? 'bg-blue-50 group-hover:bg-blue-100' : 'bg-emerald-50 group-hover:bg-emerald-100'}
+                            `}>{item.icon}</span>
+                            <Volume2 className="w-5 h-5 text-slate-300 group-hover:text-indigo-400" />
+                        </div>
+
+                        <div className="mb-2">
+                            <span className={`text-xs font-black uppercase tracking-widest ${activeTab === 'adjectives' ? 'text-blue-400' : 'text-emerald-400'}`}>
+                                {item.word}
+                            </span>
+                        </div>
+
+                        <h3 className="text-xl font-bold text-slate-700 mb-1 group-hover:text-indigo-700">
+                            {item.example}
+                        </h3>
+                        {isPortuguese && <p className="text-sm text-slate-400 font-medium">{item.trans}</p>}
+                    </button>
+                ))}
+            </div>
+        </div>
+    );
+};
 const GenitiveCase = ({ isPortuguese }: { isPortuguese: boolean }) => {
     const examples = [
-        { owner: 'John', thing: 'Car', phrase: "John's Car", ipa: "/dʒɒnz kɑːr/", trans: "O carro do John", icon: '🚗' },
-        { owner: 'The Teacher', thing: 'Book', phrase: "The Teacher's Book", ipa: "/ðə ˈtiːtʃərz bʊk/", trans: "O livro do professor", icon: '📖' },
-        { owner: 'My Mom', thing: 'House', phrase: "My Mom's House", ipa: "/maɪ mɒmz haʊs/", trans: "A casa da minha mãe", icon: '🏠' },
-        { owner: 'The Dog', thing: 'Bone', phrase: "The Dog's Bone", ipa: "/ðə dɒɡz boʊn/", trans: "O osso do cachorro", icon: '🦴' },
+        {
+            owner: 'John',
+            thing: 'Car',
+            phrase: "John's Car",
+            ipa: "/dʒɒnz kɑːr/",
+            trans: "O carro do John",
+            icon: '🚗',
+            color: 'indigo'
+        },
+        {
+            owner: 'The Teacher',
+            thing: 'Book',
+            phrase: "The Teacher's Book",
+            ipa: "/ðə ˈtiːtʃərz bʊk/",
+            trans: "O livro do professor",
+            icon: '📖',
+            color: 'emerald'
+        },
+        {
+            owner: 'My Mom',
+            thing: 'House',
+            phrase: "My Mom's House",
+            ipa: "/maɪ mɒmz haʊs/",
+            trans: "A casa da minha mãe",
+            icon: '🏠',
+            color: 'rose'
+        },
+        {
+            owner: 'The Dog',
+            thing: 'Bone',
+            phrase: "The Dog's Bone",
+            ipa: "/ðə dɒɡz boʊn/",
+            trans: "O osso do cachorro",
+            icon: '🦴',
+            color: 'amber'
+        }
     ];
 
     const rules = [
@@ -3511,24 +3596,27 @@ const GenitiveCase = ({ isPortuguese }: { isPortuguese: boolean }) => {
             title: isPortuguese ? "Regra 1: Singular ('s)" : "Rule 1: Singular ('s)",
             desc: isPortuguese ? "Para uma pessoa ou animal, adicione 's." : "For one person or animal, add 's.",
             ex: "Sarah's phone",
-            wrong: "The phone of Sarah"
+            wrong: "The phone of Sarah",
+            icon: '👤'
         },
         {
             title: isPortuguese ? "Regra 2: Plural com S (')" : "Rule 2: Plural ending in S (')",
-            desc: isPortuguese ? "Se a palavra já termina em S no plural, adicione apenas o apóstrofo (')." : "If the word ends in S (plural), just add the apostrophe (').",
+            desc: isPortuguese ? "Se a palavra já termina em S no plural, adicione APENAS o apóstrofo (')." : "If the word ends in S (plural), just add the apostrophe (').",
             ex: "My parents' house",
-            wrong: "My parents's house"
+            wrong: "My parents's house",
+            icon: '👥'
         },
         {
             title: isPortuguese ? "Regra 3: Plural Irregular ('s)" : "Rule 3: Irregular Plural ('s)",
             desc: isPortuguese ? "Se o plural NÃO termina em S (como Children), adicione 's." : "If plural does NOT end in S (like Children), add 's.",
             ex: "The children's toys",
-            wrong: "The childrens' toys"
+            wrong: "The childrens' toys",
+            icon: '🧸'
         }
     ];
 
     return (
-        <div className="space-y-12 animate-fade-in pb-20">
+        <div className="space-y-16 animate-fade-in pb-20">
             {/* Senior Teacher Intro */}
             <div className="relative p-8 rounded-[2rem] bg-indigo-900 text-white overflow-hidden shadow-2xl">
                 <div className="absolute top-0 right-0 p-4 opacity-10"><Key className="w-32 h-32" /></div>
@@ -3549,15 +3637,25 @@ const GenitiveCase = ({ isPortuguese }: { isPortuguese: boolean }) => {
             </div>
 
             {/* Visual Formula */}
-            <section className="bg-white p-8 rounded-[2.5rem] shadow-sm border border-slate-100 flex flex-col items-center">
-                <div className="flex items-center gap-4 text-3xl md:text-5xl font-black mb-6 flex-wrap justify-center">
-                    <span className="text-indigo-600">Owner</span>
-                    <span className="text-amber-500">+</span>
-                    <span className="bg-slate-800 text-white px-4 py-2 rounded-xl border-b-4 border-slate-600 shadow-lg">'s</span>
-                    <span className="text-amber-500">+</span>
-                    <span className="text-emerald-500">Thing</span>
+            <section className="bg-white p-8 rounded-[2.5rem] shadow-sm border border-slate-100 flex flex-col items-center relative overflow-hidden">
+                <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-indigo-400 via-purple-400 to-rose-400"></div>
+                <div className="flex items-center gap-2 text-3xl md:text-5xl font-black mb-6 flex-wrap justify-center z-10">
+                    <div className="flex flex-col items-center">
+                        <span className="text-indigo-600">Owner</span>
+                        <span className="text-[10px] text-slate-400 uppercase tracking-widest font-medium mt-2">Dono</span>
+                    </div>
+                    <span className="text-amber-500 mx-2">+</span>
+                    <div className="relative">
+                        <span className="bg-slate-800 text-white px-6 py-3 rounded-2xl border-b-4 border-slate-600 shadow-xl inline-block transform -rotate-6">'s</span>
+                        <div className="absolute -top-3 -right-3 bg-amber-400 text-amber-900 text-[10px] font-bold px-2 py-1 rounded-full shadow-sm animate-bounce">Glue!</div>
+                    </div>
+                    <span className="text-amber-500 mx-2">+</span>
+                    <div className="flex flex-col items-center">
+                        <span className="text-emerald-500">Thing</span>
+                        <span className="text-[10px] text-slate-400 uppercase tracking-widest font-medium mt-2">Coisa</span>
+                    </div>
                 </div>
-                <p className="text-slate-400 text-sm text-center max-w-md">
+                <p className="text-slate-500 text-sm text-center max-w-md bg-slate-50 px-6 py-3 rounded-xl border border-slate-100">
                     {isPortuguese
                         ? "Esqueça 'Of'. Pense: [Dono] [Apóstrofo] [Coisa]. Simples assim!"
                         : "Forget 'Of'. Think: [Owner] [Apostrophe] [Thing]. Simple as that!"}
@@ -3570,19 +3668,23 @@ const GenitiveCase = ({ isPortuguese }: { isPortuguese: boolean }) => {
                     <button
                         key={i}
                         onClick={() => speak(ex.phrase)}
-                        className="group bg-white p-6 rounded-3xl border border-slate-100 hover:border-indigo-500 shadow-sm hover:shadow-xl transition-all flex items-center gap-6 text-left"
+                        className={`group relative p-6 rounded-3xl border border-slate-100 bg-white hover:border-${ex.color}-200 hover:shadow-lg transition-all text-left overflow-hidden`}
                     >
-                        <div className="w-16 h-16 bg-slate-50 rounded-2xl flex items-center justify-center text-3xl group-hover:scale-110 transition-transform">
-                            {ex.icon}
-                        </div>
-                        <div>
-                            <h4 className="text-xl font-black text-slate-800 group-hover:text-indigo-600 transition-colors mb-1">{ex.phrase}</h4>
-                            <div className="flex flex-col gap-0.5">
-                                <span className="text-[10px] font-mono text-slate-400">{ex.ipa}</span>
-                                {isPortuguese && <span className="text-[10px] font-bold text-slate-300 uppercase tracking-wide">{ex.trans}</span>}
+                        <div className={`absolute top-0 right-0 w-24 h-24 bg-${ex.color}-50 rounded-full -mr-8 -mt-8 opacity-50 group-hover:scale-150 transition-transform duration-500`}></div>
+
+                        <div className="relative z-10 flex items-center gap-6">
+                            <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center text-3xl shadow-sm border border-slate-50 group-hover:scale-110 transition-transform">
+                                {ex.icon}
+                            </div>
+                            <div>
+                                <h4 className={`text-xl font-black text-slate-800 group-hover:text-${ex.color}-600 transition-colors mb-2`}>{ex.phrase}</h4>
+                                <div className="flex flex-col gap-1">
+                                    <span className="text-[10px] font-mono text-slate-400 bg-slate-50 px-2 py-1 rounded self-start">{ex.ipa}</span>
+                                    {isPortuguese && <span className={`text-[10px] font-bold text-${ex.color}-400 uppercase tracking-wide`}>{ex.trans}</span>}
+                                </div>
                             </div>
                         </div>
-                        <Volume2 className="w-5 h-5 text-indigo-200 ml-auto group-hover:text-indigo-500" />
+                        <Volume2 className={`absolute bottom-6 right-6 w-5 h-5 text-slate-200 group-hover:text-${ex.color}-400 transition-colors`} />
                     </button>
                 ))}
             </section>
@@ -3597,19 +3699,23 @@ const GenitiveCase = ({ isPortuguese }: { isPortuguese: boolean }) => {
                 </div>
                 <div className="grid md:grid-cols-3 gap-6">
                     {rules.map((rule, idx) => (
-                        <div key={idx} className="bg-white p-6 rounded-[2rem] border border-slate-100 flex flex-col h-full shadow-sm hover:-translate-y-1 transition-transform">
-                            <div className="w-10 h-10 bg-indigo-50 rounded-full flex items-center justify-center font-black text-indigo-600 mb-4">{idx + 1}</div>
-                            <h5 className="font-bold text-slate-800 mb-2 min-h-[3rem]">{rule.title}</h5>
+                        <div key={idx} className="bg-white p-6 rounded-[2rem] border border-slate-100 flex flex-col h-full shadow-sm hover:border-indigo-200 transition-all hover:-translate-y-1">
+                            <div className="flex justify-between items-start mb-4">
+                                <div className="w-10 h-10 bg-indigo-50 rounded-full flex items-center justify-center font-black text-indigo-600">{idx + 1}</div>
+                                <span className="text-2xl">{rule.icon}</span>
+                            </div>
+
+                            <h5 className="font-bold text-slate-800 mb-2 min-h-[3rem] text-lg leading-tight">{rule.title}</h5>
                             <p className="text-xs text-slate-500 leading-relaxed mb-6 flex-1">{rule.desc}</p>
 
-                            <div className="space-y-3 bg-slate-50 p-4 rounded-xl">
+                            <div className="space-y-3 bg-slate-50 p-4 rounded-xl border border-slate-100">
                                 <div className="flex items-center gap-2">
                                     <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
                                     <span className="text-sm font-bold text-emerald-700">{rule.ex}</span>
                                 </div>
                                 <div className="flex items-center gap-2 opacity-50">
                                     <XCircle className="w-4 h-4 text-rose-500 shrink-0" />
-                                    <span className="text-xs font-medium text-rose-700 line-through">{rule.wrong}</span>
+                                    <span className="text-[10px] font-medium text-rose-700 line-through">{rule.wrong}</span>
                                 </div>
                             </div>
                         </div>
@@ -3618,61 +3724,92 @@ const GenitiveCase = ({ isPortuguese }: { isPortuguese: boolean }) => {
             </section>
 
             {/* Master Tip: The 'Of' Trap */}
-            <div className="bg-rose-50 rounded-[2.5rem] p-10 relative border border-rose-100">
-                <div className="absolute top-0 right-10 -translate-y-1/2 bg-rose-500 text-white px-6 py-2 rounded-full font-black text-xs uppercase tracking-widest shadow-lg">
-                    {isPortuguese ? "A Armadilha Comum" : "The Common Trap"}
-                </div>
-                <div className="flex flex-col md:flex-row gap-8 items-center">
-                    <div className="w-20 h-20 bg-white rounded-3xl flex items-center justify-center text-4xl shadow-sm shrink-0">🚫</div>
+            <div className="bg-rose-50 rounded-[2.5rem] p-10 relative border border-rose-100 overflow-hidden">
+                <div className="absolute -right-10 -bottom-10 w-64 h-64 bg-rose-100 rounded-full opacity-50 blur-3xl"></div>
+
+                <div className="relative z-10 flex flex-col md:flex-row gap-8 items-center">
+                    <div className="w-24 h-24 bg-white rounded-full flex items-center justify-center text-5xl shadow-sm shrink-0 border-4 border-rose-100 animate-pulse">🚫</div>
                     <div className="flex-1">
-                        <h5 className="font-bold text-rose-900 mb-2 uppercase tracking-wide text-sm">
-                            {isPortuguese ? "Pare de dizer 'OF'!" : "Stop saying 'OF'!"}
-                        </h5>
-                        <p className="text-sm text-rose-800 leading-relaxed mb-4">
+                        <div className="flex items-center gap-3 mb-3">
+                            <span className="bg-rose-500 text-white px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest">Stop!</span>
+                            <h5 className="font-bold text-rose-900 uppercase tracking-wide text-sm">
+                                {isPortuguese ? "A Armadilha do 'OF'" : "The 'OF' Trap"}
+                            </h5>
+                        </div>
+
+                        <p className="text-sm text-rose-800 leading-relaxed mb-6 font-medium">
                             {isPortuguese
                                 ? "Muitos brasileiros traduzem 'O carro do meu pai' como 'The car OF my father'. Gramaticalmente não é proibido, mas soa arcaico e estranho. Nativos usam 'My father's car' 99% das vezes para pessoas!"
-                                : "Many students translate 'The car of my father' directly. While not forbidden, it sounds archaic and strange. Natives use 'My father's car' 99% of the time for people!"}
+                                : "Meny students translate 'The car of my father' directly. While not forbidden, it sounds archaic and strange. Natives use 'My father's car' 99% of the time for people!"}
                         </p>
+
                         <div className="flex gap-4">
-                            <button onClick={() => speak("My father's car")} className="px-4 py-2 bg-rose-200 text-rose-800 rounded-lg text-xs font-bold hover:bg-rose-300 transition-colors flex items-center gap-2">
-                                <Volume2 className="w-3 h-3" /> Correct Way
+                            <button onClick={() => speak("My father's car")} className="px-5 py-3 bg-white text-rose-600 rounded-xl text-xs font-bold hover:shadow-md transition-all flex items-center gap-2 border border-rose-100">
+                                <CheckCircle2 className="w-4 h-4" />
+                                {isPortuguese ? "Assim Sim: My Father's Car" : "Do this: My Father's Car"}
                             </button>
                         </div>
                     </div>
                 </div>
             </div>
 
+            {/* The Object Exception */}
+            <div className="bg-slate-800 text-slate-300 rounded-[2.5rem] p-10 relative overflow-hidden">
+                <div className="absolute top-0 right-0 p-8 opacity-5"><Box className="w-40 h-40" /></div>
+                <div className="relative z-10 flex flex-col md:flex-row gap-8 items-center">
+                    <div className="flex-1">
+                        <h5 className="font-bold text-emerald-400 mb-2 flex items-center gap-2 uppercase tracking-widest text-xs">
+                            <Zap className="w-4 h-4" />
+                            {isPortuguese ? "A Exceção das Coisas" : "The Object Exception"}
+                        </h5>
+                        <p className="text-white text-sm leading-relaxed mb-4">
+                            {isPortuguese
+                                ? "Cuidado! Nós usamos 'S para PESSOAS e ANIMAIS. Para COISAS inanimadas, a gente prefere usar o 'OF' ou substantivo composto."
+                                : "Careful! We use 'S for PEOPLE and ANIMALS. For inanimate THINGS, we prefer 'OF' or compound nouns."}
+                        </p>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+                            <div className="bg-slate-700/50 p-3 rounded-lg flex items-center gap-3 border border-slate-600">
+                                <Check className="w-4 h-4 text-emerald-400" />
+                                <span>The leg <strong>of</strong> the table</span>
+                            </div>
+                            <div className="bg-slate-700/50 p-3 rounded-lg flex items-center gap-3 border border-slate-600">
+                                <X className="w-4 h-4 text-rose-400" />
+                                <span className="line-through decoration-rose-500/50">The table's leg</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="text-5xl opacity-80">📦</div>
+                </div>
+            </div>
+
             {/* Final Exercise */}
-            <div className="bg-indigo-50 border-2 border-indigo-100 rounded-[2.5rem] p-10 relative overflow-hidden">
+            <div className="bg-indigo-50 border-2 border-indigo-100 rounded-[2.5rem] p-10 relative overflow-hidden text-center">
                 <div className="absolute top-0 left-0 p-4 opacity-10"><Brain className="w-32 h-32 text-indigo-900" /></div>
-                <div className="relative z-10 text-center">
+                <div className="relative z-10">
                     <h5 className="font-black text-indigo-900 uppercase text-xs tracking-widest mb-4">
                         {isPortuguese ? "Seu Turno" : "Your Turn"}
                     </h5>
-                    <p className="text-lg font-serif-display text-indigo-800 mb-8">
-                        {isPortuguese ? "Como você diria: 'A casa da Sarah'?" : "How would you say: 'Sarah's house'?"}
+                    <p className="text-indigo-800 text-lg font-serif-display mb-6">
+                        "The Phone of Mary" ➝ <span className="font-black text-indigo-600 underline decoration-wavy decoration-indigo-300">Mary's Phone</span>
                     </p>
-                    <div className="flex justify-center gap-4 flex-wrap">
-                        <button onClick={() => speak("The house of Sarah")} className="px-6 py-3 bg-white border border-rose-200 text-rose-400 rounded-xl font-bold hover:bg-rose-50 transition-all opacity-50 hover:opacity-100">
-                            The house of Sarah...
-                        </button>
-                        <button onClick={() => { speak("Sarah's house"); alert("Correct! 🎉"); }} className="px-6 py-3 bg-indigo-600 text-white rounded-xl font-bold shadow-lg shadow-indigo-600/20 hover:scale-105 transition-transform flex items-center gap-2">
-                            <Sparkles className="w-4 h-4" /> Sarah's House
-                        </button>
-                    </div>
+                    <button onClick={() => speak("Mary's Phone")} className="inline-flex items-center gap-2 px-6 py-3 bg-indigo-600 text-white rounded-full font-bold shadow-lg hover:bg-indigo-700 hover:shadow-indigo-200/50 transition-all">
+                        <Mic className="w-4 h-4" />
+                        {isPortuguese ? "Praticar Agora" : "Practice Now"}
+                    </button>
                 </div>
             </div>
         </div>
     );
 };
-
 const HouseFurniture = ({ isPortuguese }: { isPortuguese: boolean }) => {
+    const [activeTab, setActiveTab] = useState(0);
+
     const activeRooms = [
         {
-            name: 'House Structure',
-            trans: 'Estrutura da Casa',
-            icon: <Home className="w-6 h-6" />,
-            color: 'bg-slate-50 border-slate-200 text-slate-700',
+            name: 'Structure',
+            trans: 'Estrutura',
+            icon: <Home className="w-5 h-5" />,
+            color: 'indigo',
             desc: isPortuguese ? "Partes fundamentais da casa." : "Fundamental parts of the house.",
             items: [
                 { w: 'Door', ipa: '/dɔːr/', trans: 'Porta', icon: '🚪' },
@@ -3693,173 +3830,77 @@ const HouseFurniture = ({ isPortuguese }: { isPortuguese: boolean }) => {
         {
             name: 'Living Room',
             trans: 'Sala de Estar',
-            icon: <Sofa className="w-6 h-6" />,
-            color: 'bg-indigo-50 border-indigo-100 text-indigo-700',
+            icon: <Sofa className="w-5 h-5" />,
+            color: 'violet',
             desc: isPortuguese ? "Onde relaxamos e recebemos visitas." : "Where we relax and welcome guests.",
             items: [
                 { w: 'Sofa', ipa: '/ˈsoʊfə/', trans: 'Sofá', icon: '🛋️' },
                 { w: 'Television', ipa: '/ˈtelɪvɪʒn/', trans: 'Televisão', icon: '📺' },
                 { w: 'Picture', ipa: '/ˈpɪktʃər/', trans: 'Quadro/Pintura', icon: '🖼️' },
                 { w: 'Easy Chair', ipa: '/ˈiːzi tʃer/', trans: 'Poltrona', icon: '💺' },
-            ]
-        },
-        {
-            name: 'Dining Room',
-            trans: 'Sala de Jantar',
-            icon: <Utensils className="w-6 h-6" />,
-            color: 'bg-amber-50 border-amber-100 text-amber-700',
-            desc: isPortuguese ? "Lugar de refeições em família." : "Place for family meals.",
-            items: [
-                { w: 'Table', ipa: '/ˈteɪbl/', trans: 'Mesa', icon: '🍽️' },
-                { w: 'Chair', ipa: '/tʃer/', trans: 'Cadeira', icon: '🪑' },
-                { w: 'Sideboard', ipa: '/ˈsaɪdbɔːrd/', trans: 'Aparador', icon: '🗄️' },
+                { w: 'Coffee Table', ipa: '/ˈkɔːfi teɪbl/', trans: 'Mesinha de Centro', icon: '🪵' },
+                { w: 'Rug', ipa: '/rʌɡ/', trans: 'Tapete', icon: '🧶' },
+                { w: 'Cushion', ipa: '/ˈkʊʃn/', trans: 'Almofada', icon: '🟪' },
+                { w: 'Curtains', ipa: '/ˈkɜːrtnz/', trans: 'Cortinas', icon: '🪟' },
             ]
         },
         {
             name: 'Kitchen',
             trans: 'Cozinha',
-            icon: <Utensils className="w-6 h-6" />,
-            color: 'bg-emerald-50 border-emerald-100 text-emerald-700',
+            icon: <Utensils className="w-5 h-5" />,
+            color: 'emerald',
             desc: isPortuguese ? "O coração da casa." : "The heart of the house.",
             items: [
-                { w: 'Refrigerator', ipa: '/rɪˈfrɪdʒəreɪtər/', trans: 'Refrigerador', icon: '❄️' },
-                { w: 'Freezer', ipa: '/ˈfriːzər/', trans: 'Congelador', icon: '🧊' },
-                { w: 'Stove', ipa: '/stoʊv/', trans: 'Fogão', icon: '🍳' },
+                { w: 'Fridge', ipa: '/frɪdʒ/', trans: 'Geladeira', icon: '❄️' },
+                { w: 'Stove', ipa: '/stoʊv/', trans: 'Fogão', icon: '🔥' },
                 { w: 'Microwave', ipa: '/ˈmaɪkroʊweɪv/', trans: 'Microondas', icon: '⚡' },
                 { w: 'Cabinet', ipa: '/ˈkæbɪnət/', trans: 'Armário', icon: '🚪' },
-                { w: 'Pot', ipa: '/pɒt/', trans: 'Panela', icon: '🍲' },
-                { w: 'Fork', ipa: '/fɔːrk/', trans: 'Garfo', icon: '🍴' },
-                { w: 'Knife', ipa: '/naɪf/', trans: 'Faca', icon: '🔪' },
-                { w: 'Tablespoon', ipa: '/ˈteɪblspuːn/', trans: 'Colher de Mesa', icon: '🥄' },
-                { w: 'Teaspoon', ipa: '/ˈtiːspuːn/', trans: 'Colher de Chá', icon: '🥄' },
+                { w: 'Table', ipa: '/ˈteɪbl/', trans: 'Mesa', icon: '🍽️' },
+                { w: 'Chair', ipa: '/tʃer/', trans: 'Cadeira', icon: '🪑' },
                 { w: 'Glass', ipa: '/ɡlæs/', trans: 'Copo', icon: '🥛' },
                 { w: 'Cup', ipa: '/kʌp/', trans: 'Xícara', icon: '☕' },
                 { w: 'Plate', ipa: '/pleɪt/', trans: 'Prato', icon: '🍽️' },
-                { w: 'Bowl', ipa: '/boʊl/', trans: 'Tigela', icon: '🥣' },
+                { w: 'Fork', ipa: '/fɔːrk/', trans: 'Garfo', icon: '🍴' },
+                { w: 'Knife', ipa: '/naɪf/', trans: 'Faca', icon: '🔪' },
+                { w: 'Spoon', ipa: '/spuːn/', trans: 'Colher', icon: '🥄' },
             ]
         },
         {
             name: 'Bedroom',
             trans: 'Quarto',
-            icon: <Bed className="w-6 h-6" />,
-            color: 'bg-rose-50 border-rose-100 text-rose-700',
+            icon: <Bed className="w-5 h-5" />,
+            color: 'rose',
             desc: isPortuguese ? "Seu refúgio pessoal." : "Your personal sanctuary.",
             items: [
                 { w: 'Bed', ipa: '/bed/', trans: 'Cama', icon: '🛏️' },
                 { w: 'Mattress', ipa: '/ˈmætrəs/', trans: 'Colchão', icon: '🛏️' },
                 { w: 'Pillow', ipa: '/ˈpɪloʊ/', trans: 'Travesseiro', icon: '☁️' },
                 { w: 'Blanket', ipa: '/ˈblæŋkɪt/', trans: 'Cobertor', icon: '🛌' },
-                { w: 'Dresser', ipa: '/ˈdresər/', trans: 'Cômoda', icon: '🗄️' },
-                { w: 'Night Table', ipa: '/naɪt ˈteɪbl/', trans: 'Criado-mudo', icon: '🌙' },
-                { w: 'Lamp', ipa: '/læmp/', trans: 'Abajur', icon: '💡' },
-                { w: 'Rug', ipa: '/rʌɡ/', trans: 'Tapete', icon: '🧶' },
-                { w: 'Closet', ipa: '/ˈklɒzɪt/', trans: 'Guarda-roupa', icon: '🚪' },
-            ]
-        },
-        {
-            name: 'Bathroom',
-            trans: 'Banheiro',
-            icon: <Bath className="w-6 h-6" />,
-            color: 'bg-blue-50 border-blue-100 text-blue-700',
-            desc: isPortuguese ? "Higiene pessoal." : "Personal hygiene.",
-            items: [
-                { w: 'Shower', ipa: '/ˈʃaʊər/', trans: 'Chuveiro', icon: '🚿' },
-                { w: 'Bathtub', ipa: '/ˈbæθtʌb/', trans: 'Banheira', icon: '🛁' },
-                { w: 'Toilet', ipa: '/ˈtɔɪlət/', trans: 'Vaso Sanitário', icon: '🚽' },
-                { w: 'Sink', ipa: '/sɪŋk/', trans: 'Pia', icon: '🚰' },
-                { w: 'Mirror', ipa: '/ˈmɪrər/', trans: 'Espelho', icon: '🪞' },
-                { w: 'Towels', ipa: '/ˈtaʊəlz/', trans: 'Toalhas', icon: '🧖' },
-                { w: 'Toothbrush', ipa: '/ˈtuːθbrʌʃ/', trans: 'Escova de Dente', icon: '🪥' },
-                { w: 'Toothpaste', ipa: '/ˈtuːθpeɪst/', trans: 'Pasta de Dente', icon: '🦷' },
-                { w: 'Medicine Cabinet', ipa: '/...ˈkæbɪnət/', trans: 'Armarinho', icon: '💊' },
-            ]
-        },
-        {
-            name: 'Office',
-            trans: 'Escritório',
-            icon: <BookOpen className="w-6 h-6" />,
-            color: 'bg-slate-50 border-slate-200 text-slate-700',
-            desc: isPortuguese ? "Espaço de trabalho." : "Workspace.",
-            items: [
-                { w: 'Desk', ipa: '/desk/', trans: 'Escrivaninha', icon: '🖥️' },
-                { w: 'Computer', ipa: '/kəmˈpjuːtər/', trans: 'Computador', icon: '💻' },
-                { w: 'Printer', ipa: '/ˈprɪntər/', trans: 'Impressora', icon: '🖨️' },
-                { w: 'File Cabinet', ipa: '/faɪl ˈkæbɪnət/', trans: 'Arquivo', icon: '🗄️' },
-                { w: 'Telephone', ipa: '/ˈtelɪfoʊn/', trans: 'Telefone', icon: '☎️' },
-                { w: 'Cellphone', ipa: '/ˈselfoʊn/', trans: 'Celular', icon: '📱' },
-            ]
-        }
-    ];
-    const rooms_unused = [
-        {
-            name: 'Living Room',
-            trans: 'Sala de Estar',
-            icon: <Sofa className="w-6 h-6" />,
-            color: 'bg-indigo-50 border-indigo-100 text-indigo-700',
-            desc: isPortuguese ? "Onde relaxamos e recebemos visitas." : "Where we relax and welcome guests.",
-            items: [
-                { w: 'Sofa', ipa: '/ˈsoʊfə/', trans: 'Sofá', icon: '🛋️' },
-                { w: 'Armchair', ipa: '/ˈɑːrmtʃer/', trans: 'Poltrona', icon: '💺' },
-                { w: 'TV Stand', ipa: '/ˌtiːˈviː stænd/', trans: 'Rack da TV', icon: '📺' },
-                { w: 'Curtains', ipa: '/ˈkɜːrtnz/', trans: 'Cortinas', icon: '🪟' },
-                { w: 'Rug', ipa: '/rʌɡ/', trans: 'Tapete', icon: '🧶' },
-                { w: 'Cushion', ipa: '/ˈkʊʃn/', trans: 'Almofada', icon: '🟦' },
-                { w: 'Bookshelf', ipa: '/ˈbʊkʃelf/', trans: 'Estante', icon: '📚' },
-                { w: 'Fireplace', ipa: '/ˈfaɪərpleɪs/', trans: 'Lareira', icon: '🔥' },
-            ]
-        },
-        {
-            name: 'Kitchen',
-            trans: 'Cozinha',
-            icon: <Utensils className="w-6 h-6" />,
-            color: 'bg-emerald-50 border-emerald-100 text-emerald-700',
-            desc: isPortuguese ? "O coração da casa. Cuidado para não confundir com 'Chicken' (Galinha)!" : "The heart of the house. Don't confuse with 'Chicken'!",
-            items: [
-                { w: 'Fridge', ipa: '/frɪdʒ/', trans: 'Geladeira', icon: '❄️' },
-                { w: 'Stove', ipa: '/stoʊv/', trans: 'Fogão', icon: '🍳' },
-                { w: 'Oven', ipa: '/ˈʌvn/', trans: 'Forno', icon: '🥧' },
-                { w: 'Sink', ipa: '/sɪŋk/', trans: 'Pia', icon: '🚰' },
-                { w: 'Cabinet', ipa: '/ˈkæbɪnət/', trans: 'Armário', icon: '🚪' },
-                { w: 'Microwave', ipa: '/ˈmaɪkroʊweɪv/', trans: 'Microondas', icon: '⚡' },
-                { w: 'Table', ipa: '/ˈteɪbl/', trans: 'Mesa', icon: '🍽️' },
-                { w: 'Chair', ipa: '/tʃer/', trans: 'Cadeira', icon: '🪑' },
-            ]
-        },
-        {
-            name: 'Bedroom',
-            trans: 'Quarto',
-            icon: <Bed className="w-6 h-6" />,
-            color: 'bg-rose-50 border-rose-100 text-rose-700',
-            desc: isPortuguese ? "Seu refúgio pessoal." : "Your personal sanctuary.",
-            items: [
-                { w: 'Bed', ipa: '/bed/', trans: 'Cama', icon: '🛏️' },
                 { w: 'Wardrobe', ipa: '/ˈwɔːrdroʊb/', trans: 'Guarda-roupa', icon: '🚪' },
-                { w: 'Pillow', ipa: '/ˈpɪloʊ/', trans: 'Travesseiro', icon: '☁️' },
-                { w: 'Blanket', ipa: '/ˈblæŋkɪt/', trans: 'Cobertor', icon: '🛌' },
-                { w: 'Lamp', ipa: '/læmp/', trans: 'Abajur/Lâmpada', icon: '💡' },
-                { w: 'Mirror', ipa: '/ˈmɪrər/', trans: 'Espelho', icon: '🪞' },
-                { w: 'Drawer', ipa: '/ˈdrɔːer/', trans: 'Gaveta', icon: '📥' },
+                { w: 'Lamp', ipa: '/læmp/', trans: 'Abajur', icon: '💡' },
                 { w: 'Alarm Clock', ipa: '/əˈlɑːrm klɒk/', trans: 'Despertador', icon: '⏰' },
+                { w: 'Mirror', ipa: '/ˈmɪrər/', trans: 'Espelho', icon: '🪞' },
             ]
         },
         {
             name: 'Bathroom',
             trans: 'Banheiro',
-            icon: <Bath className="w-6 h-6" />,
-            color: 'bg-blue-50 border-blue-100 text-blue-700',
-            desc: isPortuguese ? "Onde a mágica da higiene acontece." : "Where hygiene magic happens.",
+            icon: <Bath className="w-5 h-5" />,
+            color: 'sky',
+            desc: isPortuguese ? "Higiene e cuidados." : "Hygiene and care.",
             items: [
                 { w: 'Shower', ipa: '/ˈʃaʊər/', trans: 'Chuveiro', icon: '🚿' },
                 { w: 'Toilet', ipa: '/ˈtɔɪlət/', trans: 'Vaso Sanitário', icon: '🚽' },
                 { w: 'Sink', ipa: '/sɪŋk/', trans: 'Pia', icon: '🚰' },
                 { w: 'Towel', ipa: '/ˈtaʊəl/', trans: 'Toalha', icon: '🧖' },
-                { w: 'Bathtub', ipa: '/ˈbæθtʌb/', trans: 'Banheira', icon: '🛁' },
-                { w: 'Mirror', ipa: '/ˈmɪrər/', trans: 'Espelho', icon: '🪞' },
-                { w: 'Toilet Paper', ipa: '/...peɪpər/', trans: 'Papel Higiênico', icon: '🧻' },
                 { w: 'Soap', ipa: '/soʊp/', trans: 'Sabonete', icon: '🧼' },
+                { w: 'Toothbrush', ipa: '/ˈtuːθbrʌʃ/', trans: 'Escova', icon: '🪥' },
+                { w: 'Toothpaste', ipa: '/ˈtuːθpeɪst/', trans: 'Pasta', icon: '🦷' },
             ]
         }
     ];
+
+    const currentRoom = activeRooms[activeTab];
 
     return (
         <div className="space-y-12 animate-fade-in pb-20">
@@ -3867,103 +3908,169 @@ const HouseFurniture = ({ isPortuguese }: { isPortuguese: boolean }) => {
             <div className="relative p-8 rounded-[2rem] bg-indigo-900 text-white overflow-hidden shadow-2xl">
                 <div className="absolute top-0 right-0 p-4 opacity-10"><Home className="w-32 h-32" /></div>
                 <div className="relative z-10 flex flex-col md:flex-row gap-6 items-center">
-                    <div className="w-20 h-20 rounded-full bg-indigo-500 flex items-center justify-center text-4xl shadow-lg border-2 border-indigo-400">👨‍🏫</div>
+                    <div className="w-20 h-20 rounded-full bg-indigo-500 flex items-center justify-center text-4xl shadow-lg border-2 border-indigo-400">🏡</div>
                     <div className="flex-1">
                         <h3 className="text-2xl font-serif-display mb-2">
-                            {isPortuguese ? "Bem-vindo ao Lar" : "Welcome Home"}
+                            {isPortuguese ? "Home vs. House" : "Home vs. House"}
                         </h3>
                         <p className="text-indigo-100 text-sm leading-relaxed italic">
                             {isPortuguese
-                                ? "\"Hoje não vamos apenas aprender palavras; vamos mobiliar sua casa mental em inglês! Saber nomear o que está ao seu redor é o primeiro passo para pensar em inglês. Do quarto à cozinha, vamos explorar cada canto!\""
-                                : "\"Today we won't just learn words; we will furnish your mental home in English! Knowing how to name what is around you is the first step to thinking in English. From the bedroom to the kitchen, let's explore every corner!\""
+                                ? "\"House é apenas a construção, o prédio (tijolos). Home é o lar, o sentimento, onde seu coração está. Você pode apontar para uma 'House', mas você sente 'Home'. Let's explore your home!\""
+                                : "\"House is just the building, the structure (bricks). Home is the feeling, where your heart is. You can point at a 'House', but you feel 'Home'. Let's explore your home!\""
                             }
                         </p>
                     </div>
                 </div>
             </div>
 
-            {/* Room by Room Guide */}
-            <div className="space-y-12">
+            {/* Room Tabs */}
+            <div className="flex gap-2 overflow-x-auto pb-4 scrollbar-hide">
                 {activeRooms.map((room, idx) => (
-                    <section key={idx} className="space-y-6">
-                        <div className="flex items-center gap-3">
-                            <div className={`p-2 rounded-lg ${room.color.split(' ')[0]} ${room.color.split(' ')[2]}`}>
-                                {room.icon}
-                            </div>
-                            <div>
-                                <h4 className="text-2xl font-bold text-slate-800">{room.name}</h4>
-                                <p className="text-xs text-slate-400 font-medium uppercase tracking-wide">{room.desc}</p>
-                            </div>
-                        </div>
-
-                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                            {room.items.map((item, i) => (
-                                <button
-                                    key={i}
-                                    onClick={() => speak(item.w)}
-                                    className="group bg-white p-4 rounded-3xl border border-slate-100 hover:border-indigo-500 hover:shadow-xl transition-all flex flex-col items-center text-center relative overflow-hidden"
-                                >
-                                    <span className="text-4xl mb-3 group-hover:scale-110 transition-transform">{item.icon}</span>
-                                    <h5 className="font-bold text-slate-800 mb-1">{item.w}</h5>
-
-                                    <div className="flex flex-col items-center">
-                                        <span className="text-[10px] font-mono text-slate-400 opacity-60">{item.ipa}</span>
-                                        {isPortuguese && <span className="text-[10px] font-bold text-indigo-400 uppercase mt-1">{item.trans}</span>}
-                                    </div>
-
-                                    <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                                        <Volume2 className="w-3 h-3 text-indigo-300" />
-                                    </div>
-                                </button>
-                            ))}
-                        </div>
-                    </section>
+                    <button
+                        key={idx}
+                        onClick={() => setActiveTab(idx)}
+                        className={`
+                            whitespace-nowrap px-6 py-3 rounded-xl font-bold text-sm transition-all flex items-center gap-2 border-2
+                            ${activeTab === idx
+                                ? `bg-${room.color}-500 text-white border-${room.color}-500 shadow-lg shadow-${room.color}-500/30 scale-105`
+                                : `bg-white text-slate-400 border-slate-100 hover:border-${room.color}-200 hover:text-${room.color}-500`
+                            }
+                        `}
+                    >
+                        {room.icon}
+                        {room.name}
+                    </button>
                 ))}
             </div>
 
-            {/* Master Tip: Pronunciation */}
-            <div className="bg-amber-50 rounded-[2.5rem] p-10 relative border border-amber-100">
-                <div className="absolute top-0 right-10 -translate-y-1/2 bg-amber-400 text-white px-6 py-2 rounded-full font-black text-xs uppercase tracking-widest shadow-lg">
-                    {isPortuguese ? "Alerta de Pronúncia" : "Pronunciation Alert"}
+            {/* Active Room Content */}
+            <section className="space-y-6 animate-fade-in">
+                <div className={`p-6 rounded-3xl bg-${currentRoom.color}-50 border border-${currentRoom.color}-100`}>
+                    <div className="flex items-center gap-4 mb-2">
+                        <div className={`p-3 rounded-xl bg-white text-${currentRoom.color}-500 shadow-sm`}>
+                            {currentRoom.icon}
+                        </div>
+                        <div>
+                            <h4 className={`text-2xl font-black text-${currentRoom.color}-900`}>
+                                {currentRoom.name}
+                            </h4>
+                            <p className={`text-xs font-bold text-${currentRoom.color}-600 uppercase tracking-widest`}>
+                                {isPortuguese ? currentRoom.trans : currentRoom.name}
+                            </p>
+                        </div>
+                    </div>
+                    <p className={`text-sm text-${currentRoom.color}-800/80`}>{currentRoom.desc}</p>
                 </div>
-                <div className="flex flex-col md:flex-row gap-8 items-center">
-                    <div className="w-20 h-20 bg-white rounded-3xl flex items-center justify-center text-4xl shadow-sm shrink-0">⚠️</div>
-                    <div className="flex-1">
-                        <h5 className="font-bold text-amber-900 mb-2">
-                            {isPortuguese ? "Cozinha vs. Galinha" : "Kitchen vs. Chicken"}
-                        </h5>
-                        <p className="text-sm text-amber-800 leading-relaxed mb-6">
+
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    {currentRoom.items.map((item, i) => (
+                        <button
+                            key={i}
+                            onClick={() => speak(item.w)}
+                            className={`
+                                group bg-white p-4 rounded-3xl border border-slate-100 
+                                hover:border-${currentRoom.color}-400 hover:shadow-xl hover:shadow-${currentRoom.color}-100 
+                                transition-all flex flex-col items-center text-center relative overflow-hidden
+                            `}
+                        >
+                            <span className="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300 filter drop-shadow-sm">{item.icon}</span>
+                            <h5 className="font-bold text-slate-800 mb-1">{item.w}</h5>
+                            <div className="flex flex-col items-center gap-1">
+                                <span className="text-[10px] font-mono text-slate-400 bg-slate-50 px-2 py-0.5 rounded opacity-80">{item.ipa}</span>
+                                {isPortuguese && <span className={`text-[10px] font-bold text-${currentRoom.color}-500 uppercase tracking-wide`}>{item.trans}</span>}
+                            </div>
+                            <div className={`absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity text-${currentRoom.color}-400`}>
+                                <Volume2 className="w-4 h-4" />
+                            </div>
+                        </button>
+                    ))}
+                </div>
+            </section>
+
+            {/* Confusing Words Alert */}
+            <div className="grid md:grid-cols-2 gap-6">
+                <div className="bg-amber-50 rounded-[2.5rem] p-8 relative border border-amber-100 overflow-hidden group hover:border-amber-300 transition-colors">
+                    <div className="absolute top-0 right-0 p-6 opacity-10 group-hover:opacity-20 transition-opacity text-amber-900 text-8xl font-black">?</div>
+
+                    <div className="relative z-10">
+                        <div className="flex items-center gap-3 mb-4">
+                            <span className="bg-amber-400 text-white px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest shadow-sm">Warning</span>
+                            <h5 className="font-bold text-amber-900 uppercase tracking-wide text-xs">
+                                {isPortuguese ? "Não Confunda!" : "Don't Confuse!"}
+                            </h5>
+                        </div>
+
+                        <div className="flex items-center justify-between gap-4 mb-4">
+                            <div className="text-center">
+                                <span className="text-4xl block mb-2">🍳</span>
+                                <span className="font-black text-amber-900">Kitchen</span>
+                                <span className="block text-[10px] text-amber-700/60 font-mono">/ˈkɪtʃɪn/</span>
+                            </div>
+                            <div className="h-px flex-1 bg-amber-300 relative">
+                                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-amber-100 px-2 text-[10px] font-bold text-amber-500">VS</div>
+                            </div>
+                            <div className="text-center">
+                                <span className="text-4xl block mb-2">🐔</span>
+                                <span className="font-black text-amber-900">Chicken</span>
+                                <span className="block text-[10px] text-amber-700/60 font-mono">/ˈtʃɪkɪn/</span>
+                            </div>
+                        </div>
+
+                        <p className="text-xs text-amber-800 leading-relaxed text-center">
                             {isPortuguese
-                                ? "Muitos alunos confundem. 'Kitchen' (/ˈkɪtʃɪn/) é onde você cozinha. 'Chicken' (/ˈtʃɪkɪn/) é o que você come. Não diga 'I am in the chicken' (Estou dentro da galinha)!"
-                                : "Many students confuse these. 'Kitchen' (/ˈkɪtʃɪn/) is where you cook. 'Chicken' (/ˈtʃɪkɪn/) is what you eat. Don't say 'I am in the chicken'!"}
+                                ? "Você cozinha na Kitchen. Você come o Chicken. Cuidado para não comer a cozinha!"
+                                : "You cook in the Kitchen. You eat the Chicken. Careful not to eat the kitchen!"}
                         </p>
-                        <div className="flex gap-4">
-                            <button onClick={() => speak("I am in the kitchen.")} className="px-5 py-3 bg-white border border-amber-200 rounded-xl font-bold text-amber-900 text-xs hover:bg-amber-100 transition-colors flex items-center gap-2">
-                                <Volume2 className="w-3 h-3" /> "I am in the kitchen"
-                            </button>
+                    </div>
+                </div>
+
+                <div className="bg-slate-800 rounded-[2.5rem] p-8 relative border border-slate-700 overflow-hidden text-slate-300">
+                    <div className="relative z-10">
+                        <div className="flex items-center gap-3 mb-4">
+                            <span className="bg-emerald-500 text-white px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest shadow-sm">Tip</span>
+                            <h5 className="font-bold text-white uppercase tracking-wide text-xs">
+                                {isPortuguese ? "Onde eu guardo?" : "Where do I put it?"}
+                            </h5>
+                        </div>
+
+                        <div className="space-y-3">
+                            <div className="flex items-center gap-4 bg-slate-700/50 p-3 rounded-xl border border-slate-600">
+                                <span className="text-2xl">🧥</span>
+                                <div>
+                                    <div className="font-bold text-white text-sm">Wardrobe (UK) / Closet (US)</div>
+                                    <div className="text-[10px] text-slate-400">For clothes / Roupas</div>
+                                </div>
+                            </div>
+                            <div className="flex items-center gap-4 bg-slate-700/50 p-3 rounded-xl border border-slate-600">
+                                <span className="text-2xl">🍽️</span>
+                                <div>
+                                    <div className="font-bold text-white text-sm">Cupboard / Cabinet</div>
+                                    <div className="text-[10px] text-slate-400">For food & dishes / Comida e pratos</div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            {/* Application Practice */}
-            <div className="bg-indigo-50 border-2 border-indigo-100 rounded-[2.5rem] p-10 relative overflow-hidden">
+            {/* Interactive Application */}
+            <div className="bg-indigo-50 border-2 border-indigo-100 rounded-[2.5rem] p-10 relative overflow-hidden text-center">
                 <div className="absolute top-0 left-0 p-4 opacity-10"><MessageCircle className="w-32 h-32 text-indigo-900" /></div>
-                <div className="relative z-10 text-center">
+                <div className="relative z-10">
                     <h5 className="font-black text-indigo-900 uppercase text-xs tracking-widest mb-4">
                         {isPortuguese ? "Pratique Agora" : "Practice Now"}
                     </h5>
                     <p className="text-lg font-serif-display text-indigo-800 mb-8 max-w-xl mx-auto">
                         {isPortuguese
-                            ? "Descreva seu ambiente atual. Onde você está? O que você vê?"
-                            : "Describe your current environment. Where are you? What do you see?"}
+                            ? "Complete: \"The ________ is in the ________.\""
+                            : "Complete: \"The ________ is in the ________.\""}
                     </p>
-                    <div className="grid md:grid-cols-2 gap-4 max-w-2xl mx-auto">
-                        <button onClick={() => speak("I am in the living room.")} className="p-4 bg-white rounded-xl shadow-sm border border-indigo-100 font-medium text-slate-600 hover:text-indigo-600 hover:border-indigo-400 transition-all flex justify-between items-center group">
-                            "I am in the living room." <Volume2 className="w-4 h-4 opacity-20 group-hover:opacity-100" />
+                    <div className="flex justify-center gap-4 flex-wrap">
+                        <button onClick={() => speak("The sofa is in the living room.")} className="px-6 py-3 bg-white text-indigo-600 rounded-xl font-bold shadow-sm hover:shadow-md transition-all flex items-center gap-2 border border-indigo-100">
+                            🛋️ Sofa / Living Room
                         </button>
-                        <button onClick={() => speak("There is a computer on my table.")} className="p-4 bg-white rounded-xl shadow-sm border border-indigo-100 font-medium text-slate-600 hover:text-indigo-600 hover:border-indigo-400 transition-all flex justify-between items-center group">
-                            "There is a computer on my table." <Volume2 className="w-4 h-4 opacity-20 group-hover:opacity-100" />
+                        <button onClick={() => speak("The fridge is in the kitchen.")} className="px-6 py-3 bg-white text-emerald-600 rounded-xl font-bold shadow-sm hover:shadow-md transition-all flex items-center gap-2 border border-emerald-100">
+                            ❄️ Fridge / Kitchen
                         </button>
                     </div>
                 </div>
@@ -3972,26 +4079,368 @@ const HouseFurniture = ({ isPortuguese }: { isPortuguese: boolean }) => {
     );
 };
 
-const PrepositionsPlace = () => (
-    <div className="grid grid-cols-2 md:grid-cols-3 gap-6 animate-fade-in">
-        {['In', 'On', 'Under', 'Next to', 'Behind', 'In front of'].map(prep => (
-            <button key={prep} onClick={() => speak(`The ball is ${prep} the box.`)} className="p-8 bg-indigo-50 rounded-3xl font-bold text-xl text-indigo-700 border border-indigo-100 hover:bg-indigo-100 transition-all">{prep}</button>
-        ))}
-    </div>
-);
+const PrepositionsPlace = ({ isPortuguese }: { isPortuguese: boolean }) => {
+    const [activePrep, setActivePrep] = useState('on');
 
-const ThereIsAre = () => (
-    <div className="space-y-6 animate-fade-in">
-        <button onClick={() => speak("There is a book on the table.")} className="w-full p-8 bg-emerald-50 border-2 border-emerald-100 rounded-3xl text-left hover:border-emerald-300 transition-all">
-            <div className="text-xs font-black uppercase text-emerald-500 tracking-widest mb-2">Singular</div>
-            <span className="font-bold text-2xl text-emerald-800">There is...</span>
-        </button>
-        <button onClick={() => speak("There are two books on the table.")} className="w-full p-8 bg-blue-50 border-2 border-blue-100 rounded-3xl text-left hover:border-blue-300 transition-all">
-            <div className="text-xs font-black uppercase text-blue-500 tracking-widest mb-2">Plural</div>
-            <span className="font-bold text-2xl text-blue-800">There are...</span>
-        </button>
-    </div>
-);
+    const prepositions = [
+        { id: 'in', label: 'In', trans: 'Dentro', color: 'indigo', icon: '📥' },
+        { id: 'on', label: 'On', trans: 'Sobre', color: 'emerald', icon: '🔝' },
+        { id: 'under', label: 'Under', trans: 'Embaixo', color: 'amber', icon: '⬇️' },
+        { id: 'next_to', label: 'Next to', trans: 'Ao lado', color: 'blue', icon: '➡️' },
+        { id: 'behind', label: 'Behind', trans: 'Atrás', color: 'purple', icon: '🔙' },
+        { id: 'in_front_of', label: 'In front of', trans: 'Na frente', color: 'rose', icon: '👀' },
+        { id: 'between', label: 'Between', trans: 'Entre', color: 'orange', icon: '↔️' },
+    ];
+
+    const getPositionStyle = (prep: string) => {
+        switch (prep) {
+            case 'in': return 'top-1/2 left-1/2 -translate-x-1/2 -translate-y-[40%] scale-90 z-0 opacity-80'; // Inside
+            case 'on': return 'top-0 left-1/2 -translate-x-1/2 -translate-y-full z-20'; // On top
+            case 'under': return 'bottom-0 left-1/2 -translate-x-1/2 translate-y-[60%] z-0 opacity-90 scale-90'; // Under
+            case 'next_to': return 'top-1/2 right-0 translate-x-full -translate-y-1/2 ml-4 z-20'; // Right side
+            case 'behind': return 'top-0 left-1/2 -translate-x-1/2 -translate-y-[80%] scale-75 z-0 opacity-60 blur-[1px]'; // Behind
+            case 'in_front_of': return 'bottom-0 left-1/2 -translate-x-1/2 translate-y-[50%] scale-125 z-30'; // Front
+            case 'between': return 'top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20'; // Special case handled in render
+            default: return '';
+        }
+    };
+
+    const getDescription = (prep: string) => {
+        if (isPortuguese) {
+            const map: any = {
+                'in': 'O gato está DENTRO da caixa.',
+                'on': 'O gato está SOBRE a caixa.',
+                'under': 'O gato está EMBAIXO da caixa.',
+                'next_to': 'O gato está AO LADO da caixa.',
+                'behind': 'O gato está ATRÁS da caixa.',
+                'in_front_of': 'O gato está NA FRENTE da caixa.',
+                'between': 'O gato está ENTRE as caixas.',
+            };
+            return map[prep];
+        }
+        const map: any = {
+            'in': 'The cat is IN the box.',
+            'on': 'The cat is ON the box.',
+            'under': 'The cat is UNDER the box.',
+            'next_to': 'The cat is NEXT TO the box.',
+            'behind': 'The cat is BEHIND the box.',
+            'in_front_of': 'The cat is IN FRONT OF the box.',
+            'between': 'The cat is BETWEEN the boxes.',
+        };
+        return map[prep];
+    };
+
+    return (
+        <div className="space-y-12 animate-fade-in pb-20">
+            {/* Senior Teacher Intro */}
+            <div className="relative p-8 rounded-[2rem] bg-indigo-900 text-white overflow-hidden shadow-2xl">
+                <div className="absolute top-0 right-0 p-4 opacity-10"><MapPin className="w-32 h-32" /></div>
+                <div className="relative z-10 flex flex-col md:flex-row gap-6 items-center">
+                    <div className="w-20 h-20 rounded-full bg-indigo-500 flex items-center justify-center text-4xl shadow-lg border-2 border-indigo-400">🧭</div>
+                    <div className="flex-1">
+                        <h3 className="text-2xl font-serif-display mb-2">
+                            {isPortuguese ? "Onde está o Gato?" : "Where is the Cat?"}
+                        </h3>
+                        <p className="text-indigo-100 text-sm leading-relaxed italic">
+                            {isPortuguese
+                                ? "\"Prepolições de lugar são como o GPS da frase. Elas dizem exatamente onde as coisas estão. Sem elas, estaríamos todos perdidos! Vamos usar nosso gato virtual para aprender.\" "
+                                : "\"Prepositions of place are like the GPS of a sentence. They tell us exactly where things are. Without them, we'd all be lost! Let's use our virtual cat to learn.\""
+                            }
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            {/* Interactive Visualizer */}
+            <div className="grid lg:grid-cols-2 gap-8 items-center">
+
+                {/* Visual Stage */}
+                <div className="bg-white rounded-[3rem] p-12 h-96 flex flex-col items-center justify-center relative shadow-sm border border-slate-100 overflow-visible group">
+                    <div className="absolute inset-0 bg-slate-50/50 rounded-[3rem] pattern-grid-lg opacity-50"></div>
+
+                    {/* The Scene */}
+                    <div className="relative z-10">
+                        {/* The Box (Reference Object) */}
+                        <div className={`relative transition-all duration-500 ${activePrep === 'between' ? 'flex gap-20' : ''}`}>
+                            <div className="w-32 h-32 bg-amber-200 rounded-2xl border-4 border-amber-300 shadow-xl flex items-center justify-center text-4xl relative z-10">
+                                📦
+                                {/* Front Face Detail for 3D effect */}
+                                <div className="absolute inset-x-4 top-4 h-1 bg-amber-900/10 rounded-full"></div>
+                            </div>
+
+                            {/* Second Box for 'Between' */}
+                            {activePrep === 'between' && (
+                                <div className="w-32 h-32 bg-amber-200 rounded-2xl border-4 border-amber-300 shadow-xl flex items-center justify-center text-4xl relative z-10 animate-fade-in">
+                                    📦
+                                </div>
+                            )}
+
+                            {/* The Cat (Moving Object) */}
+                            <div className={`
+                                absolute w-20 h-20 text-6xl flex items-center justify-center transition-all duration-700 cubic-bezier(0.34, 1.56, 0.64, 1) filter drop-shadow-lg
+                                ${getPositionStyle(activePrep)}
+                            `}>
+                                🐱
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Sentence Output */}
+                    <div className="absolute bottom-8 left-0 right-0 text-center px-4">
+                        <div className="inline-block bg-white/80 backdrop-blur-md px-6 py-3 rounded-2xl border border-slate-100 shadow-sm transform transition-all hover:scale-105 cursor-pointer" onClick={() => speak(getDescription(activePrep))}>
+                            <p className="text-lg font-bold text-slate-700 flex items-center gap-3">
+                                {getDescription(activePrep)}
+                                <Volume2 className="w-4 h-4 text-indigo-400" />
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Controls */}
+                <div className="grid grid-cols-2 gap-3">
+                    {prepositions.map((prep) => (
+                        <button
+                            key={prep.id}
+                            onClick={() => { setActivePrep(prep.id); speak(prep.label); }}
+                            className={`
+                                p-4 rounded-2xl border-2 font-bold text-left transition-all flex items-center gap-3
+                                ${activePrep === prep.id
+                                    ? `bg-${prep.color}-50 border-${prep.color}-400 text-${prep.color}-700 shadow-md scale-105 z-10`
+                                    : `bg-white border-slate-100 text-slate-500 hover:border-${prep.color}-200 hover:bg-slate-50`
+                                }
+                            `}
+                        >
+                            <span className="text-2xl">{prep.icon}</span>
+                            <div>
+                                <span className="block text-sm">{prep.label}</span>
+                                {isPortuguese && <span className="block text-[10px] uppercase tracking-wider opacity-60">{prep.trans}</span>}
+                            </div>
+                            {activePrep === prep.id && <div className={`ml-auto w-2 h-2 rounded-full bg-${prep.color}-500 animate-pulse`}></div>}
+                        </button>
+                    ))}
+                </div>
+            </div>
+
+            {/* Transport Rule Tip */}
+            <div className="bg-slate-800 rounded-[2.5rem] p-8 md:p-10 relative overflow-hidden text-slate-300 border border-slate-700 shadow-2xl">
+                <div className="absolute top-0 right-0 p-8 opacity-5"><Layout className="w-64 h-64" /></div>
+
+                <div className="relative z-10">
+                    <div className="flex items-center gap-4 mb-6">
+                        <div className="w-12 h-12 bg-emerald-500 rounded-2xl flex items-center justify-center text-2xl text-white font-bold shadow-lg shadow-emerald-500/20">🚀</div>
+                        <div>
+                            <span className="text-emerald-400 text-[10px] font-black uppercase tracking-widest">Senior Tip</span>
+                            <h4 className="text-2xl font-bold text-white leading-tight">
+                                {isPortuguese ? "In ou On? A Regra do Transporte" : "In or On? The Transport Rule"}
+                            </h4>
+                        </div>
+                    </div>
+
+                    <p className="text-slate-400 mb-8 max-w-2xl leading-relaxed">
+                        {isPortuguese
+                            ? "Por que dizemos 'IN the car' mas 'ON the bus'? É confuso, né? Mas existe uma regra secreta:"
+                            : "Why do we say 'IN the car' but 'ON the bus'? Confusing, right? But there is a secret rule:"}
+                    </p>
+
+                    <div className="grid md:grid-cols-2 gap-6">
+                        {/* ON Rule */}
+                        <div className="bg-slate-700/50 p-6 rounded-3xl border border-slate-600 hover:bg-slate-700 transition-colors">
+                            <div className="flex justify-between items-start mb-4">
+                                <span className="text-4xl">🚌</span>
+                                <span className="bg-emerald-500/20 text-emerald-400 px-3 py-1 rounded-full text-xs font-bold">ON</span>
+                            </div>
+                            <h5 className="text-white font-bold mb-2">Can you walk?</h5>
+                            <p className="text-xs text-slate-400 mb-4">
+                                {isPortuguese
+                                    ? "Se você pode ficar em pé e andar dentro (Ônibus, Trem, Avião), use ON."
+                                    : "If you can stand up and walk inside (Bus, Train, Plane), use ON."}
+                            </p>
+                            <div className="flex flex-wrap gap-2">
+                                <span className="px-2 py-1 bg-slate-800 rounded text-[10px] font-mono text-emerald-300">On the bus</span>
+                                <span className="px-2 py-1 bg-slate-800 rounded text-[10px] font-mono text-emerald-300">On the plane</span>
+                            </div>
+                        </div>
+
+                        {/* IN Rule */}
+                        <div className="bg-slate-700/50 p-6 rounded-3xl border border-slate-600 hover:bg-slate-700 transition-colors">
+                            <div className="flex justify-between items-start mb-4">
+                                <span className="text-4xl">🚗</span>
+                                <span className="bg-indigo-500/20 text-indigo-400 px-3 py-1 rounded-full text-xs font-bold">IN</span>
+                            </div>
+                            <h5 className="text-white font-bold mb-2">You must sit?</h5>
+                            <p className="text-xs text-slate-400 mb-4">
+                                {isPortuguese
+                                    ? "Se você precisa se abaixar e só consegue sentar (Carro, Táxi), use IN."
+                                    : "If you must crouch down and can only sit (Car, Taxi), use IN."}
+                            </p>
+                            <div className="flex flex-wrap gap-2">
+                                <span className="px-2 py-1 bg-slate-800 rounded text-[10px] font-mono text-indigo-300">In the car</span>
+                                <span className="px-2 py-1 bg-slate-800 rounded text-[10px] font-mono text-indigo-300">In the taxi</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+const ThereIsAre = ({ isPortuguese }: { isPortuguese: boolean }) => {
+    const [count, setCount] = useState(1);
+    const [mode, setMode] = useState<'affirmative' | 'negative' | 'question'>('affirmative');
+
+    const toggleCount = () => setCount(prev => prev === 1 ? 3 : 1);
+
+    const getContent = () => {
+        if (mode === 'affirmative') {
+            return {
+                title: count === 1 ? 'There is' : 'There are',
+                rule: count === 1 ? 'Singular (1)' : 'Plural (2+)',
+                sentence: count === 1 ? 'There is an apple on the table.' : 'There are three apples on the table.',
+                trans: isPortuguese
+                    ? (count === 1 ? 'Há/Tem uma maçã na mesa.' : 'Há/Tem três maçãs na mesa.')
+                    : (count === 1 ? 'There is one apple.' : 'There are three apples.')
+            };
+        } else if (mode === 'negative') {
+            return {
+                title: count === 1 ? "There isn't" : "There aren't",
+                rule: count === 1 ? 'Singular Negative' : 'Plural Negative',
+                sentence: count === 1 ? "There isn't an apple on the table." : "There aren't three apples on the table.",
+                trans: isPortuguese
+                    ? (count === 1 ? 'Não há/tem uma maçã' : 'Não há/tem três maçãs')
+                    : (count === 1 ? 'No apple here.' : 'No apples here.')
+            };
+        } else {
+            return {
+                title: count === 1 ? "Is there?" : "Are there?",
+                rule: count === 1 ? 'Singular Question' : 'Plural Question',
+                sentence: count === 1 ? "Is there an apple on the table?" : "Are there three apples on the table?",
+                trans: isPortuguese
+                    ? (count === 1 ? 'Tem uma maçã?' : 'Tem três maçãs?')
+                    : (count === 1 ? 'Question: 1 apple?' : 'Question: 3 apples?')
+            };
+        }
+    };
+
+    const content = getContent();
+
+    return (
+        <div className="space-y-12 animate-fade-in pb-20">
+            {/* Senior Teacher Intro - The Have Trap */}
+            <div className="bg-rose-50 rounded-[2.5rem] p-8 md:p-10 relative overflow-hidden border border-rose-100 shadow-xl">
+                <div className="absolute top-0 right-0 p-8 opacity-5"><AlertTriangle className="w-64 h-64 text-rose-900" /></div>
+
+                <div className="relative z-10">
+                    <div className="flex items-center gap-4 mb-6">
+                        <div className="w-16 h-16 bg-rose-500 rounded-2xl flex items-center justify-center text-3xl text-white font-bold shadow-lg shadow-rose-500/20 animate-pulse">🚫</div>
+                        <div>
+                            <span className="text-rose-500 text-[10px] font-black uppercase tracking-widest">Master Tip (Critical)</span>
+                            <h4 className="text-2xl font-bold text-rose-900 leading-tight">
+                                {isPortuguese ? "A Armadilha do 'HAVE'" : "The 'HAVE' Trap"}
+                            </h4>
+                        </div>
+                    </div>
+
+                    <div className="grid md:grid-cols-2 gap-8 items-center">
+                        <div className="space-y-4">
+                            <p className="text-rose-800 leading-relaxed font-medium">
+                                {isPortuguese
+                                    ? "Em português, dizemos 'Tem um carro na rua'. Muitos traduzem como 'Have a car'. ISSO ESTÁ ERRADO! 'Have' indica posse (Eu tenho). Para existência, usamos THERE IS (um) ou THERE ARE (vários)."
+                                    : "In Portuguese, you say 'Tem um carro'. Don't translate this as 'Have a car'. 'Have' is for possession (I have). For existence, use THERE IS (one) or THERE ARE (many)."}
+                            </p>
+                            <div className="flex gap-4">
+                                <div className="bg-white/80 p-3 rounded-xl border border-rose-200 flex items-center gap-3 opacity-50">
+                                    <X className="w-5 h-5 text-rose-500" />
+                                    <span className="line-through text-slate-400 text-sm">Have a car</span>
+                                </div>
+                                <div className="bg-white p-3 rounded-xl border-l-4 border-emerald-500 shadow-sm flex items-center gap-3">
+                                    <CheckCircle2 className="w-5 h-5 text-emerald-500" />
+                                    <span className="font-bold text-emerald-700 text-sm">There is a car</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* The Magic Table Visualizer */}
+            <div className="bg-white rounded-[3rem] p-8 shadow-sm border border-slate-100">
+                {/* Controls */}
+                <div className="flex flex-col md:flex-row justify-between items-center gap-6 mb-12">
+                    <div className="flex gap-2 p-1 bg-slate-100 rounded-2xl">
+                        {['affirmative', 'negative', 'question'].map((m) => (
+                            <button
+                                key={m}
+                                onClick={() => setMode(m as any)}
+                                className={`
+                                    px-6 py-3 rounded-xl text-sm font-bold capitalize transition-all
+                                    ${mode === m ? 'bg-white shadow-md text-indigo-600' : 'text-slate-400 hover:text-slate-600'}
+                                `}
+                            >
+                                {m}
+                            </button>
+                        ))}
+                    </div>
+
+                    <button
+                        onClick={toggleCount}
+                        className="flex items-center gap-3 px-6 py-3 bg-indigo-50 hover:bg-indigo-100 text-indigo-600 rounded-2xl font-bold transition-colors group"
+                    >
+                        <RefreshCw className="w-5 h-5 group-hover:rotate-180 transition-transform duration-500" />
+                        {count === 1 ? 'Switch to Plural' : 'Switch to Singular'}
+                    </button>
+                </div>
+
+                {/* Interpretation */}
+                <div className="flex flex-col items-center">
+                    <div className="relative">
+                        <div className="absolute inset-x-0 bottom-0 h-4 bg-black/5 rounded-[100%] blur-xl translate-y-4"></div>
+                        {/* Table Surface */}
+                        <div className="w-64 md:w-96 h-32 bg-amber-100 rounded-[3rem] border-4 border-amber-200 flex items-end justify-center pb-6 relative overflow-visible z-10">
+                            {/* Items */}
+                            <div className="flex gap-4 items-end transition-all duration-500">
+                                <span className={`text-6xl transition-all duration-500 ${mode === 'negative' ? 'opacity-20 grayscale blur-[2px] scale-90' : 'bounce-in'}`}>🍎</span>
+                                {count > 1 && (
+                                    <>
+                                        <span className={`text-6xl -ml-4 transition-all duration-500 delay-75 ${mode === 'negative' ? 'opacity-20 grayscale blur-[2px] scale-90' : 'bounce-in'}`}>🍎</span>
+                                        <span className={`text-6xl -ml-4 transition-all duration-500 delay-150 ${mode === 'negative' ? 'opacity-20 grayscale blur-[2px] scale-90' : 'bounce-in'}`}>🍎</span>
+                                    </>
+                                )}
+                            </div>
+                        </div>
+                        {/* Table Legs */}
+                        <div className="absolute top-20 left-10 w-4 h-24 bg-amber-300 rounded-full -z-10"></div>
+                        <div className="absolute top-20 right-10 w-4 h-24 bg-amber-300 rounded-full -z-10"></div>
+                    </div>
+
+                    <div className="mt-12 text-center">
+                        <div className="inline-block px-4 py-1 bg-indigo-100 text-indigo-600 rounded-full text-xs font-black uppercase tracking-widest mb-4">
+                            {content.rule}
+                        </div>
+                        <h3
+                            className="text-3xl md:text-5xl font-black text-slate-800 mb-4 cursor-pointer hover:text-indigo-600 transition-colors"
+                            onClick={() => speak(content.sentence)}
+                        >
+                            {content.title}...
+                        </h3>
+                        <div
+                            className="bg-indigo-50 border-2 border-indigo-100 p-6 rounded-3xl cursor-pointer hover:bg-indigo-100 transition-all group max-w-lg mx-auto"
+                            onClick={() => speak(content.sentence)}
+                        >
+                            <p className="text-xl font-medium text-slate-700 group-hover:text-indigo-700 flex items-center justify-center gap-3">
+                                {content.sentence}
+                                <Volume2 className="w-5 h-5 opacity-50 group-hover:opacity-100" />
+                            </p>
+                            {isPortuguese && (
+                                <p className="text-sm text-slate-400 mt-2 font-medium">{content.trans}</p>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+};
 
 const DaysMonths = () => (
     <div className="space-y-12 animate-fade-in">
@@ -4575,11 +5024,11 @@ const Sidebar = ({ activeModule, onToggleModule, activeSection, onSelectSection,
         { id: 1, title: 'First Steps', icon: <Star className="w-4 h-4" />, range: [0, 4] },
         { id: 2, title: 'Nouns & Characteristics', icon: <BookOpen className="w-4 h-4" />, range: [5, 9] },
         { id: 3, title: 'Quantity & Pointers', icon: <Hash className="w-4 h-4" />, range: [10, 13] },
-        { id: 4, title: 'Belonging & Family', icon: <User className="w-4 h-4" />, range: [14, 16] },
-        { id: 5, title: 'Space & Existence', icon: <MapPin className="w-4 h-4" />, range: [17, 19] },
-        { id: 6, title: 'Time & Routine', icon: <Clock className="w-4 h-4" />, range: [20, 26] },
-        { id: 7, title: 'Interaction & Ability', icon: <MessageCircle className="w-4 h-4" />, range: [27, 29] },
-        { id: 8, title: 'Daily Life', icon: <Utensils className="w-4 h-4" />, range: [30, 30] },
+        { id: 4, title: 'Belonging & Family', icon: <User className="w-4 h-4" />, range: [14, 17] },
+        { id: 5, title: 'Space & Existence', icon: <MapPin className="w-4 h-4" />, range: [18, 20] },
+        { id: 6, title: 'Time & Routine', icon: <Clock className="w-4 h-4" />, range: [21, 27] },
+        { id: 7, title: 'Interaction & Ability', icon: <MessageCircle className="w-4 h-4" />, range: [28, 30] },
+        { id: 8, title: 'Daily Life', icon: <Utensils className="w-4 h-4" />, range: [31, 31] },
     ];
 
     const levelNames: any = { 1: 'Basic', 2: 'Pre-Intermediate', 3: 'Intermediate', 4: 'Advanced' };
@@ -4589,11 +5038,11 @@ const Sidebar = ({ activeModule, onToggleModule, activeSection, onSelectSection,
             0: 'Greetings & Farewells', 1: 'Alphabet & Spelling', 2: 'Subject Pronouns', 3: 'Verb To Be (+)', 4: 'Verb To Be (-/?)',
             5: 'Indefinite Articles', 6: 'Jobs & Occupations', 7: 'Singular/Plural', 8: 'Colors & Adjectives', 9: 'Countries & Nationalities',
             10: 'Numbers 0-20', 11: 'Numbers 20-100', 12: 'Big Numbers', 13: 'Demonstrative Pronouns',
-            14: 'Family Members', 15: 'Possessive Adjectives', 16: "Genitive Case ('s)",
-            17: 'House & Furniture', 18: 'Prepositions of Place', 19: 'There Is / There Are',
-            20: 'Days & Months', 21: 'Telling Time', 22: 'Wh- Questions', 23: 'Present Simple Rules', 24: 'Third Person S', 25: 'Daily Routine', 26: 'Adverbs of Frequency',
-            27: 'Object Pronouns', 28: 'Imperatives', 29: "Can / Can't",
-            30: 'Food & Drink'
+            14: 'Family Members', 15: 'Verb to Have', 16: "Possessive Case", 17: "Genitive Case ('s)",
+            18: 'House & Furniture', 19: 'Prepositions of Place', 20: 'There Is / There Are',
+            21: 'Days & Months', 22: 'Telling Time', 23: 'Wh- Questions', 24: 'Present Simple Rules', 25: 'Third Person S', 26: 'Daily Routine', 27: 'Adverbs of Frequency',
+            28: 'Object Pronouns', 29: 'Imperatives', 30: "Can / Can't",
+            31: 'Food & Drink'
         };
         return titles[idx] || `Lesson ${idx + 1}`;
     };
@@ -4621,7 +5070,7 @@ const Sidebar = ({ activeModule, onToggleModule, activeSection, onSelectSection,
 
             <div className="flex-1 overflow-y-auto p-4 space-y-4 pt-6">
                 {modules.map(m => {
-                    const isLocked = currentLevel === 1 && m.id >= 5;
+                    const isLocked = currentLevel === 1 && m.id > 5;
 
                     return (
                         <div key={m.id} className={`rounded-2xl overflow-hidden transition-all duration-300 ${isLocked ? 'opacity-50 grayscale' : ''}`}>
@@ -4810,22 +5259,23 @@ export default function App() {
             case 12: return <BigNumbers isPortuguese={isPortuguese} />;
             case 13: return <DemonstrativesNew isPortuguese={isPortuguese} />;
             case 14: return <FamilyVocabulary isPortuguese={isPortuguese} />;
-            case 15: return <PossessiveAdjectives isPortuguese={isPortuguese} />;
-            case 16: return <GenitiveCase isPortuguese={isPortuguese} />;
-            case 17: return <HouseFurniture isPortuguese={isPortuguese} />;
-            case 18: return <PrepositionsPlace />;
-            case 19: return <ThereIsAre />;
-            case 20: return <DaysMonths />;
-            case 21: return <TellingTime />;
-            case 22: return <WhQuestions />;
-            case 23: return <PresentSimpleRules mode="base" />;
-            case 24: return <PresentSimpleRules mode="third" />;
-            case 25: return <DailyRoutine />;
-            case 26: return <AdverbsFrequency />;
-            case 27: return <InteractionSection type="object" />;
-            case 28: return <InteractionSection type="imp" />;
-            case 29: return <InteractionSection type="can" />;
-            case 30: return <FoodAndDrink isPortuguese={isPortuguese} />;
+            case 15: return <VerbToHave isPortuguese={isPortuguese} />;
+            case 16: return <PossessivesLesson isPortuguese={isPortuguese} />;
+            case 17: return <GenitiveCase isPortuguese={isPortuguese} />;
+            case 18: return <HouseFurniture isPortuguese={isPortuguese} />;
+            case 19: return <PrepositionsPlace isPortuguese={isPortuguese} />;
+            case 20: return <ThereIsAre isPortuguese={isPortuguese} />;
+            case 21: return <DaysMonths />;
+            case 22: return <TellingTime />;
+            case 23: return <WhQuestions />;
+            case 24: return <PresentSimpleRules mode="base" />;
+            case 25: return <PresentSimpleRules mode="third" />;
+            case 26: return <DailyRoutine />;
+            case 27: return <AdverbsFrequency />;
+            case 28: return <InteractionSection type="object" />;
+            case 29: return <InteractionSection type="imp" />;
+            case 30: return <InteractionSection type="can" />;
+            case 31: return <FoodAndDrink isPortuguese={isPortuguese} />;
             default: return <Placeholder title={`Lesson ${activeSection + 1}`} />;
         }
     };
