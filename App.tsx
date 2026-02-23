@@ -5122,16 +5122,118 @@ const PresentSimpleRules = ({ mode, isPortuguese }: { mode: 'base' | 'third', is
     );
 };
 
-const DailyRoutine = () => (
-    <div className="grid gap-3 animate-fade-in">
-        {['Wake up', 'Have a shower', 'Brush my teeth', 'Go to work', 'Have lunch', 'Watch TV', 'Go to sleep'].map(act => (
-            <button key={act} onClick={() => speak(`I ${act.toLowerCase()} every day.`)} className="w-full p-4 bg-white rounded-2xl shadow-sm text-left flex items-center gap-4 border border-slate-50 hover:border-indigo-200 hover:translate-x-2 transition-all">
-                <div className="p-2 bg-slate-50 rounded-lg"><Clock className="w-5 h-5 text-indigo-500" /></div>
-                <span className="font-bold text-slate-700">{act}</span>
-            </button>
-        ))}
-    </div>
-);
+const DailyRoutine = ({ isPortuguese }: { isPortuguese: boolean }) => {
+    const routines = [
+        {
+            time: isPortuguese ? 'Manhã (Morning)' : 'Morning',
+            icon: '🌅',
+            color: 'bg-amber-500',
+            bg: 'bg-amber-50',
+            border: 'border-amber-100',
+            text: 'text-amber-800',
+            items: [
+                { w: 'Wake up', ipa: '/weɪk ʌp/', pt: 'Acordar', icon: '🥱' },
+                { w: 'Make the bed', ipa: '/meɪk ðə bɛd/', pt: 'Arrumar a cama', icon: '🛏️' },
+                { w: 'Have breakfast', ipa: '/hæv ˈbrɛkfəst/', pt: 'Tomar café da manhã', icon: '☕' },
+                { w: 'Go to work', ipa: '/ɡoʊ tu wɜrk/', pt: 'Ir para o trabalho', icon: '💼' }
+            ]
+        },
+        {
+            time: isPortuguese ? 'Tarde (Afternoon)' : 'Afternoon',
+            icon: '☀️',
+            color: 'bg-orange-500',
+            bg: 'bg-orange-50',
+            border: 'border-orange-100',
+            text: 'text-orange-800',
+            items: [
+                { w: 'Have lunch', ipa: '/hæv lʌntʃ/', pt: 'Almoçar', icon: '🥗' },
+                { w: 'Finish work', ipa: '/ˈfɪnɪʃ wɜrk/', pt: 'Terminar o trabalho', icon: '✅' },
+                { w: 'Go to the gym', ipa: '/ɡoʊ tu ðə dʒɪm/', pt: 'Ir para a academia', icon: '🏋️' }
+            ]
+        },
+        {
+            time: isPortuguese ? 'Fim de Tarde/Noite (Evening)' : 'Evening',
+            icon: '🌇',
+            color: 'bg-indigo-500',
+            bg: 'bg-indigo-50',
+            border: 'border-indigo-100',
+            text: 'text-indigo-800',
+            items: [
+                { w: 'Have dinner', ipa: '/hæv ˈdɪnər/', pt: 'Jantar', icon: '🍽️' },
+                { w: 'Do homework', ipa: '/du ˈhoʊmwɜrk/', pt: 'Fazer lição de casa', icon: '📚' },
+                { w: 'Watch TV', ipa: '/wɒtʃ tiːˈviː/', pt: 'Assistir TV', icon: '📺' }
+            ]
+        },
+        {
+            time: isPortuguese ? 'Noite Adentro (Night)' : 'Night',
+            icon: '🌙',
+            color: 'bg-slate-800',
+            bg: 'bg-slate-50',
+            border: 'border-slate-200',
+            text: 'text-slate-800',
+            items: [
+                { w: 'Take a shower', ipa: '/teɪk ə ˈʃaʊər/', pt: 'Tomar banho', icon: '🚿' },
+                { w: 'Read a book', ipa: '/rid ə bʊk/', pt: 'Ler um livro', icon: '📖' },
+                { w: 'Go to sleep', ipa: '/ɡoʊ tu slip/', pt: 'Ir dormir', icon: '💤' }
+            ]
+        }
+    ];
+
+    return (
+        <div className="space-y-12 animate-fade-in pb-20">
+            {/* Intro */}
+            <div className="relative p-8 rounded-[2rem] bg-slate-900 text-white overflow-hidden shadow-2xl">
+                <div className="absolute top-0 right-0 p-4 opacity-10"><Clock className="w-32 h-32" /></div>
+                <div className="relative z-10 flex flex-col md:flex-row gap-6 items-center">
+                    <div className="w-20 h-20 rounded-full bg-slate-700 flex items-center justify-center text-4xl shadow-lg border-2 border-slate-500">🌅</div>
+                    <div className="flex-1">
+                        <h3 className="text-2xl font-serif-display mb-2">
+                            {isPortuguese ? "A Rotina Diária" : "The Daily Routine"}
+                        </h3>
+                        <p className="text-slate-300 text-sm leading-relaxed italic">
+                            {isPortuguese
+                                ? "\"Do despertar ao deitar, a vida acontece em blocos de rotina. Vamos dominar o vocabulário para descrever o seu dia inteiro, do nascer até o pôr do sol.\""
+                                : "\"From waking up to going to bed, life happens in routine blocks. Let's master the vocabulary to describe your entire day, from sunrise to sunset.\""
+                            }
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            {/* Sections */}
+            <div className="space-y-8">
+                {routines.map((phase, idx) => (
+                    <section key={idx} className={`p-6 sm:p-8 rounded-3xl border-2 ${phase.border} ${phase.bg} relative overflow-hidden transition-all hover:shadow-lg`}>
+                        <div className="flex items-center gap-3 mb-6 relative z-10">
+                            <div className={`p-3 rounded-2xl text-white ${phase.color} shadow-lg text-2xl`}>
+                                {phase.icon}
+                            </div>
+                            <h4 className={`text-2xl font-black ${phase.text}`}>
+                                {phase.time}
+                            </h4>
+                        </div>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 relative z-10">
+                            {phase.items.map(item => (
+                                <button
+                                    key={item.w}
+                                    onClick={() => speak(`I ${item.w.toLowerCase()} every day.`)}
+                                    className="group p-4 bg-white rounded-2xl shadow-sm hover:shadow-md border border-slate-100 hover:border-indigo-300 transition-all flex items-start gap-4 text-left hover:-translate-y-1"
+                                >
+                                    <div className="text-3xl group-hover:scale-110 transition-transform">{item.icon}</div>
+                                    <div>
+                                        <div className="font-bold text-slate-800 text-lg group-hover:text-indigo-600 transition-colors">{item.w}</div>
+                                        <div className="text-[10px] font-mono text-slate-400 mb-1">{item.ipa}</div>
+                                        {isPortuguese && <div className="text-xs font-bold text-indigo-400 uppercase tracking-tight">{item.pt}</div>}
+                                    </div>
+                                </button>
+                            ))}
+                        </div>
+                    </section>
+                ))}
+            </div>
+        </div>
+    );
+};
 
 const AdverbsFrequency = ({ isPortuguese }: { isPortuguese: boolean }) => {
     const adverbs = [
@@ -5999,7 +6101,7 @@ export default function App() {
             case 22: return <TellingTime isPortuguese={isPortuguese} />;
             case 23: return <WhQuestions isPortuguese={isPortuguese} />;
             case 24: return <PresentSimpleRules mode="base" isPortuguese={isPortuguese} />;
-            case 25: return <DailyRoutine />;
+            case 25: return <DailyRoutine isPortuguese={isPortuguese} />;
             case 26: return <AdverbsFrequency isPortuguese={isPortuguese} />;
             case 27: return <InteractionSection type="object" />;
             case 28: return <InteractionSection type="imp" />;
