@@ -5151,7 +5151,7 @@ const AdverbsFrequency = ({ isPortuguese }: { isPortuguese: boolean }) => {
                     <div className="w-20 h-20 rounded-full bg-indigo-600 flex items-center justify-center text-4xl shadow-lg border-2 border-indigo-400">📊</div>
                     <div className="flex-1">
                         <h3 className="text-2xl font-serif-display mb-2">
-                            {isPortuguese ? "A Frequência da Vida" : "The Rhythm of Routine"}
+                            {isPortuguese ? "Domine a Frequência da Vida" : "Master the Rhythm of Routine"}
                         </h3>
                         <p className="text-indigo-100 text-sm leading-relaxed italic">
                             {isPortuguese
@@ -5800,7 +5800,7 @@ const Sidebar = ({ activeModule, onToggleModule, activeSection, onSelectSection,
 
             <div className="flex-1 overflow-y-auto p-4 space-y-4 pt-6">
                 {modules.map(m => {
-                    const isLocked = currentLevel === 1 && m.id > 6;
+                    const isLocked = currentLevel === 1 && m.id > 7; // Unlocked M7 (id: 7) which is part of Level 1 but was previously locked if > 6
 
                     return (
                         <div key={m.id} className={`rounded-2xl overflow-hidden transition-all duration-300 ${isLocked ? 'opacity-50 grayscale' : ''}`}>
