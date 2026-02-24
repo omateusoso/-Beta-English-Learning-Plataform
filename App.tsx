@@ -15,7 +15,7 @@ import {
     Languages, Keyboard, Fingerprint, MousePointer2, SpellCheck, UserCheck, Flame, HelpCircle as QuestionIcon,
     Ear, Zap as FastIcon, Laptop, HardHat, Camera as PhotoIcon, Music as AudioIcon,
     ChefHat, ShoppingBag, Shield as SecurityIcon, Plane, Scale, Plus, Minus, IterationCw, Eye,
-    Maximize, Minimize, Activity, Compass, Navigation,
+    Maximize, Minimize, Activity, Compass, Navigation, List, MessageSquare, Link,
     CheckCircle2, XCircle, Trophy, AlertCircle, LogIn, User as UserIcon, Mail, Lock as LockIcon, LogOut, Loader2,
     LogIn as LoginIcon
 } from 'lucide-react';
@@ -5851,31 +5851,104 @@ const UnderConstruction = ({ title, onBack }: any) => (
     </div>
 );
 
+const BuildingLesson = ({ title, isPortuguese }: { title: string, isPortuguese: boolean }) => (
+    <div className="flex flex-col items-center justify-center py-20 animate-fade-in text-center">
+        <div className="w-24 h-24 bg-indigo-50 rounded-full flex items-center justify-center mb-8 border-4 border-white shadow-xl">
+            <Wrench className="w-10 h-10 text-indigo-400 animate-pulse" />
+        </div>
+        <h3 className="text-3xl font-serif-display text-slate-800 mb-3">{title}</h3>
+        <p className="text-slate-500 max-w-md">
+            {isPortuguese
+                ? "Esta lição está atualmente em construção. Estamos lapidando este material com muito carinho para garantir o melhor aprendizado!"
+                : "This lesson is currently under construction. We are carefully crafting this material to ensure the best learning experience!"
+            }
+        </p>
+    </div>
+);
+
 const Sidebar = ({ activeModule, onToggleModule, activeSection, onSelectSection, onBack, currentLevel, user, onLogout, completedLessons = [], isMobileMenuOpen, onCloseMobileMenu }: any) => {
-    const modules = [
-        { id: 1, title: 'First Steps', icon: <Star className="w-4 h-4" />, range: [0, 4] },
-        { id: 2, title: 'Nouns & Characteristics', icon: <BookOpen className="w-4 h-4" />, range: [5, 9] },
-        { id: 3, title: 'Quantity & Pointers', icon: <Hash className="w-4 h-4" />, range: [10, 13] },
-        { id: 4, title: 'Belonging & Family', icon: <User className="w-4 h-4" />, range: [14, 17] },
-        { id: 5, title: 'Space & Existence', icon: <MapPin className="w-4 h-4" />, range: [18, 20] },
-        { id: 6, title: 'Time & Routine', icon: <Clock className="w-4 h-4" />, range: [21, 26] },
-        { id: 7, title: 'Interaction & Ability', icon: <MessageCircle className="w-4 h-4" />, range: [27, 29] },
-        { id: 8, title: 'Daily Life', icon: <Utensils className="w-4 h-4" />, range: [30, 30] },
+    const allModules = [
+        { level: 1, id: 1, title: 'First Steps', icon: <Star className="w-4 h-4" />, range: [0, 4] },
+        { level: 1, id: 2, title: 'Nouns & Characteristics', icon: <BookOpen className="w-4 h-4" />, range: [5, 9] },
+        { level: 1, id: 3, title: 'Quantity & Pointers', icon: <Hash className="w-4 h-4" />, range: [10, 13] },
+        { level: 1, id: 4, title: 'Belonging & Family', icon: <User className="w-4 h-4" />, range: [14, 17] },
+        { level: 1, id: 5, title: 'Space & Existence', icon: <MapPin className="w-4 h-4" />, range: [18, 20] },
+        { level: 1, id: 6, title: 'Time & Routine', icon: <Clock className="w-4 h-4" />, range: [21, 26] },
+        { level: 1, id: 7, title: 'Interaction & Ability', icon: <MessageCircle className="w-4 h-4" />, range: [27, 30] },
+        // Level 2
+        { level: 2, id: 8, title: 'The Past', icon: <IterationCw className="w-4 h-4" />, range: [31, 35] },
+        { level: 2, id: 9, title: 'Quantities', icon: <ShoppingBag className="w-4 h-4" />, range: [36, 39] },
+        { level: 2, id: 10, title: 'Continuous Actions', icon: <Activity className="w-4 h-4" />, range: [40, 43] },
+        { level: 2, id: 11, title: 'Comparisons', icon: <Scale className="w-4 h-4" />, range: [44, 45] },
+        { level: 2, id: 12, title: 'Future & Manner', icon: <Compass className="w-4 h-4" />, range: [46, 48] },
+        // Level 3
+        { level: 3, id: 13, title: 'The Future', icon: <FastIcon className="w-4 h-4" />, range: [49, 51] },
+        { level: 3, id: 14, title: 'Modals & Conditions', icon: <AlertCircle className="w-4 h-4" />, range: [52, 56] },
+        { level: 3, id: 15, title: 'Present Perfect', icon: <CheckCircle2 className="w-4 h-4" />, range: [57, 61] },
+        { level: 3, id: 16, title: 'Clauses & Vocabulary', icon: <List className="w-4 h-4" />, range: [62, 66] },
+        { level: 3, id: 17, title: 'Narrative Tenses', icon: <BookOpen className="w-4 h-4" />, range: [67, 69] },
+        // Level 4
+        { level: 4, id: 18, title: 'Passive Voice', icon: <Repeat className="w-4 h-4" />, range: [70, 72] },
+        { level: 4, id: 19, title: 'Advanced Conditionals', icon: <HelpCircle className="w-4 h-4" />, range: [73, 76] },
+        { level: 4, id: 20, title: 'Reported Speech', icon: <MessageSquare className="w-4 h-4" />, range: [77, 78] },
+        { level: 4, id: 21, title: 'Perfect Tenses', icon: <Clock className="w-4 h-4" />, range: [79, 83] },
+        { level: 4, id: 22, title: 'Advanced Cohesion', icon: <Link className="w-4 h-4" />, range: [84, 88] },
+        { level: 4, id: 23, title: 'Mastery', icon: <Award className="w-4 h-4" />, range: [89, 94] }
     ];
+
+    const modules = allModules.filter(m => m.level === currentLevel);
 
     const levelNames: any = { 1: 'Basic', 2: 'Pre-Intermediate', 3: 'Intermediate', 4: 'Advanced' };
 
     const getTitle = (idx: number) => {
-        const titles: Record<number, string> = {
-            0: 'Greetings & Farewells', 1: 'Alphabet & Spelling', 2: 'Subject Pronouns', 3: 'Verb To Be (+)', 4: 'Verb To Be (-/?)',
-            5: 'Indefinite Articles', 6: 'Jobs & Occupations', 7: 'Singular/Plural', 8: 'Colors & Adjectives', 9: 'Countries & Nationalities',
-            10: 'Numbers 0-20', 11: 'Numbers 20-100', 12: 'Big Numbers', 13: 'Demonstrative Pronouns',
-            14: 'Family Members', 15: 'Verb to Have', 16: "Possessive Case", 17: "Genitive Case ('s)",
-            18: 'House & Furniture', 19: 'Prepositions of Place', 20: 'There Is / There Are',
-            21: 'Days & Months', 22: 'Telling Time', 23: 'Wh- Questions', 24: 'Present Simple Rules', 25: 'Daily Routine', 26: 'Adverbs of Frequency',
-            27: 'Object Pronouns', 28: 'Imperatives', 29: "Can / Can't",
-            30: 'Food & Drink'
-        };
+        const titles = [
+            // M1
+            'Greetings & Farewells', 'Alphabet & Spelling', 'Subject Pronouns', 'Verb To Be (+)', 'Verb To Be (-/?)',
+            // M2
+            'Indefinite Articles', 'Jobs & Occupations', 'Singular/Plural', 'Colors & Adjectives', 'Countries & Nationalities',
+            // M3
+            'Numbers 0-20', 'Numbers 20-100', 'Big Numbers', 'Demonstrative Pronouns',
+            // M4
+            'Family Members', 'Verb to Have', "Possessive Case", "Genitive Case ('s)",
+            // M5
+            'House & Furniture', 'Prepositions of Place', 'There Is / There Are',
+            // M6
+            'Days & Months', 'Telling Time', 'Wh- Questions', 'Present Simple Rules', 'Daily Routine', 'Adverbs of Frequency',
+            // M7
+            'Object Pronouns', 'Imperatives', "Can / Can't", 'Food & Drink',
+            // M8
+            'Dates & Ordinal Numbers', 'Time Expressions for Past', 'Past Simple: Verb To Be', 'Past Simple: Regular Verbs', 'Past Simple: Irregular Verbs',
+            // M9
+            'Countable vs. Uncountable', 'Some / Any / No', 'Quantifiers (Much, Many...)', 'Clothes & Shopping Vocabulary',
+            // M10
+            'Weather & Seasons Vocabulary', 'Present Continuous', 'Present Simple vs. Continuous', 'Stative Verbs',
+            // M11
+            'Comparative Adjectives', 'Superlative Adjectives',
+            // M12
+            'Future with Going To', 'Adverbs of Manner', 'Prepositions of Time',
+            // M13
+            'Future with Will', 'Will vs. Going to', 'Continuous for Future Arrangements',
+            // M14
+            'Modals of Obligation', 'Modals of Advice', 'Modals of Possibility', 'Zero Conditional', 'First Conditional',
+            // M15
+            'Present Perfect Simple', 'Present Perfect: Ever / Never', 'Present Perfect: Just / Already', 'Present Perfect: For / Since', 'Present Perfect vs. Past Simple',
+            // M16
+            'Relative Pronouns', 'Defining Relative Clauses', 'Indefinite Pronouns', 'Reflexive Pronouns', 'Phrasal Verbs (Intro)',
+            // M17
+            'Past Continuous', 'Past Simple vs. Continuous', 'Used to',
+            // M18
+            'Passive Voice: Present Simple', 'Passive Voice: Past Simple', 'Passive Voice: Other Tenses',
+            // M19
+            'Second Conditional', 'Third Conditional', 'Mixed Conditionals', 'Wish / If only',
+            // M20
+            'Reported Speech: Statements', 'Reported Speech: Questions & Commands',
+            // M21
+            'Past Perfect Simple', 'Past Perfect vs. Past Simple', 'Present Perfect Continuous', 'Present Perfect Simple vs. Continuous', 'Future Perfect & Continuous',
+            // M22
+            'Non-defining Relative Clauses', 'Connectors & Linking Words', 'Question Tags', 'Too / Enough / So / Such', 'Causative Form',
+            // M23
+            'Modals of Deduction (Past)', 'Inversion', 'Cleft Sentences', 'Participle Clauses', 'Subjunctive Mood', 'Idioms & Collocations'
+        ];
         return titles[idx] || `Lesson ${idx + 1}`;
     };
 
@@ -5902,7 +5975,7 @@ const Sidebar = ({ activeModule, onToggleModule, activeSection, onSelectSection,
 
             <div className="flex-1 overflow-y-auto p-4 space-y-4 pt-6">
                 {modules.map(m => {
-                    const isLocked = currentLevel === 1 && m.id > 7; // Unlocked M7 (id: 7) which is part of Level 1 but was previously locked if > 6
+                    const isLocked = false; // All modules are globally unlocked as per premium feature specification.
 
                     return (
                         <div key={m.id} className={`rounded-2xl overflow-hidden transition-all duration-300 ${isLocked ? 'opacity-50 grayscale' : ''}`}>
@@ -6075,6 +6148,36 @@ export default function App() {
 
 
     const renderContent = () => {
+        // Find title dynamically from Sidebar's logical equivalent if possible, or just pass generic for building
+        const getTitleForBuilding = (idx: number) => {
+            const titles = [
+                'Greetings & Farewells', 'Alphabet & Spelling', 'Subject Pronouns', 'Verb To Be (+)', 'Verb To Be (-/?)',
+                'Indefinite Articles', 'Jobs & Occupations', 'Singular/Plural', 'Colors & Adjectives', 'Countries & Nationalities',
+                'Numbers 0-20', 'Numbers 20-100', 'Big Numbers', 'Demonstrative Pronouns',
+                'Family Members', 'Verb to Have', "Possessive Case", "Genitive Case ('s)",
+                'House & Furniture', 'Prepositions of Place', 'There Is / There Are',
+                'Days & Months', 'Telling Time', 'Wh- Questions', 'Present Simple Rules', 'Daily Routine', 'Adverbs of Frequency',
+                'Object Pronouns', 'Imperatives', "Can / Can't", 'Food & Drink',
+                'Dates & Ordinal Numbers', 'Time Expressions for Past', 'Past Simple: Verb To Be', 'Past Simple: Regular Verbs', 'Past Simple: Irregular Verbs',
+                'Countable vs. Uncountable', 'Some / Any / No', 'Quantifiers (Much, Many...)', 'Clothes & Shopping Vocabulary',
+                'Weather & Seasons Vocabulary', 'Present Continuous', 'Present Simple vs. Continuous', 'Stative Verbs',
+                'Comparative Adjectives', 'Superlative Adjectives',
+                'Future with Going To', 'Adverbs of Manner', 'Prepositions of Time',
+                'Future with Will', 'Will vs. Going to', 'Continuous for Future Arrangements',
+                'Modals of Obligation', 'Modals of Advice', 'Modals of Possibility', 'Zero Conditional', 'First Conditional',
+                'Present Perfect Simple', 'Present Perfect: Ever / Never', 'Present Perfect: Just / Already', 'Present Perfect: For / Since', 'Present Perfect vs. Past Simple',
+                'Relative Pronouns', 'Defining Relative Clauses', 'Indefinite Pronouns', 'Reflexive Pronouns', 'Phrasal Verbs (Intro)',
+                'Past Continuous', 'Past Simple vs. Continuous', 'Used to',
+                'Passive Voice: Present Simple', 'Passive Voice: Past Simple', 'Passive Voice: Other Tenses',
+                'Second Conditional', 'Third Conditional', 'Mixed Conditionals', 'Wish / If only',
+                'Reported Speech: Statements', 'Reported Speech: Questions & Commands',
+                'Past Perfect Simple', 'Past Perfect vs. Past Simple', 'Present Perfect Continuous', 'Present Perfect Simple vs. Continuous', 'Future Perfect & Continuous',
+                'Non-defining Relative Clauses', 'Connectors & Linking Words', 'Question Tags', 'Too / Enough / So / Such', 'Causative Form',
+                'Modals of Deduction (Past)', 'Inversion', 'Cleft Sentences', 'Participle Clauses', 'Subjunctive Mood', 'Idioms & Collocations'
+            ];
+            return titles[idx] || `Lesson ${idx + 1}`;
+        }
+
         switch (activeSection) {
             case 0: return <GreetingsFarewells isPortuguese={isPortuguese} />;
             case 1: return <AlphabetSpelling isPortuguese={isPortuguese} />;
@@ -6107,7 +6210,7 @@ export default function App() {
             case 28: return <InteractionSection type="imp" />;
             case 29: return <InteractionSection type="can" />;
             case 30: return <FoodAndDrink isPortuguese={isPortuguese} />;
-            default: return <Placeholder title={`Lesson ${activeSection + 1}`} />;
+            default: return <BuildingLesson title={getTitleForBuilding(activeSection)} isPortuguese={isPortuguese} />;
         }
     };
 
@@ -6134,10 +6237,7 @@ export default function App() {
         );
     }
 
-    if (currentLevel !== 1) {
-        const levelNames: any = { 2: 'Pre-Intermediate', 3: 'Intermediate', 4: 'Advanced' };
-        return <><style>{globalStyles}</style><UnderConstruction title={levelNames[currentLevel]} onBack={() => setCurrentLevel(null)} /></>;
-    }
+    // Levels 2, 3, and 4 are now unlocked and render their own sidebars without triggering UnderConstruction.
 
     return (
         <>
