@@ -5352,46 +5352,795 @@ const AdverbsFrequency = ({ isPortuguese }: { isPortuguese: boolean }) => {
     );
 };
 
-const InteractionSection = ({ type }: { type: 'object' | 'imp' | 'can' }) => {
-    if (type === 'object') return (
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 animate-fade-in">
-            {['Me', 'You', 'Him', 'Her', 'It', 'Us', 'Them'].map(p => (
-                <button key={p} onClick={() => speak(`Help ${p}.`)} className="p-10 bg-white rounded-3xl shadow-sm font-bold text-2xl text-slate-800 border border-slate-100 hover:border-indigo-400 transition-all">{p}</button>
-            ))}
-        </div>
-    );
-    if (type === 'imp') return (
-        <div className="grid gap-6 animate-fade-in">
-            <button onClick={() => speak("Open the door.")} className="p-10 bg-emerald-50 text-emerald-800 rounded-3xl font-black text-2xl border-2 border-emerald-100 hover:bg-emerald-100 transition-all">Open the door!</button>
-            <button onClick={() => speak("Don't speak.")} className="p-10 bg-rose-50 text-rose-800 rounded-3xl font-black text-2xl border-2 border-rose-100 hover:bg-rose-100 transition-all">Don't speak!</button>
-        </div>
-    );
+// --- M7: OBJECT PRONOUNS ---
+const ObjectPronouns = ({ isPortuguese }: { isPortuguese: boolean }) => {
+    const pronouns = [
+        { subject: 'I', object: 'Me', ipa: '/miː/', pt: 'Me / Mim', icon: '🙋', example: 'Call me later.', exPt: 'Me ligue depois.', color: 'bg-indigo-50', text: 'text-indigo-700' },
+        { subject: 'You', object: 'You', ipa: '/juː/', pt: 'Você / Te', icon: '👤', example: 'I love you.', exPt: 'Eu te amo.', color: 'bg-blue-50', text: 'text-blue-700' },
+        { subject: 'He', object: 'Him', ipa: '/hɪm/', pt: 'Ele / O', icon: '👦', example: 'Tell him the truth.', exPt: 'Diga a verdade a ele.', color: 'bg-sky-50', text: 'text-sky-700' },
+        { subject: 'She', object: 'Her', ipa: '/hɜːr/', pt: 'Ela / A', icon: '👧', example: 'Give her the book.', exPt: 'Dê o livro a ela.', color: 'bg-pink-50', text: 'text-pink-700' },
+        { subject: 'It', object: 'It', ipa: '/ɪt/', pt: 'Ele(a) — coisa/animal', icon: '📦', example: 'I like it.', exPt: 'Eu gosto disso.', color: 'bg-slate-50', text: 'text-slate-700' },
+        { subject: 'We', object: 'Us', ipa: '/ʌs/', pt: 'Nos / A gente', icon: '👥', example: 'Join us for dinner.', exPt: 'Junte-se a nós para o jantar.', color: 'bg-emerald-50', text: 'text-emerald-700' },
+        { subject: 'They', object: 'Them', ipa: '/ðɛm/', pt: 'Eles(as) / Os / As', icon: '👫', example: 'I saw them yesterday.', exPt: 'Eu os vi ontem.', color: 'bg-amber-50', text: 'text-amber-700' },
+    ];
+
+    const usageCases = [
+        {
+            rule: isPortuguese ? 'Depois de verbos' : 'After verbs',
+            icon: '🎯',
+            examples: [
+                { en: 'She loves him.', pt: 'Ela o ama.' },
+                { en: 'They helped us.', pt: 'Eles nos ajudaram.' },
+                { en: 'I know them.', pt: 'Eu os conheço.' },
+            ],
+            color: 'border-indigo-200 bg-indigo-50/50',
+        },
+        {
+            rule: isPortuguese ? 'Depois de preposições' : 'After prepositions',
+            icon: '📍',
+            examples: [
+                { en: 'This gift is for her.', pt: 'Este presente é para ela.' },
+                { en: 'Sit next to me.', pt: 'Sente ao meu lado.' },
+                { en: 'Talk to them.', pt: 'Fale com eles.' },
+            ],
+            color: 'border-emerald-200 bg-emerald-50/50',
+        },
+    ];
+
+    const mistakes = [
+        { wrong: 'He loves she.', right: 'He loves her.', tip: isPortuguese ? '"She" é sujeito, "her" é objeto.' : '"She" is a subject, "her" is an object.' },
+        { wrong: 'Give it to I.', right: 'Give it to me.', tip: isPortuguese ? 'Depois de preposição, sempre use o pronome objeto.' : 'After a preposition, always use the object pronoun.' },
+        { wrong: 'Me and him went.', right: 'He and I went.', tip: isPortuguese ? 'Como sujeito, use "I" e "He", não "me" e "him".' : 'As subjects, use "I" and "He", not "me" and "him".' },
+    ];
+
     return (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 animate-fade-in">
-            <button onClick={() => speak("I can swim.")} className="p-12 bg-white rounded-[3rem] border-2 border-emerald-100 text-center hover:border-emerald-400 transition-all">
-                <h4 className="text-4xl font-serif-display text-emerald-600 mb-2">Can</h4>
-                <p className="text-slate-500 font-bold uppercase text-[10px] tracking-widest">Ability</p>
-            </button>
-            <button onClick={() => speak("I can't fly.")} className="p-12 bg-white rounded-[3rem] border-2 border-rose-100 text-center hover:border-rose-400 transition-all">
-                <h4 className="text-4xl font-serif-display text-rose-600 mb-2">Can't</h4>
-                <p className="text-slate-500 font-bold uppercase text-[10px] tracking-widest">Inability</p>
-            </button>
+        <div className="space-y-10 animate-fade-in pb-20">
+            {/* Senior Teacher Intro */}
+            <div className="relative p-8 rounded-[2rem] bg-indigo-900 text-white overflow-hidden shadow-2xl">
+                <div className="absolute top-0 right-0 p-4 opacity-10"><Users className="w-32 h-32" /></div>
+                <div className="relative z-10 flex flex-col md:flex-row gap-6 items-center">
+                    <div className="w-20 h-20 rounded-full bg-indigo-600 flex items-center justify-center text-4xl shadow-lg border-2 border-indigo-400">🎯</div>
+                    <div className="flex-1">
+                        <h3 className="text-2xl font-serif-display mb-2">
+                            {isPortuguese ? "Pronomes Objeto" : "Object Pronouns"}
+                        </h3>
+                        <p className="text-indigo-100 text-sm leading-relaxed italic">
+                            {isPortuguese
+                                ? "\"'I' faz a ação, 'me' recebe a ação. Essa é a diferença fundamental. Em português temos 'eu' vs 'me/mim' — é o mesmo conceito! Domine isso e sua frase ganha precisão.\""
+                                : "\"'I' does the action, 'me' receives it. That's the key difference. Master this and your sentences become precise and natural.\""
+                            }
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            {/* Subject vs Object Comparison */}
+            <section className="space-y-5">
+                <div className="flex items-center gap-3">
+                    <div className="p-2 bg-indigo-100 rounded-lg text-indigo-600"><ArrowRight className="w-5 h-5" /></div>
+                    <h4 className="text-2xl font-bold text-slate-800">
+                        {isPortuguese ? "Sujeito vs Objeto" : "Subject vs Object"}
+                    </h4>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                    {pronouns.map((p, idx) => (
+                        <button
+                            key={idx}
+                            onClick={() => speak(p.example)}
+                            className={`group p-5 rounded-2xl border-2 border-transparent hover:border-indigo-200 transition-all text-left ${p.color} shadow-sm hover:shadow-md`}
+                        >
+                            <div className="flex items-center gap-3 mb-3">
+                                <span className="text-2xl group-hover:scale-110 transition-transform">{p.icon}</span>
+                                <div>
+                                    <div className="flex items-baseline gap-2">
+                                        <span className="text-xs font-bold text-slate-400 line-through decoration-slate-300">{p.subject}</span>
+                                        <span className="text-lg font-black text-slate-800">→ {p.object}</span>
+                                    </div>
+                                    <span className="text-[10px] font-mono text-slate-400 bg-white/60 px-1.5 py-0.5 rounded-full">{p.ipa}</span>
+                                </div>
+                            </div>
+                            <p className={`text-sm font-medium ${p.text}`}>{p.example}</p>
+                            {isPortuguese && <p className="text-[11px] text-slate-400 mt-1 font-medium">{p.exPt}</p>}
+                            {isPortuguese && <div className="text-[10px] font-bold text-indigo-400 uppercase tracking-tight mt-2">{p.pt}</div>}
+                        </button>
+                    ))}
+                </div>
+            </section>
+
+            {/* Usage Rules */}
+            <section className="space-y-5">
+                <div className="flex items-center gap-3">
+                    <div className="p-2 bg-emerald-100 rounded-lg text-emerald-600"><BookOpen className="w-5 h-5" /></div>
+                    <h4 className="text-2xl font-bold text-slate-800">
+                        {isPortuguese ? "Quando usar?" : "When to use?"}
+                    </h4>
+                </div>
+                <div className="grid md:grid-cols-2 gap-6">
+                    {usageCases.map((uc, idx) => (
+                        <div key={idx} className={`p-6 rounded-2xl border-2 ${uc.color}`}>
+                            <div className="flex items-center gap-3 mb-4">
+                                <span className="text-2xl">{uc.icon}</span>
+                                <h5 className="text-lg font-bold text-slate-800">{uc.rule}</h5>
+                            </div>
+                            <div className="space-y-2">
+                                {uc.examples.map((ex, i) => (
+                                    <button key={i} onClick={() => speak(ex.en)} className="w-full text-left p-3 rounded-xl bg-white/70 hover:bg-white transition-all flex items-center gap-3 group">
+                                        <Volume2 className="w-4 h-4 text-slate-300 group-hover:text-indigo-500 transition-colors flex-shrink-0" />
+                                        <div>
+                                            <span className="text-sm font-bold text-slate-700">{ex.en}</span>
+                                            {isPortuguese && <span className="text-[11px] text-slate-400 block">{ex.pt}</span>}
+                                        </div>
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </section>
+
+            {/* Common Mistakes */}
+            <section className="bg-slate-800 rounded-[2.5rem] p-8 text-white relative overflow-hidden">
+                <div className="absolute -right-10 -bottom-10 w-40 h-40 bg-rose-500 rounded-full blur-3xl opacity-20"></div>
+                <div className="relative z-10">
+                    <div className="flex items-center gap-3 mb-6">
+                        <div className="p-2 bg-rose-500/20 rounded-lg"><AlertCircle className="w-6 h-6 text-rose-400" /></div>
+                        <h4 className="text-2xl font-bold">
+                            {isPortuguese ? "⚠️ Erros Comuns" : "⚠️ Common Mistakes"}
+                        </h4>
+                    </div>
+                    <div className="space-y-4">
+                        {mistakes.map((m, idx) => (
+                            <div key={idx} className="p-4 rounded-2xl bg-white/5 border border-white/10">
+                                <div className="flex flex-col sm:flex-row gap-3 mb-2">
+                                    <div className="flex items-center gap-2">
+                                        <XCircle className="w-4 h-4 text-rose-400 flex-shrink-0" />
+                                        <span className="text-rose-300 line-through text-sm font-medium">{m.wrong}</span>
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                        <CheckCircle2 className="w-4 h-4 text-emerald-400 flex-shrink-0" />
+                                        <span className="text-emerald-300 text-sm font-bold">{m.right}</span>
+                                    </div>
+                                </div>
+                                <p className="text-slate-400 text-xs pl-6">{m.tip}</p>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* Quick Tip */}
+            <div className="p-6 rounded-2xl bg-amber-50 border-2 border-amber-100 flex items-start gap-4">
+                <div className="text-3xl">💡</div>
+                <div>
+                    <h5 className="font-bold text-amber-800 text-lg mb-1">{isPortuguese ? 'Dica de Ouro' : 'Golden Tip'}</h5>
+                    <p className="text-amber-700 text-sm leading-relaxed">
+                        {isPortuguese
+                            ? "Quando o pronome vem depois de um verbo ou preposição, ele SEMPRE será um pronome objeto: \"Help ME\", \"Talk to HIM\", \"Listen to US\". Nunca use I, he, she, we ou they nessas posições!"
+                            : "When the pronoun comes after a verb or preposition, it's ALWAYS an object pronoun: \"Help ME\", \"Talk to HIM\", \"Listen to US\". Never use I, he, she, we, or they in those positions!"
+                        }
+                    </p>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+// --- M7: IMPERATIVES ---
+const ImperativesLesson = ({ isPortuguese }: { isPortuguese: boolean }) => {
+    const affirmativeVerbs = [
+        { verb: 'Open', ipa: '/ˈoʊpən/', pt: 'Abrir', icon: '🚪', sentence: 'Open the door.', sentPt: 'Abra a porta.' },
+        { verb: 'Sit', ipa: '/sɪt/', pt: 'Sentar', icon: '🪑', sentence: 'Sit down, please.', sentPt: 'Sente-se, por favor.' },
+        { verb: 'Listen', ipa: '/ˈlɪsən/', pt: 'Ouvir', icon: '👂', sentence: 'Listen to me.', sentPt: 'Ouça-me.' },
+        { verb: 'Look', ipa: '/lʊk/', pt: 'Olhar', icon: '👀', sentence: 'Look at this!', sentPt: 'Olhe para isso!' },
+        { verb: 'Come', ipa: '/kʌm/', pt: 'Vir', icon: '🏃', sentence: 'Come here!', sentPt: 'Venha aqui!' },
+        { verb: 'Try', ipa: '/traɪ/', pt: 'Tentar', icon: '💪', sentence: 'Try again!', sentPt: 'Tente de novo!' },
+        { verb: 'Wait', ipa: '/weɪt/', pt: 'Esperar', icon: '⏳', sentence: 'Wait a moment.', sentPt: 'Espere um momento.' },
+        { verb: 'Help', ipa: '/hɛlp/', pt: 'Ajudar', icon: '🆘', sentence: 'Help me, please!', sentPt: 'Me ajude, por favor!' },
+    ];
+
+    const negativeExamples = [
+        { en: "Don't run!", pt: 'Não corra!', icon: '🚫🏃', context: isPortuguese ? 'No corredor da escola' : 'In the school hallway' },
+        { en: "Don't touch that!", pt: 'Não toque nisso!', icon: '🚫✋', context: isPortuguese ? 'Objeto perigoso' : 'Dangerous object' },
+        { en: "Don't forget your keys.", pt: 'Não esqueça suas chaves.', icon: '🚫🔑', context: isPortuguese ? 'Saindo de casa' : 'Leaving home' },
+        { en: "Don't worry!", pt: 'Não se preocupe!', icon: '🚫😟', context: isPortuguese ? 'Confortando alguém' : 'Comforting someone' },
+        { en: "Don't be late.", pt: 'Não se atrase.', icon: '🚫⏰', context: isPortuguese ? 'Antes de uma reunião' : 'Before a meeting' },
+    ];
+
+    const situations = [
+        {
+            title: isPortuguese ? '🏫 Na sala de aula' : '🏫 In the Classroom',
+            phrases: [
+                { en: 'Open your books to page 10.', pt: 'Abram os livros na página 10.' },
+                { en: 'Repeat after me.', pt: 'Repitam depois de mim.' },
+                { en: "Don't use your phone.", pt: 'Não usem o celular.' },
+            ],
+            color: 'bg-blue-50 border-blue-200',
+        },
+        {
+            title: isPortuguese ? '🍽️ No restaurante' : '🍽️ At the Restaurant',
+            phrases: [
+                { en: 'Try the fish. It\'s delicious!', pt: 'Experimente o peixe. É delicioso!' },
+                { en: 'Give me the menu, please.', pt: 'Me dê o cardápio, por favor.' },
+                { en: "Don't forget the tip.", pt: 'Não esqueça a gorjeta.' },
+            ],
+            color: 'bg-orange-50 border-orange-200',
+        },
+        {
+            title: isPortuguese ? '🚨 Em emergências' : '🚨 In Emergencies',
+            phrases: [
+                { en: 'Call 911!', pt: 'Ligue para a emergência!' },
+                { en: 'Stop! Don\'t move!', pt: 'Pare! Não se mova!' },
+                { en: 'Help me!', pt: 'Me ajude!' },
+            ],
+            color: 'bg-rose-50 border-rose-200',
+        },
+    ];
+
+    return (
+        <div className="space-y-10 animate-fade-in pb-20">
+            {/* Senior Teacher Intro */}
+            <div className="relative p-8 rounded-[2rem] bg-emerald-900 text-white overflow-hidden shadow-2xl">
+                <div className="absolute top-0 right-0 p-4 opacity-10"><Volume2 className="w-32 h-32" /></div>
+                <div className="relative z-10 flex flex-col md:flex-row gap-6 items-center">
+                    <div className="w-20 h-20 rounded-full bg-emerald-600 flex items-center justify-center text-4xl shadow-lg border-2 border-emerald-400">📢</div>
+                    <div className="flex-1">
+                        <h3 className="text-2xl font-serif-display mb-2">
+                            {isPortuguese ? "Imperativo — O modo da Ação" : "Imperatives — The Action Mode"}
+                        </h3>
+                        <p className="text-emerald-100 text-sm leading-relaxed italic">
+                            {isPortuguese
+                                ? "\"Imperativo é a forma mais direta do inglês. Sem sujeito, sem rodeios: apenas o verbo nu, dando ordens, conselhos ou instruções. 'Go!', 'Stop!', 'Listen!' — direto ao ponto.\""
+                                : "\"The imperative is the most direct form in English. No subject, no fuss: just the bare verb, giving orders, advice, or instructions. 'Go!', 'Stop!', 'Listen!' — straight to the point.\""
+                            }
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            {/* Structure Rule Card */}
+            <div className="grid md:grid-cols-2 gap-6">
+                <div className="p-6 rounded-2xl bg-emerald-50 border-2 border-emerald-200">
+                    <div className="flex items-center gap-3 mb-4">
+                        <CheckCircle2 className="w-6 h-6 text-emerald-600" />
+                        <h5 className="text-lg font-bold text-emerald-800">{isPortuguese ? 'Afirmativo ✅' : 'Affirmative ✅'}</h5>
+                    </div>
+                    <div className="bg-white p-4 rounded-xl border border-emerald-100 mb-3">
+                        <p className="text-center font-black text-emerald-700 text-xl">Verb + complement</p>
+                        <p className="text-center text-xs text-slate-400 mt-1">{isPortuguese ? 'Sem sujeito! Direto no verbo.' : 'No subject! Start with the verb.'}</p>
+                    </div>
+                    <button onClick={() => speak('Open the window.')} className="w-full text-left p-3 rounded-xl bg-white/70 hover:bg-white transition-all flex items-center gap-3 group">
+                        <Volume2 className="w-4 h-4 text-emerald-400 group-hover:text-emerald-600 flex-shrink-0" />
+                        <div>
+                            <span className="font-bold text-emerald-800">Open the window.</span>
+                            {isPortuguese && <span className="text-[11px] text-slate-400 block">Abra a janela.</span>}
+                        </div>
+                    </button>
+                </div>
+                <div className="p-6 rounded-2xl bg-rose-50 border-2 border-rose-200">
+                    <div className="flex items-center gap-3 mb-4">
+                        <XCircle className="w-6 h-6 text-rose-600" />
+                        <h5 className="text-lg font-bold text-rose-800">{isPortuguese ? 'Negativo 🚫' : 'Negative 🚫'}</h5>
+                    </div>
+                    <div className="bg-white p-4 rounded-xl border border-rose-100 mb-3">
+                        <p className="text-center font-black text-rose-700 text-xl">Don't + verb</p>
+                        <p className="text-center text-xs text-slate-400 mt-1">{isPortuguese ? 'Sempre "Don\'t" antes do verbo.' : 'Always "Don\'t" before the verb.'}</p>
+                    </div>
+                    <button onClick={() => speak("Don't close the window.")} className="w-full text-left p-3 rounded-xl bg-white/70 hover:bg-white transition-all flex items-center gap-3 group">
+                        <Volume2 className="w-4 h-4 text-rose-400 group-hover:text-rose-600 flex-shrink-0" />
+                        <div>
+                            <span className="font-bold text-rose-800">Don't close the window.</span>
+                            {isPortuguese && <span className="text-[11px] text-slate-400 block">Não feche a janela.</span>}
+                        </div>
+                    </button>
+                </div>
+            </div>
+
+            {/* Affirmative Verbs Grid */}
+            <section className="space-y-5">
+                <div className="flex items-center gap-3">
+                    <div className="p-2 bg-emerald-100 rounded-lg text-emerald-600"><Zap className="w-5 h-5" /></div>
+                    <h4 className="text-2xl font-bold text-slate-800">
+                        {isPortuguese ? 'Verbos Essenciais do Imperativo' : 'Essential Imperative Verbs'}
+                    </h4>
+                </div>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    {affirmativeVerbs.map((v, idx) => (
+                        <button
+                            key={idx}
+                            onClick={() => speak(v.sentence)}
+                            className="group p-5 bg-white rounded-2xl border-2 border-transparent hover:border-emerald-200 shadow-sm hover:shadow-md transition-all text-left"
+                        >
+                            <span className="text-3xl mb-3 block group-hover:scale-110 transition-transform">{v.icon}</span>
+                            <div className="flex items-baseline gap-2 mb-1">
+                                <span className="font-black text-slate-800 text-lg">{v.verb}</span>
+                                <span className="text-[10px] font-mono text-slate-400 bg-slate-50 px-1.5 py-0.5 rounded-full">{v.ipa}</span>
+                            </div>
+                            <p className="text-xs text-emerald-600 font-medium">{v.sentence}</p>
+                            {isPortuguese && <p className="text-[10px] text-slate-400 mt-1">{v.sentPt}</p>}
+                            {isPortuguese && <div className="text-[10px] font-bold text-indigo-400 uppercase tracking-tight mt-1">{v.pt}</div>}
+                        </button>
+                    ))}
+                </div>
+            </section>
+
+            {/* Negative Examples */}
+            <section className="space-y-5">
+                <div className="flex items-center gap-3">
+                    <div className="p-2 bg-rose-100 rounded-lg text-rose-600"><XCircle className="w-5 h-5" /></div>
+                    <h4 className="text-2xl font-bold text-slate-800">
+                        {isPortuguese ? 'Imperativo Negativo na Prática' : 'Negative Imperatives in Practice'}
+                    </h4>
+                </div>
+                <div className="grid gap-3">
+                    {negativeExamples.map((ex, idx) => (
+                        <button key={idx} onClick={() => speak(ex.en)} className="w-full text-left p-4 rounded-2xl bg-white border border-slate-100 hover:border-rose-200 hover:shadow-md transition-all flex items-center gap-4 group">
+                            <span className="text-2xl">{ex.icon}</span>
+                            <div className="flex-1">
+                                <span className="font-bold text-rose-700 text-sm">{ex.en}</span>
+                                {isPortuguese && <span className="text-[11px] text-slate-400 block">{ex.pt}</span>}
+                            </div>
+                            <span className="text-[10px] bg-slate-100 text-slate-400 px-2 py-1 rounded-full font-medium hidden sm:block">{ex.context}</span>
+                            <Volume2 className="w-4 h-4 text-slate-300 group-hover:text-rose-500 transition-colors flex-shrink-0" />
+                        </button>
+                    ))}
+                </div>
+            </section>
+
+            {/* Situations */}
+            <section className="space-y-5">
+                <div className="flex items-center gap-3">
+                    <div className="p-2 bg-amber-100 rounded-lg text-amber-600"><MapPin className="w-5 h-5" /></div>
+                    <h4 className="text-2xl font-bold text-slate-800">
+                        {isPortuguese ? 'Situações do Dia a Dia' : 'Everyday Situations'}
+                    </h4>
+                </div>
+                <div className="grid md:grid-cols-3 gap-5">
+                    {situations.map((sit, idx) => (
+                        <div key={idx} className={`p-5 rounded-2xl border-2 ${sit.color}`}>
+                            <h5 className="font-bold text-slate-800 mb-4 text-lg">{sit.title}</h5>
+                            <div className="space-y-2">
+                                {sit.phrases.map((ph, i) => (
+                                    <button key={i} onClick={() => speak(ph.en)} className="w-full text-left p-3 rounded-xl bg-white/70 hover:bg-white transition-all flex items-center gap-2 group">
+                                        <Volume2 className="w-3 h-3 text-slate-300 group-hover:text-indigo-500 flex-shrink-0" />
+                                        <div>
+                                            <span className="text-sm font-medium text-slate-700">{ph.en}</span>
+                                            {isPortuguese && <span className="text-[10px] text-slate-400 block">{ph.pt}</span>}
+                                        </div>
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </section>
+
+            {/* Polite Tip */}
+            <div className="p-6 rounded-2xl bg-amber-50 border-2 border-amber-100 flex items-start gap-4">
+                <div className="text-3xl">🤝</div>
+                <div>
+                    <h5 className="font-bold text-amber-800 text-lg mb-1">{isPortuguese ? 'Dica de Gentileza' : 'Politeness Tip'}</h5>
+                    <p className="text-amber-700 text-sm leading-relaxed">
+                        {isPortuguese
+                            ? "Adicionar \"please\" transforma uma ordem em um pedido educado. Compare: \"Sit down!\" (ordem) vs \"Sit down, please.\" (pedido gentil). Em contextos formais, sempre use \"please\"!"
+                            : "Adding \"please\" transforms a command into a polite request. Compare: \"Sit down!\" (command) vs \"Sit down, please.\" (polite request). In formal contexts, always use \"please\"!"
+                        }
+                    </p>
+                    <button onClick={() => speak('Could you open the door, please?')} className="mt-3 px-4 py-2 rounded-xl bg-amber-100 hover:bg-amber-200 transition-all flex items-center gap-2 text-sm font-bold text-amber-800">
+                        <Volume2 className="w-4 h-4" /> {isPortuguese ? '"Could you open the door, please?" — Ouça' : '"Could you open the door, please?" — Listen'}
+                    </button>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+// --- M7: CAN / CAN'T ---
+const CanCantLesson = ({ isPortuguese }: { isPortuguese: boolean }) => {
+    const skills = [
+        { skill: 'Swim', ipa: '/swɪm/', pt: 'Nadar', icon: '🏊', can: 'I can swim.', cant: "I can't swim.", canPt: 'Eu sei nadar.', cantPt: 'Eu não sei nadar.' },
+        { skill: 'Cook', ipa: '/kʊk/', pt: 'Cozinhar', icon: '👨‍🍳', can: 'She can cook.', cant: "She can't cook.", canPt: 'Ela sabe cozinhar.', cantPt: 'Ela não sabe cozinhar.' },
+        { skill: 'Drive', ipa: '/draɪv/', pt: 'Dirigir', icon: '🚗', can: 'He can drive.', cant: "He can't drive.", canPt: 'Ele sabe dirigir.', cantPt: 'Ele não sabe dirigir.' },
+        { skill: 'Speak English', ipa: '/spiːk/', pt: 'Falar Inglês', icon: '🗣️', can: 'We can speak English.', cant: "We can't speak French.", canPt: 'Nós sabemos falar inglês.', cantPt: 'Nós não sabemos falar francês.' },
+        { skill: 'Play guitar', ipa: '/pleɪ/', pt: 'Tocar violão', icon: '🎸', can: 'They can play guitar.', cant: "They can't play piano.", canPt: 'Eles sabem tocar violão.', cantPt: 'Eles não sabem tocar piano.' },
+        { skill: 'Dance', ipa: '/dæns/', pt: 'Dançar', icon: '💃', can: 'I can dance.', cant: "I can't dance well.", canPt: 'Eu sei dançar.', cantPt: 'Eu não sei dançar bem.' },
+    ];
+
+    const usages = [
+        {
+            title: isPortuguese ? '💪 Habilidade' : '💪 Ability',
+            desc: isPortuguese ? 'Algo que você sabe ou consegue fazer' : 'Something you are able to do',
+            examples: [
+                { en: 'I can speak two languages.', pt: 'Eu sei falar dois idiomas.' },
+                { en: 'She can run very fast.', pt: 'Ela consegue correr muito rápido.' },
+            ],
+            color: 'bg-emerald-50 border-emerald-200',
+            iconColor: 'text-emerald-600',
+        },
+        {
+            title: isPortuguese ? '🔓 Permissão' : '🔓 Permission',
+            desc: isPortuguese ? 'Pedir ou dar permissão (informal)' : 'Asking or giving permission (informal)',
+            examples: [
+                { en: 'Can I go to the bathroom?', pt: 'Posso ir ao banheiro?' },
+                { en: 'You can sit here.', pt: 'Você pode sentar aqui.' },
+            ],
+            color: 'bg-blue-50 border-blue-200',
+            iconColor: 'text-blue-600',
+        },
+        {
+            title: isPortuguese ? '🙏 Pedidos' : '🙏 Requests',
+            desc: isPortuguese ? 'Pedir algo a alguém' : 'Asking someone to do something',
+            examples: [
+                { en: 'Can you help me?', pt: 'Você pode me ajudar?' },
+                { en: 'Can you open the window?', pt: 'Você pode abrir a janela?' },
+            ],
+            color: 'bg-violet-50 border-violet-200',
+            iconColor: 'text-violet-600',
+        },
+    ];
+
+    const questions = [
+        { q: 'Can you swim?', a1: 'Yes, I can.', a2: "No, I can't.", pt: 'Você sabe nadar?', icon: '🏊' },
+        { q: 'Can she drive?', a1: 'Yes, she can.', a2: "No, she can't.", pt: 'Ela sabe dirigir?', icon: '🚗' },
+        { q: 'Can they play football?', a1: 'Yes, they can.', a2: "No, they can't.", pt: 'Eles sabem jogar futebol?', icon: '⚽' },
+    ];
+
+    return (
+        <div className="space-y-10 animate-fade-in pb-20">
+            {/* Senior Teacher Intro */}
+            <div className="relative p-8 rounded-[2rem] bg-violet-900 text-white overflow-hidden shadow-2xl">
+                <div className="absolute top-0 right-0 p-4 opacity-10"><Zap className="w-32 h-32" /></div>
+                <div className="relative z-10 flex flex-col md:flex-row gap-6 items-center">
+                    <div className="w-20 h-20 rounded-full bg-violet-600 flex items-center justify-center text-4xl shadow-lg border-2 border-violet-400">⚡</div>
+                    <div className="flex-1">
+                        <h3 className="text-2xl font-serif-display mb-2">
+                            {isPortuguese ? "Can / Can't — Habilidade e Possibilidade" : "Can / Can't — Ability & Possibility"}
+                        </h3>
+                        <p className="text-violet-100 text-sm leading-relaxed italic">
+                            {isPortuguese
+                                ? "\"'Can' é um dos verbos mais versáteis do inglês. Com uma única palavra você expressa habilidade, permissão e faz pedidos. E a melhor parte? A estrutura nunca muda — sem 's', sem 'to', sem conjugação.\""
+                                : "\"'Can' is one of the most versatile words in English. With just one word you express ability, permission, and make requests. And the best part? The structure never changes — no 's', no 'to', no conjugation.\""
+                            }
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            {/* Structure Cards */}
+            <div className="grid md:grid-cols-3 gap-5">
+                <div className="p-5 rounded-2xl bg-emerald-50 border-2 border-emerald-200 text-center">
+                    <div className="text-3xl mb-3">✅</div>
+                    <p className="font-black text-emerald-700 text-lg mb-1">Subject + can + verb</p>
+                    <button onClick={() => speak('I can swim.')} className="text-sm text-emerald-600 hover:text-emerald-800 transition-colors flex items-center gap-1 mx-auto font-medium">
+                        <Volume2 className="w-3 h-3" /> I can swim.
+                    </button>
+                    {isPortuguese && <p className="text-[11px] text-slate-400 mt-1">Eu sei/consigo nadar.</p>}
+                </div>
+                <div className="p-5 rounded-2xl bg-rose-50 border-2 border-rose-200 text-center">
+                    <div className="text-3xl mb-3">❌</div>
+                    <p className="font-black text-rose-700 text-lg mb-1">Subject + can't + verb</p>
+                    <button onClick={() => speak("I can't fly.")} className="text-sm text-rose-600 hover:text-rose-800 transition-colors flex items-center gap-1 mx-auto font-medium">
+                        <Volume2 className="w-3 h-3" /> I can't fly.
+                    </button>
+                    {isPortuguese && <p className="text-[11px] text-slate-400 mt-1">Eu não consigo voar.</p>}
+                </div>
+                <div className="p-5 rounded-2xl bg-blue-50 border-2 border-blue-200 text-center">
+                    <div className="text-3xl mb-3">❓</div>
+                    <p className="font-black text-blue-700 text-lg mb-1">Can + subject + verb?</p>
+                    <button onClick={() => speak('Can you help me?')} className="text-sm text-blue-600 hover:text-blue-800 transition-colors flex items-center gap-1 mx-auto font-medium">
+                        <Volume2 className="w-3 h-3" /> Can you help me?
+                    </button>
+                    {isPortuguese && <p className="text-[11px] text-slate-400 mt-1">Você pode me ajudar?</p>}
+                </div>
+            </div>
+
+            {/* Pronunciation Note */}
+            <div className="p-6 rounded-2xl bg-slate-800 text-white flex flex-col md:flex-row items-start gap-5">
+                <div className="text-3xl">🎙️</div>
+                <div className="flex-1">
+                    <h5 className="font-bold text-lg mb-3">{isPortuguese ? 'Fique atento à pronúncia!' : 'Watch the pronunciation!'}</h5>
+                    <div className="grid sm:grid-cols-2 gap-4">
+                        <div className="p-4 rounded-xl bg-white/10">
+                            <div className="flex items-center gap-2 mb-1">
+                                <span className="font-black text-emerald-400">CAN</span>
+                                <span className="text-[10px] font-mono bg-white/10 px-2 py-0.5 rounded-full text-slate-300">/kæn/ → /kən/</span>
+                            </div>
+                            <p className="text-xs text-slate-300">
+                                {isPortuguese
+                                    ? "Em frases afirmativas, pronuncia-se fraco: /kən/, quase um 'kn'. Ex: I kən swim."
+                                    : "In affirmative sentences, it's pronounced weak: /kən/, almost like 'kn'. Ex: I kən swim."
+                                }
+                            </p>
+                        </div>
+                        <div className="p-4 rounded-xl bg-white/10">
+                            <div className="flex items-center gap-2 mb-1">
+                                <span className="font-black text-rose-400">CAN'T</span>
+                                <span className="text-[10px] font-mono bg-white/10 px-2 py-0.5 rounded-full text-slate-300">/kænt/</span>
+                            </div>
+                            <p className="text-xs text-slate-300">
+                                {isPortuguese
+                                    ? "Sempre forte e claro: /kænt/. O 't' no final pode ser quase silencioso no inglês americano, mas o 'æ' é longo e forte."
+                                    : "Always strong and clear: /kænt/. The final 't' may be almost silent in American English, but the 'æ' is long and strong."
+                                }
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* Skills Grid */}
+            <section className="space-y-5">
+                <div className="flex items-center gap-3">
+                    <div className="p-2 bg-violet-100 rounded-lg text-violet-600"><Zap className="w-5 h-5" /></div>
+                    <h4 className="text-2xl font-bold text-slate-800">
+                        {isPortuguese ? 'Habilidades — Can & Can\'t' : 'Skills — Can & Can\'t'}
+                    </h4>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {skills.map((s, idx) => (
+                        <div key={idx} className="p-5 bg-white rounded-2xl border border-slate-100 hover:shadow-lg transition-all">
+                            <div className="flex items-center gap-3 mb-4">
+                                <span className="text-3xl">{s.icon}</span>
+                                <div>
+                                    <div className="flex items-baseline gap-2">
+                                        <span className="font-black text-slate-800 text-lg">{s.skill}</span>
+                                        <span className="text-[10px] font-mono text-slate-400 bg-slate-50 px-1.5 py-0.5 rounded-full">{s.ipa}</span>
+                                    </div>
+                                    {isPortuguese && <div className="text-[10px] font-bold text-indigo-400 uppercase tracking-tight">{s.pt}</div>}
+                                </div>
+                            </div>
+                            <div className="space-y-2">
+                                <button onClick={() => speak(s.can)} className="w-full text-left p-2.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 transition-all flex items-center gap-2 group">
+                                    <CheckCircle2 className="w-4 h-4 text-emerald-500 flex-shrink-0" />
+                                    <div>
+                                        <span className="text-sm font-bold text-emerald-700">{s.can}</span>
+                                        {isPortuguese && <span className="text-[10px] text-slate-400 block">{s.canPt}</span>}
+                                    </div>
+                                </button>
+                                <button onClick={() => speak(s.cant)} className="w-full text-left p-2.5 rounded-xl bg-rose-50 hover:bg-rose-100 transition-all flex items-center gap-2 group">
+                                    <XCircle className="w-4 h-4 text-rose-500 flex-shrink-0" />
+                                    <div>
+                                        <span className="text-sm font-bold text-rose-700">{s.cant}</span>
+                                        {isPortuguese && <span className="text-[10px] text-slate-400 block">{s.cantPt}</span>}
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </section>
+
+            {/* Usage Types */}
+            <section className="space-y-5">
+                <div className="flex items-center gap-3">
+                    <div className="p-2 bg-blue-100 rounded-lg text-blue-600"><BookOpen className="w-5 h-5" /></div>
+                    <h4 className="text-2xl font-bold text-slate-800">
+                        {isPortuguese ? 'Os 3 usos do Can' : 'The 3 Uses of Can'}
+                    </h4>
+                </div>
+                <div className="grid md:grid-cols-3 gap-5">
+                    {usages.map((u, idx) => (
+                        <div key={idx} className={`p-5 rounded-2xl border-2 ${u.color}`}>
+                            <h5 className={`text-lg font-bold ${u.iconColor} mb-1`}>{u.title}</h5>
+                            <p className="text-xs text-slate-500 mb-4">{u.desc}</p>
+                            <div className="space-y-2">
+                                {u.examples.map((ex, i) => (
+                                    <button key={i} onClick={() => speak(ex.en)} className="w-full text-left p-3 rounded-xl bg-white/70 hover:bg-white transition-all flex items-center gap-2 group">
+                                        <Volume2 className="w-3 h-3 text-slate-300 group-hover:text-indigo-500 flex-shrink-0" />
+                                        <div>
+                                            <span className="text-sm font-medium text-slate-700">{ex.en}</span>
+                                            {isPortuguese && <span className="text-[10px] text-slate-400 block">{ex.pt}</span>}
+                                        </div>
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </section>
+
+            {/* Q&A Practice */}
+            <section className="space-y-5">
+                <div className="flex items-center gap-3">
+                    <div className="p-2 bg-amber-100 rounded-lg text-amber-600"><MessageCircle className="w-5 h-5" /></div>
+                    <h4 className="text-2xl font-bold text-slate-800">
+                        {isPortuguese ? 'Perguntas e Respostas Curtas' : 'Short Questions & Answers'}
+                    </h4>
+                </div>
+                <div className="grid gap-4">
+                    {questions.map((item, idx) => (
+                        <div key={idx} className="p-5 bg-white rounded-2xl border border-slate-100 hover:shadow-md transition-all">
+                            <div className="flex items-center gap-3 mb-3">
+                                <span className="text-2xl">{item.icon}</span>
+                                <button onClick={() => speak(item.q)} className="flex items-center gap-2 group">
+                                    <span className="font-bold text-blue-700 text-lg">{item.q}</span>
+                                    <Volume2 className="w-4 h-4 text-blue-300 group-hover:text-blue-600" />
+                                </button>
+                                {isPortuguese && <span className="text-[11px] text-slate-400">({item.pt})</span>}
+                            </div>
+                            <div className="flex flex-wrap gap-3 pl-10">
+                                <button onClick={() => speak(item.a1)} className="px-4 py-2 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-700 font-bold text-sm hover:bg-emerald-100 transition-all flex items-center gap-2">
+                                    <CheckCircle2 className="w-4 h-4" /> {item.a1}
+                                </button>
+                                <button onClick={() => speak(item.a2)} className="px-4 py-2 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 font-bold text-sm hover:bg-rose-100 transition-all flex items-center gap-2">
+                                    <XCircle className="w-4 h-4" /> {item.a2}
+                                </button>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </section>
+
+            {/* Golden Tip */}
+            <div className="p-6 rounded-2xl bg-amber-50 border-2 border-amber-100 flex items-start gap-4">
+                <div className="text-3xl">💡</div>
+                <div>
+                    <h5 className="font-bold text-amber-800 text-lg mb-1">{isPortuguese ? 'Dica de Ouro' : 'Golden Tip'}</h5>
+                    <p className="text-amber-700 text-sm leading-relaxed">
+                        {isPortuguese
+                            ? "\"Can\" é um modal verb — ele NUNCA muda! Não existe \"cans\", \"canned\" (como verbo modal), ou \"to can\". É sempre: can + verbo na forma base, sem exceção. She can swim ✅ She cans swim ❌"
+                            : "\"Can\" is a modal verb — it NEVER changes! There's no \"cans\", \"canned\" (as a modal), or \"to can\". It's always: can + base verb, no exceptions. She can swim ✅ She cans swim ❌"
+                        }
+                    </p>
+                </div>
+            </div>
         </div>
     );
 };
 
 const FoodAndDrink = ({ isPortuguese }: { isPortuguese: boolean }) => {
-    const foods = [
-        { word: 'Water', ipa: '/ˈwɔːtər/', trans: 'Água', icon: '💧', bg: 'bg-blue-50', text: 'text-blue-700' },
-        { word: 'Coffee', ipa: '/ˈkɔːfi/', trans: 'Café', icon: '☕', bg: 'bg-amber-50', text: 'text-amber-900' },
-        { word: 'Tea', ipa: '/tiː/', trans: 'Chá', icon: '🍵', bg: 'bg-emerald-50', text: 'text-emerald-700' },
-        { word: 'Juice', ipa: '/dʒuːs/', trans: 'Suco', icon: '🧃', bg: 'bg-orange-50', text: 'text-orange-700' },
-        { word: 'Bread', ipa: '/brɛd/', trans: 'Pão', icon: '🍞', bg: 'bg-amber-100', text: 'text-amber-800' },
-        { word: 'Cheese', ipa: '/tʃiːz/', trans: 'Queijo', icon: '🧀', bg: 'bg-yellow-50', text: 'text-yellow-600' },
-        { word: 'Apple', ipa: '/ˈæpəl/', trans: 'Maçã', icon: '🍎', bg: 'bg-red-50', text: 'text-red-700' },
-        { word: 'Banana', ipa: '/bəˈnænə/', trans: 'Banana', icon: '🍌', bg: 'bg-yellow-50', text: 'text-yellow-700' },
-        { word: 'Pizza', ipa: '/ˈpiːtsə/', trans: 'Pizza', icon: '🍕', bg: 'bg-orange-50', text: 'text-orange-600' },
-        { word: 'Burger', ipa: '/ˈbɜːrɡər/', trans: 'Hambúrguer', icon: '🍔', bg: 'bg-orange-100', text: 'text-orange-800' },
+    const [activeCategory, setActiveCategory] = useState<string | null>(null);
+
+    const categories = [
+        {
+            id: 'drinks', title: isPortuguese ? '🥤 Bebidas' : '🥤 Drinks', color: 'bg-blue-50', border: 'border-blue-200', headerBg: 'bg-blue-100', headerText: 'text-blue-700',
+            items: [
+                { word: 'Water', ipa: '/ˈwɔːtər/', trans: 'Água', icon: '💧' },
+                { word: 'Coffee', ipa: '/ˈkɔːfi/', trans: 'Café', icon: '☕' },
+                { word: 'Tea', ipa: '/tiː/', trans: 'Chá', icon: '🍵' },
+                { word: 'Juice', ipa: '/dʒuːs/', trans: 'Suco', icon: '🧃' },
+                { word: 'Milk', ipa: '/mɪlk/', trans: 'Leite', icon: '🥛' },
+                { word: 'Soda', ipa: '/ˈsoʊdə/', trans: 'Refrigerante', icon: '🥤' },
+                { word: 'Beer', ipa: '/bɪr/', trans: 'Cerveja', icon: '🍺' },
+                { word: 'Wine', ipa: '/waɪn/', trans: 'Vinho', icon: '🍷' },
+                { word: 'Smoothie', ipa: '/ˈsmuːði/', trans: 'Vitamina', icon: '🥤' },
+                { word: 'Lemonade', ipa: '/ˌlɛməˈneɪd/', trans: 'Limonada', icon: '🍋' },
+            ]
+        },
+        {
+            id: 'fruits', title: isPortuguese ? '🍎 Frutas' : '🍎 Fruits', color: 'bg-red-50', border: 'border-red-200', headerBg: 'bg-red-100', headerText: 'text-red-700',
+            items: [
+                { word: 'Apple', ipa: '/ˈæpəl/', trans: 'Maçã', icon: '🍎' },
+                { word: 'Banana', ipa: '/bəˈnænə/', trans: 'Banana', icon: '🍌' },
+                { word: 'Orange', ipa: '/ˈɔːrɪndʒ/', trans: 'Laranja', icon: '🍊' },
+                { word: 'Strawberry', ipa: '/ˈstrɔːbəri/', trans: 'Morango', icon: '🍓' },
+                { word: 'Grape', ipa: '/ɡreɪp/', trans: 'Uva', icon: '🍇' },
+                { word: 'Watermelon', ipa: '/ˈwɔːtərˌmɛlən/', trans: 'Melancia', icon: '🍉' },
+                { word: 'Pineapple', ipa: '/ˈpaɪnˌæpəl/', trans: 'Abacaxi', icon: '🍍' },
+                { word: 'Mango', ipa: '/ˈmæŋɡoʊ/', trans: 'Manga', icon: '🥭' },
+                { word: 'Peach', ipa: '/piːtʃ/', trans: 'Pêssego', icon: '🍑' },
+                { word: 'Lemon', ipa: '/ˈlɛmən/', trans: 'Limão', icon: '🍋' },
+                { word: 'Cherry', ipa: '/ˈtʃɛri/', trans: 'Cereja', icon: '🍒' },
+                { word: 'Pear', ipa: '/pɛr/', trans: 'Pera', icon: '🍐' },
+            ]
+        },
+        {
+            id: 'vegetables', title: isPortuguese ? '🥬 Vegetais' : '🥬 Vegetables', color: 'bg-emerald-50', border: 'border-emerald-200', headerBg: 'bg-emerald-100', headerText: 'text-emerald-700',
+            items: [
+                { word: 'Tomato', ipa: '/təˈmeɪtoʊ/', trans: 'Tomate', icon: '🍅' },
+                { word: 'Carrot', ipa: '/ˈkærət/', trans: 'Cenoura', icon: '🥕' },
+                { word: 'Potato', ipa: '/pəˈteɪtoʊ/', trans: 'Batata', icon: '🥔' },
+                { word: 'Onion', ipa: '/ˈʌnjən/', trans: 'Cebola', icon: '🧅' },
+                { word: 'Garlic', ipa: '/ˈɡɑːrlɪk/', trans: 'Alho', icon: '🧄' },
+                { word: 'Lettuce', ipa: '/ˈlɛtɪs/', trans: 'Alface', icon: '🥬' },
+                { word: 'Broccoli', ipa: '/ˈbrɑːkəli/', trans: 'Brócolis', icon: '🥦' },
+                { word: 'Corn', ipa: '/kɔːrn/', trans: 'Milho', icon: '🌽' },
+                { word: 'Pepper', ipa: '/ˈpɛpər/', trans: 'Pimentão', icon: '🫑' },
+                { word: 'Mushroom', ipa: '/ˈmʌʃruːm/', trans: 'Cogumelo', icon: '🍄' },
+                { word: 'Cucumber', ipa: '/ˈkjuːkʌmbər/', trans: 'Pepino', icon: '🥒' },
+                { word: 'Pumpkin', ipa: '/ˈpʌmpkɪn/', trans: 'Abóbora', icon: '🎃' },
+            ]
+        },
+        {
+            id: 'meat', title: isPortuguese ? '🥩 Carnes & Proteínas' : '🥩 Meat & Protein', color: 'bg-rose-50', border: 'border-rose-200', headerBg: 'bg-rose-100', headerText: 'text-rose-700',
+            items: [
+                { word: 'Chicken', ipa: '/ˈtʃɪkɪn/', trans: 'Frango', icon: '🍗' },
+                { word: 'Beef', ipa: '/biːf/', trans: 'Carne bovina', icon: '🥩' },
+                { word: 'Pork', ipa: '/pɔːrk/', trans: 'Carne suína', icon: '🐖' },
+                { word: 'Fish', ipa: '/fɪʃ/', trans: 'Peixe', icon: '🐟' },
+                { word: 'Shrimp', ipa: '/ʃrɪmp/', trans: 'Camarão', icon: '🦐' },
+                { word: 'Egg', ipa: '/ɛɡ/', trans: 'Ovo', icon: '🥚' },
+                { word: 'Steak', ipa: '/steɪk/', trans: 'Bife', icon: '🥩' },
+                { word: 'Bacon', ipa: '/ˈbeɪkən/', trans: 'Bacon', icon: '🥓' },
+                { word: 'Sausage', ipa: '/ˈsɔːsɪdʒ/', trans: 'Salsicha', icon: '🌭' },
+                { word: 'Turkey', ipa: '/ˈtɜːrki/', trans: 'Peru', icon: '🦃' },
+            ]
+        },
+        {
+            id: 'dairy', title: isPortuguese ? '🧀 Laticínios' : '🧀 Dairy', color: 'bg-yellow-50', border: 'border-yellow-200', headerBg: 'bg-yellow-100', headerText: 'text-yellow-700',
+            items: [
+                { word: 'Cheese', ipa: '/tʃiːz/', trans: 'Queijo', icon: '🧀' },
+                { word: 'Butter', ipa: '/ˈbʌtər/', trans: 'Manteiga', icon: '🧈' },
+                { word: 'Yogurt', ipa: '/ˈjoʊɡərt/', trans: 'Iogurte', icon: '🥛' },
+                { word: 'Cream', ipa: '/kriːm/', trans: 'Creme', icon: '🍦' },
+                { word: 'Ice cream', ipa: '/aɪs kriːm/', trans: 'Sorvete', icon: '🍨' },
+            ]
+        },
+        {
+            id: 'grains', title: isPortuguese ? '🍞 Grãos & Padaria' : '🍞 Grains & Bakery', color: 'bg-amber-50', border: 'border-amber-200', headerBg: 'bg-amber-100', headerText: 'text-amber-700',
+            items: [
+                { word: 'Bread', ipa: '/brɛd/', trans: 'Pão', icon: '🍞' },
+                { word: 'Rice', ipa: '/raɪs/', trans: 'Arroz', icon: '🍚' },
+                { word: 'Pasta', ipa: '/ˈpɑːstə/', trans: 'Macarrão', icon: '🍝' },
+                { word: 'Toast', ipa: '/toʊst/', trans: 'Torrada', icon: '🍞' },
+                { word: 'Cereal', ipa: '/ˈsɪriəl/', trans: 'Cereal', icon: '🥣' },
+                { word: 'Pancake', ipa: '/ˈpænkeɪk/', trans: 'Panqueca', icon: '🥞' },
+                { word: 'Flour', ipa: '/flaʊər/', trans: 'Farinha', icon: '🌾' },
+                { word: 'Oats', ipa: '/oʊts/', trans: 'Aveia', icon: '🌾' },
+                { word: 'Croissant', ipa: '/kwɑːˈsɑ̃/', trans: 'Croissant', icon: '🥐' },
+                { word: 'Cookie', ipa: '/ˈkʊki/', trans: 'Biscoito', icon: '🍪' },
+            ]
+        },
+        {
+            id: 'fastfood', title: isPortuguese ? '🍔 Pratos Rápidos' : '🍔 Fast Food & Dishes', color: 'bg-orange-50', border: 'border-orange-200', headerBg: 'bg-orange-100', headerText: 'text-orange-700',
+            items: [
+                { word: 'Pizza', ipa: '/ˈpiːtsə/', trans: 'Pizza', icon: '🍕' },
+                { word: 'Burger', ipa: '/ˈbɜːrɡər/', trans: 'Hambúrguer', icon: '🍔' },
+                { word: 'Hot dog', ipa: '/hɑːt dɔːɡ/', trans: 'Cachorro-quente', icon: '🌭' },
+                { word: 'French fries', ipa: '/frɛntʃ fraɪz/', trans: 'Batata frita', icon: '🍟' },
+                { word: 'Sandwich', ipa: '/ˈsænwɪtʃ/', trans: 'Sanduíche', icon: '🥪' },
+                { word: 'Taco', ipa: '/ˈtɑːkoʊ/', trans: 'Taco', icon: '🌮' },
+                { word: 'Burrito', ipa: '/bəˈriːtoʊ/', trans: 'Burrito', icon: '🌯' },
+                { word: 'Soup', ipa: '/suːp/', trans: 'Sopa', icon: '🍲' },
+                { word: 'Salad', ipa: '/ˈsæləd/', trans: 'Salada', icon: '🥗' },
+                { word: 'Sushi', ipa: '/ˈsuːʃi/', trans: 'Sushi', icon: '🍣' },
+                { word: 'Fried rice', ipa: '/fraɪd raɪs/', trans: 'Arroz frito', icon: '🍛' },
+                { word: 'Noodles', ipa: '/ˈnuːdəlz/', trans: 'Macarrão/Lámen', icon: '🍜' },
+            ]
+        },
+        {
+            id: 'desserts', title: isPortuguese ? '🍰 Sobremesas' : '🍰 Desserts & Sweets', color: 'bg-pink-50', border: 'border-pink-200', headerBg: 'bg-pink-100', headerText: 'text-pink-700',
+            items: [
+                { word: 'Cake', ipa: '/keɪk/', trans: 'Bolo', icon: '🎂' },
+                { word: 'Chocolate', ipa: '/ˈtʃɑːklət/', trans: 'Chocolate', icon: '🍫' },
+                { word: 'Candy', ipa: '/ˈkændi/', trans: 'Doce/Bala', icon: '🍬' },
+                { word: 'Pie', ipa: '/paɪ/', trans: 'Torta', icon: '🥧' },
+                { word: 'Doughnut', ipa: '/ˈdoʊnʌt/', trans: 'Rosquinha', icon: '🍩' },
+                { word: 'Cupcake', ipa: '/ˈkʌpkeɪk/', trans: 'Cupcake', icon: '🧁' },
+                { word: 'Pudding', ipa: '/ˈpʊdɪŋ/', trans: 'Pudim', icon: '🍮' },
+                { word: 'Honey', ipa: '/ˈhʌni/', trans: 'Mel', icon: '🍯' },
+                { word: 'Sugar', ipa: '/ˈʃʊɡər/', trans: 'Açúcar', icon: '🍬' },
+                { word: 'Jam', ipa: '/dʒæm/', trans: 'Geleia', icon: '🫙' },
+            ]
+        },
+        {
+            id: 'condiments', title: isPortuguese ? '🧂 Condimentos & Temperos' : '🧂 Condiments & Seasonings', color: 'bg-slate-50', border: 'border-slate-200', headerBg: 'bg-slate-100', headerText: 'text-slate-700',
+            items: [
+                { word: 'Salt', ipa: '/sɔːlt/', trans: 'Sal', icon: '🧂' },
+                { word: 'Pepper', ipa: '/ˈpɛpər/', trans: 'Pimenta', icon: '🌶️' },
+                { word: 'Oil', ipa: '/ɔɪl/', trans: 'Óleo/Azeite', icon: '🫒' },
+                { word: 'Vinegar', ipa: '/ˈvɪnɪɡər/', trans: 'Vinagre', icon: '🧴' },
+                { word: 'Ketchup', ipa: '/ˈkɛtʃəp/', trans: 'Ketchup', icon: '🍅' },
+                { word: 'Mustard', ipa: '/ˈmʌstərd/', trans: 'Mostarda', icon: '🟡' },
+                { word: 'Mayonnaise', ipa: '/ˈmeɪəˌneɪz/', trans: 'Maionese', icon: '🥄' },
+                { word: 'Soy sauce', ipa: '/sɔɪ sɔːs/', trans: 'Molho de soja', icon: '🥢' },
+                { word: 'Hot sauce', ipa: '/hɑːt sɔːs/', trans: 'Molho picante', icon: '🌶️' },
+            ]
+        },
+        {
+            id: 'extras', title: isPortuguese ? '🥜 Outros Ingredientes' : '🥜 Other Ingredients', color: 'bg-lime-50', border: 'border-lime-200', headerBg: 'bg-lime-100', headerText: 'text-lime-700',
+            items: [
+                { word: 'Nuts', ipa: '/nʌts/', trans: 'Nozes/Castanhas', icon: '🥜' },
+                { word: 'Beans', ipa: '/biːnz/', trans: 'Feijão', icon: '🫘' },
+                { word: 'Avocado', ipa: '/ˌævəˈkɑːdoʊ/', trans: 'Abacate', icon: '🥑' },
+                { word: 'Coconut', ipa: '/ˈkoʊkənʌt/', trans: 'Coco', icon: '🥥' },
+                { word: 'Olive', ipa: '/ˈɑːlɪv/', trans: 'Azeitona', icon: '🫒' },
+                { word: 'Popcorn', ipa: '/ˈpɑːpkɔːrn/', trans: 'Pipoca', icon: '🍿' },
+                { word: 'Chips', ipa: '/tʃɪps/', trans: 'Batata chips', icon: '🥔' },
+                { word: 'Pretzel', ipa: '/ˈprɛtsəl/', trans: 'Pretzel', icon: '🥨' },
+                { word: 'Tofu', ipa: '/ˈtoʊfuː/', trans: 'Tofu', icon: '🧊' },
+                { word: 'Peanut butter', ipa: '/ˈpiːnʌt ˈbʌtər/', trans: 'Pasta de amendoim', icon: '🥜' },
+            ]
+        },
     ];
 
     const orderingPhrases = [
@@ -5399,7 +6148,37 @@ const FoodAndDrink = ({ isPortuguese }: { isPortuguese: boolean }) => {
         { phrase: "I would like a coffee.", trans: "Eu gostaria de um café.", icon: "☕" },
         { phrase: "Do you have pizza?", trans: "Vocês têm pizza?", icon: "🍕" },
         { phrase: "The bill, please.", trans: "A conta, por favor.", icon: "🧾" },
+        { phrase: "A table for two, please.", trans: "Uma mesa para dois, por favor.", icon: "🪑" },
+        { phrase: "What do you recommend?", trans: "O que você recomenda?", icon: "🤔" },
+        { phrase: "I'm allergic to nuts.", trans: "Sou alérgico a nozes.", icon: "⚠️" },
+        { phrase: "Can I see the menu?", trans: "Posso ver o cardápio?", icon: "📖" },
+        { phrase: "Is this dish spicy?", trans: "Este prato é picante?", icon: "🌶️" },
+        { phrase: "I'll have the same.", trans: "Vou querer o mesmo.", icon: "👆" },
     ];
+
+    const cookingVerbs = [
+        { verb: 'Boil', ipa: '/bɔɪl/', trans: 'Ferver', icon: '♨️', ex: 'Boil the water for pasta.', exPt: 'Ferva a água para o macarrão.' },
+        { verb: 'Fry', ipa: '/fraɪ/', trans: 'Fritar', icon: '🍳', ex: 'Fry the eggs.', exPt: 'Frite os ovos.' },
+        { verb: 'Bake', ipa: '/beɪk/', trans: 'Assar (forno)', icon: '🧁', ex: 'Bake the cake for 30 minutes.', exPt: 'Asse o bolo por 30 minutos.' },
+        { verb: 'Grill', ipa: '/ɡrɪl/', trans: 'Grelhar', icon: '🔥', ex: 'Grill the chicken.', exPt: 'Grelhe o frango.' },
+        { verb: 'Chop', ipa: '/tʃɑːp/', trans: 'Picar', icon: '🔪', ex: 'Chop the onion.', exPt: 'Pique a cebola.' },
+        { verb: 'Mix', ipa: '/mɪks/', trans: 'Misturar', icon: '🥄', ex: 'Mix the ingredients.', exPt: 'Misture os ingredientes.' },
+        { verb: 'Stir', ipa: '/stɜːr/', trans: 'Mexer', icon: '🥣', ex: 'Stir the soup.', exPt: 'Mexa a sopa.' },
+        { verb: 'Peel', ipa: '/piːl/', trans: 'Descascar', icon: '🍌', ex: 'Peel the potatoes.', exPt: 'Descasque as batatas.' },
+    ];
+
+    const dialogue = [
+        { speaker: 'Waiter', line: 'Good evening! A table for how many?', pt: 'Boa noite! Mesa para quantos?', icon: '🧑‍🍳' },
+        { speaker: 'You', line: 'For two, please.', pt: 'Para dois, por favor.', icon: '🙋' },
+        { speaker: 'Waiter', line: 'Here\'s the menu. Can I get you something to drink?', pt: 'Aqui está o cardápio. Posso trazer algo para beber?', icon: '🧑‍🍳' },
+        { speaker: 'You', line: 'I\'ll have a lemonade, please.', pt: 'Vou querer uma limonada, por favor.', icon: '🙋' },
+        { speaker: 'Waiter', line: 'Are you ready to order?', pt: 'Estão prontos para pedir?', icon: '🧑‍🍳' },
+        { speaker: 'You', line: 'Yes! I would like the grilled chicken with fries.', pt: 'Sim! Eu gostaria do frango grelhado com batatas fritas.', icon: '🙋' },
+        { speaker: 'Waiter', line: 'Excellent choice! Anything for dessert?', pt: 'Excelente escolha! Algo de sobremesa?', icon: '🧑‍🍳' },
+        { speaker: 'You', line: 'A piece of chocolate cake, please. And the bill.', pt: 'Um pedaço de bolo de chocolate, por favor. E a conta.', icon: '🙋' },
+    ];
+
+    const totalItems = categories.reduce((sum, cat) => sum + cat.items.length, 0);
 
     return (
         <div className="space-y-12 animate-fade-in pb-20">
@@ -5414,65 +6193,154 @@ const FoodAndDrink = ({ isPortuguese }: { isPortuguese: boolean }) => {
                         </h3>
                         <p className="text-orange-100 text-sm leading-relaxed italic">
                             {isPortuguese
-                                ? "\"Pedir comida é uma das primeiras coisas que você fará em uma viagem. Não passe fome! Vamos aprender o vocabulário essencial para sobreviver em qualquer restaurante.\""
-                                : "\"Ordering food is one of the first things you'll do on a trip. Don't go hungry! Let's learn the essential vocabulary to survive in any restaurant.\""
+                                ? "\"Pedir comida é uma das primeiras coisas que você fará em uma viagem. Não passe fome! Nesta lição você vai aprender mais de 100 palavras essenciais de comida e bebida, como pedir no restaurante e até os verbos de cozinhar!\""
+                                : "\"Ordering food is one of the first things you'll do on a trip. Don't go hungry! In this lesson you'll learn over 100 essential food and drink words, how to order at a restaurant, and even cooking verbs!\""
                             }
                         </p>
+                        <div className="mt-3 inline-flex items-center gap-2 bg-orange-700/50 px-3 py-1.5 rounded-full text-xs font-bold">
+                            <Utensils className="w-3 h-3" /> {totalItems} {isPortuguese ? 'palavras nesta lição' : 'words in this lesson'}
+                        </div>
                     </div>
                 </div>
             </div>
 
-            {/* Food Grid */}
-            <section className="space-y-6">
+            {/* Category Navigation */}
+            <div className="flex flex-wrap gap-2">
+                {categories.map(cat => (
+                    <button
+                        key={cat.id}
+                        onClick={() => setActiveCategory(activeCategory === cat.id ? null : cat.id)}
+                        className={`px-4 py-2 rounded-xl text-sm font-bold transition-all ${activeCategory === cat.id ? `${cat.headerBg} ${cat.headerText} shadow-md` : 'bg-white border border-slate-200 text-slate-500 hover:border-slate-300'}`}
+                    >
+                        {cat.title} <span className="text-[10px] opacity-60">({cat.items.length})</span>
+                    </button>
+                ))}
+            </div>
+
+            {/* Food Categories */}
+            {categories.map(cat => {
+                const isOpen = activeCategory === null || activeCategory === cat.id;
+                if (!isOpen) return null;
+                return (
+                    <section key={cat.id} className="space-y-4 animate-fade-in">
+                        <div className={`flex items-center gap-3 p-3 rounded-xl ${cat.headerBg}`}>
+                            <h4 className={`text-lg font-bold ${cat.headerText}`}>{cat.title}</h4>
+                            <span className={`text-xs font-medium ${cat.headerText} opacity-60`}>{cat.items.length} {isPortuguese ? 'itens' : 'items'}</span>
+                        </div>
+                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+                            {cat.items.map((item, idx) => (
+                                <button
+                                    key={idx}
+                                    onClick={() => speak(item.word)}
+                                    className={`group p-4 rounded-2xl border-2 border-transparent hover:${cat.border} transition-all flex flex-col items-center gap-2 text-center ${cat.color} shadow-sm hover:shadow-md`}
+                                >
+                                    <span className="text-3xl group-hover:scale-110 transition-transform">{item.icon}</span>
+                                    <div>
+                                        <h5 className="font-bold text-slate-800 text-sm">{item.word}</h5>
+                                        <div className="text-[9px] font-mono text-slate-400">{item.ipa}</div>
+                                        {isPortuguese && <div className="text-[9px] font-bold text-indigo-400 uppercase tracking-tight mt-0.5">{item.trans}</div>}
+                                    </div>
+                                </button>
+                            ))}
+                        </div>
+                    </section>
+                );
+            })}
+
+            {/* Cooking Verbs */}
+            <section className="space-y-5">
                 <div className="flex items-center gap-3">
-                    <div className="p-2 bg-orange-100 rounded-lg text-orange-600"><Utensils className="w-5 h-5" /></div>
+                    <div className="p-2 bg-rose-100 rounded-lg text-rose-600"><Flame className="w-5 h-5" /></div>
                     <h4 className="text-2xl font-bold text-slate-800">
-                        {isPortuguese ? "Menu Essencial" : "Essential Menu"}
+                        {isPortuguese ? '👨‍🍳 Verbos de Cozinhar' : '👨‍🍳 Cooking Verbs'}
                     </h4>
                 </div>
-                <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
-                    {foods.map((item, idx) => (
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    {cookingVerbs.map((v, idx) => (
                         <button
                             key={idx}
-                            onClick={() => speak(item.word)}
-                            className={`group p-4 rounded-3xl border-2 border-transparent hover:border-orange-200 transition-all flex flex-col items-center gap-3 text-center ${item.bg} shadow-sm hover:shadow-md`}
+                            onClick={() => speak(v.ex)}
+                            className="group p-4 bg-white rounded-2xl border border-slate-100 hover:border-rose-200 shadow-sm hover:shadow-md transition-all text-left"
                         >
-                            <span className="text-4xl group-hover:scale-110 transition-transform">{item.icon}</span>
-                            <div>
-                                <h5 className={`font-bold ${item.text}`}>{item.word}</h5>
-                                <div className="text-[10px] font-mono text-slate-400 opacity-80">{item.ipa}</div>
-                                {isPortuguese && <div className="text-[10px] font-bold text-slate-400 uppercase tracking-tighter mt-1">{item.trans}</div>}
+                            <span className="text-2xl mb-2 block">{v.icon}</span>
+                            <div className="flex items-baseline gap-1.5 mb-1">
+                                <span className="font-black text-slate-800">{v.verb}</span>
+                                <span className="text-[9px] font-mono text-slate-400">{v.ipa}</span>
                             </div>
+                            <p className="text-xs text-rose-600 font-medium">{v.ex}</p>
+                            {isPortuguese && <p className="text-[10px] text-slate-400 mt-0.5">{v.exPt}</p>}
+                            {isPortuguese && <div className="text-[9px] font-bold text-indigo-400 uppercase tracking-tight mt-1">{v.trans}</div>}
                         </button>
                     ))}
                 </div>
             </section>
 
             {/* Ordering Section */}
-            <section className="space-y-6">
+            <section className="space-y-5">
                 <div className="flex items-center gap-3">
                     <div className="p-2 bg-indigo-100 rounded-lg text-indigo-600"><MessageCircle className="w-5 h-5" /></div>
-                    <h4 className="text-xl font-bold text-slate-800">
-                        {isPortuguese ? "Como Pedir (Ordering)" : "How to Order"}
+                    <h4 className="text-2xl font-bold text-slate-800">
+                        {isPortuguese ? "🗣️ Como Pedir no Restaurante" : "🗣️ How to Order at a Restaurant"}
                     </h4>
                 </div>
-                <div className="grid md:grid-cols-2 gap-4">
+                <div className="grid sm:grid-cols-2 gap-3">
                     {orderingPhrases.map((p, idx) => (
                         <button
                             key={idx}
                             onClick={() => speak(p.phrase)}
-                            className="text-left bg-white p-6 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md hover:border-indigo-200 transition-all group"
+                            className="text-left bg-white p-5 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md hover:border-indigo-200 transition-all group flex items-center gap-4"
                         >
-                            <div className="flex justify-between items-start mb-2">
-                                <span className="text-2xl">{p.icon}</span>
-                                <Volume2 className="w-4 h-4 text-slate-300 group-hover:text-indigo-500" />
+                            <span className="text-2xl flex-shrink-0">{p.icon}</span>
+                            <div className="flex-1">
+                                <div className="font-bold text-slate-700 text-sm">{p.phrase}</div>
+                                {isPortuguese && <div className="text-[11px] text-slate-400 mt-0.5">{p.trans}</div>}
                             </div>
-                            <div className="font-bold text-slate-700 text-lg mb-1">{p.phrase}</div>
-                            {isPortuguese && <div className="text-xs text-slate-400 font-medium italic">{p.trans}</div>}
+                            <Volume2 className="w-4 h-4 text-slate-300 group-hover:text-indigo-500 flex-shrink-0" />
                         </button>
                     ))}
                 </div>
             </section>
+
+            {/* Dialogue */}
+            <section className="space-y-5">
+                <div className="flex items-center gap-3">
+                    <div className="p-2 bg-violet-100 rounded-lg text-violet-600"><MessageCircle className="w-5 h-5" /></div>
+                    <h4 className="text-2xl font-bold text-slate-800">
+                        {isPortuguese ? "🎭 Diálogo no Restaurante" : "🎭 Restaurant Dialogue"}
+                    </h4>
+                </div>
+                <div className="bg-white rounded-2xl border border-slate-100 overflow-hidden shadow-sm">
+                    {dialogue.map((d, idx) => (
+                        <button
+                            key={idx}
+                            onClick={() => speak(d.line)}
+                            className={`w-full text-left p-4 flex items-start gap-3 transition-all hover:bg-slate-50 group ${idx > 0 ? 'border-t border-slate-50' : ''}`}
+                        >
+                            <span className="text-xl flex-shrink-0">{d.icon}</span>
+                            <div className="flex-1">
+                                <div className="text-[10px] font-bold text-indigo-400 uppercase tracking-widest mb-0.5">{d.speaker}</div>
+                                <div className="text-sm font-medium text-slate-700">{d.line}</div>
+                                {isPortuguese && <div className="text-[11px] text-slate-400 mt-0.5">{d.pt}</div>}
+                            </div>
+                            <Volume2 className="w-3 h-3 text-slate-300 group-hover:text-indigo-500 mt-1 flex-shrink-0" />
+                        </button>
+                    ))}
+                </div>
+            </section>
+
+            {/* Golden Tip */}
+            <div className="p-6 rounded-2xl bg-amber-50 border-2 border-amber-100 flex items-start gap-4">
+                <div className="text-3xl">💡</div>
+                <div>
+                    <h5 className="font-bold text-amber-800 text-lg mb-1">{isPortuguese ? 'Dica de Ouro' : 'Golden Tip'}</h5>
+                    <p className="text-amber-700 text-sm leading-relaxed">
+                        {isPortuguese
+                            ? "Nos países de língua inglesa, gorjeta (tip) é esperada! Nos EUA, 15-20% da conta é o padrão. 'Keep the change' (fique com o troco) é uma forma informal de dar gorjeta. E lembre-se: 'check' é 'conta' no inglês americano, 'bill' no britânico!"
+                            : "In English-speaking countries, tipping is expected! In the US, 15-20% of the bill is standard. 'Keep the change' is an informal way to tip. And remember: 'check' is American English, 'bill' is British English for the same thing!"
+                        }
+                    </p>
+                </div>
+            </div>
         </div>
     );
 };
@@ -6206,9 +7074,9 @@ export default function App() {
             case 24: return <PresentSimpleRules mode="base" isPortuguese={isPortuguese} />;
             case 25: return <DailyRoutine isPortuguese={isPortuguese} />;
             case 26: return <AdverbsFrequency isPortuguese={isPortuguese} />;
-            case 27: return <InteractionSection type="object" />;
-            case 28: return <InteractionSection type="imp" />;
-            case 29: return <InteractionSection type="can" />;
+            case 27: return <ObjectPronouns isPortuguese={isPortuguese} />;
+            case 28: return <ImperativesLesson isPortuguese={isPortuguese} />;
+            case 29: return <CanCantLesson isPortuguese={isPortuguese} />;
             case 30: return <FoodAndDrink isPortuguese={isPortuguese} />;
             default: return <BuildingLesson title={getTitleForBuilding(activeSection)} isPortuguese={isPortuguese} />;
         }
