@@ -5987,6 +5987,643 @@ const CanCantLesson = ({ isPortuguese }: { isPortuguese: boolean }) => {
     );
 };
 
+// ============================================================
+// M8: THE PAST (PRE-INTERMEDIATE)
+// ============================================================
+
+// --- M8: DATES & ORDINAL NUMBERS ---
+const DatesOrdinalNumbers = ({ isPortuguese }: { isPortuguese: boolean }) => {
+    const ordinals = [
+        { n: '1st', word: 'First', ipa: '/fɜːrst/', pt: 'Primeiro(a)', icon: '🥇' },
+        { n: '2nd', word: 'Second', ipa: '/ˈsɛkənd/', pt: 'Segundo(a)', icon: '🥈' },
+        { n: '3rd', word: 'Third', ipa: '/θɜːrd/', pt: 'Terceiro(a)', icon: '🥉' },
+        { n: '4th', word: 'Fourth', ipa: '/fɔːrθ/', pt: 'Quarto(a)', icon: '4️⃣' },
+        { n: '5th', word: 'Fifth', ipa: '/fɪfθ/', pt: 'Quinto(a)', icon: '5️⃣' },
+        { n: '6th', word: 'Sixth', ipa: '/sɪksθ/', pt: 'Sexto(a)', icon: '6️⃣' },
+        { n: '7th', word: 'Seventh', ipa: '/ˈsɛvənθ/', pt: 'Sétimo(a)', icon: '7️⃣' },
+        { n: '8th', word: 'Eighth', ipa: '/eɪtθ/', pt: 'Oitavo(a)', icon: '8️⃣' },
+        { n: '9th', word: 'Ninth', ipa: '/naɪnθ/', pt: 'Nono(a)', icon: '9️⃣' },
+        { n: '10th', word: 'Tenth', ipa: '/tɛnθ/', pt: 'Décimo(a)', icon: '🔟' },
+        { n: '11th', word: 'Eleventh', ipa: '/ɪˈlɛvənθ/', pt: 'Décimo primeiro', icon: '1️⃣1️⃣' },
+        { n: '12th', word: 'Twelfth', ipa: '/twɛlfθ/', pt: 'Décimo segundo', icon: '1️⃣2️⃣' },
+        { n: '20th', word: 'Twentieth', ipa: '/ˈtwɛntiəθ/', pt: 'Vigésimo', icon: '2️⃣0️⃣' },
+        { n: '21st', word: 'Twenty-first', ipa: '/ˌtwɛntiˈfɜːrst/', pt: 'Vigésimo primeiro', icon: '2️⃣1️⃣' },
+        { n: '30th', word: 'Thirtieth', ipa: '/ˈθɜːrtiəθ/', pt: 'Trigésimo', icon: '3️⃣0️⃣' },
+        { n: '31st', word: 'Thirty-first', ipa: '/ˌθɜːrtiˈfɜːrst/', pt: 'Trigésimo primeiro', icon: '3️⃣1️⃣' },
+    ];
+
+    const months = [
+        { en: 'January', short: 'Jan', ipa: '/ˈdʒænjueri/', pt: 'Janeiro', icon: '❄️' },
+        { en: 'February', short: 'Feb', ipa: '/ˈfɛbrueri/', pt: 'Fevereiro', icon: '💕' },
+        { en: 'March', short: 'Mar', ipa: '/mɑːrtʃ/', pt: 'Março', icon: '🌱' },
+        { en: 'April', short: 'Apr', ipa: '/ˈeɪprəl/', pt: 'Abril', icon: '🌧️' },
+        { en: 'May', short: 'May', ipa: '/meɪ/', pt: 'Maio', icon: '🌸' },
+        { en: 'June', short: 'Jun', ipa: '/dʒuːn/', pt: 'Junho', icon: '☀️' },
+        { en: 'July', short: 'Jul', ipa: '/dʒʊˈlaɪ/', pt: 'Julho', icon: '🏖️' },
+        { en: 'August', short: 'Aug', ipa: '/ˈɔːɡəst/', pt: 'Agosto', icon: '🌻' },
+        { en: 'September', short: 'Sep', ipa: '/sɛpˈtɛmbər/', pt: 'Setembro', icon: '🍂' },
+        { en: 'October', short: 'Oct', ipa: '/ɑːkˈtoʊbər/', pt: 'Outubro', icon: '🎃' },
+        { en: 'November', short: 'Nov', ipa: '/noʊˈvɛmbər/', pt: 'Novembro', icon: '🍁' },
+        { en: 'December', short: 'Dec', ipa: '/dɪˈsɛmbər/', pt: 'Dezembro', icon: '🎄' },
+    ];
+
+    const suffixRules = [
+        { rule: isPortuguese ? 'Terminados em 1 (exceto 11)' : 'Ending in 1 (except 11)', suffix: 'st', examples: '1st, 21st, 31st', color: 'bg-indigo-50 border-indigo-200' },
+        { rule: isPortuguese ? 'Terminados em 2 (exceto 12)' : 'Ending in 2 (except 12)', suffix: 'nd', examples: '2nd, 22nd, 32nd', color: 'bg-blue-50 border-blue-200' },
+        { rule: isPortuguese ? 'Terminados em 3 (exceto 13)' : 'Ending in 3 (except 13)', suffix: 'rd', examples: '3rd, 23rd, 33rd', color: 'bg-emerald-50 border-emerald-200' },
+        { rule: isPortuguese ? 'Todos os outros' : 'All others', suffix: 'th', examples: '4th, 5th, 11th, 12th, 13th, 20th...', color: 'bg-amber-50 border-amber-200' },
+    ];
+
+    const dateExamples = [
+        { en: 'January 1st', spoken: 'January first', pt: '1º de janeiro', context: isPortuguese ? "Ano Novo" : "New Year" },
+        { en: 'February 14th', spoken: 'February fourteenth', pt: '14 de fevereiro', context: isPortuguese ? "Dia dos Namorados (EUA)" : "Valentine's Day" },
+        { en: 'July 4th', spoken: 'July fourth', pt: '4 de julho', context: isPortuguese ? "Independência dos EUA" : "US Independence Day" },
+        { en: 'December 25th', spoken: 'December twenty-fifth', pt: '25 de dezembro', context: isPortuguese ? "Natal" : "Christmas" },
+        { en: 'October 31st', spoken: 'October thirty-first', pt: '31 de outubro', context: isPortuguese ? "Halloween" : "Halloween" },
+    ];
+
+    return (
+        <div className="space-y-10 animate-fade-in pb-20">
+            {/* Senior Teacher Intro */}
+            <div className="relative p-8 rounded-[2rem] bg-teal-900 text-white overflow-hidden shadow-2xl">
+                <div className="absolute top-0 right-0 p-4 opacity-10"><Calendar className="w-32 h-32" /></div>
+                <div className="relative z-10 flex flex-col md:flex-row gap-6 items-center">
+                    <div className="w-20 h-20 rounded-full bg-teal-600 flex items-center justify-center text-4xl shadow-lg border-2 border-teal-400">📅</div>
+                    <div className="flex-1">
+                        <h3 className="text-2xl font-serif-display mb-2">
+                            {isPortuguese ? "Datas e Números Ordinais" : "Dates & Ordinal Numbers"}
+                        </h3>
+                        <p className="text-teal-100 text-sm leading-relaxed italic">
+                            {isPortuguese
+                                ? "\"Em inglês, datas usam números ORDINAIS, não cardinais. Não dizemos 'January five', dizemos 'January fifth'. Parece simples, mas esse detalhe separa o iniciante do falante confiante.\""
+                                : "\"In English, dates use ORDINAL numbers, not cardinal ones. We don't say 'January five', we say 'January fifth'. It seems simple, but this detail separates the beginner from the confident speaker.\""
+                            }
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            {/* Suffix Rules */}
+            <section className="space-y-5">
+                <div className="flex items-center gap-3">
+                    <div className="p-2 bg-indigo-100 rounded-lg text-indigo-600"><Hash className="w-5 h-5" /></div>
+                    <h4 className="text-2xl font-bold text-slate-800">
+                        {isPortuguese ? '📐 Regras dos Sufixos' : '📐 Suffix Rules'}
+                    </h4>
+                </div>
+                <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-4">
+                    {suffixRules.map((r, idx) => (
+                        <div key={idx} className={`p-5 rounded-2xl border-2 ${r.color}`}>
+                            <div className="text-3xl font-black text-center mb-2 text-slate-800">-{r.suffix}</div>
+                            <p className="text-xs text-slate-600 text-center font-medium mb-2">{r.rule}</p>
+                            <p className="text-[10px] text-slate-400 text-center font-mono">{r.examples}</p>
+                        </div>
+                    ))}
+                </div>
+            </section>
+
+            {/* Ordinal Numbers Grid */}
+            <section className="space-y-5">
+                <div className="flex items-center gap-3">
+                    <div className="p-2 bg-teal-100 rounded-lg text-teal-600"><List className="w-5 h-5" /></div>
+                    <h4 className="text-2xl font-bold text-slate-800">
+                        {isPortuguese ? '🔢 Números Ordinais' : '🔢 Ordinal Numbers'}
+                    </h4>
+                </div>
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+                    {ordinals.map((o, idx) => (
+                        <button
+                            key={idx}
+                            onClick={() => speak(o.word)}
+                            className="group p-4 bg-white rounded-2xl border border-slate-100 hover:border-teal-200 shadow-sm hover:shadow-md transition-all text-left"
+                        >
+                            <div className="flex items-center gap-3 mb-2">
+                                <span className="text-xl">{o.icon}</span>
+                                <div>
+                                    <div className="flex items-baseline gap-2">
+                                        <span className="font-black text-teal-700 text-lg">{o.n}</span>
+                                        <span className="text-sm text-slate-500 font-medium">{o.word}</span>
+                                    </div>
+                                    <span className="text-[9px] font-mono text-slate-400">{o.ipa}</span>
+                                </div>
+                            </div>
+                            {isPortuguese && <div className="text-[10px] font-bold text-indigo-400 uppercase tracking-tight">{o.pt}</div>}
+                        </button>
+                    ))}
+                </div>
+            </section>
+
+            {/* Months */}
+            <section className="space-y-5">
+                <div className="flex items-center gap-3">
+                    <div className="p-2 bg-orange-100 rounded-lg text-orange-600"><CalendarDays className="w-5 h-5" /></div>
+                    <h4 className="text-2xl font-bold text-slate-800">
+                        {isPortuguese ? '🗓️ Meses do Ano' : '🗓️ Months of the Year'}
+                    </h4>
+                </div>
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+                    {months.map((m, idx) => (
+                        <button
+                            key={idx}
+                            onClick={() => speak(m.en)}
+                            className="group p-4 bg-white rounded-2xl border border-slate-100 hover:border-orange-200 shadow-sm hover:shadow-md transition-all text-center"
+                        >
+                            <span className="text-2xl block mb-2 group-hover:scale-110 transition-transform">{m.icon}</span>
+                            <div className="font-bold text-slate-800">{m.en}</div>
+                            <div className="text-[9px] font-mono text-slate-400">{m.ipa}</div>
+                            {isPortuguese && <div className="text-[10px] font-bold text-indigo-400 uppercase tracking-tight mt-1">{m.pt}</div>}
+                        </button>
+                    ))}
+                </div>
+            </section>
+
+            {/* Date Formats */}
+            <section className="bg-slate-800 rounded-[2.5rem] p-8 text-white relative overflow-hidden">
+                <div className="absolute -left-10 -bottom-10 w-40 h-40 bg-teal-500 rounded-full blur-3xl opacity-20"></div>
+                <div className="relative z-10">
+                    <div className="flex items-center gap-3 mb-6">
+                        <div className="p-2 bg-teal-500/20 rounded-lg"><Globe className="w-6 h-6 text-teal-400" /></div>
+                        <h4 className="text-2xl font-bold">
+                            {isPortuguese ? '🌍 Formatos de Data' : '🌍 Date Formats'}
+                        </h4>
+                    </div>
+                    <div className="grid sm:grid-cols-2 gap-4">
+                        <div className="p-5 rounded-2xl bg-white/5 border border-white/10">
+                            <div className="flex items-center gap-2 mb-3">
+                                <span className="text-xl">🇺🇸</span>
+                                <span className="font-bold text-lg">{isPortuguese ? 'Americano' : 'American'}</span>
+                            </div>
+                            <div className="text-center p-4 rounded-xl bg-white/10 mb-2">
+                                <span className="font-black text-xl text-teal-300">Month + Day</span>
+                            </div>
+                            <button onClick={() => speak('January fifth, twenty twenty-five')} className="w-full text-left p-3 rounded-xl bg-white/5 hover:bg-white/10 transition-all flex items-center gap-2 group">
+                                <Volume2 className="w-3 h-3 text-slate-400 group-hover:text-teal-400" />
+                                <span className="text-sm">January 5th, 2025 → <span className="text-teal-300 font-bold">"January fifth"</span></span>
+                            </button>
+                        </div>
+                        <div className="p-5 rounded-2xl bg-white/5 border border-white/10">
+                            <div className="flex items-center gap-2 mb-3">
+                                <span className="text-xl">🇬🇧</span>
+                                <span className="font-bold text-lg">{isPortuguese ? 'Britânico' : 'British'}</span>
+                            </div>
+                            <div className="text-center p-4 rounded-xl bg-white/10 mb-2">
+                                <span className="font-black text-xl text-amber-300">The + Day + of + Month</span>
+                            </div>
+                            <button onClick={() => speak('The fifth of January, twenty twenty-five')} className="w-full text-left p-3 rounded-xl bg-white/5 hover:bg-white/10 transition-all flex items-center gap-2 group">
+                                <Volume2 className="w-3 h-3 text-slate-400 group-hover:text-amber-400" />
+                                <span className="text-sm">5th January 2025 → <span className="text-amber-300 font-bold">"The fifth of January"</span></span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* Famous Dates */}
+            <section className="space-y-5">
+                <div className="flex items-center gap-3">
+                    <div className="p-2 bg-rose-100 rounded-lg text-rose-600"><Star className="w-5 h-5" /></div>
+                    <h4 className="text-2xl font-bold text-slate-800">
+                        {isPortuguese ? '🎉 Datas Importantes — Pratique!' : '🎉 Important Dates — Practice!'}
+                    </h4>
+                </div>
+                <div className="grid gap-3">
+                    {dateExamples.map((d, idx) => (
+                        <button key={idx} onClick={() => speak(d.spoken)} className="w-full text-left p-4 rounded-2xl bg-white border border-slate-100 hover:border-teal-200 hover:shadow-md transition-all flex items-center gap-4 group">
+                            <span className="text-2xl">🗓️</span>
+                            <div className="flex-1">
+                                <div className="flex items-baseline gap-2">
+                                    <span className="font-bold text-slate-800">{d.en}</span>
+                                    <span className="text-[10px] bg-teal-50 text-teal-600 px-2 py-0.5 rounded-full font-medium">{d.context}</span>
+                                </div>
+                                <span className="text-xs text-teal-600 font-medium">"{d.spoken}"</span>
+                                {isPortuguese && <span className="text-[11px] text-slate-400 block">{d.pt}</span>}
+                            </div>
+                            <Volume2 className="w-4 h-4 text-slate-300 group-hover:text-teal-500 flex-shrink-0" />
+                        </button>
+                    ))}
+                </div>
+            </section>
+
+            {/* Golden Tip */}
+            <div className="p-6 rounded-2xl bg-amber-50 border-2 border-amber-100 flex items-start gap-4">
+                <div className="text-3xl">💡</div>
+                <div>
+                    <h5 className="font-bold text-amber-800 text-lg mb-1">{isPortuguese ? 'Dica de Ouro' : 'Golden Tip'}</h5>
+                    <p className="text-amber-700 text-sm leading-relaxed">
+                        {isPortuguese
+                            ? "Na escrita, usamos o número + sufixo (1st, 2nd, 3rd). Na fala, sempre dizemos a palavra completa: 'first', 'second', 'third'. Nunca diga os números isolados para datas! 'January five' ❌ → 'January fifth' ✅"
+                            : "In writing, we use the number + suffix (1st, 2nd, 3rd). When speaking, always say the full word: 'first', 'second', 'third'. Never say plain numbers for dates! 'January five' ❌ → 'January fifth' ✅"
+                        }
+                    </p>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+// --- M8: TIME EXPRESSIONS FOR PAST ---
+const TimeExpressionsPast = ({ isPortuguese }: { isPortuguese: boolean }) => {
+    const expressions = [
+        { en: 'Yesterday', ipa: '/ˈjɛstərdeɪ/', pt: 'Ontem', icon: '⬅️', example: 'I worked yesterday.', exPt: 'Eu trabalhei ontem.', color: 'bg-indigo-50' },
+        { en: 'Last night', ipa: '/læst naɪt/', pt: 'Ontem à noite', icon: '🌙', example: 'I watched a movie last night.', exPt: 'Eu assisti um filme ontem à noite.', color: 'bg-violet-50' },
+        { en: 'Last week', ipa: '/læst wiːk/', pt: 'Semana passada', icon: '📅', example: 'She traveled last week.', exPt: 'Ela viajou semana passada.', color: 'bg-blue-50' },
+        { en: 'Last month', ipa: '/læst mʌnθ/', pt: 'Mês passado', icon: '🗓️', example: 'We moved last month.', exPt: 'Nós nos mudamos mês passado.', color: 'bg-sky-50' },
+        { en: 'Last year', ipa: '/læst jɪr/', pt: 'Ano passado', icon: '📆', example: 'They got married last year.', exPt: 'Eles se casaram ano passado.', color: 'bg-teal-50' },
+        { en: 'Two days ago', ipa: '/tuː deɪz əˈɡoʊ/', pt: 'Dois dias atrás', icon: '⏪', example: 'He called two days ago.', exPt: 'Ele ligou dois dias atrás.', color: 'bg-amber-50' },
+        { en: 'A week ago', ipa: '/ə wiːk əˈɡoʊ/', pt: 'Uma semana atrás', icon: '🔙', example: 'I started a week ago.', exPt: 'Eu comecei uma semana atrás.', color: 'bg-orange-50' },
+        { en: 'Three months ago', ipa: '/θriː mʌnθs əˈɡoʊ/', pt: 'Três meses atrás', icon: '⏮️', example: 'She left three months ago.', exPt: 'Ela partiu três meses atrás.', color: 'bg-rose-50' },
+        { en: 'In 2020', ipa: '/ɪn ˌtwɛntiˈtwɛnti/', pt: 'Em 2020', icon: '📌', example: 'The pandemic started in 2020.', exPt: 'A pandemia começou em 2020.', color: 'bg-slate-50' },
+        { en: 'When I was a child', ipa: '/wɛn aɪ wɒz/', pt: 'Quando eu era criança', icon: '👶', example: 'When I was a child, I lived in Brazil.', exPt: 'Quando eu era criança, eu morava no Brasil.', color: 'bg-pink-50' },
+    ];
+
+    const patterns = [
+        {
+            name: 'LAST + time',
+            desc: isPortuguese ? 'Usado com períodos definidos (night, week, month, year, Monday...)' : 'Used with defined periods (night, week, month, year, Monday...)',
+            examples: ['Last night', 'Last week', 'Last Monday', 'Last summer'],
+            color: 'bg-indigo-50 border-indigo-200',
+            icon: '⬅️',
+        },
+        {
+            name: 'time + AGO',
+            desc: isPortuguese ? 'Usado com quantidade de tempo (2 days, a week, 3 years...)' : 'Used with amounts of time (2 days, a week, 3 years...)',
+            examples: ['Two days ago', 'A month ago', 'Five years ago', 'A long time ago'],
+            color: 'bg-amber-50 border-amber-200',
+            icon: '⏪',
+        },
+        {
+            name: 'IN + year',
+            desc: isPortuguese ? 'Usado com anos específicos' : 'Used with specific years',
+            examples: ['In 1990', 'In 2015', 'In 2020'],
+            color: 'bg-emerald-50 border-emerald-200',
+            icon: '📌',
+        },
+        {
+            name: 'YESTERDAY',
+            desc: isPortuguese ? 'Sozinho ou com morning/afternoon/evening' : 'Alone or with morning/afternoon/evening',
+            examples: ['Yesterday', 'Yesterday morning', 'Yesterday afternoon'],
+            color: 'bg-violet-50 border-violet-200',
+            icon: '📆',
+        },
+    ];
+
+    const timeline = [
+        { label: isPortuguese ? '5 anos atrás' : '5 years ago', pos: 5 },
+        { label: isPortuguese ? 'Ano passado' : 'Last year', pos: 20 },
+        { label: isPortuguese ? 'Mês passado' : 'Last month', pos: 45 },
+        { label: isPortuguese ? 'Semana passada' : 'Last week', pos: 65 },
+        { label: isPortuguese ? 'Ontem' : 'Yesterday', pos: 85 },
+        { label: isPortuguese ? 'AGORA' : 'NOW', pos: 98 },
+    ];
+
+    return (
+        <div className="space-y-10 animate-fade-in pb-20">
+            {/* Senior Teacher Intro */}
+            <div className="relative p-8 rounded-[2rem] bg-violet-900 text-white overflow-hidden shadow-2xl">
+                <div className="absolute top-0 right-0 p-4 opacity-10"><Clock className="w-32 h-32" /></div>
+                <div className="relative z-10 flex flex-col md:flex-row gap-6 items-center">
+                    <div className="w-20 h-20 rounded-full bg-violet-600 flex items-center justify-center text-4xl shadow-lg border-2 border-violet-400">⏰</div>
+                    <div className="flex-1">
+                        <h3 className="text-2xl font-serif-display mb-2">
+                            {isPortuguese ? "Expressões de Tempo no Passado" : "Time Expressions for the Past"}
+                        </h3>
+                        <p className="text-violet-100 text-sm leading-relaxed italic">
+                            {isPortuguese
+                                ? "\"Antes de dominar o Past Simple, você precisa saber QUANDO as coisas aconteceram. 'Yesterday', 'last week', 'two days ago' — essas expressões são o GPS temporal do inglês.\""
+                                : "\"Before mastering the Past Simple, you need to know WHEN things happened. 'Yesterday', 'last week', 'two days ago' — these expressions are the time GPS of English.\""
+                            }
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            {/* Visual Timeline */}
+            <section className="space-y-4">
+                <div className="flex items-center gap-3">
+                    <div className="p-2 bg-violet-100 rounded-lg text-violet-600"><ArrowRight className="w-5 h-5" /></div>
+                    <h4 className="text-2xl font-bold text-slate-800">
+                        {isPortuguese ? '📊 Linha do Tempo' : '📊 Timeline'}
+                    </h4>
+                </div>
+                <div className="relative bg-white rounded-2xl border border-slate-100 p-6 pt-12 overflow-hidden">
+                    <div className="h-2 bg-gradient-to-r from-violet-200 via-indigo-300 to-teal-400 rounded-full relative">
+                        {timeline.map((t, idx) => (
+                            <div key={idx} className="absolute" style={{ left: `${t.pos}%`, transform: 'translateX(-50%)' }}>
+                                <div className={`w-3 h-3 rounded-full ${idx === timeline.length - 1 ? 'bg-teal-500 ring-4 ring-teal-100' : 'bg-violet-500'} -mt-0.5`}></div>
+                                <div className={`text-[9px] font-bold mt-2 whitespace-nowrap ${idx === timeline.length - 1 ? 'text-teal-600' : 'text-slate-500'}`}>{t.label}</div>
+                            </div>
+                        ))}
+                    </div>
+                    <div className="text-center mt-8 text-xs text-slate-400">
+                        {isPortuguese ? '⬅️ PASSADO ————————— PRESENTE ➡️' : '⬅️ PAST ————————— PRESENT ➡️'}
+                    </div>
+                </div>
+            </section>
+
+            {/* Patterns */}
+            <section className="space-y-5">
+                <div className="flex items-center gap-3">
+                    <div className="p-2 bg-indigo-100 rounded-lg text-indigo-600"><BookOpen className="w-5 h-5" /></div>
+                    <h4 className="text-2xl font-bold text-slate-800">
+                        {isPortuguese ? '📐 Os 4 Padrões' : '📐 The 4 Patterns'}
+                    </h4>
+                </div>
+                <div className="grid sm:grid-cols-2 gap-5">
+                    {patterns.map((p, idx) => (
+                        <div key={idx} className={`p-5 rounded-2xl border-2 ${p.color}`}>
+                            <div className="flex items-center gap-3 mb-3">
+                                <span className="text-2xl">{p.icon}</span>
+                                <h5 className="text-lg font-black text-slate-800">{p.name}</h5>
+                            </div>
+                            <p className="text-xs text-slate-500 mb-3">{p.desc}</p>
+                            <div className="flex flex-wrap gap-2">
+                                {p.examples.map((ex, i) => (
+                                    <button key={i} onClick={() => speak(ex)} className="px-3 py-1.5 rounded-lg bg-white text-sm font-medium text-slate-700 hover:shadow-md transition-all">
+                                        {ex}
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </section>
+
+            {/* Full Expressions */}
+            <section className="space-y-5">
+                <div className="flex items-center gap-3">
+                    <div className="p-2 bg-teal-100 rounded-lg text-teal-600"><MessageCircle className="w-5 h-5" /></div>
+                    <h4 className="text-2xl font-bold text-slate-800">
+                        {isPortuguese ? '🗣️ Expressões com Exemplos' : '🗣️ Expressions with Examples'}
+                    </h4>
+                </div>
+                <div className="grid gap-3">
+                    {expressions.map((e, idx) => (
+                        <button key={idx} onClick={() => speak(e.example)} className={`w-full text-left p-4 rounded-2xl border border-slate-100 hover:shadow-md transition-all flex items-center gap-4 group ${e.color}`}>
+                            <span className="text-2xl flex-shrink-0">{e.icon}</span>
+                            <div className="flex-1">
+                                <div className="flex items-baseline gap-2 mb-0.5">
+                                    <span className="font-black text-slate-800">{e.en}</span>
+                                    <span className="text-[9px] font-mono text-slate-400">{e.ipa}</span>
+                                </div>
+                                <span className="text-sm text-indigo-600 font-medium">{e.example}</span>
+                                {isPortuguese && <span className="text-[11px] text-slate-400 block">{e.exPt}</span>}
+                                {isPortuguese && <span className="text-[9px] font-bold text-indigo-400 uppercase tracking-tight">{e.pt}</span>}
+                            </div>
+                            <Volume2 className="w-4 h-4 text-slate-300 group-hover:text-indigo-500 flex-shrink-0" />
+                        </button>
+                    ))}
+                </div>
+            </section>
+
+            {/* Common Mistake */}
+            <div className="p-6 rounded-2xl bg-amber-50 border-2 border-amber-100 flex items-start gap-4">
+                <div className="text-3xl">💡</div>
+                <div>
+                    <h5 className="font-bold text-amber-800 text-lg mb-1">{isPortuguese ? 'Dica de Ouro' : 'Golden Tip'}</h5>
+                    <p className="text-amber-700 text-sm leading-relaxed">
+                        {isPortuguese
+                            ? "'Ago' SEMPRE vem DEPOIS da quantidade de tempo: 'Two days ago' ✅ 'Ago two days' ❌. Já 'Last' vem ANTES do período: 'Last week' ✅ 'Week last' ❌. E nunca misture os dois: 'Last two days ago' ❌"
+                            : "'Ago' ALWAYS comes AFTER the amount of time: 'Two days ago' ✅ 'Ago two days' ❌. And 'Last' comes BEFORE the period: 'Last week' ✅ 'Week last' ❌. Never mix both: 'Last two days ago' ❌"
+                        }
+                    </p>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+// --- M8: PAST SIMPLE — VERB TO BE ---
+const PastSimpleLesson = ({ isPortuguese }: { isPortuguese: boolean }) => {
+    const wasWere = [
+        { subject: 'I', verb: 'was', ipa: '/wɒz/', pt: 'eu era/estava', icon: '🙋', example: 'I was tired.', exPt: 'Eu estava cansado.' },
+        { subject: 'You', verb: 'were', ipa: '/wɜːr/', pt: 'você era/estava', icon: '👤', example: 'You were right.', exPt: 'Você estava certo.' },
+        { subject: 'He', verb: 'was', ipa: '/wɒz/', pt: 'ele era/estava', icon: '👦', example: 'He was a teacher.', exPt: 'Ele era professor.' },
+        { subject: 'She', verb: 'was', ipa: '/wɒz/', pt: 'ela era/estava', icon: '👧', example: 'She was happy.', exPt: 'Ela estava feliz.' },
+        { subject: 'It', verb: 'was', ipa: '/wɒz/', pt: 'era/estava', icon: '📦', example: 'It was cold.', exPt: 'Estava frio.' },
+        { subject: 'We', verb: 'were', ipa: '/wɜːr/', pt: 'nós éramos/estávamos', icon: '👥', example: 'We were friends.', exPt: 'Nós éramos amigos.' },
+        { subject: 'They', verb: 'were', ipa: '/wɜːr/', pt: 'eles eram/estavam', icon: '👫', example: 'They were at home.', exPt: 'Eles estavam em casa.' },
+    ];
+
+    const negativeExamples = [
+        { en: "I wasn't ready.", pt: 'Eu não estava pronto.', icon: '🙅' },
+        { en: "You weren't there.", pt: 'Você não estava lá.', icon: '❌' },
+        { en: "She wasn't angry.", pt: 'Ela não estava com raiva.', icon: '😌' },
+        { en: "We weren't late.", pt: 'Não estávamos atrasados.', icon: '⏰' },
+        { en: "They weren't happy.", pt: 'Eles não estavam felizes.', icon: '😔' },
+    ];
+
+    const questions = [
+        { q: 'Were you at the party?', a1: 'Yes, I was.', a2: "No, I wasn't.", pt: 'Você estava na festa?', icon: '🎉' },
+        { q: 'Was she a doctor?', a1: 'Yes, she was.', a2: "No, she wasn't.", pt: 'Ela era médica?', icon: '👩‍⚕️' },
+        { q: 'Were they students?', a1: 'Yes, they were.', a2: "No, they weren't.", pt: 'Eles eram estudantes?', icon: '🎓' },
+        { q: 'Was it expensive?', a1: 'Yes, it was.', a2: "No, it wasn't.", pt: 'Era caro?', icon: '💰' },
+    ];
+
+    const bornExamples = [
+        { en: 'I was born in 1995.', pt: 'Eu nasci em 1995.', icon: '👶' },
+        { en: 'She was born in Brazil.', pt: 'Ela nasceu no Brasil.', icon: '🇧🇷' },
+        { en: 'Where were you born?', pt: 'Onde você nasceu?', icon: '🌍' },
+        { en: 'He was born on March 10th.', pt: 'Ele nasceu em 10 de março.', icon: '🎂' },
+    ];
+
+    return (
+        <div className="space-y-10 animate-fade-in pb-20">
+            {/* Senior Teacher Intro */}
+            <div className="relative p-8 rounded-[2rem] bg-rose-900 text-white overflow-hidden shadow-2xl">
+                <div className="absolute top-0 right-0 p-4 opacity-10"><IterationCw className="w-32 h-32" /></div>
+                <div className="relative z-10 flex flex-col md:flex-row gap-6 items-center">
+                    <div className="w-20 h-20 rounded-full bg-rose-600 flex items-center justify-center text-4xl shadow-lg border-2 border-rose-400">⏳</div>
+                    <div className="flex-1">
+                        <h3 className="text-2xl font-serif-display mb-2">
+                            {isPortuguese ? "Past Simple: Verbo To Be" : "Past Simple: Verb To Be"}
+                        </h3>
+                        <p className="text-rose-100 text-sm leading-relaxed italic">
+                            {isPortuguese
+                                ? "\"O 'was/were' é o verbo To Be no passado. Se no presente dizemos 'I am', no passado dizemos 'I was'. É o primeiro passo para falar sobre o passado em inglês. Apenas duas formas: WAS para I/he/she/it e WERE para you/we/they.\""
+                                : "\"'Was/were' is the verb To Be in the past. If in the present we say 'I am', in the past we say 'I was'. It's the first step to talking about the past in English. Just two forms: WAS for I/he/she/it and WERE for you/we/they.\""
+                            }
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            {/* Structure Cards */}
+            <div className="grid md:grid-cols-2 gap-6">
+                <div className="p-6 rounded-2xl bg-indigo-50 border-2 border-indigo-200 text-center">
+                    <div className="text-3xl mb-3">👤</div>
+                    <p className="font-black text-indigo-700 text-2xl mb-2">WAS</p>
+                    <div className="flex flex-wrap justify-center gap-2 mb-3">
+                        {['I', 'He', 'She', 'It'].map(s => (
+                            <span key={s} className="px-3 py-1 bg-indigo-100 rounded-full text-indigo-700 font-bold text-sm">{s}</span>
+                        ))}
+                    </div>
+                    <p className="text-xs text-slate-500">{isPortuguese ? 'Singular (exceto You)' : 'Singular (except You)'}</p>
+                    <button onClick={() => speak('I was happy yesterday.')} className="mt-3 text-sm text-indigo-600 hover:text-indigo-800 flex items-center gap-1 mx-auto font-medium">
+                        <Volume2 className="w-3 h-3" /> I was happy yesterday.
+                    </button>
+                </div>
+                <div className="p-6 rounded-2xl bg-emerald-50 border-2 border-emerald-200 text-center">
+                    <div className="text-3xl mb-3">👥</div>
+                    <p className="font-black text-emerald-700 text-2xl mb-2">WERE</p>
+                    <div className="flex flex-wrap justify-center gap-2 mb-3">
+                        {['You', 'We', 'They'].map(s => (
+                            <span key={s} className="px-3 py-1 bg-emerald-100 rounded-full text-emerald-700 font-bold text-sm">{s}</span>
+                        ))}
+                    </div>
+                    <p className="text-xs text-slate-500">{isPortuguese ? 'Plural + You' : 'Plural + You'}</p>
+                    <button onClick={() => speak('We were at school.')} className="mt-3 text-sm text-emerald-600 hover:text-emerald-800 flex items-center gap-1 mx-auto font-medium">
+                        <Volume2 className="w-3 h-3" /> We were at school.
+                    </button>
+                </div>
+            </div>
+
+            {/* Affirmative Grid */}
+            <section className="space-y-5">
+                <div className="flex items-center gap-3">
+                    <div className="p-2 bg-indigo-100 rounded-lg text-indigo-600"><CheckCircle2 className="w-5 h-5" /></div>
+                    <h4 className="text-2xl font-bold text-slate-800">
+                        {isPortuguese ? '✅ Afirmativo' : '✅ Affirmative'}
+                    </h4>
+                </div>
+                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                    {wasWere.map((w, idx) => (
+                        <button key={idx} onClick={() => speak(w.example)} className={`p-4 rounded-2xl border border-slate-100 hover:shadow-md transition-all text-left group ${w.verb === 'was' ? 'bg-indigo-50/50' : 'bg-emerald-50/50'}`}>
+                            <div className="flex items-center gap-3 mb-2">
+                                <span className="text-xl">{w.icon}</span>
+                                <div className="flex items-baseline gap-2">
+                                    <span className="text-sm font-medium text-slate-500">{w.subject}</span>
+                                    <span className={`font-black text-lg ${w.verb === 'was' ? 'text-indigo-700' : 'text-emerald-700'}`}>{w.verb}</span>
+                                    <span className="text-[9px] font-mono text-slate-400">{w.ipa}</span>
+                                </div>
+                            </div>
+                            <p className="text-sm text-slate-700 font-medium">{w.example}</p>
+                            {isPortuguese && <p className="text-[11px] text-slate-400">{w.exPt}</p>}
+                            {isPortuguese && <p className="text-[9px] font-bold text-indigo-400 uppercase tracking-tight mt-1">{w.pt}</p>}
+                        </button>
+                    ))}
+                </div>
+            </section>
+
+            {/* Negative */}
+            <section className="space-y-5">
+                <div className="flex items-center gap-3">
+                    <div className="p-2 bg-rose-100 rounded-lg text-rose-600"><XCircle className="w-5 h-5" /></div>
+                    <h4 className="text-2xl font-bold text-slate-800">
+                        {isPortuguese ? '🚫 Negativo — wasn\'t / weren\'t' : '🚫 Negative — wasn\'t / weren\'t'}
+                    </h4>
+                </div>
+                <div className="grid md:grid-cols-2 gap-4">
+                    <div className="p-5 rounded-2xl bg-rose-50 border-2 border-rose-200">
+                        <div className="bg-white p-4 rounded-xl border border-rose-100 text-center mb-3">
+                            <p className="font-black text-rose-700 text-xl">was not → wasn't</p>
+                            <p className="text-[10px] text-slate-400 font-mono">/ˈwɒzənt/</p>
+                        </div>
+                    </div>
+                    <div className="p-5 rounded-2xl bg-rose-50 border-2 border-rose-200">
+                        <div className="bg-white p-4 rounded-xl border border-rose-100 text-center mb-3">
+                            <p className="font-black text-rose-700 text-xl">were not → weren't</p>
+                            <p className="text-[10px] text-slate-400 font-mono">/wɜːrnt/</p>
+                        </div>
+                    </div>
+                </div>
+                <div className="grid gap-3">
+                    {negativeExamples.map((n, idx) => (
+                        <button key={idx} onClick={() => speak(n.en)} className="w-full text-left p-4 rounded-2xl bg-white border border-slate-100 hover:border-rose-200 hover:shadow-md transition-all flex items-center gap-4 group">
+                            <span className="text-xl">{n.icon}</span>
+                            <div className="flex-1">
+                                <span className="font-bold text-rose-700 text-sm">{n.en}</span>
+                                {isPortuguese && <span className="text-[11px] text-slate-400 block">{n.pt}</span>}
+                            </div>
+                            <Volume2 className="w-4 h-4 text-slate-300 group-hover:text-rose-500 flex-shrink-0" />
+                        </button>
+                    ))}
+                </div>
+            </section>
+
+            {/* Questions */}
+            <section className="space-y-5">
+                <div className="flex items-center gap-3">
+                    <div className="p-2 bg-blue-100 rounded-lg text-blue-600"><HelpCircle className="w-5 h-5" /></div>
+                    <h4 className="text-2xl font-bold text-slate-800">
+                        {isPortuguese ? '❓ Perguntas e Respostas Curtas' : '❓ Questions & Short Answers'}
+                    </h4>
+                </div>
+                <div className="bg-white rounded-2xl border border-slate-100 p-4 mb-4">
+                    <p className="text-center font-black text-blue-700 text-xl">Was/Were + subject + complement?</p>
+                    <p className="text-center text-xs text-slate-400 mt-1">{isPortuguese ? 'Inverta o verbo e o sujeito!' : 'Invert verb and subject!'}</p>
+                </div>
+                <div className="grid gap-4">
+                    {questions.map((item, idx) => (
+                        <div key={idx} className="p-5 bg-white rounded-2xl border border-slate-100 hover:shadow-md transition-all">
+                            <div className="flex items-center gap-3 mb-3">
+                                <span className="text-2xl">{item.icon}</span>
+                                <button onClick={() => speak(item.q)} className="flex items-center gap-2 group">
+                                    <span className="font-bold text-blue-700 text-lg">{item.q}</span>
+                                    <Volume2 className="w-4 h-4 text-blue-300 group-hover:text-blue-600" />
+                                </button>
+                                {isPortuguese && <span className="text-[11px] text-slate-400">({item.pt})</span>}
+                            </div>
+                            <div className="flex flex-wrap gap-3 pl-10">
+                                <button onClick={() => speak(item.a1)} className="px-4 py-2 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-700 font-bold text-sm hover:bg-emerald-100 transition-all flex items-center gap-2">
+                                    <CheckCircle2 className="w-4 h-4" /> {item.a1}
+                                </button>
+                                <button onClick={() => speak(item.a2)} className="px-4 py-2 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 font-bold text-sm hover:bg-rose-100 transition-all flex items-center gap-2">
+                                    <XCircle className="w-4 h-4" /> {item.a2}
+                                </button>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </section>
+
+            {/* Born Section */}
+            <section className="bg-slate-800 rounded-[2.5rem] p-8 text-white relative overflow-hidden">
+                <div className="absolute -right-10 -bottom-10 w-40 h-40 bg-pink-500 rounded-full blur-3xl opacity-20"></div>
+                <div className="relative z-10">
+                    <div className="flex items-center gap-3 mb-6">
+                        <div className="p-2 bg-pink-500/20 rounded-lg"><Baby className="w-6 h-6 text-pink-400" /></div>
+                        <h4 className="text-2xl font-bold">
+                            {isPortuguese ? '👶 Was Born — Nascer' : '👶 Was Born — To Be Born'}
+                        </h4>
+                    </div>
+                    <p className="text-slate-300 text-sm mb-4">
+                        {isPortuguese
+                            ? "Em inglês, 'nascer' usa o verbo To Be + born: 'I was born' (eu nasci). Nunca 'I borned' ❌"
+                            : "In English, 'to be born' uses the verb To Be + born: 'I was born'. Never 'I borned' ❌"
+                        }
+                    </p>
+                    <div className="grid sm:grid-cols-2 gap-3">
+                        {bornExamples.map((b, idx) => (
+                            <button key={idx} onClick={() => speak(b.en)} className="text-left p-4 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all flex items-center gap-3 group">
+                                <span className="text-xl">{b.icon}</span>
+                                <div>
+                                    <span className="font-bold text-sm">{b.en}</span>
+                                    {isPortuguese && <span className="text-[11px] text-slate-400 block">{b.pt}</span>}
+                                </div>
+                                <Volume2 className="w-3 h-3 text-slate-500 group-hover:text-pink-400 ml-auto flex-shrink-0" />
+                            </button>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* Golden Tip */}
+            <div className="p-6 rounded-2xl bg-amber-50 border-2 border-amber-100 flex items-start gap-4">
+                <div className="text-3xl">💡</div>
+                <div>
+                    <h5 className="font-bold text-amber-800 text-lg mb-1">{isPortuguese ? 'Dica de Ouro' : 'Golden Tip'}</h5>
+                    <p className="text-amber-700 text-sm leading-relaxed">
+                        {isPortuguese
+                            ? "A regra é simples: WAS para singular (I/he/she/it), WERE para plural (you/we/they). 'You' sempre usa WERE, mesmo no singular! 'You was' ❌ → 'You were' ✅. E na negativa, basta adicionar 'not': wasn't / weren't."
+                            : "The rule is simple: WAS for singular (I/he/she/it), WERE for plural (you/we/they). 'You' always uses WERE, even in singular! 'You was' ❌ → 'You were' ✅. And for negatives, just add 'not': wasn't / weren't."
+                        }
+                    </p>
+                </div>
+            </div>
+        </div>
+    );
+};
+
 const FoodAndDrink = ({ isPortuguese }: { isPortuguese: boolean }) => {
     const [activeCategory, setActiveCategory] = useState<string | null>(null);
 
@@ -7078,6 +7715,9 @@ export default function App() {
             case 28: return <ImperativesLesson isPortuguese={isPortuguese} />;
             case 29: return <CanCantLesson isPortuguese={isPortuguese} />;
             case 30: return <FoodAndDrink isPortuguese={isPortuguese} />;
+            case 31: return <DatesOrdinalNumbers isPortuguese={isPortuguese} />;
+            case 32: return <TimeExpressionsPast isPortuguese={isPortuguese} />;
+            case 33: return <PastSimpleLesson isPortuguese={isPortuguese} />;
             default: return <BuildingLesson title={getTitleForBuilding(activeSection)} isPortuguese={isPortuguese} />;
         }
     };
