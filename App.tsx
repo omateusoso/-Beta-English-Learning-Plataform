@@ -6010,6 +6010,14 @@ const DatesOrdinalNumbers = ({ isPortuguese }: { isPortuguese: boolean }) => {
         { n: '21st', word: 'Twenty-first', ipa: '/ˌtwɛntiˈfɜːrst/', pt: 'Vigésimo primeiro', icon: '2️⃣1️⃣' },
         { n: '30th', word: 'Thirtieth', ipa: '/ˈθɜːrtiəθ/', pt: 'Trigésimo', icon: '3️⃣0️⃣' },
         { n: '31st', word: 'Thirty-first', ipa: '/ˌθɜːrtiˈfɜːrst/', pt: 'Trigésimo primeiro', icon: '3️⃣1️⃣' },
+        { n: '40th', word: 'Fortieth', ipa: '/ˈfɔːrtiəθ/', pt: 'Quadragésimo', icon: '4️⃣0️⃣' },
+        { n: '50th', word: 'Fiftieth', ipa: '/ˈfɪftiəθ/', pt: 'Quinquagésimo', icon: '5️⃣0️⃣' },
+        { n: '60th', word: 'Sixtieth', ipa: '/ˈsɪkstiəθ/', pt: 'Sexagésimo', icon: '6️⃣0️⃣' },
+        { n: '70th', word: 'Seventieth', ipa: '/ˈsɛvəntiəθ/', pt: 'Septuagésimo', icon: '7️⃣0️⃣' },
+        { n: '80th', word: 'Eightieth', ipa: '/ˈeɪtiəθ/', pt: 'Octogésimo', icon: '8️⃣0️⃣' },
+        { n: '90th', word: 'Ninetieth', ipa: '/ˈnaɪntiəθ/', pt: 'Nonagésimo', icon: '9️⃣0️⃣' },
+        { n: '100th', word: 'One hundredth', ipa: '/wʌn ˈhʌndrədθ/', pt: 'Centésimo', icon: '💯' },
+        { n: '1,000th', word: 'One thousandth', ipa: '/wʌn ˈθaʊzəndθ/', pt: 'Milésimo', icon: '🔢' },
     ];
 
     const months = [
@@ -6095,19 +6103,17 @@ const DatesOrdinalNumbers = ({ isPortuguese }: { isPortuguese: boolean }) => {
                         <button
                             key={idx}
                             onClick={() => speak(o.word)}
-                            className="group p-4 bg-white rounded-2xl border border-slate-100 hover:border-teal-200 shadow-sm hover:shadow-md transition-all text-left"
+                            className="group p-4 bg-white rounded-2xl border border-slate-100 hover:border-teal-200 shadow-sm hover:shadow-md transition-all text-left overflow-hidden"
                         >
-                            <div className="flex items-center gap-3 mb-2">
-                                <span className="text-xl">{o.icon}</span>
-                                <div>
-                                    <div className="flex items-baseline gap-2">
-                                        <span className="font-black text-teal-700 text-lg">{o.n}</span>
-                                        <span className="text-sm text-slate-500 font-medium">{o.word}</span>
-                                    </div>
+                            <div className="flex items-start gap-3 mb-2">
+                                <span className="text-xl flex-shrink-0">{o.icon}</span>
+                                <div className="min-w-0">
+                                    <span className="font-black text-teal-700 text-lg block">{o.n}</span>
+                                    <span className="text-sm text-slate-500 font-medium block break-words">{o.word}</span>
                                     <span className="text-[9px] font-mono text-slate-400">{o.ipa}</span>
                                 </div>
                             </div>
-                            {isPortuguese && <div className="text-[10px] font-bold text-indigo-400 uppercase tracking-tight">{o.pt}</div>}
+                            {isPortuguese && <div className="text-[10px] font-bold text-indigo-400 uppercase tracking-tight break-words">{o.pt}</div>}
                         </button>
                     ))}
                 </div>
@@ -6620,6 +6626,563 @@ const PastSimpleLesson = ({ isPortuguese }: { isPortuguese: boolean }) => {
                     </p>
                 </div>
             </div>
+        </div>
+    );
+};
+
+// --- M8: PAST SIMPLE — REGULAR VERBS ---
+const PastSimpleRegularVerbs = ({ isPortuguese }: { isPortuguese: boolean }) => {
+    const edRules = [
+        { rule: isPortuguese ? 'Regra geral: + ed' : 'General rule: + ed', examples: ['work → worked', 'play → played', 'clean → cleaned', 'open → opened'], color: 'bg-indigo-50 border-indigo-200', suffix: '+ed' },
+        { rule: isPortuguese ? 'Termina em -e: + d' : 'Ends in -e: + d', examples: ['live → lived', 'dance → danced', 'love → loved', 'arrive → arrived'], color: 'bg-emerald-50 border-emerald-200', suffix: '+d' },
+        { rule: isPortuguese ? 'Consoante + y: troque y → ied' : 'Consonant + y: change y → ied', examples: ['study → studied', 'try → tried', 'carry → carried', 'cry → cried'], color: 'bg-amber-50 border-amber-200', suffix: 'y→ied' },
+        { rule: isPortuguese ? 'CVC curto: dobre a consoante + ed' : 'Short CVC: double consonant + ed', examples: ['stop → stopped', 'plan → planned', 'drop → dropped', 'chat → chatted'], color: 'bg-rose-50 border-rose-200', suffix: '×2+ed' },
+    ];
+    const pronunciation = [
+        { sound: '/t/', rule: isPortuguese ? 'Após sons surdos: k, p, f, s, sh, ch' : 'After voiceless sounds: k, p, f, s, sh, ch', examples: [{ verb: 'worked', ipa: '/wɜːrkt/', pt: 'trabalhou' }, { verb: 'stopped', ipa: '/stɑːpt/', pt: 'parou' }, { verb: 'washed', ipa: '/wɑːʃt/', pt: 'lavou' }, { verb: 'watched', ipa: '/wɑːtʃt/', pt: 'assistiu' }], color: 'bg-sky-50 border-sky-200', icon: '🔇' },
+        { sound: '/d/', rule: isPortuguese ? 'Após sons sonoros: b, g, l, m, n, r, v, z + vogais' : 'After voiced sounds: b, g, l, m, n, r, v, z + vowels', examples: [{ verb: 'played', ipa: '/pleɪd/', pt: 'jogou' }, { verb: 'cleaned', ipa: '/kliːnd/', pt: 'limpou' }, { verb: 'lived', ipa: '/lɪvd/', pt: 'viveu' }, { verb: 'called', ipa: '/kɔːld/', pt: 'ligou' }], color: 'bg-emerald-50 border-emerald-200', icon: '🔊' },
+        { sound: '/ɪd/', rule: isPortuguese ? 'Após sons de t ou d' : 'After t or d sounds', examples: [{ verb: 'wanted', ipa: '/ˈwɑːntɪd/', pt: 'quis' }, { verb: 'needed', ipa: '/ˈniːdɪd/', pt: 'precisou' }, { verb: 'started', ipa: '/ˈstɑːrtɪd/', pt: 'começou' }, { verb: 'decided', ipa: '/dɪˈsaɪdɪd/', pt: 'decidiu' }], color: 'bg-violet-50 border-violet-200', icon: '🗣️' },
+    ];
+    const commonVerbs = [
+        { base: 'Work', past: 'Worked', ipa: '/wɜːrkt/', pt: 'Trabalhar', icon: '💼', ex: 'I worked yesterday.', exPt: 'Eu trabalhei ontem.' },
+        { base: 'Study', past: 'Studied', ipa: '/ˈstʌdid/', pt: 'Estudar', icon: '📚', ex: 'She studied all night.', exPt: 'Ela estudou a noite toda.' },
+        { base: 'Play', past: 'Played', ipa: '/pleɪd/', pt: 'Jogar', icon: '⚽', ex: 'They played football.', exPt: 'Eles jogaram futebol.' },
+        { base: 'Live', past: 'Lived', ipa: '/lɪvd/', pt: 'Morar', icon: '🏠', ex: 'We lived in São Paulo.', exPt: 'Nós moramos em São Paulo.' },
+        { base: 'Walk', past: 'Walked', ipa: '/wɔːkt/', pt: 'Caminhar', icon: '🚶', ex: 'He walked to school.', exPt: 'Ele caminhou até a escola.' },
+        { base: 'Cook', past: 'Cooked', ipa: '/kʊkt/', pt: 'Cozinhar', icon: '👨‍🍳', ex: 'She cooked dinner.', exPt: 'Ela cozinhou o jantar.' },
+        { base: 'Watch', past: 'Watched', ipa: '/wɑːtʃt/', pt: 'Assistir', icon: '📺', ex: 'I watched a movie.', exPt: 'Eu assisti um filme.' },
+        { base: 'Travel', past: 'Traveled', ipa: '/ˈtrævəld/', pt: 'Viajar', icon: '✈️', ex: 'We traveled to Europe.', exPt: 'Nós viajamos para a Europa.' },
+        { base: 'Dance', past: 'Danced', ipa: '/dænst/', pt: 'Dançar', icon: '💃', ex: 'They danced all night.', exPt: 'Eles dançaram a noite toda.' },
+        { base: 'Want', past: 'Wanted', ipa: '/ˈwɑːntɪd/', pt: 'Querer', icon: '🎯', ex: 'I wanted a new job.', exPt: 'Eu queria um emprego novo.' },
+        { base: 'Start', past: 'Started', ipa: '/ˈstɑːrtɪd/', pt: 'Começar', icon: '🚀', ex: 'The class started at 8.', exPt: 'A aula começou às 8.' },
+        { base: 'Arrive', past: 'Arrived', ipa: '/əˈraɪvd/', pt: 'Chegar', icon: '📍', ex: 'She arrived late.', exPt: 'Ela chegou atrasada.' },
+    ];
+    return (
+        <div className="space-y-10 animate-fade-in pb-20">
+            <div className="relative p-8 rounded-[2rem] bg-orange-900 text-white overflow-hidden shadow-2xl">
+                <div className="absolute top-0 right-0 p-4 opacity-10"><BookOpen className="w-32 h-32" /></div>
+                <div className="relative z-10 flex flex-col md:flex-row gap-6 items-center">
+                    <div className="w-20 h-20 rounded-full bg-orange-600 flex items-center justify-center text-4xl shadow-lg border-2 border-orange-400">📝</div>
+                    <div className="flex-1">
+                        <h3 className="text-2xl font-serif-display mb-2">{isPortuguese ? "Past Simple: Verbos Regulares" : "Past Simple: Regular Verbs"}</h3>
+                        <p className="text-orange-100 text-sm leading-relaxed italic">
+                            {isPortuguese
+                                ? "\"A boa notícia: a maioria dos verbos em inglês é regular. Basta adicionar '-ed' ao final e pronto — você já está falando no passado! Mas atenção: a ortografia e a pronúncia do '-ed' têm regras que você precisa dominar.\""
+                                : "\"The good news: most English verbs are regular. Just add '-ed' to the end and you're speaking in the past! But careful — the spelling and pronunciation of '-ed' have rules you need to master.\""}
+                        </p>
+                    </div>
+                </div>
+            </div>
+            {/* Structure Cards */}
+            <div className="grid md:grid-cols-3 gap-5">
+                <div className="p-5 rounded-2xl bg-emerald-50 border-2 border-emerald-200 text-center">
+                    <div className="text-3xl mb-3">✅</div>
+                    <p className="font-black text-emerald-700 text-lg mb-1">Subject + verb-ed</p>
+                    <button onClick={() => speak('I worked yesterday.')} className="text-sm text-emerald-600 hover:text-emerald-800 transition-colors flex items-center gap-1 mx-auto font-medium"><Volume2 className="w-3 h-3" /> I worked yesterday.</button>
+                    {isPortuguese && <p className="text-[11px] text-slate-400 mt-1">Eu trabalhei ontem.</p>}
+                </div>
+                <div className="p-5 rounded-2xl bg-rose-50 border-2 border-rose-200 text-center">
+                    <div className="text-3xl mb-3">❌</div>
+                    <p className="font-black text-rose-700 text-lg mb-1">Subject + didn't + verb</p>
+                    <button onClick={() => speak("I didn't work yesterday.")} className="text-sm text-rose-600 hover:text-rose-800 transition-colors flex items-center gap-1 mx-auto font-medium"><Volume2 className="w-3 h-3" /> I didn't work.</button>
+                    {isPortuguese && <p className="text-[11px] text-slate-400 mt-1">Eu não trabalhei ontem.</p>}
+                </div>
+                <div className="p-5 rounded-2xl bg-blue-50 border-2 border-blue-200 text-center">
+                    <div className="text-3xl mb-3">❓</div>
+                    <p className="font-black text-blue-700 text-lg mb-1">Did + subject + verb?</p>
+                    <button onClick={() => speak('Did you work yesterday?')} className="text-sm text-blue-600 hover:text-blue-800 transition-colors flex items-center gap-1 mx-auto font-medium"><Volume2 className="w-3 h-3" /> Did you work?</button>
+                    {isPortuguese && <p className="text-[11px] text-slate-400 mt-1">Você trabalhou ontem?</p>}
+                </div>
+            </div>
+            {/* DID Rule */}
+            <div className="p-6 rounded-2xl bg-slate-800 text-white flex flex-col md:flex-row items-start gap-5">
+                <div className="text-3xl">⚠️</div>
+                <div className="flex-1">
+                    <h5 className="font-bold text-lg mb-2">{isPortuguese ? 'Regra importantíssima sobre o DID' : 'Critical rule about DID'}</h5>
+                    <p className="text-slate-300 text-sm leading-relaxed">
+                        {isPortuguese
+                            ? "Quando usamos DID (negativa e pergunta), o verbo VOLTA para a forma base! O 'did' já carrega o passado. \"Did you worked?\" ❌ → \"Did you work?\" ✅ | \"I didn't played\" ❌ → \"I didn't play\" ✅"
+                            : "When using DID (negative and question), the verb goes BACK to base form! 'Did' already carries the past. \"Did you worked?\" ❌ → \"Did you work?\" ✅ | \"I didn't played\" ❌ → \"I didn't play\" ✅"}
+                    </p>
+                </div>
+            </div>
+            {/* Spelling Rules */}
+            <section className="space-y-5">
+                <div className="flex items-center gap-3">
+                    <div className="p-2 bg-indigo-100 rounded-lg text-indigo-600"><BookOpen className="w-5 h-5" /></div>
+                    <h4 className="text-2xl font-bold text-slate-800">{isPortuguese ? '✏️ Regras de Ortografia' : '✏️ Spelling Rules'}</h4>
+                </div>
+                <div className="grid sm:grid-cols-2 gap-4">
+                    {edRules.map((r, idx) => (
+                        <div key={idx} className={`p-5 rounded-2xl border-2 ${r.color}`}>
+                            <div className="font-black text-2xl text-center text-slate-800 mb-2">{r.suffix}</div>
+                            <p className="text-xs text-slate-600 text-center font-medium mb-3">{r.rule}</p>
+                            <div className="space-y-1">
+                                {r.examples.map((ex, i) => (
+                                    <button key={i} onClick={() => speak(ex.split(' → ')[1])} className="w-full text-left px-3 py-2 rounded-lg bg-white/70 hover:bg-white text-sm font-mono text-slate-700 transition-all">{ex}</button>
+                                ))}
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </section>
+            {/* Pronunciation of -ed */}
+            <section className="space-y-5">
+                <div className="flex items-center gap-3">
+                    <div className="p-2 bg-violet-100 rounded-lg text-violet-600"><Volume2 className="w-5 h-5" /></div>
+                    <h4 className="text-2xl font-bold text-slate-800">{isPortuguese ? '🎙️ Pronúncia do -ED (3 sons)' : '🎙️ Pronunciation of -ED (3 sounds)'}</h4>
+                </div>
+                <div className="grid md:grid-cols-3 gap-5">
+                    {pronunciation.map((p, idx) => (
+                        <div key={idx} className={`p-5 rounded-2xl border-2 ${p.color}`}>
+                            <div className="flex items-center gap-2 mb-3"><span className="text-2xl">{p.icon}</span><span className="font-black text-2xl text-slate-800">{p.sound}</span></div>
+                            <p className="text-xs text-slate-500 mb-4">{p.rule}</p>
+                            <div className="space-y-2">
+                                {p.examples.map((ex, i) => (
+                                    <button key={i} onClick={() => speak(ex.verb)} className="w-full text-left p-2.5 rounded-xl bg-white/70 hover:bg-white transition-all flex items-center gap-2 group">
+                                        <Volume2 className="w-3 h-3 text-slate-300 group-hover:text-indigo-500 flex-shrink-0" />
+                                        <div className="min-w-0"><span className="text-sm font-bold text-slate-700 block">{ex.verb}</span><span className="text-[9px] font-mono text-slate-400">{ex.ipa}</span>{isPortuguese && <span className="text-[10px] text-indigo-400 block">{ex.pt}</span>}</div>
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </section>
+            {/* Common Regular Verbs */}
+            <section className="space-y-5">
+                <div className="flex items-center gap-3">
+                    <div className="p-2 bg-orange-100 rounded-lg text-orange-600"><List className="w-5 h-5" /></div>
+                    <h4 className="text-2xl font-bold text-slate-800">{isPortuguese ? '📋 Verbos Regulares Essenciais' : '📋 Essential Regular Verbs'}</h4>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {commonVerbs.map((v, idx) => (
+                        <button key={idx} onClick={() => speak(v.ex)} className="group p-4 bg-white rounded-2xl border border-slate-100 hover:border-orange-200 shadow-sm hover:shadow-md transition-all text-left overflow-hidden">
+                            <div className="flex items-start gap-3 mb-2">
+                                <span className="text-2xl flex-shrink-0">{v.icon}</span>
+                                <div className="min-w-0"><span className="text-sm text-slate-400 block">{v.base}</span><span className="font-black text-orange-700 text-lg block">{v.past}</span><span className="text-[9px] font-mono text-slate-400">{v.ipa}</span></div>
+                            </div>
+                            <p className="text-sm text-slate-600 font-medium">{v.ex}</p>
+                            {isPortuguese && <p className="text-[11px] text-slate-400">{v.exPt}</p>}
+                            {isPortuguese && <p className="text-[9px] font-bold text-indigo-400 uppercase mt-1">{v.pt}</p>}
+                        </button>
+                    ))}
+                </div>
+            </section>
+            {/* Common Mistakes */}
+            <div className="p-6 rounded-2xl bg-slate-800 text-white">
+                <h5 className="font-bold text-lg mb-4 flex items-center gap-2"><XCircle className="w-5 h-5 text-rose-400" />{isPortuguese ? 'Erros Comuns' : 'Common Mistakes'}</h5>
+                <div className="space-y-3">
+                    {[
+                        { wrong: "I didn't worked.", right: "I didn't work.", tip: isPortuguese ? "Com 'did/didn't', verbo volta à base!" : "With 'did/didn't', verb goes back to base!" },
+                        { wrong: "Did you played?", right: "Did you play?", tip: isPortuguese ? "Mesmo caso: 'did' carrega o passado." : "Same case: 'did' carries the past." },
+                        { wrong: "He plaied football.", right: "He played football.", tip: isPortuguese ? "'Play' termina em vogal+y: +ed direto." : "'Play' ends in vowel+y: just add +ed." },
+                    ].map((m, idx) => (
+                        <div key={idx} className="p-4 rounded-xl bg-white/5 border border-white/10">
+                            <div className="flex items-center gap-3 mb-1"><span className="text-rose-400 font-black text-sm">✗ {m.wrong}</span></div>
+                            <div className="flex items-center gap-3 mb-1"><span className="text-emerald-400 font-black text-sm">✓ {m.right}</span></div>
+                            <p className="text-[11px] text-slate-400">{m.tip}</p>
+                        </div>
+                    ))}
+                </div>
+            </div>
+            {/* Golden Tip */}
+            <div className="p-6 rounded-2xl bg-amber-50 border-2 border-amber-100 flex items-start gap-4">
+                <div className="text-3xl">💡</div>
+                <div>
+                    <h5 className="font-bold text-amber-800 text-lg mb-1">{isPortuguese ? 'Dica de Ouro' : 'Golden Tip'}</h5>
+                    <p className="text-amber-700 text-sm leading-relaxed">
+                        {isPortuguese
+                            ? "Para a maioria dos verbos, basta adicionar -ed. Na fala, preste atenção nos 3 sons: /t/ (worked), /d/ (played), /ɪd/ (wanted). O som /ɪd/ só aparece quando o verbo termina em T ou D — nos outros casos, o -ed quase não se ouve!"
+                            : "For most verbs, just add -ed. When speaking, pay attention to the 3 sounds: /t/ (worked), /d/ (played), /ɪd/ (wanted). The /ɪd/ sound only appears when the verb ends in T or D — in other cases, the -ed is barely heard!"}
+                    </p>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+// --- M8: PAST SIMPLE — IRREGULAR VERBS ---
+const PastSimpleIrregularVerbs = ({ isPortuguese }: { isPortuguese: boolean }) => {
+    const patterns = [
+        {
+            name: isPortuguese ? '🔵 Mesma forma' : '🔵 Same form', desc: isPortuguese ? 'Base = Past (não muda!)' : 'Base = Past (no change!)', verbs: [
+                { base: 'Cut', past: 'Cut', pp: 'Cut', ipa: '/kʌt/', pt: 'Cortar', icon: '✂️' },
+                { base: 'Put', past: 'Put', pp: 'Put', ipa: '/pʊt/', pt: 'Colocar', icon: '📦' },
+                { base: 'Let', past: 'Let', pp: 'Let', ipa: '/lɛt/', pt: 'Deixar', icon: '🤝' },
+                { base: 'Shut', past: 'Shut', pp: 'Shut', ipa: '/ʃʌt/', pt: 'Fechar', icon: '🚪' },
+                { base: 'Hit', past: 'Hit', pp: 'Hit', ipa: '/hɪt/', pt: 'Bater', icon: '👊' },
+                { base: 'Cost', past: 'Cost', pp: 'Cost', ipa: '/kɔːst/', pt: 'Custar', icon: '💰' },
+            ], color: 'bg-sky-50 border-sky-200'
+        },
+        {
+            name: isPortuguese ? '🟢 Mudança de vogal' : '🟢 Vowel change', desc: isPortuguese ? 'O som da vogal muda no passado' : 'The vowel sound changes in the past', verbs: [
+                { base: 'Buy', past: 'Bought', pp: 'Bought', ipa: '/bɔːt/', pt: 'Comprar', icon: '🛒' },
+                { base: 'Think', past: 'Thought', pp: 'Thought', ipa: '/θɔːt/', pt: 'Pensar', icon: '🤔' },
+                { base: 'Bring', past: 'Brought', pp: 'Brought', ipa: '/brɔːt/', pt: 'Trazer', icon: '📬' },
+                { base: 'Teach', past: 'Taught', pp: 'Taught', ipa: '/tɔːt/', pt: 'Ensinar', icon: '👩‍🏫' },
+                { base: 'Sleep', past: 'Slept', pp: 'Slept', ipa: '/slɛpt/', pt: 'Dormir', icon: '😴' },
+                { base: 'Feel', past: 'Felt', pp: 'Felt', ipa: '/fɛlt/', pt: 'Sentir', icon: '❤️' },
+                { base: 'Meet', past: 'Met', pp: 'Met', ipa: '/mɛt/', pt: 'Conhecer', icon: '🤝' },
+                { base: 'Tell', past: 'Told', pp: 'Told', ipa: '/toʊld/', pt: 'Contar', icon: '🗣️' },
+                { base: 'Find', past: 'Found', pp: 'Found', ipa: '/faʊnd/', pt: 'Encontrar', icon: '🔍' },
+                { base: 'Have', past: 'Had', pp: 'Had', ipa: '/hæd/', pt: 'Ter', icon: '✋' },
+                { base: 'Make', past: 'Made', pp: 'Made', ipa: '/meɪd/', pt: 'Fazer', icon: '🔨' },
+                { base: 'Say', past: 'Said', pp: 'Said', ipa: '/sɛd/', pt: 'Dizer', icon: '💬' },
+                { base: 'Get', past: 'Got', pp: 'Got', ipa: '/ɡɑːt/', pt: 'Conseguir', icon: '🎯' },
+                { base: 'Win', past: 'Won', pp: 'Won', ipa: '/wʌn/', pt: 'Ganhar', icon: '🏆' },
+                { base: 'Sit', past: 'Sat', pp: 'Sat', ipa: '/sæt/', pt: 'Sentar', icon: '🪑' },
+                { base: 'Stand', past: 'Stood', pp: 'Stood', ipa: '/stʊd/', pt: 'Ficar de pé', icon: '🧍' },
+                { base: 'Understand', past: 'Understood', pp: 'Understood', ipa: '/ˌʌndərˈstʊd/', pt: 'Entender', icon: '💡' },
+                { base: 'Leave', past: 'Left', pp: 'Left', ipa: '/lɛft/', pt: 'Sair', icon: '🚶' },
+                { base: 'Lose', past: 'Lost', pp: 'Lost', ipa: '/lɔːst/', pt: 'Perder', icon: '😞' },
+                { base: 'Keep', past: 'Kept', pp: 'Kept', ipa: '/kɛpt/', pt: 'Manter', icon: '🔒' },
+            ], color: 'bg-emerald-50 border-emerald-200'
+        },
+        {
+            name: isPortuguese ? '🔴 Totalmente diferentes' : '🔴 Completely different', desc: isPortuguese ? 'Forma do passado completamente nova' : 'Past form is completely new', verbs: [
+                { base: 'Go', past: 'Went', pp: 'Gone', ipa: '/wɛnt/', pt: 'Ir', icon: '🚶' },
+                { base: 'See', past: 'Saw', pp: 'Seen', ipa: '/sɔː/', pt: 'Ver', icon: '👀' },
+                { base: 'Do', past: 'Did', pp: 'Done', ipa: '/dɪd/', pt: 'Fazer', icon: '✅' },
+                { base: 'Eat', past: 'Ate', pp: 'Eaten', ipa: '/eɪt/', pt: 'Comer', icon: '🍽️' },
+                { base: 'Give', past: 'Gave', pp: 'Given', ipa: '/ɡeɪv/', pt: 'Dar', icon: '🎁' },
+                { base: 'Take', past: 'Took', pp: 'Taken', ipa: '/tʊk/', pt: 'Pegar', icon: '🤲' },
+                { base: 'Write', past: 'Wrote', pp: 'Written', ipa: '/roʊt/', pt: 'Escrever', icon: '✍️' },
+                { base: 'Speak', past: 'Spoke', pp: 'Spoken', ipa: '/spoʊk/', pt: 'Falar', icon: '🎤' },
+                { base: 'Drive', past: 'Drove', pp: 'Driven', ipa: '/droʊv/', pt: 'Dirigir', icon: '🚗' },
+                { base: 'Know', past: 'Knew', pp: 'Known', ipa: '/njuː/', pt: 'Saber', icon: '🧠' },
+                { base: 'Grow', past: 'Grew', pp: 'Grown', ipa: '/ɡruː/', pt: 'Crescer', icon: '🌱' },
+                { base: 'Begin', past: 'Began', pp: 'Begun', ipa: '/bɪˈɡæn/', pt: 'Começar', icon: '🏁' },
+                { base: 'Drink', past: 'Drank', pp: 'Drunk', ipa: '/dræŋk/', pt: 'Beber', icon: '🥤' },
+                { base: 'Sing', past: 'Sang', pp: 'Sung', ipa: '/sæŋ/', pt: 'Cantar', icon: '🎵' },
+                { base: 'Swim', past: 'Swam', pp: 'Swum', ipa: '/swæm/', pt: 'Nadar', icon: '🏊' },
+                { base: 'Come', past: 'Came', pp: 'Come', ipa: '/keɪm/', pt: 'Vir', icon: '👋' },
+                { base: 'Run', past: 'Ran', pp: 'Run', ipa: '/ræn/', pt: 'Correr', icon: '🏃' },
+                { base: 'Become', past: 'Became', pp: 'Become', ipa: '/bɪˈkeɪm/', pt: 'Tornar-se', icon: '🦋' },
+                { base: 'Break', past: 'Broke', pp: 'Broken', ipa: '/broʊk/', pt: 'Quebrar', icon: '💔' },
+                { base: 'Choose', past: 'Chose', pp: 'Chosen', ipa: '/tʃoʊz/', pt: 'Escolher', icon: '✨' },
+            ], color: 'bg-rose-50 border-rose-200'
+        },
+    ];
+    const practiceExamples = [
+        { en: 'I went to the supermarket yesterday.', pt: 'Eu fui ao supermercado ontem.', icon: '🛒' },
+        { en: 'She saw a beautiful sunset last night.', pt: 'Ela viu um pôr do sol lindo ontem à noite.', icon: '🌅' },
+        { en: 'We ate pizza for dinner.', pt: 'Nós comemos pizza no jantar.', icon: '🍕' },
+        { en: 'He wrote a letter to his friend.', pt: 'Ele escreveu uma carta para seu amigo.', icon: '✉️' },
+        { en: "They didn't come to the party.", pt: 'Eles não vieram para a festa.', icon: '🎉' },
+        { en: 'Did you speak to the teacher?', pt: 'Você falou com o professor?', icon: '👩‍🏫' },
+    ];
+    return (
+        <div className="space-y-10 animate-fade-in pb-20">
+            <div className="relative p-8 rounded-[2rem] bg-purple-900 text-white overflow-hidden shadow-2xl">
+                <div className="absolute top-0 right-0 p-4 opacity-10"><BookOpen className="w-32 h-32" /></div>
+                <div className="relative z-10 flex flex-col md:flex-row gap-6 items-center">
+                    <div className="w-20 h-20 rounded-full bg-purple-600 flex items-center justify-center text-4xl shadow-lg border-2 border-purple-400">🔀</div>
+                    <div className="flex-1">
+                        <h3 className="text-2xl font-serif-display mb-2">{isPortuguese ? "Past Simple: Verbos Irregulares" : "Past Simple: Irregular Verbs"}</h3>
+                        <p className="text-purple-100 text-sm leading-relaxed italic">
+                            {isPortuguese
+                                ? "\"Aqui está a notícia que ninguém quer ouvir: os verbos mais usados do inglês são irregulares. Não existe regra — você precisa memorizar. A boa notícia? São 'apenas' uns 200 verbos, e muitos seguem padrões semelhantes. Com prática diária, eles viram automáticos.\""
+                                : "\"Here's the news nobody wants to hear: the most commonly used English verbs are irregular. There's no rule — you need to memorize them. The good news? There are 'only' about 200 verbs, and many follow similar patterns. With daily practice, they become automatic.\""}
+                        </p>
+                    </div>
+                </div>
+            </div>
+            {/* Structure reminder */}
+            <div className="grid md:grid-cols-3 gap-5">
+                <div className="p-5 rounded-2xl bg-emerald-50 border-2 border-emerald-200 text-center">
+                    <div className="text-3xl mb-3">✅</div>
+                    <p className="font-black text-emerald-700 text-lg mb-1">Subject + past form</p>
+                    <button onClick={() => speak('I went to school.')} className="text-sm text-emerald-600 hover:text-emerald-800 transition-colors flex items-center gap-1 mx-auto font-medium"><Volume2 className="w-3 h-3" /> I went to school.</button>
+                    {isPortuguese && <p className="text-[11px] text-slate-400 mt-1">Eu fui à escola.</p>}
+                </div>
+                <div className="p-5 rounded-2xl bg-rose-50 border-2 border-rose-200 text-center">
+                    <div className="text-3xl mb-3">❌</div>
+                    <p className="font-black text-rose-700 text-lg mb-1">Subject + didn't + base</p>
+                    <button onClick={() => speak("I didn't go to school.")} className="text-sm text-rose-600 hover:text-rose-800 transition-colors flex items-center gap-1 mx-auto font-medium"><Volume2 className="w-3 h-3" /> I didn't go.</button>
+                    {isPortuguese && <p className="text-[11px] text-slate-400 mt-1">Eu não fui à escola.</p>}
+                </div>
+                <div className="p-5 rounded-2xl bg-blue-50 border-2 border-blue-200 text-center">
+                    <div className="text-3xl mb-3">❓</div>
+                    <p className="font-black text-blue-700 text-lg mb-1">Did + subject + base?</p>
+                    <button onClick={() => speak('Did you go to school?')} className="text-sm text-blue-600 hover:text-blue-800 transition-colors flex items-center gap-1 mx-auto font-medium"><Volume2 className="w-3 h-3" /> Did you go?</button>
+                    {isPortuguese && <p className="text-[11px] text-slate-400 mt-1">Você foi à escola?</p>}
+                </div>
+            </div>
+            {/* Pattern Groups */}
+            {patterns.map((group, gIdx) => (
+                <section key={gIdx} className="space-y-5">
+                    <div className="flex items-center gap-3">
+                        <div className={`p-2 rounded-lg ${group.color.split(' ')[0]} ${group.color.includes('sky') ? 'text-sky-600' : group.color.includes('emerald') ? 'text-emerald-600' : 'text-rose-600'}`}><List className="w-5 h-5" /></div>
+                        <div>
+                            <h4 className="text-2xl font-bold text-slate-800">{group.name}</h4>
+                            <p className="text-xs text-slate-500">{group.desc}</p>
+                        </div>
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                        {group.verbs.map((v, idx) => (
+                            <button key={idx} onClick={() => speak(`${v.base}, ${v.past}`)} className={`group p-4 rounded-2xl border-2 ${group.color} hover:shadow-md transition-all text-left overflow-hidden`}>
+                                <div className="flex items-start gap-3">
+                                    <span className="text-xl flex-shrink-0">{v.icon}</span>
+                                    <div className="min-w-0">
+                                        <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0">
+                                            <span className="text-sm text-slate-400">{v.base}</span>
+                                            <span className="text-xs text-slate-300">→</span>
+                                            <span className="font-black text-purple-700 text-base">{v.past}</span>
+                                        </div>
+                                        <span className="text-[9px] font-mono text-slate-400">{v.ipa}</span>
+                                        {isPortuguese && <span className="text-[10px] font-bold text-indigo-400 uppercase block">{v.pt}</span>}
+                                    </div>
+                                </div>
+                            </button>
+                        ))}
+                    </div>
+                </section>
+            ))}
+            {/* Practice Sentences */}
+            <section className="space-y-5">
+                <div className="flex items-center gap-3">
+                    <div className="p-2 bg-violet-100 rounded-lg text-violet-600"><MessageCircle className="w-5 h-5" /></div>
+                    <h4 className="text-2xl font-bold text-slate-800">{isPortuguese ? '🗣️ Pratique com Frases' : '🗣️ Practice with Sentences'}</h4>
+                </div>
+                <div className="grid gap-3">
+                    {practiceExamples.map((ex, idx) => (
+                        <button key={idx} onClick={() => speak(ex.en)} className="w-full text-left p-4 rounded-2xl bg-white border border-slate-100 hover:border-purple-200 hover:shadow-md transition-all flex items-center gap-4 group">
+                            <span className="text-2xl flex-shrink-0">{ex.icon}</span>
+                            <div className="flex-1 min-w-0">
+                                <span className="font-bold text-slate-800 text-sm block">{ex.en}</span>
+                                {isPortuguese && <span className="text-[11px] text-slate-400 block">{ex.pt}</span>}
+                            </div>
+                            <Volume2 className="w-4 h-4 text-slate-300 group-hover:text-purple-500 flex-shrink-0" />
+                        </button>
+                    ))}
+                </div>
+            </section>
+            {/* Common Mistakes */}
+            <div className="p-6 rounded-2xl bg-slate-800 text-white">
+                <h5 className="font-bold text-lg mb-4 flex items-center gap-2"><XCircle className="w-5 h-5 text-rose-400" />{isPortuguese ? 'Erros Comuns' : 'Common Mistakes'}</h5>
+                <div className="space-y-3">
+                    {[
+                        { wrong: 'I goed to school.', right: 'I went to school.', tip: isPortuguese ? "'Go' é irregular: went (não 'goed')" : "'Go' is irregular: went (not 'goed')" },
+                        { wrong: "She didn't went.", right: "She didn't go.", tip: isPortuguese ? "Com 'didn't', volta p/ base!" : "With 'didn't', use base form!" },
+                        { wrong: "Did you ate?", right: "Did you eat?", tip: isPortuguese ? "Com 'did', o verbo fica na base!" : "With 'did', verb stays in base form!" },
+                        { wrong: "I taked the bus.", right: "I took the bus.", tip: isPortuguese ? "'Take' é irregular: took" : "'Take' is irregular: took" },
+                    ].map((m, idx) => (
+                        <div key={idx} className="p-4 rounded-xl bg-white/5 border border-white/10">
+                            <div className="flex items-center gap-3 mb-1"><span className="text-rose-400 font-black text-sm">✗ {m.wrong}</span></div>
+                            <div className="flex items-center gap-3 mb-1"><span className="text-emerald-400 font-black text-sm">✓ {m.right}</span></div>
+                            <p className="text-[11px] text-slate-400">{m.tip}</p>
+                        </div>
+                    ))}
+                </div>
+            </div>
+            {/* Golden Tip */}
+            <div className="p-6 rounded-2xl bg-amber-50 border-2 border-amber-100 flex items-start gap-4">
+                <div className="text-3xl">💡</div>
+                <div>
+                    <h5 className="font-bold text-amber-800 text-lg mb-1">{isPortuguese ? 'Dica de Ouro' : 'Golden Tip'}</h5>
+                    <p className="text-amber-700 text-sm leading-relaxed">
+                        {isPortuguese
+                            ? "Não tente decorar todos de uma vez! Foque nos 20 mais usados primeiro (go, see, do, eat, give, take, make, have, get, come, know, think, say, tell, find, buy, write, speak, run, break). Use-os em frases do seu dia a dia e a memorização vem naturalmente."
+                            : "Don't try to memorize them all at once! Focus on the 20 most common first (go, see, do, eat, give, take, make, have, get, come, know, think, say, tell, find, buy, write, speak, run, break). Use them in sentences from your daily life and memorization comes naturally."}
+                    </p>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+// --- IRREGULAR VERBS COMPLETE REFERENCE ---
+const IrregularVerbsReference = ({ isPortuguese }: { isPortuguese: boolean }) => {
+    const [search, setSearch] = useState('');
+    const allVerbs = [
+        { base: 'Arise', past: 'Arose', pp: 'Arisen', pt: 'Surgir' },
+        { base: 'Awake', past: 'Awoke', pp: 'Awoken', pt: 'Acordar' },
+        { base: 'Be', past: 'Was/Were', pp: 'Been', pt: 'Ser/Estar' },
+        { base: 'Bear', past: 'Bore', pp: 'Borne/Born', pt: 'Suportar/Nascer' },
+        { base: 'Beat', past: 'Beat', pp: 'Beaten', pt: 'Bater/Vencer' },
+        { base: 'Become', past: 'Became', pp: 'Become', pt: 'Tornar-se' },
+        { base: 'Begin', past: 'Began', pp: 'Begun', pt: 'Começar' },
+        { base: 'Bend', past: 'Bent', pp: 'Bent', pt: 'Curvar' },
+        { base: 'Bet', past: 'Bet', pp: 'Bet', pt: 'Apostar' },
+        { base: 'Bind', past: 'Bound', pp: 'Bound', pt: 'Amarrar' },
+        { base: 'Bite', past: 'Bit', pp: 'Bitten', pt: 'Morder' },
+        { base: 'Bleed', past: 'Bled', pp: 'Bled', pt: 'Sangrar' },
+        { base: 'Blow', past: 'Blew', pp: 'Blown', pt: 'Soprar' },
+        { base: 'Break', past: 'Broke', pp: 'Broken', pt: 'Quebrar' },
+        { base: 'Breed', past: 'Bred', pp: 'Bred', pt: 'Criar (animais)' },
+        { base: 'Bring', past: 'Brought', pp: 'Brought', pt: 'Trazer' },
+        { base: 'Build', past: 'Built', pp: 'Built', pt: 'Construir' },
+        { base: 'Burn', past: 'Burnt/Burned', pp: 'Burnt/Burned', pt: 'Queimar' },
+        { base: 'Burst', past: 'Burst', pp: 'Burst', pt: 'Estourar' },
+        { base: 'Buy', past: 'Bought', pp: 'Bought', pt: 'Comprar' },
+        { base: 'Cast', past: 'Cast', pp: 'Cast', pt: 'Lançar' },
+        { base: 'Catch', past: 'Caught', pp: 'Caught', pt: 'Pegar' },
+        { base: 'Choose', past: 'Chose', pp: 'Chosen', pt: 'Escolher' },
+        { base: 'Cling', past: 'Clung', pp: 'Clung', pt: 'Agarrar-se' },
+        { base: 'Come', past: 'Came', pp: 'Come', pt: 'Vir' },
+        { base: 'Cost', past: 'Cost', pp: 'Cost', pt: 'Custar' },
+        { base: 'Creep', past: 'Crept', pp: 'Crept', pt: 'Rastejar' },
+        { base: 'Cut', past: 'Cut', pp: 'Cut', pt: 'Cortar' },
+        { base: 'Deal', past: 'Dealt', pp: 'Dealt', pt: 'Lidar' },
+        { base: 'Dig', past: 'Dug', pp: 'Dug', pt: 'Cavar' },
+        { base: 'Do', past: 'Did', pp: 'Done', pt: 'Fazer' },
+        { base: 'Draw', past: 'Drew', pp: 'Drawn', pt: 'Desenhar' },
+        { base: 'Dream', past: 'Dreamt/Dreamed', pp: 'Dreamt/Dreamed', pt: 'Sonhar' },
+        { base: 'Drink', past: 'Drank', pp: 'Drunk', pt: 'Beber' },
+        { base: 'Drive', past: 'Drove', pp: 'Driven', pt: 'Dirigir' },
+        { base: 'Eat', past: 'Ate', pp: 'Eaten', pt: 'Comer' },
+        { base: 'Fall', past: 'Fell', pp: 'Fallen', pt: 'Cair' },
+        { base: 'Feed', past: 'Fed', pp: 'Fed', pt: 'Alimentar' },
+        { base: 'Feel', past: 'Felt', pp: 'Felt', pt: 'Sentir' },
+        { base: 'Fight', past: 'Fought', pp: 'Fought', pt: 'Lutar' },
+        { base: 'Find', past: 'Found', pp: 'Found', pt: 'Encontrar' },
+        { base: 'Fly', past: 'Flew', pp: 'Flown', pt: 'Voar' },
+        { base: 'Forbid', past: 'Forbade', pp: 'Forbidden', pt: 'Proibir' },
+        { base: 'Forget', past: 'Forgot', pp: 'Forgotten', pt: 'Esquecer' },
+        { base: 'Forgive', past: 'Forgave', pp: 'Forgiven', pt: 'Perdoar' },
+        { base: 'Freeze', past: 'Froze', pp: 'Frozen', pt: 'Congelar' },
+        { base: 'Get', past: 'Got', pp: 'Got/Gotten', pt: 'Conseguir/Obter' },
+        { base: 'Give', past: 'Gave', pp: 'Given', pt: 'Dar' },
+        { base: 'Go', past: 'Went', pp: 'Gone', pt: 'Ir' },
+        { base: 'Grind', past: 'Ground', pp: 'Ground', pt: 'Moer' },
+        { base: 'Grow', past: 'Grew', pp: 'Grown', pt: 'Crescer' },
+        { base: 'Hang', past: 'Hung', pp: 'Hung', pt: 'Pendurar' },
+        { base: 'Have', past: 'Had', pp: 'Had', pt: 'Ter' },
+        { base: 'Hear', past: 'Heard', pp: 'Heard', pt: 'Ouvir' },
+        { base: 'Hide', past: 'Hid', pp: 'Hidden', pt: 'Esconder' },
+        { base: 'Hit', past: 'Hit', pp: 'Hit', pt: 'Bater/Acertar' },
+        { base: 'Hold', past: 'Held', pp: 'Held', pt: 'Segurar' },
+        { base: 'Hurt', past: 'Hurt', pp: 'Hurt', pt: 'Machucar' },
+        { base: 'Keep', past: 'Kept', pp: 'Kept', pt: 'Manter' },
+        { base: 'Kneel', past: 'Knelt', pp: 'Knelt', pt: 'Ajoelhar' },
+        { base: 'Know', past: 'Knew', pp: 'Known', pt: 'Saber/Conhecer' },
+        { base: 'Lay', past: 'Laid', pp: 'Laid', pt: 'Colocar/Deitar' },
+        { base: 'Lead', past: 'Led', pp: 'Led', pt: 'Liderar' },
+        { base: 'Lean', past: 'Leant/Leaned', pp: 'Leant/Leaned', pt: 'Inclinar' },
+        { base: 'Learn', past: 'Learnt/Learned', pp: 'Learnt/Learned', pt: 'Aprender' },
+        { base: 'Leave', past: 'Left', pp: 'Left', pt: 'Sair/Deixar' },
+        { base: 'Lend', past: 'Lent', pp: 'Lent', pt: 'Emprestar' },
+        { base: 'Let', past: 'Let', pp: 'Let', pt: 'Deixar/Permitir' },
+        { base: 'Lie', past: 'Lay', pp: 'Lain', pt: 'Deitar-se' },
+        { base: 'Light', past: 'Lit', pp: 'Lit', pt: 'Acender' },
+        { base: 'Lose', past: 'Lost', pp: 'Lost', pt: 'Perder' },
+        { base: 'Make', past: 'Made', pp: 'Made', pt: 'Fazer/Fabricar' },
+        { base: 'Mean', past: 'Meant', pp: 'Meant', pt: 'Significar' },
+        { base: 'Meet', past: 'Met', pp: 'Met', pt: 'Conhecer/Encontrar' },
+        { base: 'Mistake', past: 'Mistook', pp: 'Mistaken', pt: 'Confundir' },
+        { base: 'Overcome', past: 'Overcame', pp: 'Overcome', pt: 'Superar' },
+        { base: 'Pay', past: 'Paid', pp: 'Paid', pt: 'Pagar' },
+        { base: 'Put', past: 'Put', pp: 'Put', pt: 'Colocar' },
+        { base: 'Quit', past: 'Quit', pp: 'Quit', pt: 'Desistir' },
+        { base: 'Read', past: 'Read', pp: 'Read', pt: 'Ler' },
+        { base: 'Ride', past: 'Rode', pp: 'Ridden', pt: 'Cavalgar/Andar' },
+        { base: 'Ring', past: 'Rang', pp: 'Rung', pt: 'Tocar (sino)' },
+        { base: 'Rise', past: 'Rose', pp: 'Risen', pt: 'Subir/Levantar' },
+        { base: 'Run', past: 'Ran', pp: 'Run', pt: 'Correr' },
+        { base: 'Say', past: 'Said', pp: 'Said', pt: 'Dizer' },
+        { base: 'See', past: 'Saw', pp: 'Seen', pt: 'Ver' },
+        { base: 'Seek', past: 'Sought', pp: 'Sought', pt: 'Procurar' },
+        { base: 'Sell', past: 'Sold', pp: 'Sold', pt: 'Vender' },
+        { base: 'Send', past: 'Sent', pp: 'Sent', pt: 'Enviar' },
+        { base: 'Set', past: 'Set', pp: 'Set', pt: 'Definir/Ajustar' },
+        { base: 'Sew', past: 'Sewed', pp: 'Sewn/Sewed', pt: 'Costurar' },
+        { base: 'Shake', past: 'Shook', pp: 'Shaken', pt: 'Sacudir' },
+        { base: 'Shed', past: 'Shed', pp: 'Shed', pt: 'Derramar' },
+        { base: 'Shine', past: 'Shone', pp: 'Shone', pt: 'Brilhar' },
+        { base: 'Shoot', past: 'Shot', pp: 'Shot', pt: 'Atirar' },
+        { base: 'Show', past: 'Showed', pp: 'Shown', pt: 'Mostrar' },
+        { base: 'Shrink', past: 'Shrank', pp: 'Shrunk', pt: 'Encolher' },
+        { base: 'Shut', past: 'Shut', pp: 'Shut', pt: 'Fechar' },
+        { base: 'Sing', past: 'Sang', pp: 'Sung', pt: 'Cantar' },
+        { base: 'Sink', past: 'Sank', pp: 'Sunk', pt: 'Afundar' },
+        { base: 'Sit', past: 'Sat', pp: 'Sat', pt: 'Sentar' },
+        { base: 'Sleep', past: 'Slept', pp: 'Slept', pt: 'Dormir' },
+        { base: 'Slide', past: 'Slid', pp: 'Slid', pt: 'Deslizar' },
+        { base: 'Smell', past: 'Smelt/Smelled', pp: 'Smelt/Smelled', pt: 'Cheirar' },
+        { base: 'Speak', past: 'Spoke', pp: 'Spoken', pt: 'Falar' },
+        { base: 'Speed', past: 'Sped', pp: 'Sped', pt: 'Acelerar' },
+        { base: 'Spell', past: 'Spelt/Spelled', pp: 'Spelt/Spelled', pt: 'Soletrar' },
+        { base: 'Spend', past: 'Spent', pp: 'Spent', pt: 'Gastar' },
+        { base: 'Spill', past: 'Spilt/Spilled', pp: 'Spilt/Spilled', pt: 'Derramar' },
+        { base: 'Spin', past: 'Spun', pp: 'Spun', pt: 'Girar' },
+        { base: 'Split', past: 'Split', pp: 'Split', pt: 'Dividir' },
+        { base: 'Spread', past: 'Spread', pp: 'Spread', pt: 'Espalhar' },
+        { base: 'Spring', past: 'Sprang', pp: 'Sprung', pt: 'Pular' },
+        { base: 'Stand', past: 'Stood', pp: 'Stood', pt: 'Ficar de pé' },
+        { base: 'Steal', past: 'Stole', pp: 'Stolen', pt: 'Roubar' },
+        { base: 'Stick', past: 'Stuck', pp: 'Stuck', pt: 'Colar/Grudar' },
+        { base: 'Sting', past: 'Stung', pp: 'Stung', pt: 'Picar' },
+        { base: 'Stink', past: 'Stank', pp: 'Stunk', pt: 'Feder' },
+        { base: 'Strike', past: 'Struck', pp: 'Struck', pt: 'Golpear' },
+        { base: 'Swear', past: 'Swore', pp: 'Sworn', pt: 'Jurar' },
+        { base: 'Sweep', past: 'Swept', pp: 'Swept', pt: 'Varrer' },
+        { base: 'Swim', past: 'Swam', pp: 'Swum', pt: 'Nadar' },
+        { base: 'Swing', past: 'Swung', pp: 'Swung', pt: 'Balançar' },
+        { base: 'Take', past: 'Took', pp: 'Taken', pt: 'Pegar/Levar' },
+        { base: 'Teach', past: 'Taught', pp: 'Taught', pt: 'Ensinar' },
+        { base: 'Tear', past: 'Tore', pp: 'Torn', pt: 'Rasgar' },
+        { base: 'Tell', past: 'Told', pp: 'Told', pt: 'Contar/Dizer' },
+        { base: 'Think', past: 'Thought', pp: 'Thought', pt: 'Pensar' },
+        { base: 'Throw', past: 'Threw', pp: 'Thrown', pt: 'Jogar/Arremessar' },
+        { base: 'Tread', past: 'Trod', pp: 'Trodden', pt: 'Pisar' },
+        { base: 'Undergo', past: 'Underwent', pp: 'Undergone', pt: 'Sofrer/Passar por' },
+        { base: 'Understand', past: 'Understood', pp: 'Understood', pt: 'Entender' },
+        { base: 'Undertake', past: 'Undertook', pp: 'Undertaken', pt: 'Empreender' },
+        { base: 'Upset', past: 'Upset', pp: 'Upset', pt: 'Perturbar' },
+        { base: 'Wake', past: 'Woke', pp: 'Woken', pt: 'Acordar' },
+        { base: 'Wear', past: 'Wore', pp: 'Worn', pt: 'Vestir/Usar' },
+        { base: 'Weave', past: 'Wove', pp: 'Woven', pt: 'Tecer' },
+        { base: 'Weep', past: 'Wept', pp: 'Wept', pt: 'Chorar' },
+        { base: 'Win', past: 'Won', pp: 'Won', pt: 'Ganhar/Vencer' },
+        { base: 'Wind', past: 'Wound', pp: 'Wound', pt: 'Enrolar' },
+        { base: 'Withdraw', past: 'Withdrew', pp: 'Withdrawn', pt: 'Retirar' },
+        { base: 'Write', past: 'Wrote', pp: 'Written', pt: 'Escrever' },
+    ];
+    const filtered = allVerbs.filter(v =>
+        v.base.toLowerCase().includes(search.toLowerCase()) ||
+        v.past.toLowerCase().includes(search.toLowerCase()) ||
+        v.pp.toLowerCase().includes(search.toLowerCase()) ||
+        v.pt.toLowerCase().includes(search.toLowerCase())
+    );
+    return (
+        <div className="space-y-8 animate-fade-in pb-20">
+            <div className="relative p-8 rounded-[2rem] bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 text-white overflow-hidden shadow-2xl">
+                <div className="absolute top-0 right-0 p-4 opacity-10"><BookOpen className="w-32 h-32" /></div>
+                <div className="relative z-10 flex flex-col md:flex-row gap-6 items-center">
+                    <div className="w-20 h-20 rounded-full bg-white/10 flex items-center justify-center text-4xl shadow-lg border-2 border-white/20">📖</div>
+                    <div className="flex-1">
+                        <h3 className="text-2xl font-serif-display mb-2">{isPortuguese ? 'Tabela Completa de Verbos Irregulares' : 'Complete Irregular Verbs Table'}</h3>
+                        <p className="text-white/70 text-sm">{isPortuguese ? `${allVerbs.length} verbos irregulares do inglês com todas as formas` : `${allVerbs.length} English irregular verbs with all forms`}</p>
+                    </div>
+                </div>
+            </div>
+            {/* Search */}
+            <div className="relative">
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
+                <input type="text" value={search} onChange={e => setSearch(e.target.value)} placeholder={isPortuguese ? 'Buscar verbo (inglês ou português)...' : 'Search verb (English or Portuguese)...'} className="w-full pl-12 pr-4 py-4 rounded-2xl border-2 border-slate-200 focus:border-indigo-400 focus:outline-none text-slate-800 bg-white shadow-sm text-sm font-medium" />
+            </div>
+            {/* Table */}
+            <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
+                <div className="grid grid-cols-4 bg-slate-800 text-white text-xs font-black uppercase tracking-widest p-4">
+                    <span>{isPortuguese ? 'Base' : 'Base Form'}</span>
+                    <span>Past Simple</span>
+                    <span>Past Participle</span>
+                    <span>{isPortuguese ? 'Tradução' : 'Translation'}</span>
+                </div>
+                <div className="divide-y divide-slate-100">
+                    {filtered.map((v, idx) => (
+                        <button key={idx} onClick={() => speak(`${v.base}, ${v.past}, ${v.pp}`)} className="grid grid-cols-4 w-full text-left p-3.5 hover:bg-indigo-50 transition-all text-sm group">
+                            <span className="font-bold text-slate-800">{v.base}</span>
+                            <span className="font-bold text-purple-700">{v.past}</span>
+                            <span className="text-slate-600">{v.pp}</span>
+                            <span className="text-slate-400 text-xs">{v.pt}</span>
+                        </button>
+                    ))}
+                </div>
+                {filtered.length === 0 && <div className="p-8 text-center text-slate-400 text-sm">{isPortuguese ? 'Nenhum verbo encontrado.' : 'No verbs found.'}</div>}
+            </div>
+            <p className="text-center text-xs text-slate-400">{isPortuguese ? `Mostrando ${filtered.length} de ${allVerbs.length} verbos` : `Showing ${filtered.length} of ${allVerbs.length} verbs`}</p>
         </div>
     );
 };
@@ -7525,6 +8088,18 @@ const Sidebar = ({ activeModule, onToggleModule, activeSection, onSelectSection,
 
             {/* Profile Footer */}
 
+            {/* Irregular Verbs Reference Button */}
+            <div className="p-4 border-t border-white/5">
+                <button
+                    onClick={() => { onSelectSection(-1); onCloseMobileMenu(); }}
+                    className={`w-full p-3 rounded-xl flex items-center gap-3 text-sm font-bold transition-all ${activeSection === -1 ? 'bg-indigo-500/20 text-indigo-400' : 'text-slate-500 hover:text-indigo-400 hover:bg-white/5'}`}
+                >
+                    <div className={`p-1.5 rounded-lg ${activeSection === -1 ? 'bg-indigo-500 text-white' : 'bg-slate-800 text-slate-500'}`}>
+                        <BookOpen className="w-4 h-4" />
+                    </div>
+                    <span>📖 Irregular Verbs Table</span>
+                </button>
+            </div>
         </aside>
     );
 };
@@ -7718,6 +8293,9 @@ export default function App() {
             case 31: return <DatesOrdinalNumbers isPortuguese={isPortuguese} />;
             case 32: return <TimeExpressionsPast isPortuguese={isPortuguese} />;
             case 33: return <PastSimpleLesson isPortuguese={isPortuguese} />;
+            case 34: return <PastSimpleRegularVerbs isPortuguese={isPortuguese} />;
+            case 35: return <PastSimpleIrregularVerbs isPortuguese={isPortuguese} />;
+            case -1: return <IrregularVerbsReference isPortuguese={isPortuguese} />;
             default: return <BuildingLesson title={getTitleForBuilding(activeSection)} isPortuguese={isPortuguese} />;
         }
     };
