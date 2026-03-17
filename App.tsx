@@ -6992,6 +6992,800 @@ const PastSimpleIrregularVerbs = ({ isPortuguese }: { isPortuguese: boolean }) =
     );
 };
 
+// --- M9: COUNTABLE VS. UNCOUNTABLE ---
+const CountableUncountable = ({ isPortuguese }: { isPortuguese: boolean }) => {
+    const countableNouns = [
+        { word: 'Apple', plural: 'Apples', ipa: '/ˈæpəl/', pt: 'Maçã', icon: '🍎' },
+        { word: 'Book', plural: 'Books', ipa: '/bʊk/', pt: 'Livro', icon: '📚' },
+        { word: 'Car', plural: 'Cars', ipa: '/kɑːr/', pt: 'Carro', icon: '🚗' },
+        { word: 'Dog', plural: 'Dogs', ipa: '/dɔːɡ/', pt: 'Cachorro', icon: '🐕' },
+        { word: 'Egg', plural: 'Eggs', ipa: '/ɛɡ/', pt: 'Ovo', icon: '🥚' },
+        { word: 'Chair', plural: 'Chairs', ipa: '/tʃɛr/', pt: 'Cadeira', icon: '🪑' },
+        { word: 'Student', plural: 'Students', ipa: '/ˈstjuːdənt/', pt: 'Estudante', icon: '🧑‍🎓' },
+        { word: 'Bottle', plural: 'Bottles', ipa: '/ˈbɒtəl/', pt: 'Garrafa', icon: '🍶' },
+    ];
+    const uncountableNouns = [
+        { word: 'Water', ipa: '/ˈwɔːtər/', pt: 'Água', icon: '💧', category: isPortuguese ? 'Líquidos' : 'Liquids' },
+        { word: 'Rice', ipa: '/raɪs/', pt: 'Arroz', icon: '🍚', category: isPortuguese ? 'Alimentos' : 'Food' },
+        { word: 'Money', ipa: '/ˈmʌni/', pt: 'Dinheiro', icon: '💰', category: isPortuguese ? 'Conceitos' : 'Concepts' },
+        { word: 'Music', ipa: '/ˈmjuːzɪk/', pt: 'Música', icon: '🎵', category: isPortuguese ? 'Abstratos' : 'Abstract' },
+        { word: 'Information', ipa: '/ˌɪnfərˈmeɪʃən/', pt: 'Informação', icon: 'ℹ️', category: isPortuguese ? 'Abstratos' : 'Abstract' },
+        { word: 'Bread', ipa: '/brɛd/', pt: 'Pão', icon: '🍞', category: isPortuguese ? 'Alimentos' : 'Food' },
+        { word: 'Advice', ipa: '/ədˈvaɪs/', pt: 'Conselho', icon: '💡', category: isPortuguese ? 'Abstratos' : 'Abstract' },
+        { word: 'Furniture', ipa: '/ˈfɜːrnɪtʃər/', pt: 'Mobília', icon: '🛋️', category: isPortuguese ? 'Coletivos' : 'Collective' },
+        { word: 'Sugar', ipa: '/ˈʃʊɡər/', pt: 'Açúcar', icon: '🧂', category: isPortuguese ? 'Alimentos' : 'Food' },
+        { word: 'Traffic', ipa: '/ˈtræfɪk/', pt: 'Trânsito', icon: '🚦', category: isPortuguese ? 'Coletivos' : 'Collective' },
+    ];
+    const practiceExamples = [
+        { en: 'I have two apples.', pt: 'Eu tenho duas maçãs.', icon: '🍎', type: 'C' },
+        { en: 'Can I have some water?', pt: 'Posso tomar um pouco de água?', icon: '💧', type: 'U' },
+        { en: 'There are three books on the table.', pt: 'Há três livros na mesa.', icon: '📚', type: 'C' },
+        { en: 'I need some information.', pt: 'Eu preciso de algumas informações.', icon: 'ℹ️', type: 'U' },
+        { en: 'She bought five eggs.', pt: 'Ela comprou cinco ovos.', icon: '🥚', type: 'C' },
+        { en: 'He drinks a lot of coffee.', pt: 'Ele bebe muito café.', icon: '☕', type: 'U' },
+    ];
+    return (
+        <div className="space-y-10 animate-fade-in pb-20">
+            {/* Teacher Intro */}
+            <div className="relative p-8 rounded-[2rem] bg-teal-900 text-white overflow-hidden shadow-2xl">
+                <div className="absolute top-0 right-0 p-4 opacity-10"><ShoppingBag className="w-32 h-32" /></div>
+                <div className="relative z-10 flex flex-col md:flex-row gap-6 items-center">
+                    <div className="w-20 h-20 rounded-full bg-teal-600 flex items-center justify-center text-4xl shadow-lg border-2 border-teal-400">👨‍🏫</div>
+                    <div className="flex-1">
+                        <h3 className="text-2xl font-serif-display mb-2">
+                            {isPortuguese ? "Contáveis vs. Incontáveis" : "Countable vs. Uncountable"}
+                        </h3>
+                        <p className="text-teal-100 text-sm leading-relaxed italic">
+                            {isPortuguese
+                                ? "\"Em português, você diz 'duas águas' no restaurante sem pensar duas vezes. Em inglês, isso é IMPOSSÍVEL. 'Water' não tem plural. Você precisa de um container: 'two glasses of water'. Essa diferença muda completamente como você constrói frases com 'some', 'any', 'much' e 'many'. Domine isso agora!\""
+                                : "\"In Portuguese, you say 'duas águas' at a restaurant without thinking twice. In English, that's IMPOSSIBLE. 'Water' has no plural. You need a container: 'two glasses of water'. This difference completely changes how you build sentences with 'some', 'any', 'much' and 'many'. Master this now!\""}
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            {/* The Core Rule */}
+            <div className="grid md:grid-cols-2 gap-6">
+                <div className="p-6 rounded-[2rem] bg-emerald-50 border-2 border-emerald-200 space-y-4">
+                    <div className="flex items-center gap-3">
+                        <span className="text-3xl">✅</span>
+                        <div>
+                            <h4 className="text-xl font-black text-emerald-800">{isPortuguese ? 'Contáveis (Countable)' : 'Countable Nouns'}</h4>
+                            <p className="text-[10px] font-mono text-emerald-500">/ˈkaʊntəbəl/</p>
+                        </div>
+                    </div>
+                    <p className="text-sm text-emerald-700 leading-relaxed">
+                        {isPortuguese
+                            ? "Coisas que você pode CONTAR individualmente. Têm forma singular e plural."
+                            : "Things you can COUNT individually. They have singular and plural forms."}
+                    </p>
+                    <div className="p-3 bg-white rounded-xl border border-emerald-100 text-sm text-emerald-800 font-bold text-center">
+                        {isPortuguese ? "1 apple → 2 apples → 10 apples ✅" : "1 apple → 2 apples → 10 apples ✅"}
+                    </div>
+                    <div className="text-xs text-emerald-600 space-y-1">
+                        <p>• {isPortuguese ? 'Podem usar a/an: "a book", "an egg"' : 'Can use a/an: "a book", "an egg"'}</p>
+                        <p>• {isPortuguese ? 'Podem usar números: "three cars"' : 'Can use numbers: "three cars"'}</p>
+                        <p>• {isPortuguese ? 'Usam many/few' : 'Use many/few'}</p>
+                    </div>
+                </div>
+                <div className="p-6 rounded-[2rem] bg-rose-50 border-2 border-rose-200 space-y-4">
+                    <div className="flex items-center gap-3">
+                        <span className="text-3xl">🚫</span>
+                        <div>
+                            <h4 className="text-xl font-black text-rose-800">{isPortuguese ? 'Incontáveis (Uncountable)' : 'Uncountable Nouns'}</h4>
+                            <p className="text-[10px] font-mono text-rose-500">/ʌnˈkaʊntəbəl/</p>
+                        </div>
+                    </div>
+                    <p className="text-sm text-rose-700 leading-relaxed">
+                        {isPortuguese
+                            ? "Coisas que você NÃO pode contar individualmente. Não têm plural!"
+                            : "Things you CANNOT count individually. They have NO plural!"}
+                    </p>
+                    <div className="p-3 bg-white rounded-xl border border-rose-100 text-sm text-rose-800 font-bold text-center">
+                        {isPortuguese ? "water → waters ❌ | a water ❌" : "water → waters ❌ | a water ❌"}
+                    </div>
+                    <div className="text-xs text-rose-600 space-y-1">
+                        <p>• {isPortuguese ? 'NÃO usam a/an: ❌ "a rice"' : 'NO a/an: ❌ "a rice"'}</p>
+                        <p>• {isPortuguese ? 'NÃO usam números diretos: ❌ "two breads"' : 'NO direct numbers: ❌ "two breads"'}</p>
+                        <p>• {isPortuguese ? 'Usam much/little' : 'Use much/little'}</p>
+                    </div>
+                </div>
+            </div>
+
+            {/* Countable Grid */}
+            <section className="space-y-5">
+                <div className="flex items-center gap-3">
+                    <div className="p-2 bg-emerald-100 rounded-lg text-emerald-600"><Hash className="w-5 h-5" /></div>
+                    <h4 className="text-2xl font-bold text-slate-800">{isPortuguese ? '📦 Substantivos Contáveis' : '📦 Countable Nouns'}</h4>
+                </div>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                    {countableNouns.map((n, idx) => (
+                        <button key={idx} onClick={() => speak(`${n.word}, ${n.plural}`)} className="group p-4 bg-white rounded-2xl border border-slate-100 hover:border-emerald-300 shadow-sm hover:shadow-md transition-all text-center">
+                            <span className="text-3xl block mb-2">{n.icon}</span>
+                            <span className="font-black text-slate-800 block">{n.word}</span>
+                            <span className="text-emerald-600 font-bold text-sm block">→ {n.plural}</span>
+                            <span className="text-[9px] font-mono text-slate-400 block">{n.ipa}</span>
+                            {isPortuguese && <span className="text-[10px] font-bold text-indigo-400 block">{n.pt}</span>}
+                            <Volume2 className="w-3 h-3 text-slate-200 group-hover:text-emerald-400 mx-auto mt-1" />
+                        </button>
+                    ))}
+                </div>
+            </section>
+
+            {/* Uncountable Grid */}
+            <section className="space-y-5">
+                <div className="flex items-center gap-3">
+                    <div className="p-2 bg-rose-100 rounded-lg text-rose-600"><Layers className="w-5 h-5" /></div>
+                    <h4 className="text-2xl font-bold text-slate-800">{isPortuguese ? '💧 Substantivos Incontáveis' : '💧 Uncountable Nouns'}</h4>
+                </div>
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                    {uncountableNouns.map((n, idx) => (
+                        <button key={idx} onClick={() => speak(n.word)} className="group p-4 bg-white rounded-2xl border border-slate-100 hover:border-rose-300 shadow-sm hover:shadow-md transition-all text-left">
+                            <div className="flex items-center gap-3 mb-2">
+                                <span className="text-2xl">{n.icon}</span>
+                                <div>
+                                    <span className="font-black text-slate-800 block">{n.word}</span>
+                                    <span className="text-[9px] font-mono text-slate-400">{n.ipa}</span>
+                                </div>
+                                <Volume2 className="w-3 h-3 text-slate-200 group-hover:text-rose-400 ml-auto" />
+                            </div>
+                            <span className="text-[10px] font-bold text-rose-400 bg-rose-50 px-2 py-0.5 rounded-full">{n.category}</span>
+                            {isPortuguese && <span className="text-[10px] font-bold text-indigo-400 block mt-1">{n.pt}</span>}
+                        </button>
+                    ))}
+                </div>
+            </section>
+
+            {/* Container Trick */}
+            <div className="p-8 bg-indigo-900 text-white rounded-[2rem] shadow-2xl">
+                <h5 className="text-lg font-bold mb-4 flex items-center gap-2"><Lightbulb className="w-5 h-5 text-amber-400" />{isPortuguese ? '🔑 O Truque do Container' : '🔑 The Container Trick'}</h5>
+                <p className="text-indigo-200 text-sm mb-6 leading-relaxed">
+                    {isPortuguese
+                        ? "Para contar coisas incontáveis, use um CONTAINER ou MEDIDA antes:"
+                        : "To count uncountable things, use a CONTAINER or MEASURE before them:"}
+                </p>
+                <div className="grid sm:grid-cols-2 gap-3">
+                    {[
+                        { en: 'a glass of water', pt: 'um copo de água', icon: '🥛' },
+                        { en: 'a cup of coffee', pt: 'uma xícara de café', icon: '☕' },
+                        { en: 'a slice of bread', pt: 'uma fatia de pão', icon: '🍞' },
+                        { en: 'a piece of advice', pt: 'um conselho', icon: '💡' },
+                        { en: 'a bowl of rice', pt: 'uma tigela de arroz', icon: '🍚' },
+                        { en: 'a piece of furniture', pt: 'um móvel', icon: '🪑' },
+                    ].map((item, idx) => (
+                        <button key={idx} onClick={() => speak(item.en)} className="text-left p-3 rounded-xl bg-white/10 hover:bg-white/20 border border-white/10 transition-all flex items-center gap-3 group">
+                            <span className="text-xl">{item.icon}</span>
+                            <div>
+                                <span className="font-bold text-white text-sm block">{item.en}</span>
+                                {isPortuguese && <span className="text-[10px] text-indigo-300 block">{item.pt}</span>}
+                            </div>
+                            <Volume2 className="w-3 h-3 text-indigo-400 ml-auto opacity-0 group-hover:opacity-100" />
+                        </button>
+                    ))}
+                </div>
+            </div>
+
+            {/* Practice Sentences */}
+            <section className="space-y-5">
+                <div className="flex items-center gap-3">
+                    <div className="p-2 bg-violet-100 rounded-lg text-violet-600"><MessageCircle className="w-5 h-5" /></div>
+                    <h4 className="text-2xl font-bold text-slate-800">{isPortuguese ? '🗣️ Pratique com Frases' : '🗣️ Practice with Sentences'}</h4>
+                </div>
+                <div className="grid gap-3">
+                    {practiceExamples.map((ex, idx) => (
+                        <button key={idx} onClick={() => speak(ex.en)} className="w-full text-left p-4 rounded-2xl bg-white border border-slate-100 hover:border-teal-200 hover:shadow-md transition-all flex items-center gap-4 group">
+                            <span className="text-2xl flex-shrink-0">{ex.icon}</span>
+                            <div className="flex-1 min-w-0">
+                                <span className="font-bold text-slate-800 text-sm block">{ex.en}</span>
+                                {isPortuguese && <span className="text-[11px] text-slate-400 block">{ex.pt}</span>}
+                            </div>
+                            <span className={`text-[10px] font-black px-2 py-1 rounded-full ${ex.type === 'C' ? 'bg-emerald-100 text-emerald-600' : 'bg-rose-100 text-rose-600'}`}>{ex.type === 'C' ? 'Countable' : 'Uncountable'}</span>
+                            <Volume2 className="w-4 h-4 text-slate-300 group-hover:text-teal-500 flex-shrink-0" />
+                        </button>
+                    ))}
+                </div>
+            </section>
+
+            {/* Common Mistakes */}
+            <div className="p-6 rounded-2xl bg-slate-800 text-white">
+                <h5 className="font-bold text-lg mb-4 flex items-center gap-2"><XCircle className="w-5 h-5 text-rose-400" />{isPortuguese ? 'Erros Comuns' : 'Common Mistakes'}</h5>
+                <div className="space-y-3">
+                    {[
+                        { wrong: 'I need an information.', right: 'I need some information.', tip: isPortuguese ? "'Information' é incontável — nunca 'an information'" : "'Information' is uncountable — never 'an information'" },
+                        { wrong: 'She has many furnitures.', right: 'She has a lot of furniture.', tip: isPortuguese ? "'Furniture' é incontável — nunca vai ao plural" : "'Furniture' is uncountable — never pluralized" },
+                        { wrong: 'Can I have a bread?', right: 'Can I have some bread?', tip: isPortuguese ? "'Bread' é incontável. Use 'a slice/piece of bread'" : "'Bread' is uncountable. Use 'a slice/piece of bread'" },
+                        { wrong: 'Two waters, please.', right: 'Two glasses of water, please.', tip: isPortuguese ? "Use o container! (Porém em restaurantes informais, 'two waters' é aceito)" : "Use the container! (Though in casual restaurants, 'two waters' is accepted)" },
+                    ].map((m, idx) => (
+                        <div key={idx} className="p-4 rounded-xl bg-white/5 border border-white/10">
+                            <div className="flex items-center gap-3 mb-1"><span className="text-rose-400 font-black text-sm">✗ {m.wrong}</span></div>
+                            <div className="flex items-center gap-3 mb-1"><span className="text-emerald-400 font-black text-sm">✓ {m.right}</span></div>
+                            <p className="text-[11px] text-slate-400">{m.tip}</p>
+                        </div>
+                    ))}
+                </div>
+            </div>
+
+            {/* Golden Tip */}
+            <div className="p-6 rounded-2xl bg-amber-50 border-2 border-amber-100 flex items-start gap-4">
+                <div className="text-3xl">💡</div>
+                <div>
+                    <h5 className="font-bold text-amber-800 text-lg mb-1">{isPortuguese ? 'Dica de Ouro' : 'Golden Tip'}</h5>
+                    <p className="text-amber-700 text-sm leading-relaxed">
+                        {isPortuguese
+                            ? "Quando estiver em dúvida, pergunte-se: 'Consigo colocar um número na frente?' Se sim, é contável (three dogs ✅). Se não faz sentido, é incontável (three rices ❌). Alguns substantivos mudam de significado! 'Coffee' sozinho é incontável (a bebida), mas 'a coffee' em um café significa 'uma xícara de café' — isso é uma contração informal aceita!"
+                            : "When in doubt, ask yourself: 'Can I put a number in front?' If yes, it's countable (three dogs ✅). If it doesn't make sense, it's uncountable (three rices ❌). Some nouns change meaning! 'Coffee' alone is uncountable (the drink), but 'a coffee' at a café means 'a cup of coffee' — this is an accepted informal contraction!"}
+                    </p>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+// --- M9: SOME / ANY / NO ---
+const SomeAnyNo = ({ isPortuguese }: { isPortuguese: boolean }) => {
+    const rules = [
+        { word: 'Some', ipa: '/sʌm/', pt: 'Algum(a)/Alguns', use: isPortuguese ? 'Afirmativas + Ofertas/Pedidos' : 'Affirmative + Offers/Requests', color: 'emerald', icon: '✅', examples: [
+            { en: 'I have some friends in London.', pt: 'Eu tenho alguns amigos em Londres.' },
+            { en: 'There is some milk in the fridge.', pt: 'Há um pouco de leite na geladeira.' },
+            { en: 'Would you like some coffee?', pt: 'Gostaria de um café?' },
+            { en: 'Can I have some water, please?', pt: 'Posso tomar um pouco de água, por favor?' },
+        ]},
+        { word: 'Any', ipa: '/ˈɛni/', pt: 'Algum(a)/Nenhum(a)', use: isPortuguese ? 'Negativas + Perguntas' : 'Negative + Questions', color: 'blue', icon: '❓', examples: [
+            { en: "I don't have any money.", pt: 'Eu não tenho nenhum dinheiro.' },
+            { en: 'Do you have any questions?', pt: 'Vocês têm alguma pergunta?' },
+            { en: "There aren't any chairs.", pt: 'Não há nenhuma cadeira.' },
+            { en: 'Is there any sugar left?', pt: 'Sobrou algum açúcar?' },
+        ]},
+        { word: 'No', ipa: '/noʊ/', pt: 'Nenhum(a)', use: isPortuguese ? 'Frase afirmativa com sentido negativo' : 'Affirmative sentence with negative meaning', color: 'rose', icon: '🚫', examples: [
+            { en: 'There is no milk.', pt: 'Não há leite.' },
+            { en: 'I have no idea.', pt: 'Eu não faço ideia.' },
+            { en: 'She has no friends here.', pt: 'Ela não tem amigos aqui.' },
+            { en: 'There are no tickets left.', pt: 'Não sobrou nenhum ingresso.' },
+        ]},
+    ];
+    const compounds = [
+        { base: 'Some', words: [
+            { word: 'Somebody/Someone', ipa: '/ˈsʌmˌbɑːdi/', pt: 'Alguém', ex: 'Somebody is at the door.', exPt: 'Alguém está na porta.', icon: '🧑' },
+            { word: 'Something', ipa: '/ˈsʌmθɪŋ/', pt: 'Algo', ex: 'I need something to eat.', exPt: 'Eu preciso de algo para comer.', icon: '📦' },
+            { word: 'Somewhere', ipa: '/ˈsʌmˌwɛr/', pt: 'Em algum lugar', ex: "Let's go somewhere nice.", exPt: 'Vamos a algum lugar legal.', icon: '📍' },
+        ], color: 'bg-emerald-50 border-emerald-200' },
+        { base: 'Any', words: [
+            { word: 'Anybody/Anyone', ipa: '/ˈɛniˌbɑːdi/', pt: 'Alguém/Qualquer um', ex: 'Does anybody know?', exPt: 'Alguém sabe?', icon: '🧑' },
+            { word: 'Anything', ipa: '/ˈɛniθɪŋ/', pt: 'Algo/Qualquer coisa', ex: "I didn't say anything.", exPt: 'Eu não disse nada.', icon: '📦' },
+            { word: 'Anywhere', ipa: '/ˈɛniˌwɛr/', pt: 'Em algum lugar/Qualquer lugar', ex: 'Can you see it anywhere?', exPt: 'Você consegue ver em algum lugar?', icon: '📍' },
+        ], color: 'bg-blue-50 border-blue-200' },
+        { base: 'No', words: [
+            { word: 'Nobody/No one', ipa: '/ˈnoʊˌbɑːdi/', pt: 'Ninguém', ex: 'Nobody knows.', exPt: 'Ninguém sabe.', icon: '🧑' },
+            { word: 'Nothing', ipa: '/ˈnʌθɪŋ/', pt: 'Nada', ex: 'Nothing happened.', exPt: 'Nada aconteceu.', icon: '📦' },
+            { word: 'Nowhere', ipa: '/ˈnoʊˌwɛr/', pt: 'Em nenhum lugar', ex: 'There is nowhere to go.', exPt: 'Não há lugar para ir.', icon: '📍' },
+        ], color: 'bg-rose-50 border-rose-200' },
+    ];
+    const colorMap: any = { emerald: 'bg-emerald-50 border-emerald-200 text-emerald-700', blue: 'bg-blue-50 border-blue-200 text-blue-700', rose: 'bg-rose-50 border-rose-200 text-rose-700' };
+    return (
+        <div className="space-y-10 animate-fade-in pb-20">
+            {/* Teacher Intro */}
+            <div className="relative p-8 rounded-[2rem] bg-indigo-900 text-white overflow-hidden shadow-2xl">
+                <div className="absolute top-0 right-0 p-4 opacity-10"><Search className="w-32 h-32" /></div>
+                <div className="relative z-10 flex flex-col md:flex-row gap-6 items-center">
+                    <div className="w-20 h-20 rounded-full bg-indigo-600 flex items-center justify-center text-4xl shadow-lg border-2 border-indigo-400">👨‍🏫</div>
+                    <div className="flex-1">
+                        <h3 className="text-2xl font-serif-display mb-2">Some / Any / No</h3>
+                        <p className="text-indigo-100 text-sm leading-relaxed italic">
+                            {isPortuguese
+                                ? "\"Esses três determinadores são o coração das frases sobre QUANTIDADE. A regra de ouro é simples: SOME para positivo e ofertas, ANY para negativas e perguntas, NO quando o verbo é afirmativo mas o sentido é negativo. Parece fácil? A pegadinha está nos compostos: somebody, anything, nowhere... Vamos desvendar tudo!\""
+                                : "\"These three determiners are the heart of sentences about QUANTITY. The golden rule is simple: SOME for positive and offers, ANY for negatives and questions, NO when the verb is affirmative but the meaning is negative. Sounds easy? The trick is in the compounds: somebody, anything, nowhere... Let's figure it all out!\""}
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            {/* The 3 Big Rules */}
+            <section className="space-y-5">
+                <div className="flex items-center gap-3">
+                    <div className="p-2 bg-indigo-100 rounded-lg text-indigo-600"><Layers className="w-5 h-5" /></div>
+                    <h4 className="text-2xl font-bold text-slate-800">{isPortuguese ? '📐 As 3 Regras de Ouro' : '📐 The 3 Golden Rules'}</h4>
+                </div>
+                <div className="space-y-6">
+                    {rules.map((r, idx) => (
+                        <div key={idx} className={`p-6 rounded-[2rem] border-2 ${colorMap[r.color]}`}>
+                            <div className="flex items-center gap-4 mb-4">
+                                <span className="text-3xl">{r.icon}</span>
+                                <div>
+                                    <h5 className="text-2xl font-black">{r.word}</h5>
+                                    <span className="text-[10px] font-mono opacity-60">{r.ipa}</span>
+                                    {isPortuguese && <span className="text-[10px] font-bold opacity-70 ml-2">— {r.pt}</span>}
+                                </div>
+                                <span className="ml-auto text-xs font-bold bg-white/60 px-3 py-1 rounded-full">{r.use}</span>
+                            </div>
+                            <div className="grid sm:grid-cols-2 gap-2">
+                                {r.examples.map((ex, i) => (
+                                    <button key={i} onClick={() => speak(ex.en)} className="text-left p-3 rounded-xl bg-white/60 hover:bg-white transition-all flex items-start gap-2 group">
+                                        <Volume2 className="w-3 h-3 mt-1 opacity-30 group-hover:opacity-100 flex-shrink-0" />
+                                        <div>
+                                            <span className="font-bold text-sm block">{ex.en}</span>
+                                            {isPortuguese && <span className="text-[10px] text-slate-500 block">{ex.pt}</span>}
+                                        </div>
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </section>
+
+            {/* The Trap: No = not any */}
+            <div className="p-8 bg-rose-50 border-2 border-rose-100 rounded-[2rem] flex gap-5 shadow-sm">
+                <div className="w-12 h-12 bg-rose-500 rounded-2xl flex items-center justify-center text-white shrink-0 shadow-lg">
+                    <AlertTriangle className="w-6 h-6" />
+                </div>
+                <div>
+                    <h5 className="font-black text-rose-800 uppercase tracking-widest text-xs mb-2">
+                        {isPortuguese ? "A REGRA DA DUPLA NEGAÇÃO" : "The Double Negative Rule"}
+                    </h5>
+                    <p className="text-sm text-rose-700 leading-relaxed mb-3">
+                        {isPortuguese
+                            ? <>"Em inglês, <strong>nunca use duas negativas juntas</strong>. Escolha: <strong>not + any</strong> OU <strong>no</strong> (sem not).</>
+                            : <>"In English, <strong>never use two negatives together</strong>. Choose: <strong>not + any</strong> OR <strong>no</strong> (without not).</>}
+                    </p>
+                    <div className="grid sm:grid-cols-2 gap-2">
+                        <div className="p-3 bg-white rounded-xl"><span className="text-rose-500 font-black text-sm">✗ I don't have no money.</span></div>
+                        <div className="p-3 bg-white rounded-xl"><span className="text-emerald-600 font-black text-sm">✓ I don't have any money.</span></div>
+                        <div className="p-3 bg-white rounded-xl"><span className="text-emerald-600 font-black text-sm">✓ I have no money.</span></div>
+                        <div className="p-3 bg-white rounded-xl text-[10px] text-slate-500 flex items-center">{isPortuguese ? "Ambas as formas corretas significam a mesma coisa!" : "Both correct forms mean the same thing!"}</div>
+                    </div>
+                </div>
+            </div>
+
+            {/* Compound Words */}
+            <section className="space-y-5">
+                <div className="flex items-center gap-3">
+                    <div className="p-2 bg-violet-100 rounded-lg text-violet-600"><Sparkles className="w-5 h-5" /></div>
+                    <h4 className="text-2xl font-bold text-slate-800">{isPortuguese ? '🧩 Palavras Compostas' : '🧩 Compound Words'}</h4>
+                </div>
+                <div className="space-y-4">
+                    {compounds.map((group, gIdx) => (
+                        <div key={gIdx} className={`p-5 rounded-2xl border-2 ${group.color}`}>
+                            <h5 className="font-black text-lg text-slate-800 mb-3">{group.base}-</h5>
+                            <div className="grid gap-3">
+                                {group.words.map((w, wIdx) => (
+                                    <button key={wIdx} onClick={() => speak(w.ex)} className="w-full text-left p-3 rounded-xl bg-white/70 hover:bg-white transition-all flex items-start gap-3 group">
+                                        <span className="text-xl">{w.icon}</span>
+                                        <div className="flex-1 min-w-0">
+                                            <span className="font-black text-slate-800 text-sm">{w.word}</span>
+                                            <span className="text-[9px] font-mono text-slate-400 ml-2">{w.ipa}</span>
+                                            {isPortuguese && <span className="text-[10px] font-bold text-indigo-400 ml-2">— {w.pt}</span>}
+                                            <span className="text-sm text-slate-600 block mt-1">"{w.ex}"</span>
+                                            {isPortuguese && <span className="text-[10px] text-slate-400 block">{w.exPt}</span>}
+                                        </div>
+                                        <Volume2 className="w-3 h-3 text-slate-300 group-hover:text-indigo-500 flex-shrink-0 mt-1" />
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </section>
+
+            {/* Common Mistakes */}
+            <div className="p-6 rounded-2xl bg-slate-800 text-white">
+                <h5 className="font-bold text-lg mb-4 flex items-center gap-2"><XCircle className="w-5 h-5 text-rose-400" />{isPortuguese ? 'Erros Comuns' : 'Common Mistakes'}</h5>
+                <div className="space-y-3">
+                    {[
+                        { wrong: 'I have any friends.', right: 'I have some friends.', tip: isPortuguese ? "Frase afirmativa → use 'some'" : "Affirmative sentence → use 'some'" },
+                        { wrong: "I don't have no idea.", right: "I don't have any idea. / I have no idea.", tip: isPortuguese ? "Nunca 'don't + no' juntos!" : "Never 'don't + no' together!" },
+                        { wrong: 'Do you want some coffee? (pergunta normal)', right: 'Would you like some coffee? (oferta)', tip: isPortuguese ? "'Some' em perguntas = oferta/pedido educado" : "'Some' in questions = offer/polite request" },
+                    ].map((m, idx) => (
+                        <div key={idx} className="p-4 rounded-xl bg-white/5 border border-white/10">
+                            <div className="flex items-center gap-3 mb-1"><span className="text-rose-400 font-black text-sm">✗ {m.wrong}</span></div>
+                            <div className="flex items-center gap-3 mb-1"><span className="text-emerald-400 font-black text-sm">✓ {m.right}</span></div>
+                            <p className="text-[11px] text-slate-400">{m.tip}</p>
+                        </div>
+                    ))}
+                </div>
+            </div>
+
+            {/* Golden Tip */}
+            <div className="p-6 rounded-2xl bg-amber-50 border-2 border-amber-100 flex items-start gap-4">
+                <div className="text-3xl">💡</div>
+                <div>
+                    <h5 className="font-bold text-amber-800 text-lg mb-1">{isPortuguese ? 'Dica de Ouro' : 'Golden Tip'}</h5>
+                    <p className="text-amber-700 text-sm leading-relaxed">
+                        {isPortuguese
+                            ? "Use 'SOME' em perguntas APENAS quando você está oferecendo algo ou fazendo um pedido educado: 'Would you like some cake?' (oferta) / 'Can I have some sugar?' (pedido). Em perguntas neutras, use 'any': 'Do you have any pets?' Esse detalhe faz você soar natural e educado!"
+                            : "Use 'SOME' in questions ONLY when you are offering something or making a polite request: 'Would you like some cake?' (offer) / 'Can I have some sugar?' (request). In neutral questions, use 'any': 'Do you have any pets?' This detail makes you sound natural and polite!"}
+                    </p>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+// --- M9: QUANTIFIERS (MUCH, MANY, A LOT OF...) ---
+const QuantifiersLesson = ({ isPortuguese }: { isPortuguese: boolean }) => {
+    const quantifiers = [
+        { word: 'Many', ipa: '/ˈmɛni/', pt: 'Muitos(as)', type: 'C', polarity: isPortuguese ? 'Negativa / Pergunta' : 'Negative / Question', icon: '📦', color: 'blue', examples: [
+            { en: 'How many books do you have?', pt: 'Quantos livros você tem?' },
+            { en: "I don't have many friends.", pt: 'Eu não tenho muitos amigos.' },
+        ]},
+        { word: 'Much', ipa: '/mʌtʃ/', pt: 'Muito(a)', type: 'U', polarity: isPortuguese ? 'Negativa / Pergunta' : 'Negative / Question', icon: '💧', color: 'rose', examples: [
+            { en: 'How much money do you need?', pt: 'Quanto dinheiro você precisa?' },
+            { en: "There isn't much time.", pt: 'Não há muito tempo.' },
+        ]},
+        { word: 'A lot of', ipa: '/ə lɒt ɒv/', pt: 'Muito(a)/Muitos(as)', type: 'C+U', polarity: isPortuguese ? 'Afirmativa (qualquer)' : 'Affirmative (any)', icon: '🌟', color: 'amber', examples: [
+            { en: 'She has a lot of friends.', pt: 'Ela tem muitos amigos.' },
+            { en: 'I drink a lot of water.', pt: 'Eu bebo muita água.' },
+        ]},
+        { word: 'Few', ipa: '/fjuː/', pt: 'Poucos (negativo)', type: 'C', polarity: isPortuguese ? 'Quase nenhum ❌' : 'Almost none ❌', icon: '😟', color: 'slate', examples: [
+            { en: 'Few people came to the party.', pt: 'Poucas pessoas vieram à festa. (quase ninguém)' },
+        ]},
+        { word: 'A few', ipa: '/ə fjuː/', pt: 'Alguns (positivo)', type: 'C', polarity: isPortuguese ? 'Alguns, suficiente ✅' : 'Some, enough ✅', icon: '😊', color: 'emerald', examples: [
+            { en: 'I have a few friends in NY.', pt: 'Eu tenho alguns amigos em NY. (o suficiente)' },
+        ]},
+        { word: 'Little', ipa: '/ˈlɪtəl/', pt: 'Pouco (negativo)', type: 'U', polarity: isPortuguese ? 'Quase nada ❌' : 'Almost nothing ❌', icon: '😟', color: 'slate', examples: [
+            { en: 'There is little hope.', pt: 'Há pouca esperança. (quase nenhuma)' },
+        ]},
+        { word: 'A little', ipa: '/ə ˈlɪtəl/', pt: 'Um pouco (positivo)', type: 'U', polarity: isPortuguese ? 'Um pouco, suficiente ✅' : 'Some, enough ✅', icon: '😊', color: 'emerald', examples: [
+            { en: 'I have a little money.', pt: 'Eu tenho um pouco de dinheiro. (o suficiente)' },
+        ]},
+    ];
+    const howMuchMany = [
+        { en: 'How many students are in the class?', pt: 'Quantos alunos estão na turma?', type: 'C', icon: '🧑‍🎓' },
+        { en: 'How much sugar do you want?', pt: 'Quanto açúcar você quer?', type: 'U', icon: '🧂' },
+        { en: 'How many countries have you visited?', pt: 'Quantos países você visitou?', type: 'C', icon: '🌍' },
+        { en: 'How much time do we have?', pt: 'Quanto tempo nós temos?', type: 'U', icon: '⏰' },
+        { en: 'How many eggs do we need?', pt: 'Quantos ovos precisamos?', type: 'C', icon: '🥚' },
+        { en: 'How much coffee do you drink?', pt: 'Quanto café você bebe?', type: 'U', icon: '☕' },
+    ];
+    const colorMap: any = { blue: 'bg-blue-50 border-blue-200 text-blue-700', rose: 'bg-rose-50 border-rose-200 text-rose-700', amber: 'bg-amber-50 border-amber-200 text-amber-700', slate: 'bg-slate-100 border-slate-200 text-slate-700', emerald: 'bg-emerald-50 border-emerald-200 text-emerald-700' };
+    return (
+        <div className="space-y-10 animate-fade-in pb-20">
+            {/* Teacher Intro */}
+            <div className="relative p-8 rounded-[2rem] bg-violet-900 text-white overflow-hidden shadow-2xl">
+                <div className="absolute top-0 right-0 p-4 opacity-10"><Scale className="w-32 h-32" /></div>
+                <div className="relative z-10 flex flex-col md:flex-row gap-6 items-center">
+                    <div className="w-20 h-20 rounded-full bg-violet-600 flex items-center justify-center text-4xl shadow-lg border-2 border-violet-400">👨‍🏫</div>
+                    <div className="flex-1">
+                        <h3 className="text-2xl font-serif-display mb-2">{isPortuguese ? 'Quantificadores' : 'Quantifiers'}</h3>
+                        <p className="text-violet-100 text-sm leading-relaxed italic">
+                            {isPortuguese
+                                ? "\"Agora que você sabe a diferença entre contáveis e incontáveis, vamos aprender QUANTO de cada coisa. Aqui está o grande segredo: 'many' e 'few' são para coisas que você conta, 'much' e 'little' são para coisas que você mede. E cuidado com 'few' vs 'a few' — a diferença de um simples 'a' muda tudo!\""
+                                : "\"Now that you know the difference between countable and uncountable, let's learn HOW MUCH of each thing. Here's the big secret: 'many' and 'few' are for things you count, 'much' and 'little' are for things you measure. And watch out for 'few' vs 'a few' — the difference of a simple 'a' changes everything!\""}
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            {/* Quick Visual Table */}
+            <div className="p-6 bg-white rounded-[2rem] border-2 border-slate-100 shadow-sm">
+                <h4 className="font-black text-slate-800 mb-4 text-center text-lg">{isPortuguese ? '📊 Mapa Visual Rápido' : '📊 Quick Visual Map'}</h4>
+                <div className="overflow-x-auto">
+                    <table className="w-full text-sm">
+                        <thead>
+                            <tr className="border-b-2 border-slate-100">
+                                <th className="p-3 text-left text-slate-500 font-black uppercase text-xs"></th>
+                                <th className="p-3 text-center text-emerald-600 font-black uppercase text-xs">📦 {isPortuguese ? 'Contável' : 'Countable'}</th>
+                                <th className="p-3 text-center text-rose-600 font-black uppercase text-xs">💧 {isPortuguese ? 'Incontável' : 'Uncountable'}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr className="border-b border-slate-50">
+                                <td className="p-3 font-bold text-slate-600">{isPortuguese ? 'Muito' : 'A lot'}</td>
+                                <td className="p-3 text-center font-black text-amber-600">Many / A lot of</td>
+                                <td className="p-3 text-center font-black text-amber-600">Much / A lot of</td>
+                            </tr>
+                            <tr className="border-b border-slate-50">
+                                <td className="p-3 font-bold text-slate-600">{isPortuguese ? 'Pouco ✅' : 'A bit ✅'}</td>
+                                <td className="p-3 text-center font-black text-emerald-600">A few</td>
+                                <td className="p-3 text-center font-black text-emerald-600">A little</td>
+                            </tr>
+                            <tr>
+                                <td className="p-3 font-bold text-slate-600">{isPortuguese ? 'Pouco ❌' : 'Almost none ❌'}</td>
+                                <td className="p-3 text-center font-black text-rose-600">Few</td>
+                                <td className="p-3 text-center font-black text-rose-600">Little</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            {/* Each Quantifier */}
+            <section className="space-y-5">
+                <div className="flex items-center gap-3">
+                    <div className="p-2 bg-violet-100 rounded-lg text-violet-600"><Layers className="w-5 h-5" /></div>
+                    <h4 className="text-2xl font-bold text-slate-800">{isPortuguese ? '🎯 Os Quantificadores em Detalhe' : '🎯 Quantifiers in Detail'}</h4>
+                </div>
+                <div className="grid gap-4">
+                    {quantifiers.map((q, idx) => (
+                        <div key={idx} className={`p-5 rounded-2xl border-2 ${colorMap[q.color]}`}>
+                            <div className="flex items-center gap-4 mb-3 flex-wrap">
+                                <span className="text-2xl">{q.icon}</span>
+                                <div>
+                                    <h5 className="text-xl font-black">{q.word}</h5>
+                                    <span className="text-[9px] font-mono opacity-50">{q.ipa}</span>
+                                    {isPortuguese && <span className="text-[10px] font-bold opacity-70 ml-2">— {q.pt}</span>}
+                                </div>
+                                <span className={`text-[10px] font-black px-2 py-1 rounded-full ${q.type.includes('C') && q.type.includes('U') ? 'bg-amber-200 text-amber-800' : q.type === 'C' ? 'bg-blue-200 text-blue-800' : 'bg-rose-200 text-rose-800'}`}>{q.type === 'C+U' ? 'C + U' : q.type === 'C' ? 'Countable' : 'Uncountable'}</span>
+                                <span className="text-[10px] font-bold bg-white/60 px-2 py-1 rounded-full ml-auto">{q.polarity}</span>
+                            </div>
+                            <div className="grid gap-2">
+                                {q.examples.map((ex, i) => (
+                                    <button key={i} onClick={() => speak(ex.en)} className="text-left p-3 rounded-xl bg-white/60 hover:bg-white transition-all flex items-start gap-2 group">
+                                        <Volume2 className="w-3 h-3 mt-1 opacity-30 group-hover:opacity-100 flex-shrink-0" />
+                                        <div>
+                                            <span className="font-bold text-sm block">{ex.en}</span>
+                                            {isPortuguese && <span className="text-[10px] text-slate-500 block">{ex.pt}</span>}
+                                        </div>
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </section>
+
+            {/* The A Few vs Few Trap */}
+            <div className="p-8 bg-rose-50 border-2 border-rose-100 rounded-[2rem] flex gap-5 shadow-sm">
+                <div className="w-12 h-12 bg-rose-500 rounded-2xl flex items-center justify-center text-white shrink-0 shadow-lg">
+                    <AlertTriangle className="w-6 h-6" />
+                </div>
+                <div>
+                    <h5 className="font-black text-rose-800 uppercase tracking-widest text-xs mb-2">
+                        {isPortuguese ? "A ARMADILHA DO 'A'" : "The 'A' Trap"}
+                    </h5>
+                    <p className="text-sm text-rose-700 leading-relaxed mb-3">
+                        {isPortuguese
+                            ? <>O artigo <strong>'a'</strong> muda o sentido completamente! <strong>Few / Little</strong> = quase nada (negativo 😟). <strong>A few / A little</strong> = o suficiente (positivo 😊).</>
+                            : <>The article <strong>'a'</strong> changes the meaning completely! <strong>Few / Little</strong> = almost none (negative 😟). <strong>A few / A little</strong> = enough (positive 😊).</>}
+                    </p>
+                    <div className="grid sm:grid-cols-2 gap-2">
+                        <button onClick={() => speak("I have few friends.")} className="p-3 bg-white rounded-xl text-left hover:shadow-md transition-all">
+                            <span className="text-rose-600 font-black text-sm block">😟 I have few friends.</span>
+                            {isPortuguese && <span className="text-[10px] text-slate-400">Tenho poucos amigos (quase nenhum, sou solitário)</span>}
+                        </button>
+                        <button onClick={() => speak("I have a few friends.")} className="p-3 bg-white rounded-xl text-left hover:shadow-md transition-all">
+                            <span className="text-emerald-600 font-black text-sm block">😊 I have a few friends.</span>
+                            {isPortuguese && <span className="text-[10px] text-slate-400">Tenho alguns amigos (o suficiente, estou bem)</span>}
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            {/* How Much / How Many */}
+            <section className="space-y-5">
+                <div className="flex items-center gap-3">
+                    <div className="p-2 bg-orange-100 rounded-lg text-orange-600"><HelpCircle className="w-5 h-5" /></div>
+                    <h4 className="text-2xl font-bold text-slate-800">{isPortuguese ? '❓ How Much vs. How Many' : '❓ How Much vs. How Many'}</h4>
+                </div>
+                <div className="grid gap-3">
+                    {howMuchMany.map((ex, idx) => (
+                        <button key={idx} onClick={() => speak(ex.en)} className="w-full text-left p-4 rounded-2xl bg-white border border-slate-100 hover:border-violet-200 hover:shadow-md transition-all flex items-center gap-4 group">
+                            <span className="text-2xl flex-shrink-0">{ex.icon}</span>
+                            <div className="flex-1 min-w-0">
+                                <span className="font-bold text-slate-800 text-sm block">{ex.en}</span>
+                                {isPortuguese && <span className="text-[11px] text-slate-400 block">{ex.pt}</span>}
+                            </div>
+                            <span className={`text-[10px] font-black px-2 py-1 rounded-full ${ex.type === 'C' ? 'bg-blue-100 text-blue-600' : 'bg-rose-100 text-rose-600'}`}>{ex.type === 'C' ? 'Many' : 'Much'}</span>
+                            <Volume2 className="w-4 h-4 text-slate-300 group-hover:text-violet-500 flex-shrink-0" />
+                        </button>
+                    ))}
+                </div>
+            </section>
+
+            {/* Common Mistakes */}
+            <div className="p-6 rounded-2xl bg-slate-800 text-white">
+                <h5 className="font-bold text-lg mb-4 flex items-center gap-2"><XCircle className="w-5 h-5 text-rose-400" />{isPortuguese ? 'Erros Comuns' : 'Common Mistakes'}</h5>
+                <div className="space-y-3">
+                    {[
+                        { wrong: 'I have much friends.', right: 'I have many friends.', tip: isPortuguese ? "'Friends' é contável → 'many'" : "'Friends' is countable → 'many'" },
+                        { wrong: 'How many water?', right: 'How much water?', tip: isPortuguese ? "'Water' é incontável → 'much'" : "'Water' is uncountable → 'much'" },
+                        { wrong: 'I have much money. (afirmativa)', right: 'I have a lot of money.', tip: isPortuguese ? "Em afirmativas, prefira 'a lot of' em vez de 'much/many'" : "In affirmative sentences, prefer 'a lot of' over 'much/many'" },
+                    ].map((m, idx) => (
+                        <div key={idx} className="p-4 rounded-xl bg-white/5 border border-white/10">
+                            <div className="flex items-center gap-3 mb-1"><span className="text-rose-400 font-black text-sm">✗ {m.wrong}</span></div>
+                            <div className="flex items-center gap-3 mb-1"><span className="text-emerald-400 font-black text-sm">✓ {m.right}</span></div>
+                            <p className="text-[11px] text-slate-400">{m.tip}</p>
+                        </div>
+                    ))}
+                </div>
+            </div>
+
+            {/* Golden Tip */}
+            <div className="p-6 rounded-2xl bg-amber-50 border-2 border-amber-100 flex items-start gap-4">
+                <div className="text-3xl">💡</div>
+                <div>
+                    <h5 className="font-bold text-amber-800 text-lg mb-1">{isPortuguese ? 'Dica de Ouro' : 'Golden Tip'}</h5>
+                    <p className="text-amber-700 text-sm leading-relaxed">
+                        {isPortuguese
+                            ? "Na dúvida, use 'A LOT OF' — funciona para contáveis E incontáveis, em qualquer tipo de frase. É o coringa universal! 'I have a lot of friends' ✅ 'I drink a lot of water' ✅. Já 'much' e 'many' soam estranhos em frases afirmativas no inglês falado — prefira 'a lot of' nesses casos."
+                            : "When in doubt, use 'A LOT OF' — it works for both countable AND uncountable, in any sentence type. It's the universal wildcard! 'I have a lot of friends' ✅ 'I drink a lot of water' ✅. 'Much' and 'many' sound odd in spoken affirmative sentences — prefer 'a lot of' in those cases."}
+                    </p>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+// --- M9: CLOTHES & SHOPPING VOCABULARY ---
+const ClothesShoppingVocabulary = ({ isPortuguese }: { isPortuguese: boolean }) => {
+    const clothingCategories = [
+        { name: isPortuguese ? '👕 Parte de Cima' : '👕 Upper Body', items: [
+            { word: 'T-shirt', ipa: '/ˈtiːʃɜːrt/', pt: 'Camiseta', icon: '👕' },
+            { word: 'Shirt', ipa: '/ʃɜːrt/', pt: 'Camisa', icon: '👔' },
+            { word: 'Blouse', ipa: '/blaʊz/', pt: 'Blusa', icon: '👚' },
+            { word: 'Sweater', ipa: '/ˈswɛtər/', pt: 'Suéter', icon: '🧥' },
+            { word: 'Jacket', ipa: '/ˈdʒækɪt/', pt: 'Jaqueta', icon: '🧥' },
+            { word: 'Coat', ipa: '/koʊt/', pt: 'Casaco', icon: '🧥' },
+            { word: 'Hoodie', ipa: '/ˈhʊdi/', pt: 'Moletom', icon: '🧥' },
+        ], color: 'bg-blue-50 border-blue-200' },
+        { name: isPortuguese ? '👖 Parte de Baixo' : '👖 Lower Body', items: [
+            { word: 'Pants / Trousers', ipa: '/pænts/ /ˈtraʊzərz/', pt: 'Calça', icon: '👖' },
+            { word: 'Jeans', ipa: '/dʒiːnz/', pt: 'Jeans', icon: '👖' },
+            { word: 'Shorts', ipa: '/ʃɔːrts/', pt: 'Shorts', icon: '🩳' },
+            { word: 'Skirt', ipa: '/skɜːrt/', pt: 'Saia', icon: '👗' },
+            { word: 'Dress', ipa: '/drɛs/', pt: 'Vestido', icon: '👗' },
+        ], color: 'bg-rose-50 border-rose-200' },
+        { name: isPortuguese ? '👟 Calçados' : '👟 Footwear', items: [
+            { word: 'Shoes', ipa: '/ʃuːz/', pt: 'Sapatos', icon: '👞' },
+            { word: 'Sneakers', ipa: '/ˈsniːkərz/', pt: 'Tênis', icon: '👟' },
+            { word: 'Boots', ipa: '/buːts/', pt: 'Botas', icon: '🥾' },
+            { word: 'Sandals', ipa: '/ˈsændəlz/', pt: 'Sandálias', icon: '🩴' },
+            { word: 'Slippers', ipa: '/ˈslɪpərz/', pt: 'Pantufas', icon: '🥿' },
+        ], color: 'bg-amber-50 border-amber-200' },
+        { name: isPortuguese ? '🎩 Acessórios' : '🎩 Accessories', items: [
+            { word: 'Hat', ipa: '/hæt/', pt: 'Chapéu', icon: '🎩' },
+            { word: 'Cap', ipa: '/kæp/', pt: 'Boné', icon: '🧢' },
+            { word: 'Scarf', ipa: '/skɑːrf/', pt: 'Cachecol', icon: '🧣' },
+            { word: 'Gloves', ipa: '/ɡlʌvz/', pt: 'Luvas', icon: '🧤' },
+            { word: 'Belt', ipa: '/bɛlt/', pt: 'Cinto', icon: '👔' },
+            { word: 'Tie', ipa: '/taɪ/', pt: 'Gravata', icon: '👔' },
+            { word: 'Sunglasses', ipa: '/ˈsʌnˌɡlæsɪz/', pt: 'Óculos de sol', icon: '🕶️' },
+            { word: 'Watch', ipa: '/wɒtʃ/', pt: 'Relógio', icon: '⌚' },
+        ], color: 'bg-emerald-50 border-emerald-200' },
+    ];
+    const shoppingPhrases = [
+        { en: 'Can I help you?', pt: 'Posso ajudar?', who: isPortuguese ? '🏪 Vendedor' : '🏪 Seller', icon: '🏪' },
+        { en: "I'm just looking, thanks.", pt: 'Só estou olhando, obrigado(a).', who: isPortuguese ? '🛍️ Cliente' : '🛍️ Customer', icon: '🛍️' },
+        { en: 'Do you have this in a different size?', pt: 'Vocês têm este em outro tamanho?', who: '🛍️', icon: '📏' },
+        { en: 'Can I try this on?', pt: 'Posso experimentar?', who: '🛍️', icon: '🪞' },
+        { en: 'Where is the fitting room?', pt: 'Onde é o provador?', who: '🛍️', icon: '🚪' },
+        { en: "It doesn't fit.", pt: 'Não serve.', who: '🛍️', icon: '❌' },
+        { en: 'It fits perfectly!', pt: 'Serve perfeitamente!', who: '🛍️', icon: '✅' },
+        { en: 'How much is this?', pt: 'Quanto custa isto?', who: '🛍️', icon: '💰' },
+        { en: "It's on sale.", pt: 'Está em promoção.', who: '🏪', icon: '🏷️' },
+        { en: "I'll take it.", pt: 'Eu vou levar.', who: '🛍️', icon: '💳' },
+    ];
+    const sizes = [
+        { en: 'Extra Small', abbr: 'XS', pt: 'Extra Pequeno' },
+        { en: 'Small', abbr: 'S', pt: 'Pequeno' },
+        { en: 'Medium', abbr: 'M', pt: 'Médio' },
+        { en: 'Large', abbr: 'L', pt: 'Grande' },
+        { en: 'Extra Large', abbr: 'XL', pt: 'Extra Grande' },
+    ];
+    return (
+        <div className="space-y-10 animate-fade-in pb-20">
+            {/* Teacher Intro */}
+            <div className="relative p-8 rounded-[2rem] bg-pink-900 text-white overflow-hidden shadow-2xl">
+                <div className="absolute top-0 right-0 p-4 opacity-10"><ShoppingBag className="w-32 h-32" /></div>
+                <div className="relative z-10 flex flex-col md:flex-row gap-6 items-center">
+                    <div className="w-20 h-20 rounded-full bg-pink-600 flex items-center justify-center text-4xl shadow-lg border-2 border-pink-400">👨‍🏫</div>
+                    <div className="flex-1">
+                        <h3 className="text-2xl font-serif-display mb-2">{isPortuguese ? 'Roupas & Compras' : 'Clothes & Shopping'}</h3>
+                        <p className="text-pink-100 text-sm leading-relaxed italic">
+                            {isPortuguese
+                                ? "\"Imagine-se em uma loja em Nova York, Londres ou Sydney. Você encontra a roupa perfeita, mas não sabe pedir seu tamanho, nem dizer que quer experimentar. Essa lição vai te dar todo o vocabulário que você precisa para fazer compras com confiança em qualquer país de língua inglesa!\""
+                                : "\"Imagine yourself in a store in New York, London, or Sydney. You find the perfect outfit, but you don't know how to ask for your size, or say you want to try it on. This lesson will give you all the vocabulary you need to shop with confidence in any English-speaking country!\""}
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            {/* Clothing Categories */}
+            {clothingCategories.map((cat, cIdx) => (
+                <section key={cIdx} className="space-y-4">
+                    <div className="flex items-center gap-3">
+                        <div className={`p-2 rounded-lg ${cat.color.split(' ')[0]} ${cat.color.includes('blue') ? 'text-blue-600' : cat.color.includes('rose') ? 'text-rose-600' : cat.color.includes('amber') ? 'text-amber-600' : 'text-emerald-600'}`}><Layers className="w-5 h-5" /></div>
+                        <h4 className="text-2xl font-bold text-slate-800">{cat.name}</h4>
+                    </div>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+                        {cat.items.map((item, iIdx) => (
+                            <button key={iIdx} onClick={() => speak(item.word)} className={`group p-4 rounded-2xl border-2 ${cat.color} hover:shadow-md transition-all text-center`}>
+                                <span className="text-3xl block mb-2">{item.icon}</span>
+                                <span className="font-black text-slate-800 text-sm block">{item.word}</span>
+                                <span className="text-[9px] font-mono text-slate-400 block">{item.ipa}</span>
+                                {isPortuguese && <span className="text-[10px] font-bold text-indigo-400 block">{item.pt}</span>}
+                                <Volume2 className="w-3 h-3 text-slate-200 group-hover:text-indigo-400 mx-auto mt-1" />
+                            </button>
+                        ))}
+                    </div>
+                </section>
+            ))}
+
+            {/* Sizes */}
+            <div className="p-6 bg-white rounded-[2rem] border-2 border-slate-100 shadow-sm">
+                <h4 className="font-black text-slate-800 mb-4 text-center text-lg flex items-center justify-center gap-2"><Maximize className="w-5 h-5 text-indigo-500" />{isPortuguese ? '📐 Tamanhos' : '📐 Sizes'}</h4>
+                <div className="flex flex-wrap justify-center gap-3">
+                    {sizes.map((s, idx) => (
+                        <button key={idx} onClick={() => speak(s.en)} className="group px-5 py-3 rounded-2xl bg-slate-50 border border-slate-200 hover:border-indigo-300 hover:shadow-md transition-all text-center">
+                            <span className="font-black text-2xl text-indigo-600 block">{s.abbr}</span>
+                            <span className="text-xs font-bold text-slate-600 block">{s.en}</span>
+                            {isPortuguese && <span className="text-[10px] text-indigo-400 block">{s.pt}</span>}
+                        </button>
+                    ))}
+                </div>
+            </div>
+
+            {/* Shopping Dialogue */}
+            <section className="space-y-5">
+                <div className="flex items-center gap-3">
+                    <div className="p-2 bg-pink-100 rounded-lg text-pink-600"><MessageCircle className="w-5 h-5" /></div>
+                    <h4 className="text-2xl font-bold text-slate-800">{isPortuguese ? '🛍️ Frases para Compras' : '🛍️ Shopping Phrases'}</h4>
+                </div>
+                <div className="grid gap-3">
+                    {shoppingPhrases.map((p, idx) => (
+                        <button key={idx} onClick={() => speak(p.en)} className="w-full text-left p-4 rounded-2xl bg-white border border-slate-100 hover:border-pink-200 hover:shadow-md transition-all flex items-center gap-4 group">
+                            <span className="text-2xl flex-shrink-0">{p.icon}</span>
+                            <div className="flex-1 min-w-0">
+                                <span className="font-bold text-slate-800 text-sm block">{p.en}</span>
+                                {isPortuguese && <span className="text-[11px] text-slate-400 block">{p.pt}</span>}
+                            </div>
+                            <span className="text-[10px] font-black px-2 py-1 rounded-full bg-slate-100 text-slate-500">{p.who}</span>
+                            <Volume2 className="w-4 h-4 text-slate-300 group-hover:text-pink-500 flex-shrink-0" />
+                        </button>
+                    ))}
+                </div>
+            </section>
+
+            {/* Pants vs Trousers Trap */}
+            <div className="p-8 bg-rose-50 border-2 border-rose-100 rounded-[2rem] flex gap-5 shadow-sm">
+                <div className="w-12 h-12 bg-rose-500 rounded-2xl flex items-center justify-center text-white shrink-0 shadow-lg">
+                    <AlertTriangle className="w-6 h-6" />
+                </div>
+                <div>
+                    <h5 className="font-black text-rose-800 uppercase tracking-widest text-xs mb-2">
+                        {isPortuguese ? "CUIDADO COM 'PANTS'" : "Watch Out for 'PANTS'"}
+                    </h5>
+                    <p className="text-sm text-rose-700 leading-relaxed">
+                        {isPortuguese
+                            ? <>🇺🇸 <strong>Pants</strong> (EUA) = Calça. 🇬🇧 <strong>Pants</strong> (UK) = Cueca/Calcinha! No inglês britânico, calça é <strong>Trousers</strong>. Cuidado para não passar vergonha! 😅</>
+                            : <>🇺🇸 <strong>Pants</strong> (US) = Trousers. 🇬🇧 <strong>Pants</strong> (UK) = Underwear! In British English, use <strong>Trousers</strong> for what Americans call Pants. Be careful! 😅</>}
+                    </p>
+                </div>
+            </div>
+
+            {/* Common Mistakes */}
+            <div className="p-6 rounded-2xl bg-slate-800 text-white">
+                <h5 className="font-bold text-lg mb-4 flex items-center gap-2"><XCircle className="w-5 h-5 text-rose-400" />{isPortuguese ? 'Erros Comuns' : 'Common Mistakes'}</h5>
+                <div className="space-y-3">
+                    {[
+                        { wrong: 'I bought a pant.', right: 'I bought a pair of pants.', tip: isPortuguese ? "'Pants', 'jeans', 'shorts' são sempre plurais — use 'a pair of'" : "'Pants', 'jeans', 'shorts' are always plural — use 'a pair of'" },
+                        { wrong: 'I want to prove this.', right: 'I want to try this on.', tip: isPortuguese ? "Experimentar roupa = 'try on', nunca 'prove' (isso é 'provar' no sentido de demonstrar)" : "'Try on' = try clothes. 'Prove' = demonstrate something is true" },
+                        { wrong: 'What is your number?', right: 'What is your size?', tip: isPortuguese ? "Use 'size' para tamanho de roupa, não 'number'" : "Use 'size' for clothing, not 'number'" },
+                    ].map((m, idx) => (
+                        <div key={idx} className="p-4 rounded-xl bg-white/5 border border-white/10">
+                            <div className="flex items-center gap-3 mb-1"><span className="text-rose-400 font-black text-sm">✗ {m.wrong}</span></div>
+                            <div className="flex items-center gap-3 mb-1"><span className="text-emerald-400 font-black text-sm">✓ {m.right}</span></div>
+                            <p className="text-[11px] text-slate-400">{m.tip}</p>
+                        </div>
+                    ))}
+                </div>
+            </div>
+
+            {/* Golden Tip */}
+            <div className="p-6 rounded-2xl bg-amber-50 border-2 border-amber-100 flex items-start gap-4">
+                <div className="text-3xl">💡</div>
+                <div>
+                    <h5 className="font-bold text-amber-800 text-lg mb-1">{isPortuguese ? 'Dica de Ouro' : 'Golden Tip'}</h5>
+                    <p className="text-amber-700 text-sm leading-relaxed">
+                        {isPortuguese
+                            ? "As duas frases mais úteis para compras são: 'Can I try this on?' (Posso experimentar?) e 'Do you have this in [size/color]?' (Vocês têm em [tamanho/cor]?). Com essas duas expressões você sobrevive em qualquer loja do mundo anglófono! E lembre-se: 'outfit' é o look completo, 'clothing' é roupa no geral."
+                            : "The two most useful shopping phrases are: 'Can I try this on?' and 'Do you have this in [size/color]?'. With these two expressions you can survive in any English-speaking store! And remember: 'outfit' is the complete look, 'clothing' is clothes in general."}
+                    </p>
+                </div>
+            </div>
+        </div>
+    );
+};
+
 // --- IRREGULAR VERBS COMPLETE REFERENCE ---
 const IrregularVerbsReference = ({ isPortuguese }: { isPortuguese: boolean }) => {
     const [search, setSearch] = useState('');
@@ -8295,6 +9089,10 @@ export default function App() {
             case 33: return <PastSimpleLesson isPortuguese={isPortuguese} />;
             case 34: return <PastSimpleRegularVerbs isPortuguese={isPortuguese} />;
             case 35: return <PastSimpleIrregularVerbs isPortuguese={isPortuguese} />;
+            case 36: return <CountableUncountable isPortuguese={isPortuguese} />;
+            case 37: return <SomeAnyNo isPortuguese={isPortuguese} />;
+            case 38: return <QuantifiersLesson isPortuguese={isPortuguese} />;
+            case 39: return <ClothesShoppingVocabulary isPortuguese={isPortuguese} />;
             case -1: return <IrregularVerbsReference isPortuguese={isPortuguese} />;
             default: return <BuildingLesson title={getTitleForBuilding(activeSection)} isPortuguese={isPortuguese} />;
         }
