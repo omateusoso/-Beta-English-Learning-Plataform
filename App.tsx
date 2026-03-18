@@ -17,7 +17,7 @@ import {
     ChefHat, ShoppingBag, Shield as SecurityIcon, Plane, Scale, Plus, Minus, IterationCw, Eye,
     Maximize, Minimize, Activity, Compass, Navigation, List, MessageSquare, Link,
     CheckCircle2, XCircle, Trophy, AlertCircle, LogIn, User as UserIcon, Mail, Lock as LockIcon, LogOut, Loader2,
-    LogIn as LoginIcon
+    LogIn as LoginIcon, CloudRain
 } from 'lucide-react';
 // Firebase removed for Offline Mode
 // import { auth } from './firebase';
@@ -7786,6 +7786,761 @@ const ClothesShoppingVocabulary = ({ isPortuguese }: { isPortuguese: boolean }) 
     );
 };
 
+// --- M10: WEATHER & SEASONS VOCABULARY ---
+const WeatherSeasonsVocabulary = ({ isPortuguese }: { isPortuguese: boolean }) => {
+    const seasons = [
+        { name: 'Spring', ipa: '/sprɪŋ/', pt: 'Primavera', icon: '🌸', months: 'Mar - May', color: 'bg-pink-50 border-pink-200' },
+        { name: 'Summer', ipa: '/ˈsʌmər/', pt: 'Verão', icon: '☀️', months: 'Jun - Aug', color: 'bg-amber-50 border-amber-200' },
+        { name: 'Autumn / Fall', ipa: '/ˈɔːtəm/ /fɔːl/', pt: 'Outono', icon: '🍂', months: 'Sep - Nov', color: 'bg-orange-50 border-orange-200' },
+        { name: 'Winter', ipa: '/ˈwɪntər/', pt: 'Inverno', icon: '❄️', months: 'Dec - Feb', color: 'bg-blue-50 border-blue-200' },
+    ];
+    const weatherWords = [
+        { word: 'Sunny', ipa: '/ˈsʌni/', pt: 'Ensolarado', icon: '☀️', ex: "It's sunny today.", exPt: 'Está ensolarado hoje.' },
+        { word: 'Cloudy', ipa: '/ˈklaʊdi/', pt: 'Nublado', icon: '☁️', ex: "It's cloudy.", exPt: 'Está nublado.' },
+        { word: 'Rainy', ipa: '/ˈreɪni/', pt: 'Chuvoso', icon: '🌧️', ex: "It's rainy outside.", exPt: 'Está chuvoso lá fora.' },
+        { word: 'Windy', ipa: '/ˈwɪndi/', pt: 'Ventoso', icon: '💨', ex: "It's very windy.", exPt: 'Está muito ventoso.' },
+        { word: 'Snowy', ipa: '/ˈsnoʊi/', pt: 'Nevando', icon: '🌨️', ex: "It's snowy in December.", exPt: 'Neva em dezembro.' },
+        { word: 'Foggy', ipa: '/ˈfɒɡi/', pt: 'Nevoeiro', icon: '🌫️', ex: "It's foggy this morning.", exPt: 'Está com nevoeiro esta manhã.' },
+        { word: 'Stormy', ipa: '/ˈstɔːrmi/', pt: 'Tempestuoso', icon: '⛈️', ex: "It's stormy tonight.", exPt: 'Está tempestuoso esta noite.' },
+        { word: 'Hot', ipa: '/hɒt/', pt: 'Quente', icon: '🥵', ex: "It's very hot.", exPt: 'Está muito quente.' },
+        { word: 'Cold', ipa: '/koʊld/', pt: 'Frio', icon: '🥶', ex: "It's cold today.", exPt: 'Está frio hoje.' },
+        { word: 'Warm', ipa: '/wɔːrm/', pt: 'Morno/Agradável', icon: '🌤️', ex: "It's warm and pleasant.", exPt: 'Está morno e agradável.' },
+        { word: 'Cool', ipa: '/kuːl/', pt: 'Fresco', icon: '🌬️', ex: "It's cool in the evening.", exPt: 'Está fresco à noite.' },
+        { word: 'Freezing', ipa: '/ˈfriːzɪŋ/', pt: 'Congelante', icon: '🧊', ex: "It's freezing outside!", exPt: 'Está congelando lá fora!' },
+    ];
+    const temperatureScale = [
+        { label: 'Freezing', range: '< 0°C', icon: '🧊', color: 'text-blue-800 bg-blue-100' },
+        { label: 'Cold', range: '0-10°C', icon: '🥶', color: 'text-blue-600 bg-blue-50' },
+        { label: 'Cool', range: '10-18°C', icon: '🌬️', color: 'text-cyan-600 bg-cyan-50' },
+        { label: 'Warm', range: '18-25°C', icon: '🌤️', color: 'text-amber-600 bg-amber-50' },
+        { label: 'Hot', range: '25-35°C', icon: '🥵', color: 'text-orange-600 bg-orange-50' },
+        { label: 'Boiling', range: '> 35°C', icon: '🔥', color: 'text-red-600 bg-red-50' },
+    ];
+    const conversationPhrases = [
+        { en: "What's the weather like today?", pt: 'Como está o tempo hoje?', icon: '❓' },
+        { en: "It's a beautiful day!", pt: 'Está um dia lindo!', icon: '🌞' },
+        { en: "It looks like it's going to rain.", pt: 'Parece que vai chover.', icon: '🌧️' },
+        { en: "The forecast says it will be sunny.", pt: 'A previsão diz que vai fazer sol.', icon: '📺' },
+        { en: "I love this weather!", pt: 'Eu amo esse tempo!', icon: '❤️' },
+        { en: "It's pouring outside.", pt: 'Está chovendo muito lá fora.', icon: '🌊' },
+        { en: "Bundle up, it's freezing!", pt: 'Agasalhe-se, está congelando!', icon: '🧥' },
+        { en: "What a gorgeous sunset!", pt: 'Que pôr do sol lindo!', icon: '🌅' },
+    ];
+    return (
+        <div className="space-y-10 animate-fade-in pb-20">
+            {/* Teacher Intro */}
+            <div className="relative p-8 rounded-[2rem] bg-sky-900 text-white overflow-hidden shadow-2xl">
+                <div className="absolute top-0 right-0 p-4 opacity-10"><Sun className="w-32 h-32" /></div>
+                <div className="relative z-10 flex flex-col md:flex-row gap-6 items-center">
+                    <div className="w-20 h-20 rounded-full bg-sky-600 flex items-center justify-center text-4xl shadow-lg border-2 border-sky-400">👨‍🏫</div>
+                    <div className="flex-1">
+                        <h3 className="text-2xl font-serif-display mb-2">{isPortuguese ? 'Clima & Estações' : 'Weather & Seasons'}</h3>
+                        <p className="text-sky-100 text-sm leading-relaxed italic">
+                            {isPortuguese
+                                ? "\"Falar sobre o tempo é a conversa mais universal que existe! Em países de língua inglesa, especialmente na Inglaterra, o clima é o PRINCIPAL assunto de small talk. Saber dizer 'It's a lovely day, isn't it?' vai abrir portas em qualquer conversa. Vamos aprender todo o vocabulário essencial!\""
+                                : "\"Talking about the weather is the most universal conversation there is! In English-speaking countries, especially England, the weather is THE main small talk topic. Knowing how to say 'It's a lovely day, isn't it?' will open doors in any conversation. Let's learn all the essential vocabulary!\""}
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            {/* Seasons */}
+            <section className="space-y-5">
+                <div className="flex items-center gap-3">
+                    <div className="p-2 bg-pink-100 rounded-lg text-pink-600"><Calendar className="w-5 h-5" /></div>
+                    <h4 className="text-2xl font-bold text-slate-800">{isPortuguese ? '🌍 As 4 Estações' : '🌍 The 4 Seasons'}</h4>
+                </div>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    {seasons.map((s, idx) => (
+                        <button key={idx} onClick={() => speak(s.name)} className={`group p-5 rounded-2xl border-2 ${s.color} hover:shadow-lg transition-all text-center`}>
+                            <span className="text-4xl block mb-3">{s.icon}</span>
+                            <span className="font-black text-slate-800 text-lg block">{s.name}</span>
+                            <span className="text-[9px] font-mono text-slate-400 block">{s.ipa}</span>
+                            {isPortuguese && <span className="text-[10px] font-bold text-indigo-400 block">{s.pt}</span>}
+                            <span className="text-[10px] font-bold text-slate-500 block mt-2 bg-white/60 rounded-full px-2 py-0.5">{s.months}</span>
+                            <Volume2 className="w-3 h-3 text-slate-200 group-hover:text-indigo-400 mx-auto mt-2" />
+                        </button>
+                    ))}
+                </div>
+                <div className="p-4 bg-amber-50 rounded-xl border border-amber-100 text-sm text-amber-700">
+                    <strong>💡 {isPortuguese ? 'Dica' : 'Tip'}:</strong> {isPortuguese
+                        ? "🇺🇸 Americanos dizem 'Fall'. 🇬🇧 Britânicos dizem 'Autumn'. Ambos estão corretos!"
+                        : "🇺🇸 Americans say 'Fall'. 🇬🇧 British say 'Autumn'. Both are correct!"}
+                </div>
+            </section>
+
+            {/* Weather Words Grid */}
+            <section className="space-y-5">
+                <div className="flex items-center gap-3">
+                    <div className="p-2 bg-sky-100 rounded-lg text-sky-600"><CloudRain className="w-5 h-5" /></div>
+                    <h4 className="text-2xl font-bold text-slate-800">{isPortuguese ? '🌦️ Vocabulário do Clima' : '🌦️ Weather Vocabulary'}</h4>
+                </div>
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                    {weatherWords.map((w, idx) => (
+                        <button key={idx} onClick={() => speak(w.ex)} className="group p-4 bg-white rounded-2xl border border-slate-100 hover:border-sky-200 shadow-sm hover:shadow-md transition-all text-left">
+                            <div className="flex items-center gap-3 mb-2">
+                                <span className="text-2xl">{w.icon}</span>
+                                <div>
+                                    <span className="font-black text-slate-800 block">{w.word}</span>
+                                    <span className="text-[9px] font-mono text-slate-400">{w.ipa}</span>
+                                </div>
+                                <Volume2 className="w-3 h-3 text-slate-200 group-hover:text-sky-400 ml-auto" />
+                            </div>
+                            <span className="text-sm text-slate-600 block italic">"{w.ex}"</span>
+                            {isPortuguese && <span className="text-[10px] text-slate-400 block">{w.exPt}</span>}
+                            {isPortuguese && <span className="text-[10px] font-bold text-indigo-400 block mt-1">{w.pt}</span>}
+                        </button>
+                    ))}
+                </div>
+            </section>
+
+            {/* Temperature Scale */}
+            <div className="p-6 bg-white rounded-[2rem] border-2 border-slate-100 shadow-sm">
+                <h4 className="font-black text-slate-800 mb-4 text-center text-lg">{isPortuguese ? '🌡️ Escala de Temperatura' : '🌡️ Temperature Scale'}</h4>
+                <div className="flex flex-wrap justify-center gap-2">
+                    {temperatureScale.map((t, idx) => (
+                        <div key={idx} className={`px-4 py-3 rounded-xl ${t.color} text-center min-w-[100px]`}>
+                            <span className="text-xl block">{t.icon}</span>
+                            <span className="font-black text-sm block">{t.label}</span>
+                            <span className="text-[10px] font-mono block">{t.range}</span>
+                        </div>
+                    ))}
+                </div>
+            </div>
+
+            {/* Key Structure: It's + adjective */}
+            <div className="p-8 bg-indigo-900 text-white rounded-[2rem] shadow-2xl">
+                <h5 className="text-lg font-bold mb-4 flex items-center gap-2"><Lightbulb className="w-5 h-5 text-amber-400" />{isPortuguese ? "🔑 A Estrutura Essencial: It's + Adjetivo" : "🔑 The Essential Structure: It's + Adjective"}</h5>
+                <p className="text-indigo-200 text-sm mb-4 leading-relaxed">
+                    {isPortuguese
+                        ? "Em inglês, usamos 'IT' como sujeito para falar sobre o tempo. Nunca omita o 'It'!"
+                        : "In English, we use 'IT' as the subject to talk about the weather. Never skip the 'It'!"}
+                </p>
+                <div className="grid sm:grid-cols-2 gap-3">
+                    {[
+                        { en: "It's hot.", pt: 'Está quente.', icon: '🥵' },
+                        { en: "It's raining.", pt: 'Está chovendo.', icon: '🌧️' },
+                        { en: "It's going to snow.", pt: 'Vai nevar.', icon: '🌨️' },
+                        { en: "It was cold yesterday.", pt: 'Estava frio ontem.', icon: '🥶' },
+                    ].map((item, idx) => (
+                        <button key={idx} onClick={() => speak(item.en)} className="text-left p-3 rounded-xl bg-white/10 hover:bg-white/20 border border-white/10 transition-all flex items-center gap-3 group">
+                            <span className="text-xl">{item.icon}</span>
+                            <div>
+                                <span className="font-bold text-white text-sm block">{item.en}</span>
+                                {isPortuguese && <span className="text-[10px] text-indigo-300 block">{item.pt}</span>}
+                            </div>
+                            <Volume2 className="w-3 h-3 text-indigo-400 ml-auto opacity-0 group-hover:opacity-100" />
+                        </button>
+                    ))}
+                </div>
+                <div className="mt-4 p-3 bg-rose-500/20 rounded-xl border border-rose-400/30 text-sm">
+                    <span className="text-rose-300 font-black">✗ Is hot today.</span>
+                    <span className="mx-2 text-slate-400">→</span>
+                    <span className="text-emerald-300 font-black">✓ It's hot today.</span>
+                    <p className="text-[10px] text-rose-200 mt-1">{isPortuguese ? "Nunca omita o 'It' — diferente do português!" : "Never skip 'It' — unlike Portuguese!"}</p>
+                </div>
+            </div>
+
+            {/* Conversation Phrases */}
+            <section className="space-y-5">
+                <div className="flex items-center gap-3">
+                    <div className="p-2 bg-violet-100 rounded-lg text-violet-600"><MessageCircle className="w-5 h-5" /></div>
+                    <h4 className="text-2xl font-bold text-slate-800">{isPortuguese ? '💬 Frases do Dia a Dia' : '💬 Daily Phrases'}</h4>
+                </div>
+                <div className="grid gap-3">
+                    {conversationPhrases.map((p, idx) => (
+                        <button key={idx} onClick={() => speak(p.en)} className="w-full text-left p-4 rounded-2xl bg-white border border-slate-100 hover:border-sky-200 hover:shadow-md transition-all flex items-center gap-4 group">
+                            <span className="text-2xl flex-shrink-0">{p.icon}</span>
+                            <div className="flex-1 min-w-0">
+                                <span className="font-bold text-slate-800 text-sm block">{p.en}</span>
+                                {isPortuguese && <span className="text-[11px] text-slate-400 block">{p.pt}</span>}
+                            </div>
+                            <Volume2 className="w-4 h-4 text-slate-300 group-hover:text-sky-500 flex-shrink-0" />
+                        </button>
+                    ))}
+                </div>
+            </section>
+
+            {/* Common Mistakes */}
+            <div className="p-6 rounded-2xl bg-slate-800 text-white">
+                <h5 className="font-bold text-lg mb-4 flex items-center gap-2"><XCircle className="w-5 h-5 text-rose-400" />{isPortuguese ? 'Erros Comuns' : 'Common Mistakes'}</h5>
+                <div className="space-y-3">
+                    {[
+                        { wrong: 'Is very hot today.', right: "It's very hot today.", tip: isPortuguese ? "Sempre use 'It' como sujeito!" : "Always use 'It' as the subject!" },
+                        { wrong: "It's doing cold.", right: "It's cold. / It's getting cold.", tip: isPortuguese ? "Não use 'doing' para clima — use 'It's + adjetivo'" : "Don't use 'doing' for weather — use 'It's + adjective'" },
+                        { wrong: 'The weather is sunny today.', right: "It's sunny today.", tip: isPortuguese ? "'The weather is...' é correto mas redundante. Prefira 'It's...'" : "'The weather is...' is correct but redundant. Prefer 'It's...'" },
+                    ].map((m, idx) => (
+                        <div key={idx} className="p-4 rounded-xl bg-white/5 border border-white/10">
+                            <div className="mb-1"><span className="text-rose-400 font-black text-sm">✗ {m.wrong}</span></div>
+                            <div className="mb-1"><span className="text-emerald-400 font-black text-sm">✓ {m.right}</span></div>
+                            <p className="text-[11px] text-slate-400">{m.tip}</p>
+                        </div>
+                    ))}
+                </div>
+            </div>
+
+            {/* Golden Tip */}
+            <div className="p-6 rounded-2xl bg-amber-50 border-2 border-amber-100 flex items-start gap-4">
+                <div className="text-3xl">💡</div>
+                <div>
+                    <h5 className="font-bold text-amber-800 text-lg mb-1">{isPortuguese ? 'Dica de Ouro' : 'Golden Tip'}</h5>
+                    <p className="text-amber-700 text-sm leading-relaxed">
+                        {isPortuguese
+                            ? "Na Inglaterra, falar sobre o tempo é uma ARTE SOCIAL. 'Lovely weather, isn't it?' funciona como um 'olá' estendido. Não é sobre meteorologia — é sobre conexão humana! Memorize 'What's the weather like?' (como está o tempo?), pois ela é diferente do padrão 'How is the weather?' que muitos brasileiros usam."
+                            : "In England, talking about the weather is a SOCIAL ART. 'Lovely weather, isn't it?' works as an extended 'hello'. It's not about meteorology — it's about human connection! The most natural way to ask is 'What's the weather like?' rather than 'How is the weather?'."}
+                    </p>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+// --- M10: PRESENT CONTINUOUS ---
+const PresentContinuous = ({ isPortuguese }: { isPortuguese: boolean }) => {
+    const formation = [
+        { subject: 'I', aux: 'am', verb: 'working', short: "I'm working", pt: 'Eu estou trabalhando', icon: '💼' },
+        { subject: 'You', aux: 'are', verb: 'studying', short: "You're studying", pt: 'Você está estudando', icon: '📚' },
+        { subject: 'He/She/It', aux: 'is', verb: 'eating', short: "He's eating", pt: 'Ele está comendo', icon: '🍽️' },
+        { subject: 'We', aux: 'are', verb: 'playing', short: "We're playing", pt: 'Nós estamos jogando', icon: '⚽' },
+        { subject: 'They', aux: 'are', verb: 'sleeping', short: "They're sleeping", pt: 'Eles estão dormindo', icon: '😴' },
+    ];
+    const spellingRules = [
+        { rule: isPortuguese ? 'Regra geral: + ing' : 'General rule: + ing', examples: ['work → working', 'eat → eating', 'play → playing'], icon: '✅', color: 'bg-emerald-50 border-emerald-200' },
+        { rule: isPortuguese ? 'Termina em -e: tira o -e + ing' : 'Ends in -e: drop -e + ing', examples: ['make → making', 'write → writing', 'dance → dancing'], icon: '✂️', color: 'bg-blue-50 border-blue-200' },
+        { rule: isPortuguese ? 'CVC curto: dobra a consoante' : 'Short CVC: double the consonant', examples: ['run → running', 'sit → sitting', 'swim → swimming'], icon: '🔄', color: 'bg-amber-50 border-amber-200' },
+        { rule: isPortuguese ? 'Termina em -ie: muda para -ying' : 'Ends in -ie: change to -ying', examples: ['die → dying', 'lie → lying', 'tie → tying'], icon: '🔀', color: 'bg-rose-50 border-rose-200' },
+    ];
+    const threeFormsExamples = [
+        { type: '+', en: 'She is reading a book.', pt: 'Ela está lendo um livro.', label: isPortuguese ? 'Afirmativa' : 'Affirmative', color: 'text-emerald-600 bg-emerald-50', icon: '✅' },
+        { type: '-', en: "She is not (isn't) reading a book.", pt: 'Ela não está lendo um livro.', label: isPortuguese ? 'Negativa' : 'Negative', color: 'text-rose-600 bg-rose-50', icon: '❌' },
+        { type: '?', en: 'Is she reading a book?', pt: 'Ela está lendo um livro?', label: isPortuguese ? 'Interrogativa' : 'Question', color: 'text-blue-600 bg-blue-50', icon: '❓' },
+        { type: 'short', en: "Yes, she is. / No, she isn't.", pt: 'Sim. / Não.', label: isPortuguese ? 'Resposta curta' : 'Short answer', color: 'text-violet-600 bg-violet-50', icon: '💬' },
+    ];
+    const timeMarkers = [
+        { en: 'now', pt: 'agora', icon: '⏰' },
+        { en: 'right now', pt: 'agora mesmo', icon: '⚡' },
+        { en: 'at the moment', pt: 'no momento', icon: '🕐' },
+        { en: 'currently', pt: 'atualmente', icon: '📍' },
+        { en: 'today', pt: 'hoje', icon: '📅' },
+        { en: 'this week', pt: 'esta semana', icon: '🗓️' },
+        { en: 'Look!', pt: 'Olhe!', icon: '👀' },
+        { en: 'Listen!', pt: 'Ouça!', icon: '👂' },
+    ];
+    const practiceExamples = [
+        { en: "I'm learning English right now.", pt: 'Estou aprendendo inglês agora.', icon: '📖' },
+        { en: "She's cooking dinner.", pt: 'Ela está cozinhando o jantar.', icon: '👩‍🍳' },
+        { en: "They aren't watching TV.", pt: 'Eles não estão assistindo TV.', icon: '📺' },
+        { en: 'Are you listening to me?', pt: 'Você está me ouvindo?', icon: '👂' },
+        { en: "Look! It's raining!", pt: 'Olhe! Está chovendo!', icon: '🌧️' },
+        { en: "We're having a great time.", pt: 'Estamos nos divertindo muito.', icon: '🎉' },
+    ];
+    return (
+        <div className="space-y-10 animate-fade-in pb-20">
+            {/* Teacher Intro */}
+            <div className="relative p-8 rounded-[2rem] bg-green-900 text-white overflow-hidden shadow-2xl">
+                <div className="absolute top-0 right-0 p-4 opacity-10"><Activity className="w-32 h-32" /></div>
+                <div className="relative z-10 flex flex-col md:flex-row gap-6 items-center">
+                    <div className="w-20 h-20 rounded-full bg-green-600 flex items-center justify-center text-4xl shadow-lg border-2 border-green-400">👨‍🏫</div>
+                    <div className="flex-1">
+                        <h3 className="text-2xl font-serif-display mb-2">{isPortuguese ? 'Presente Contínuo' : 'Present Continuous'}</h3>
+                        <p className="text-green-100 text-sm leading-relaxed italic">
+                            {isPortuguese
+                                ? "\"O Present Continuous é o tempo verbal para falar sobre o que está acontecendo AGORA, neste exato momento. É como uma câmera filmando a ação em tempo real! 'I am speaking' — estou falando AGORA. Diferente do Present Simple que fala de rotinas. A formação é simples: sujeito + am/is/are + verbo-ING. Vamos dominar!\""
+                                : "\"The Present Continuous is the tense for talking about what's happening NOW, at this exact moment. It's like a camera filming the action in real time! 'I am speaking' — I'm speaking NOW. Different from the Present Simple which talks about routines. The formation is simple: subject + am/is/are + verb-ING. Let's master it!\""}
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            {/* Formation Formula */}
+            <div className="p-6 bg-white rounded-[2rem] border-2 border-slate-100 shadow-sm text-center">
+                <h4 className="font-black text-slate-800 mb-4 text-lg">{isPortuguese ? '🔧 A Fórmula' : '🔧 The Formula'}</h4>
+                <div className="inline-flex items-center gap-2 p-4 bg-indigo-50 rounded-2xl border-2 border-indigo-200 text-lg font-black">
+                    <span className="text-blue-600">Subject</span>
+                    <span className="text-slate-400">+</span>
+                    <span className="text-emerald-600">am / is / are</span>
+                    <span className="text-slate-400">+</span>
+                    <span className="text-violet-600">verb<span className="text-rose-500">-ING</span></span>
+                </div>
+            </div>
+
+            {/* Formation Table */}
+            <section className="space-y-5">
+                <div className="flex items-center gap-3">
+                    <div className="p-2 bg-emerald-100 rounded-lg text-emerald-600"><Layers className="w-5 h-5" /></div>
+                    <h4 className="text-2xl font-bold text-slate-800">{isPortuguese ? '📊 Formação' : '📊 Formation'}</h4>
+                </div>
+                <div className="grid gap-3">
+                    {formation.map((f, idx) => (
+                        <button key={idx} onClick={() => speak(`${f.subject} ${f.aux} ${f.verb}`)} className="w-full text-left p-4 rounded-2xl bg-white border border-slate-100 hover:border-emerald-200 hover:shadow-md transition-all flex items-center gap-4 group">
+                            <span className="text-2xl flex-shrink-0">{f.icon}</span>
+                            <div className="flex-1 flex items-center gap-2 flex-wrap">
+                                <span className="font-black text-blue-600">{f.subject}</span>
+                                <span className="font-black text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-lg">{f.aux}</span>
+                                <span className="font-black text-violet-600">{f.verb}</span>
+                                <span className="text-slate-400 hidden sm:inline">→</span>
+                                <span className="font-bold text-slate-700 hidden sm:inline">{f.short}</span>
+                            </div>
+                            {isPortuguese && <span className="text-[10px] text-slate-400">{f.pt}</span>}
+                            <Volume2 className="w-4 h-4 text-slate-300 group-hover:text-emerald-500 flex-shrink-0" />
+                        </button>
+                    ))}
+                </div>
+            </section>
+
+            {/* Spelling Rules */}
+            <section className="space-y-5">
+                <div className="flex items-center gap-3">
+                    <div className="p-2 bg-amber-100 rounded-lg text-amber-600"><SpellCheck className="w-5 h-5" /></div>
+                    <h4 className="text-2xl font-bold text-slate-800">{isPortuguese ? '✏️ Regras de Ortografia (-ING)' : '✏️ Spelling Rules (-ING)'}</h4>
+                </div>
+                <div className="grid sm:grid-cols-2 gap-4">
+                    {spellingRules.map((r, idx) => (
+                        <div key={idx} className={`p-5 rounded-2xl border-2 ${r.color}`}>
+                            <div className="flex items-center gap-3 mb-3">
+                                <span className="text-2xl">{r.icon}</span>
+                                <h5 className="font-bold text-sm text-slate-800">{r.rule}</h5>
+                            </div>
+                            <div className="space-y-1">
+                                {r.examples.map((ex, i) => (
+                                    <button key={i} onClick={() => speak(ex.split(' → ')[1])} className="w-full text-left p-2 rounded-lg bg-white/60 hover:bg-white text-sm font-mono transition-all group flex items-center justify-between">
+                                        <span>{ex}</span>
+                                        <Volume2 className="w-3 h-3 text-slate-200 group-hover:text-indigo-400" />
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </section>
+
+            {/* Three Forms */}
+            <section className="space-y-5">
+                <div className="flex items-center gap-3">
+                    <div className="p-2 bg-violet-100 rounded-lg text-violet-600"><Layers className="w-5 h-5" /></div>
+                    <h4 className="text-2xl font-bold text-slate-800">{isPortuguese ? '📝 As 3 Formas' : '📝 The 3 Forms'}</h4>
+                </div>
+                <div className="grid gap-3">
+                    {threeFormsExamples.map((f, idx) => (
+                        <button key={idx} onClick={() => speak(f.en.replace("(isn't)", ""))} className={`w-full text-left p-5 rounded-2xl border-2 ${f.color} hover:shadow-md transition-all flex items-center gap-4 group`}>
+                            <span className="text-2xl flex-shrink-0">{f.icon}</span>
+                            <div className="flex-1 min-w-0">
+                                <span className="text-[10px] font-black uppercase tracking-widest block mb-1">{f.label}</span>
+                                <span className="font-bold text-sm block">{f.en}</span>
+                                {isPortuguese && <span className="text-[10px] text-slate-500 block">{f.pt}</span>}
+                            </div>
+                            <Volume2 className="w-4 h-4 opacity-30 group-hover:opacity-100 flex-shrink-0" />
+                        </button>
+                    ))}
+                </div>
+            </section>
+
+            {/* Time Markers */}
+            <div className="p-6 bg-indigo-900 text-white rounded-[2rem] shadow-2xl">
+                <h5 className="text-lg font-bold mb-4 flex items-center gap-2"><Clock className="w-5 h-5 text-amber-400" />{isPortuguese ? '⏰ Marcadores Temporais' : '⏰ Time Markers'}</h5>
+                <p className="text-indigo-200 text-sm mb-4">{isPortuguese ? "Essas palavras indicam que você deve usar o Present Continuous:" : "These words signal you should use the Present Continuous:"}</p>
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                    {timeMarkers.map((t, idx) => (
+                        <button key={idx} onClick={() => speak(t.en)} className="p-3 rounded-xl bg-white/10 hover:bg-white/20 border border-white/10 transition-all text-center group">
+                            <span className="text-xl block">{t.icon}</span>
+                            <span className="font-bold text-white text-sm block">{t.en}</span>
+                            {isPortuguese && <span className="text-[10px] text-indigo-300 block">{t.pt}</span>}
+                        </button>
+                    ))}
+                </div>
+            </div>
+
+            {/* Practice Sentences */}
+            <section className="space-y-5">
+                <div className="flex items-center gap-3">
+                    <div className="p-2 bg-green-100 rounded-lg text-green-600"><MessageCircle className="w-5 h-5" /></div>
+                    <h4 className="text-2xl font-bold text-slate-800">{isPortuguese ? '🗣️ Pratique' : '🗣️ Practice'}</h4>
+                </div>
+                <div className="grid gap-3">
+                    {practiceExamples.map((ex, idx) => (
+                        <button key={idx} onClick={() => speak(ex.en)} className="w-full text-left p-4 rounded-2xl bg-white border border-slate-100 hover:border-green-200 hover:shadow-md transition-all flex items-center gap-4 group">
+                            <span className="text-2xl flex-shrink-0">{ex.icon}</span>
+                            <div className="flex-1 min-w-0">
+                                <span className="font-bold text-slate-800 text-sm block">{ex.en}</span>
+                                {isPortuguese && <span className="text-[11px] text-slate-400 block">{ex.pt}</span>}
+                            </div>
+                            <Volume2 className="w-4 h-4 text-slate-300 group-hover:text-green-500 flex-shrink-0" />
+                        </button>
+                    ))}
+                </div>
+            </section>
+
+            {/* Common Mistakes */}
+            <div className="p-6 rounded-2xl bg-slate-800 text-white">
+                <h5 className="font-bold text-lg mb-4 flex items-center gap-2"><XCircle className="w-5 h-5 text-rose-400" />{isPortuguese ? 'Erros Comuns' : 'Common Mistakes'}</h5>
+                <div className="space-y-3">
+                    {[
+                        { wrong: 'I working now.', right: "I'm working now.", tip: isPortuguese ? "Nunca esqueça o auxiliar am/is/are!" : "Never forget the auxiliary am/is/are!" },
+                        { wrong: 'She is danceing.', right: 'She is dancing.', tip: isPortuguese ? "Tira o -e antes de adicionar -ing" : "Drop the -e before adding -ing" },
+                        { wrong: 'He is runing.', right: 'He is running.', tip: isPortuguese ? "CVC curto → dobra a consoante: run → running" : "Short CVC → double consonant: run → running" },
+                        { wrong: 'They are work.', right: 'They are working.', tip: isPortuguese ? "Não esqueça o -ING! É o que faz o Present Continuous" : "Don't forget the -ING! It's what makes the Present Continuous" },
+                    ].map((m, idx) => (
+                        <div key={idx} className="p-4 rounded-xl bg-white/5 border border-white/10">
+                            <div className="mb-1"><span className="text-rose-400 font-black text-sm">✗ {m.wrong}</span></div>
+                            <div className="mb-1"><span className="text-emerald-400 font-black text-sm">✓ {m.right}</span></div>
+                            <p className="text-[11px] text-slate-400">{m.tip}</p>
+                        </div>
+                    ))}
+                </div>
+            </div>
+
+            {/* Golden Tip */}
+            <div className="p-6 rounded-2xl bg-amber-50 border-2 border-amber-100 flex items-start gap-4">
+                <div className="text-3xl">💡</div>
+                <div>
+                    <h5 className="font-bold text-amber-800 text-lg mb-1">{isPortuguese ? 'Dica de Ouro' : 'Golden Tip'}</h5>
+                    <p className="text-amber-700 text-sm leading-relaxed">
+                        {isPortuguese
+                            ? "O Present Continuous não é usado APENAS para 'agora'. Também usamos para ações temporárias ('I'm living in London this month') e para planos futuros confirmados ('I'm meeting John tomorrow'). Mas CUIDADO: alguns verbos nunca usam -ing! São os 'stative verbs' — mas essa é a próxima lição!"
+                            : "The Present Continuous isn't ONLY for 'now'. We also use it for temporary actions ('I'm living in London this month') and confirmed future plans ('I'm meeting John tomorrow'). But WATCH OUT: some verbs never use -ing! They're called 'stative verbs' — but that's the next lesson!"}
+                    </p>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+// --- M10: PRESENT SIMPLE VS. CONTINUOUS ---
+const PresentSimpleVsContinuous = ({ isPortuguese }: { isPortuguese: boolean }) => {
+    const comparisons = [
+        { simple: { en: 'I drink coffee every morning.', pt: 'Eu bebo café toda manhã.' }, continuous: { en: "I'm drinking coffee right now.", pt: 'Estou bebendo café agora.' }, icon: '☕', concept: isPortuguese ? 'Hábito vs. Ação no momento' : 'Habit vs. Action happening now' },
+        { simple: { en: 'She works at a bank.', pt: 'Ela trabalha em um banco.' }, continuous: { en: "She's working from home today.", pt: 'Ela está trabalhando de casa hoje.' }, icon: '💼', concept: isPortuguese ? 'Fato permanente vs. Situação temporária' : 'Permanent fact vs. Temporary situation' },
+        { simple: { en: 'It rains a lot in London.', pt: 'Chove muito em Londres.' }, continuous: { en: "It's raining outside.", pt: 'Está chovendo lá fora.' }, icon: '🌧️', concept: isPortuguese ? 'Fato geral vs. Agora' : 'General fact vs. Right now' },
+        { simple: { en: 'He plays guitar.', pt: 'Ele toca guitarra.' }, continuous: { en: "He's playing guitar at the party.", pt: 'Ele está tocando guitarra na festa.' }, icon: '🎸', concept: isPortuguese ? 'Habilidade vs. Ação presente' : 'Ability vs. Present action' },
+        { simple: { en: 'We live in São Paulo.', pt: 'Nós moramos em São Paulo.' }, continuous: { en: "We're living in London this year.", pt: 'Estamos morando em Londres este ano.' }, icon: '🏠', concept: isPortuguese ? 'Permanente vs. Temporário' : 'Permanent vs. Temporary' },
+    ];
+    const signalWords = {
+        simple: [
+            { word: 'always', pt: 'sempre', icon: '♾️' },
+            { word: 'usually', pt: 'geralmente', icon: '📊' },
+            { word: 'often', pt: 'frequentemente', icon: '🔄' },
+            { word: 'sometimes', pt: 'às vezes', icon: '🎲' },
+            { word: 'never', pt: 'nunca', icon: '🚫' },
+            { word: 'every day/week', pt: 'todo dia/semana', icon: '📅' },
+        ],
+        continuous: [
+            { word: 'now', pt: 'agora', icon: '⏰' },
+            { word: 'right now', pt: 'agora mesmo', icon: '⚡' },
+            { word: 'at the moment', pt: 'no momento', icon: '🕐' },
+            { word: 'currently', pt: 'atualmente', icon: '📍' },
+            { word: 'Look!', pt: 'Olhe!', icon: '👀' },
+            { word: 'Listen!', pt: 'Ouça!', icon: '👂' },
+        ]
+    };
+    return (
+        <div className="space-y-10 animate-fade-in pb-20">
+            {/* Teacher Intro */}
+            <div className="relative p-8 rounded-[2rem] bg-cyan-900 text-white overflow-hidden shadow-2xl">
+                <div className="absolute top-0 right-0 p-4 opacity-10"><Scale className="w-32 h-32" /></div>
+                <div className="relative z-10 flex flex-col md:flex-row gap-6 items-center">
+                    <div className="w-20 h-20 rounded-full bg-cyan-600 flex items-center justify-center text-4xl shadow-lg border-2 border-cyan-400">👨‍🏫</div>
+                    <div className="flex-1">
+                        <h3 className="text-2xl font-serif-display mb-2">{isPortuguese ? 'Present Simple vs. Continuous' : 'Present Simple vs. Continuous'}</h3>
+                        <p className="text-cyan-100 text-sm leading-relaxed italic">
+                            {isPortuguese
+                                ? "\"Essa é a confusão número 1 de quem aprende inglês! 'I work' (eu trabalho — em geral, é meu emprego) vs. 'I'm working' (estou trabalhando — agora, neste momento). O Present Simple é uma FOTO do seu dia a dia; o Continuous é um VÍDEO ao vivo. Quando você dominar essa diferença, seu inglês vai dar um salto enorme!\""
+                                : "\"This is the #1 confusion for English learners! 'I work' (in general, it's my job) vs. 'I'm working' (right now, at this moment). The Present Simple is a PHOTO of your daily life; the Continuous is a LIVE VIDEO. When you master this difference, your English will take a huge leap!\""}
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            {/* Visual Comparison */}
+            <div className="grid md:grid-cols-2 gap-6">
+                <div className="p-6 rounded-[2rem] bg-blue-50 border-2 border-blue-200 space-y-4">
+                    <div className="flex items-center gap-3">
+                        <span className="text-3xl">📸</span>
+                        <div>
+                            <h4 className="text-xl font-black text-blue-800">Present Simple</h4>
+                            <p className="text-[10px] text-blue-500">{isPortuguese ? 'FOTO — hábitos, rotinas, fatos' : 'PHOTO — habits, routines, facts'}</p>
+                        </div>
+                    </div>
+                    <div className="p-3 bg-white rounded-xl text-sm text-blue-800 font-bold text-center">
+                        Subject + verb (+ s/es)
+                    </div>
+                    <div className="text-xs text-blue-600 space-y-1">
+                        <p>• {isPortuguese ? 'Rotinas: "I wake up at 7am"' : 'Routines: "I wake up at 7am"'}</p>
+                        <p>• {isPortuguese ? 'Fatos: "The sun rises in the east"' : 'Facts: "The sun rises in the east"'}</p>
+                        <p>• {isPortuguese ? 'Hábitos: "She drinks tea"' : 'Habits: "She drinks tea"'}</p>
+                    </div>
+                </div>
+                <div className="p-6 rounded-[2rem] bg-green-50 border-2 border-green-200 space-y-4">
+                    <div className="flex items-center gap-3">
+                        <span className="text-3xl">🎥</span>
+                        <div>
+                            <h4 className="text-xl font-black text-green-800">Present Continuous</h4>
+                            <p className="text-[10px] text-green-500">{isPortuguese ? 'VÍDEO AO VIVO — acontecendo agora' : 'LIVE VIDEO — happening now'}</p>
+                        </div>
+                    </div>
+                    <div className="p-3 bg-white rounded-xl text-sm text-green-800 font-bold text-center">
+                        Subject + am/is/are + verb-ING
+                    </div>
+                    <div className="text-xs text-green-600 space-y-1">
+                        <p>• {isPortuguese ? 'Agora: "I\'m eating lunch"' : 'Now: "I\'m eating lunch"'}</p>
+                        <p>• {isPortuguese ? 'Temporário: "She\'s staying with us"' : 'Temporary: "She\'s staying with us"'}</p>
+                        <p>• {isPortuguese ? 'Futuro: "I\'m meeting John tomorrow"' : 'Future: "I\'m meeting John tomorrow"'}</p>
+                    </div>
+                </div>
+            </div>
+
+            {/* Side-by-Side Examples */}
+            <section className="space-y-5">
+                <div className="flex items-center gap-3">
+                    <div className="p-2 bg-cyan-100 rounded-lg text-cyan-600"><Scale className="w-5 h-5" /></div>
+                    <h4 className="text-2xl font-bold text-slate-800">{isPortuguese ? '⚖️ Comparações Lado a Lado' : '⚖️ Side-by-Side Comparisons'}</h4>
+                </div>
+                <div className="space-y-4">
+                    {comparisons.map((c, idx) => (
+                        <div key={idx} className="p-5 bg-white rounded-2xl border border-slate-100 shadow-sm">
+                            <div className="flex items-center gap-2 mb-3">
+                                <span className="text-xl">{c.icon}</span>
+                                <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest">{c.concept}</span>
+                            </div>
+                            <div className="grid sm:grid-cols-2 gap-3">
+                                <button onClick={() => speak(c.simple.en)} className="p-3 rounded-xl bg-blue-50 border border-blue-100 hover:bg-blue-100 transition-all text-left group">
+                                    <span className="text-[10px] font-black text-blue-400 uppercase block mb-1">📸 Simple</span>
+                                    <span className="font-bold text-blue-800 text-sm block">{c.simple.en}</span>
+                                    {isPortuguese && <span className="text-[10px] text-blue-500 block">{c.simple.pt}</span>}
+                                </button>
+                                <button onClick={() => speak(c.continuous.en)} className="p-3 rounded-xl bg-green-50 border border-green-100 hover:bg-green-100 transition-all text-left group">
+                                    <span className="text-[10px] font-black text-green-400 uppercase block mb-1">🎥 Continuous</span>
+                                    <span className="font-bold text-green-800 text-sm block">{c.continuous.en}</span>
+                                    {isPortuguese && <span className="text-[10px] text-green-500 block">{c.continuous.pt}</span>}
+                                </button>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </section>
+
+            {/* Signal Words */}
+            <div className="grid md:grid-cols-2 gap-6">
+                <div className="p-6 bg-blue-900 text-white rounded-[2rem] shadow-xl">
+                    <h5 className="font-bold text-lg mb-4 flex items-center gap-2"><Clock className="w-5 h-5 text-blue-300" />📸 Simple {isPortuguese ? '— Palavras-Chave' : '— Signal Words'}</h5>
+                    <div className="grid grid-cols-2 gap-2">
+                        {signalWords.simple.map((w, idx) => (
+                            <button key={idx} onClick={() => speak(w.word)} className="p-2 rounded-xl bg-white/10 hover:bg-white/20 transition-all text-center">
+                                <span className="block text-lg">{w.icon}</span>
+                                <span className="font-bold text-white text-sm block">{w.word}</span>
+                                {isPortuguese && <span className="text-[10px] text-blue-300 block">{w.pt}</span>}
+                            </button>
+                        ))}
+                    </div>
+                </div>
+                <div className="p-6 bg-green-900 text-white rounded-[2rem] shadow-xl">
+                    <h5 className="font-bold text-lg mb-4 flex items-center gap-2"><Activity className="w-5 h-5 text-green-300" />🎥 Continuous {isPortuguese ? '— Palavras-Chave' : '— Signal Words'}</h5>
+                    <div className="grid grid-cols-2 gap-2">
+                        {signalWords.continuous.map((w, idx) => (
+                            <button key={idx} onClick={() => speak(w.word)} className="p-2 rounded-xl bg-white/10 hover:bg-white/20 transition-all text-center">
+                                <span className="block text-lg">{w.icon}</span>
+                                <span className="font-bold text-white text-sm block">{w.word}</span>
+                                {isPortuguese && <span className="text-[10px] text-green-300 block">{w.pt}</span>}
+                            </button>
+                        ))}
+                    </div>
+                </div>
+            </div>
+
+            {/* Common Mistakes */}
+            <div className="p-6 rounded-2xl bg-slate-800 text-white">
+                <h5 className="font-bold text-lg mb-4 flex items-center gap-2"><XCircle className="w-5 h-5 text-rose-400" />{isPortuguese ? 'Erros Comuns' : 'Common Mistakes'}</h5>
+                <div className="space-y-3">
+                    {[
+                        { wrong: "I'm going to work every day.", right: 'I go to work every day.', tip: isPortuguese ? "'Every day' = rotina → Present Simple" : "'Every day' = routine → Present Simple" },
+                        { wrong: 'Look! She dances!', right: "Look! She's dancing!", tip: isPortuguese ? "'Look!' = ação no momento → Present Continuous" : "'Look!' = action happening now → Present Continuous" },
+                        { wrong: "I'm knowing the answer.", right: 'I know the answer.', tip: isPortuguese ? "'Know' é stative verb — nunca usa -ing!" : "'Know' is a stative verb — never uses -ing!" },
+                        { wrong: 'She drinks coffee now.', right: "She's drinking coffee now.", tip: isPortuguese ? "'Now' = agora, neste momento → Continuous" : "'Now' = at this moment → Continuous" },
+                    ].map((m, idx) => (
+                        <div key={idx} className="p-4 rounded-xl bg-white/5 border border-white/10">
+                            <div className="mb-1"><span className="text-rose-400 font-black text-sm">✗ {m.wrong}</span></div>
+                            <div className="mb-1"><span className="text-emerald-400 font-black text-sm">✓ {m.right}</span></div>
+                            <p className="text-[11px] text-slate-400">{m.tip}</p>
+                        </div>
+                    ))}
+                </div>
+            </div>
+
+            {/* Golden Tip */}
+            <div className="p-6 rounded-2xl bg-amber-50 border-2 border-amber-100 flex items-start gap-4">
+                <div className="text-3xl">💡</div>
+                <div>
+                    <h5 className="font-bold text-amber-800 text-lg mb-1">{isPortuguese ? 'Dica de Ouro' : 'Golden Tip'}</h5>
+                    <p className="text-amber-700 text-sm leading-relaxed">
+                        {isPortuguese
+                            ? "Pense assim: VOCÊ PODE TIRAR UMA FOTO? Se a ação é geral/permanente (como um retrato), use Simple. Se a ação está ACONTECENDO como um vídeo ao vivo, use Continuous. 'I live in Brazil' (📸 fato permanente) vs. 'I'm living in Brazil this year' (🎥 situação temporária). A diferença é TEMPORALIDADE!"
+                            : "Think of it this way: CAN YOU TAKE A PHOTO? If the action is general/permanent (like a portrait), use Simple. If the action is HAPPENING like a live video, use Continuous. 'I live in Brazil' (📸 permanent fact) vs. 'I'm living in Brazil this year' (🎥 temporary situation). The difference is TEMPORALITY!"}
+                    </p>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+// --- M10: STATIVE VERBS ---
+const StativeVerbs = ({ isPortuguese }: { isPortuguese: boolean }) => {
+    const categories = [
+        { name: isPortuguese ? '🧠 Verbos Mentais' : '🧠 Mental Verbs', color: 'bg-violet-50 border-violet-200', verbs: [
+            { word: 'Know', ipa: '/noʊ/', pt: 'Saber', ex: 'I know the answer.', exPt: 'Eu sei a resposta.' },
+            { word: 'Believe', ipa: '/bɪˈliːv/', pt: 'Acreditar', ex: 'I believe you.', exPt: 'Eu acredito em você.' },
+            { word: 'Understand', ipa: '/ˌʌndərˈstænd/', pt: 'Entender', ex: 'I understand the problem.', exPt: 'Eu entendo o problema.' },
+            { word: 'Remember', ipa: '/rɪˈmɛmbər/', pt: 'Lembrar', ex: 'I remember her name.', exPt: 'Eu lembro o nome dela.' },
+            { word: 'Think', ipa: '/θɪŋk/', pt: 'Achar/Pensar', ex: 'I think it\'s true.', exPt: 'Eu acho que é verdade.' },
+            { word: 'Mean', ipa: '/miːn/', pt: 'Significar', ex: 'What does it mean?', exPt: 'O que significa?' },
+        ]},
+        { name: isPortuguese ? '❤️ Verbos de Emoção' : '❤️ Emotion Verbs', color: 'bg-rose-50 border-rose-200', verbs: [
+            { word: 'Love', ipa: '/lʌv/', pt: 'Amar', ex: 'I love chocolate.', exPt: 'Eu amo chocolate.' },
+            { word: 'Hate', ipa: '/heɪt/', pt: 'Odiar', ex: 'She hates spiders.', exPt: 'Ela odeia aranhas.' },
+            { word: 'Like', ipa: '/laɪk/', pt: 'Gostar', ex: 'I like your shirt.', exPt: 'Eu gosto da sua camisa.' },
+            { word: 'Want', ipa: '/wɒnt/', pt: 'Querer', ex: 'I want a coffee.', exPt: 'Eu quero um café.' },
+            { word: 'Need', ipa: '/niːd/', pt: 'Precisar', ex: 'I need help.', exPt: 'Eu preciso de ajuda.' },
+            { word: 'Prefer', ipa: '/prɪˈfɜːr/', pt: 'Preferir', ex: 'I prefer tea.', exPt: 'Eu prefiro chá.' },
+        ]},
+        { name: isPortuguese ? '👁️ Verbos de Sentidos' : '👁️ Sense Verbs', color: 'bg-amber-50 border-amber-200', verbs: [
+            { word: 'See', ipa: '/siː/', pt: 'Ver', ex: 'I see a bird.', exPt: 'Eu vejo um pássaro.' },
+            { word: 'Hear', ipa: '/hɪr/', pt: 'Ouvir', ex: 'I hear music.', exPt: 'Eu ouço música.' },
+            { word: 'Smell', ipa: '/smɛl/', pt: 'Cheirar', ex: 'It smells good.', exPt: 'Cheira bem.' },
+            { word: 'Taste', ipa: '/teɪst/', pt: 'Ter gosto', ex: 'This tastes delicious.', exPt: 'Isso está delicioso.' },
+        ]},
+        { name: isPortuguese ? '📦 Verbos de Posse' : '📦 Possession Verbs', color: 'bg-emerald-50 border-emerald-200', verbs: [
+            { word: 'Have', ipa: '/hæv/', pt: 'Ter', ex: 'I have a car.', exPt: 'Eu tenho um carro.' },
+            { word: 'Own', ipa: '/oʊn/', pt: 'Possuir', ex: 'She owns a house.', exPt: 'Ela possui uma casa.' },
+            { word: 'Belong', ipa: '/bɪˈlɔːŋ/', pt: 'Pertencer', ex: 'This belongs to me.', exPt: 'Isto pertence a mim.' },
+            { word: 'Contain', ipa: '/kənˈteɪn/', pt: 'Conter', ex: 'The box contains books.', exPt: 'A caixa contém livros.' },
+        ]},
+    ];
+    const trickVerbs = [
+        { verb: 'Think', stative: { en: 'I think you\'re right.', pt: 'Eu acho que você tem razão.', meaning: isPortuguese ? '= opinião' : '= opinion' }, action: { en: 'I\'m thinking about the problem.', pt: 'Estou pensando sobre o problema.', meaning: isPortuguese ? '= processo mental' : '= mental process' }, icon: '🧠' },
+        { verb: 'Have', stative: { en: 'I have a dog.', pt: 'Eu tenho um cachorro.', meaning: isPortuguese ? '= possuir' : '= possess' }, action: { en: 'I\'m having lunch.', pt: 'Estou almoçando.', meaning: isPortuguese ? '= comer/experimentar' : '= eat/experience' }, icon: '🐕' },
+        { verb: 'See', stative: { en: 'I see the mountain.', pt: 'Eu vejo a montanha.', meaning: isPortuguese ? '= perceber' : '= perceive' }, action: { en: 'I\'m seeing the doctor.', pt: 'Estou consultando o médico.', meaning: isPortuguese ? '= visitar/consultar' : '= visit/consult' }, icon: '👁️' },
+        { verb: 'Taste', stative: { en: 'This cake tastes amazing.', pt: 'Este bolo está incrível.', meaning: isPortuguese ? '= ter sabor' : '= has flavor' }, action: { en: 'The chef is tasting the soup.', pt: 'O chef está provando a sopa.', meaning: isPortuguese ? '= experimentar' : '= trying/testing' }, icon: '👅' },
+    ];
+    return (
+        <div className="space-y-10 animate-fade-in pb-20">
+            {/* Teacher Intro */}
+            <div className="relative p-8 rounded-[2rem] bg-purple-900 text-white overflow-hidden shadow-2xl">
+                <div className="absolute top-0 right-0 p-4 opacity-10"><Eye className="w-32 h-32" /></div>
+                <div className="relative z-10 flex flex-col md:flex-row gap-6 items-center">
+                    <div className="w-20 h-20 rounded-full bg-purple-600 flex items-center justify-center text-4xl shadow-lg border-2 border-purple-400">👨‍🏫</div>
+                    <div className="flex-1">
+                        <h3 className="text-2xl font-serif-display mb-2">{isPortuguese ? 'Verbos de Estado (Stative Verbs)' : 'Stative Verbs'}</h3>
+                        <p className="text-purple-100 text-sm leading-relaxed italic">
+                            {isPortuguese
+                                ? "\"Existem verbos que NUNCA usam -ing. Eles descrevem estados, não ações. Você não pode 'estar amando' em inglês formal — você simplesmente 'ama'. 'I love you', nunca 'I'm loving you' (apesar do McDonald's ter popularizado 'I'm lovin' it' como slogan!). Esses verbos são armadilhas para brasileiros!\""
+                                : "\"There are verbs that NEVER use -ing. They describe states, not actions. You can't 'be loving' in formal English — you simply 'love'. 'I love you', never 'I'm loving you' (even though McDonald's popularized 'I'm lovin' it' as a slogan!). These verbs are traps for learners!\""}
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            {/* The Core Rule */}
+            <div className="p-8 bg-rose-50 border-2 border-rose-100 rounded-[2rem] flex gap-5 shadow-sm">
+                <div className="w-12 h-12 bg-rose-500 rounded-2xl flex items-center justify-center text-white shrink-0 shadow-lg">
+                    <AlertTriangle className="w-6 h-6" />
+                </div>
+                <div>
+                    <h5 className="font-black text-rose-800 uppercase tracking-widest text-xs mb-2">
+                        {isPortuguese ? "A REGRA DE OURO" : "The Golden Rule"}
+                    </h5>
+                    <p className="text-sm text-rose-700 leading-relaxed mb-2">
+                        {isPortuguese
+                            ? <><strong>Stative verbs</strong> descrevem ESTADOS (sentimentos, pensamentos, posse) — não ações físicas. Eles <strong>NÃO usam -ING</strong> no Present Continuous.</>
+                            : <><strong>Stative verbs</strong> describe STATES (feelings, thoughts, possession) — not physical actions. They <strong>DON'T use -ING</strong> in the Present Continuous.</>}
+                    </p>
+                    <div className="grid sm:grid-cols-2 gap-2 mt-3">
+                        <div className="p-3 bg-white rounded-xl"><span className="text-rose-500 font-black text-sm">✗ I'm knowing the answer.</span></div>
+                        <div className="p-3 bg-white rounded-xl"><span className="text-emerald-600 font-black text-sm">✓ I know the answer.</span></div>
+                        <div className="p-3 bg-white rounded-xl"><span className="text-rose-500 font-black text-sm">✗ She's wanting a coffee.</span></div>
+                        <div className="p-3 bg-white rounded-xl"><span className="text-emerald-600 font-black text-sm">✓ She wants a coffee.</span></div>
+                    </div>
+                </div>
+            </div>
+
+            {/* Categories */}
+            {categories.map((cat, cIdx) => (
+                <section key={cIdx} className="space-y-4">
+                    <div className="flex items-center gap-3">
+                        <div className={`p-2 rounded-lg ${cat.color.split(' ')[0]} ${cat.color.includes('violet') ? 'text-violet-600' : cat.color.includes('rose') ? 'text-rose-600' : cat.color.includes('amber') ? 'text-amber-600' : 'text-emerald-600'}`}><Layers className="w-5 h-5" /></div>
+                        <h4 className="text-2xl font-bold text-slate-800">{cat.name}</h4>
+                    </div>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                        {cat.verbs.map((v, vIdx) => (
+                            <button key={vIdx} onClick={() => speak(v.ex)} className={`group p-4 rounded-2xl border-2 ${cat.color} hover:shadow-md transition-all text-left`}>
+                                <span className="font-black text-slate-800 text-sm block">{v.word}</span>
+                                <span className="text-[9px] font-mono text-slate-400 block">{v.ipa}</span>
+                                {isPortuguese && <span className="text-[10px] font-bold text-indigo-400 block">{v.pt}</span>}
+                                <span className="text-sm text-slate-600 block mt-1 italic">"{v.ex}"</span>
+                                {isPortuguese && <span className="text-[10px] text-slate-400 block">{v.exPt}</span>}
+                                <Volume2 className="w-3 h-3 text-slate-200 group-hover:text-indigo-400 mt-1" />
+                            </button>
+                        ))}
+                    </div>
+                </section>
+            ))}
+
+            {/* Trick Verbs — Double Meaning */}
+            <div className="p-8 bg-indigo-900 text-white rounded-[2rem] shadow-2xl">
+                <h5 className="text-lg font-bold mb-2 flex items-center gap-2"><Sparkles className="w-5 h-5 text-amber-400" />{isPortuguese ? '🎭 Verbos com Duplo Sentido' : '🎭 Verbs with Double Meaning'}</h5>
+                <p className="text-indigo-200 text-sm mb-6">{isPortuguese ? "Alguns verbos mudam de significado e PODEM usar -ing quando a ação é diferente:" : "Some verbs change meaning and CAN use -ing when the action is different:"}</p>
+                <div className="space-y-4">
+                    {trickVerbs.map((t, idx) => (
+                        <div key={idx} className="p-4 rounded-xl bg-white/5 border border-white/10">
+                            <div className="flex items-center gap-2 mb-3"><span className="text-xl">{t.icon}</span><span className="font-black text-lg">{t.verb}</span></div>
+                            <div className="grid sm:grid-cols-2 gap-2">
+                                <button onClick={() => speak(t.stative.en)} className="p-3 rounded-lg bg-rose-500/20 border border-rose-400/30 text-left hover:bg-rose-500/30 transition-all group">
+                                    <span className="text-[10px] font-black text-rose-300 uppercase block">🚫 Stative {t.stative.meaning}</span>
+                                    <span className="font-bold text-white text-sm block">{t.stative.en}</span>
+                                    {isPortuguese && <span className="text-[10px] text-rose-200 block">{t.stative.pt}</span>}
+                                </button>
+                                <button onClick={() => speak(t.action.en)} className="p-3 rounded-lg bg-emerald-500/20 border border-emerald-400/30 text-left hover:bg-emerald-500/30 transition-all group">
+                                    <span className="text-[10px] font-black text-emerald-300 uppercase block">✅ Action {t.action.meaning}</span>
+                                    <span className="font-bold text-white text-sm block">{t.action.en}</span>
+                                    {isPortuguese && <span className="text-[10px] text-emerald-200 block">{t.action.pt}</span>}
+                                </button>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div>
+
+            {/* Common Mistakes */}
+            <div className="p-6 rounded-2xl bg-slate-800 text-white">
+                <h5 className="font-bold text-lg mb-4 flex items-center gap-2"><XCircle className="w-5 h-5 text-rose-400" />{isPortuguese ? 'Erros Comuns' : 'Common Mistakes'}</h5>
+                <div className="space-y-3">
+                    {[
+                        { wrong: "I'm loving this song.", right: 'I love this song.', tip: isPortuguese ? "'Love' é stative — nunca usa -ing (na gramática formal)" : "'Love' is stative — never uses -ing (in formal grammar)" },
+                        { wrong: "I'm not understanding.", right: "I don't understand.", tip: isPortuguese ? "'Understand' é stative — use Present Simple" : "'Understand' is stative — use Present Simple" },
+                        { wrong: "This food is smelling good.", right: 'This food smells good.', tip: isPortuguese ? "'Smell' como sentido = stative. 'Smell' como ação de cheirar = action" : "'Smell' as sense = stative. 'Smell' as sniffing = action" },
+                    ].map((m, idx) => (
+                        <div key={idx} className="p-4 rounded-xl bg-white/5 border border-white/10">
+                            <div className="mb-1"><span className="text-rose-400 font-black text-sm">✗ {m.wrong}</span></div>
+                            <div className="mb-1"><span className="text-emerald-400 font-black text-sm">✓ {m.right}</span></div>
+                            <p className="text-[11px] text-slate-400">{m.tip}</p>
+                        </div>
+                    ))}
+                </div>
+            </div>
+
+            {/* Golden Tip */}
+            <div className="p-6 rounded-2xl bg-amber-50 border-2 border-amber-100 flex items-start gap-4">
+                <div className="text-3xl">💡</div>
+                <div>
+                    <h5 className="font-bold text-amber-800 text-lg mb-1">{isPortuguese ? 'Dica de Ouro' : 'Golden Tip'}</h5>
+                    <p className="text-amber-700 text-sm leading-relaxed">
+                        {isPortuguese
+                            ? "Pergunte-se: 'Consigo filmar essa ação com uma câmera?' Se sim, é um ACTION verb e pode usar -ing. Se não (como 'know', 'love', 'believe'), é STATIVE e fica no Simple. E lembre-se: o slogan 'I'm lovin' it' do McDonald's é PROPOSITALMENTE errado para soar casual e moderno. Na gramática correta, seria 'I love it'!"
+                            : "Ask yourself: 'Can I film this action with a camera?' If yes, it's an ACTION verb and can use -ing. If not (like 'know', 'love', 'believe'), it's STATIVE and stays in Simple. And remember: McDonald's 'I'm lovin' it' slogan is INTENTIONALLY wrong to sound casual and modern. In correct grammar, it should be 'I love it'!"}
+                    </p>
+                </div>
+            </div>
+        </div>
+    );
+};
+
 // --- IRREGULAR VERBS COMPLETE REFERENCE ---
 const IrregularVerbsReference = ({ isPortuguese }: { isPortuguese: boolean }) => {
     const [search, setSearch] = useState('');
@@ -9093,6 +9848,10 @@ export default function App() {
             case 37: return <SomeAnyNo isPortuguese={isPortuguese} />;
             case 38: return <QuantifiersLesson isPortuguese={isPortuguese} />;
             case 39: return <ClothesShoppingVocabulary isPortuguese={isPortuguese} />;
+            case 40: return <WeatherSeasonsVocabulary isPortuguese={isPortuguese} />;
+            case 41: return <PresentContinuous isPortuguese={isPortuguese} />;
+            case 42: return <PresentSimpleVsContinuous isPortuguese={isPortuguese} />;
+            case 43: return <StativeVerbs isPortuguese={isPortuguese} />;
             case -1: return <IrregularVerbsReference isPortuguese={isPortuguese} />;
             default: return <BuildingLesson title={getTitleForBuilding(activeSection)} isPortuguese={isPortuguese} />;
         }
