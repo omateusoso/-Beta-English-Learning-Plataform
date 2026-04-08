@@ -9653,6 +9653,293 @@ const Sidebar = ({ activeModule, onToggleModule, activeSection, onSelectSection,
     );
 };
 
+const ComparativeAdjectives = ({ isPortuguese }: { isPortuguese: boolean }) => {
+    const rules = [
+        {
+            type: isPortuguese ? 'Adjetivos Curtos (1 sílaba)' : 'Short Adjectives (1 syllable)',
+            rule: '+ er + than',
+            examples: [
+                { en: 'Tall → Taller (than)', pt: 'Alto → Mais alto (que)', phoneme: '/tɔːl/ → /ˈtɔːl.ər/', icon: '📏' },
+                { en: 'Old → Older (than)', pt: 'Velho → Mais velho (que)', phoneme: '/oʊld/ → /ˈoʊl.dər/', icon: '👴' },
+                { en: 'Fast → Faster (than)', pt: 'Rápido → Mais rápido (que)', phoneme: '/fæst/ → /ˈfæs.tər/', icon: '🚀' }
+            ],
+            color: 'bg-emerald-50 border-emerald-200 text-emerald-800'
+        },
+        {
+            type: isPortuguese ? 'Terminados em E' : 'Ending in E',
+            rule: '+ r + than',
+            examples: [
+                { en: 'Nice → Nicer (than)', pt: 'Legal → Mais legal (que)', phoneme: '/naɪs/ → /ˈnaɪ.sər/', icon: '😊' },
+                { en: 'Large → Larger (than)', pt: 'Grande → Maior (que)', phoneme: '/lɑːrdʒ/ → /ˈlɑːr.dʒər/', icon: '🐘' }
+            ],
+            color: 'bg-blue-50 border-blue-200 text-blue-800'
+        },
+        {
+            type: isPortuguese ? 'Sílaba CVC (Consoante-Vogal-Consoante)' : 'CVC (Consonant-Vowel-Consonant)',
+            rule: 'Dobra a última consoante + er + than',
+            examples: [
+                { en: 'Big → Bigger (than)', pt: 'Grande → Maior (que)', phoneme: '/bɪɡ/ → /ˈbɪɡ.ər/', icon: '🏢' },
+                { en: 'Hot → Hotter (than)', pt: 'Quente → Mais quente (que)', phoneme: '/hɑːt/ → /ˈhɑːt.ər/', icon: '🔥' }
+            ],
+            color: 'bg-amber-50 border-amber-200 text-amber-800'
+        },
+        {
+            type: isPortuguese ? 'Terminados em Y' : 'Ending in Y',
+            rule: 'Tira o Y, adiciona + ier + than',
+            examples: [
+                { en: 'Happy → Happier (than)', pt: 'Feliz → Mais feliz (que)', phoneme: '/ˈhæp.i/ → /ˈhæp.i.ər/', icon: '😁' },
+                { en: 'Easy → Easier (than)', pt: 'Fácil → Mais fácil (que)', phoneme: '/ˈiː.zi/ → /ˈiː.zi.ər/', icon: '🧩' }
+            ],
+            color: 'bg-purple-50 border-purple-200 text-purple-800'
+        },
+        {
+            type: isPortuguese ? 'Adjetivos Longos (2+ sílabas)' : 'Long Adjectives (2+ syllables)',
+            rule: 'More + adjetivo + than',
+            examples: [
+                { en: 'Beautiful → More beautiful (than)', pt: 'Bonito → Mais bonito (que)', phoneme: '/ˈbjuː.t̬ə.fəl/ → /mɔːr ˈbjuː.t̬ə.fəl/', icon: '✨' },
+                { en: 'Expensive → More expensive (than)', pt: 'Caro → Mais caro (que)', phoneme: '/ɪkˈspen.sɪv/ → /mɔːr ɪkˈspen.sɪv/', icon: '💰' }
+            ],
+            color: 'bg-rose-50 border-rose-200 text-rose-800'
+        },
+        {
+            type: isPortuguese ? 'Irregulares' : 'Irregular',
+            rule: 'Formas especiais',
+            examples: [
+                { en: 'Good → Better (than)', pt: 'Bom → Melhor (que)', phoneme: '/ɡʊd/ → /ˈbet̬.ɚ/', icon: '👍' },
+                { en: 'Bad → Worse (than)', pt: 'Ruim → Pior (que)', phoneme: '/bæd/ → /wɝːs/', icon: '👎' },
+                { en: 'Far → Further/Farther (than)', pt: 'Longe → Mais longe (que)', phoneme: '/fɑːr/ → /ˈfɝː.ðɚ/', icon: '🗺️' }
+            ],
+            color: 'bg-slate-100 border-slate-300 text-slate-800'
+        }
+    ];
+
+    const examples = [
+        { en: "My house is bigger than yours.", pt: "Minha casa é maior que a sua.", phoneme: "/maɪ haʊs ɪz ˈbɪɡ.ər ðæn jʊərz/", icon: '🏠' },
+        { en: "She is taller than her brother.", pt: "Ela é mais alta que o irmão dela.", phoneme: "/ʃi ɪz ˈtɔːl.ər ðæn hɜːr ˈbrʌð.ər/", icon: '📏' },
+        { en: "This phone is more expensive than that one.", pt: "Este telefone é mais caro que aquele.", phoneme: "/ðɪs foʊn ɪz mɔːr ɪkˈspen.sɪv ðæn ðæt wʌn/", icon: '📱' },
+        { en: "Today the weather is better than yesterday.", pt: "Hoje o tempo está melhor que ontem.", phoneme: "/təˈdeɪ ðə ˈweð.ər ɪz ˈbet̬.ɚ ðæn ˈjes.tɚ.deɪ/", icon: '☀️' }
+    ];
+
+    return (
+        <div className="space-y-10 animate-fade-in pb-20">
+            {/* Teacher Intro */}
+            <div className="relative p-8 rounded-[2rem] bg-indigo-900 text-white overflow-hidden shadow-2xl">
+                <div className="absolute top-0 right-0 p-4 opacity-10"><Scale className="w-32 h-32" /></div>
+                <div className="relative z-10 flex flex-col md:flex-row gap-6 items-center">
+                    <div className="w-20 h-20 rounded-full bg-indigo-600 flex items-center justify-center text-4xl shadow-lg border-2 border-indigo-400">👨‍🏫</div>
+                    <div className="flex-1">
+                        <h3 className="text-2xl font-serif-display mb-2">{isPortuguese ? 'Adjetivos Comparativos' : 'Comparative Adjectives'}</h3>
+                        <p className="text-indigo-100 text-sm leading-relaxed italic">
+                            {isPortuguese
+                                ? "\"Olá! Vamos dominar os Adjetivos Comparativos. Usamos eles para comparar DUAS coisas, pessoas ou lugares. O segredo principal é a palavra 'THAN' (do que). Para adjetivos curtinhos, colocamos '-ER' no final. Para os longos (2 sílabas ou mais não terminadas em y), usamos 'MORE' antes. É como matemática. Vamos treinar!\""
+                                : "\"Hello! Let's master Comparative Adjectives. We use them to compare TWO things, people, or places. The key word is 'THAN'. For short adjectives, we add '-ER' at the end. For long ones (2 syllables or more not ending in y), we use 'MORE' before them. It's like math. Let's practice!\""}
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            {/* Rules Grid */}
+            <section className="space-y-5">
+                <div className="flex items-center gap-3">
+                    <div className="p-2 bg-indigo-100 rounded-lg text-indigo-600"><BookOpen className="w-5 h-5" /></div>
+                    <h4 className="text-2xl font-bold text-slate-800">{isPortuguese ? '📏 Regras de Formação' : '📏 Formation Rules'}</h4>
+                </div>
+                <div className="grid md:grid-cols-2 gap-4">
+                    {rules.map((r, idx) => (
+                        <div key={idx} className={`p-6 rounded-2xl border-2 ${r.color} shadow-sm`}>
+                            <h5 className="font-black mb-1">{r.type}</h5>
+                            <div className="text-xs font-bold opacity-75 mb-4 bg-white/50 inline-block px-2 py-1 rounded">{r.rule}</div>
+                            <div className="space-y-3">
+                                {r.examples.map((ex, i) => (
+                                    <button key={i} onClick={() => speak(ex.en)} className="w-full text-left bg-white/60 hover:bg-white rounded-xl p-3 transition-colors flex items-center gap-3 group">
+                                        <span className="text-xl">{ex.icon}</span>
+                                        <div className="flex-1">
+                                            <div className="font-bold text-sm">{ex.en}</div>
+                                            <div className="text-[10px] text-slate-500 font-mono mt-0.5">{ex.phoneme}</div>
+                                            {isPortuguese && <div className="text-xs opacity-70 mt-1">{ex.pt}</div>}
+                                        </div>
+                                        <Volume2 className="w-4 h-4 opacity-30 group-hover:opacity-100 transition-opacity" />
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </section>
+
+            {/* Example Sentences */}
+            <section className="space-y-5">
+                <div className="flex items-center gap-3">
+                    <div className="p-2 bg-emerald-100 rounded-lg text-emerald-600"><MessageCircle className="w-5 h-5" /></div>
+                    <h4 className="text-2xl font-bold text-slate-800">{isPortuguese ? '💬 Em Prática' : '💬 In Practice'}</h4>
+                </div>
+                <div className="grid gap-3">
+                    {examples.map((ex, idx) => (
+                        <button key={idx} onClick={() => speak(ex.en)} className="w-full text-left p-4 rounded-2xl bg-white border border-slate-100 hover:border-indigo-200 hover:shadow-md transition-all flex items-center gap-4 group">
+                            <span className="text-2xl flex-shrink-0">{ex.icon}</span>
+                            <div className="flex-1">
+                                <div className="font-bold text-slate-800 text-lg">{ex.en}</div>
+                                <div className="text-xs text-slate-400 font-mono mt-1">{ex.phoneme}</div>
+                                {isPortuguese && <div className="text-sm text-slate-500 mt-1">{ex.pt}</div>}
+                            </div>
+                            <Volume2 className="w-5 h-5 text-slate-300 group-hover:text-indigo-500 flex-shrink-0 transition-colors" />
+                        </button>
+                    ))}
+                </div>
+            </section>
+        </div>
+    );
+};
+
+const SuperlativeAdjectives = ({ isPortuguese }: { isPortuguese: boolean }) => {
+    const rules = [
+        {
+            type: isPortuguese ? 'Adjetivos Curtos (1 sílaba)' : 'Short Adjectives (1 syllable)',
+            rule: 'the + adjetivo + est',
+            examples: [
+                { en: 'Tall → The tallest', pt: 'Alto → O mais alto', phoneme: '/tɔːl/ → /ðə ˈtɔːl.ɪst/', icon: '📏' },
+                { en: 'Old → The oldest', pt: 'Velho → O mais velho', phoneme: '/oʊld/ → /ðə ˈoʊl.dɪst/', icon: '👴' },
+                { en: 'Fast → The fastest', pt: 'Rápido → O mais rápido', phoneme: '/fæst/ → /ðə ˈfæs.tɪst/', icon: '🚀' }
+            ],
+            color: 'bg-emerald-50 border-emerald-200 text-emerald-800'
+        },
+        {
+            type: isPortuguese ? 'Terminados em E' : 'Ending in E',
+            rule: 'the + adjetivo + st',
+            examples: [
+                { en: 'Nice → The nicest', pt: 'Legal → O mais legal', phoneme: '/naɪs/ → /ðə ˈnaɪ.sɪst/', icon: '😊' },
+                { en: 'Large → The largest', pt: 'Grande → O maior', phoneme: '/lɑːrdʒ/ → /ðə ˈlɑːr.dʒɪst/', icon: '🐘' }
+            ],
+            color: 'bg-blue-50 border-blue-200 text-blue-800'
+        },
+        {
+            type: isPortuguese ? 'Sílaba CVC' : 'CVC rule',
+            rule: 'the + (dobra consoante) + est',
+            examples: [
+                { en: 'Big → The biggest', pt: 'Grande → O maior', phoneme: '/bɪɡ/ → /ðə ˈbɪɡ.ɪst/', icon: '🏢' },
+                { en: 'Hot → The hottest', pt: 'Quente → O mais quente', phoneme: '/hɑːt/ → /ðə ˈhɑːt.ɪst/', icon: '🔥' }
+            ],
+            color: 'bg-amber-50 border-amber-200 text-amber-800'
+        },
+        {
+            type: isPortuguese ? 'Terminados em Y' : 'Ending in Y',
+            rule: 'the + adjetivo s/ Y + iest',
+            examples: [
+                { en: 'Happy → The happiest', pt: 'Feliz → O mais feliz', phoneme: '/ˈhæp.i/ → /ðə ˈhæp.i.ɪst/', icon: '😁' },
+                { en: 'Easy → The easiest', pt: 'Fácil → O mais fácil', phoneme: '/ˈiː.zi/ → /ðə ˈiː.zi.ɪst/', icon: '🧩' }
+            ],
+            color: 'bg-purple-50 border-purple-200 text-purple-800'
+        },
+        {
+            type: isPortuguese ? 'Adjetivos Longos (2+ sílabas)' : 'Long Adjectives (2+ syllables)',
+            rule: 'the most + adjetivo',
+            examples: [
+                { en: 'Beautiful → The most beautiful', pt: 'Bonito → O mais bonito', phoneme: '/ˈbjuː.t̬ə.fəl/ → /ðə moʊst ˈbjuː.t̬ə.fəl/', icon: '✨' },
+                { en: 'Expensive → The most expensive', pt: 'Caro → O mais caro', phoneme: '/ɪkˈspen.sɪv/ → /ðə moʊst ɪkˈspen.sɪv/', icon: '💰' }
+            ],
+            color: 'bg-rose-50 border-rose-200 text-rose-800'
+        },
+        {
+            type: isPortuguese ? 'Irregulares' : 'Irregular',
+            rule: 'Formas especiais',
+            examples: [
+                { en: 'Good → The best', pt: 'Bom → O melhor', phoneme: '/ɡʊd/ → /ðə best/', icon: '🏆' },
+                { en: 'Bad → The worst', pt: 'Ruim → O pior', phoneme: '/bæd/ → /ðə wɝːst/', icon: '👎' },
+                { en: 'Far → The furthest/farthest', pt: 'Longe → O mais longe', phoneme: '/fɑːr/ → /ðə ˈfɝː.ðɪst/', icon: '🚀' }
+            ],
+            color: 'bg-slate-100 border-slate-300 text-slate-800'
+        }
+    ];
+
+    const examples = [
+        { en: "Everest is the highest mountain in the world.", pt: "O Everest é a montanha mais alta do mundo.", phoneme: "/ˈev.ɚ.ɪst ɪz ðə ˈhaɪ.ɪst ˈmaʊn.tɪn ɪn ðə wɝːld/", icon: '🏔️' },
+        { en: "She is the smartest student in the class.", pt: "Ela é a aluna mais inteligente da sala.", phoneme: "/ʃi ɪz ðə ˈsmɑːr.t̬ɪst ˈstuː.dənt ɪn ðə klæs/", icon: '🧠' },
+        { en: "This is the most expensive car here.", pt: "Este é o carro mais caro aqui.", phoneme: "/ðɪs ɪz ðə moʊst ɪkˈspen.sɪv kɑːr hɪr/", icon: '🚗' },
+        { en: "That was the best movie I've ever seen!", pt: "Aquele foi o melhor filme que já vi!", phoneme: "/ðæt wəz ðə best ˈmuː.vi faɪv ˈev.ɚ siːn/", icon: '🎬' }
+    ];
+
+    return (
+        <div className="space-y-10 animate-fade-in pb-20">
+            {/* Teacher Intro */}
+            <div className="relative p-8 rounded-[2rem] bg-indigo-900 text-white overflow-hidden shadow-2xl">
+                <div className="absolute top-0 right-0 p-4 opacity-10"><Award className="w-32 h-32" /></div>
+                <div className="relative z-10 flex flex-col md:flex-row gap-6 items-center">
+                    <div className="w-20 h-20 rounded-full bg-indigo-600 flex items-center justify-center text-4xl shadow-lg border-2 border-indigo-400">👨‍🏫</div>
+                    <div className="flex-1">
+                        <h3 className="text-2xl font-serif-display mb-2">{isPortuguese ? 'Adjetivos Superlativos' : 'Superlative Adjectives'}</h3>
+                        <p className="text-indigo-100 text-sm leading-relaxed italic">
+                            {isPortuguese
+                                ? "\"Excelent! Enquanto o comparativo compara duas coisas, o Superlativo destaca UMA coisa em um grupo inteiro! É o momento de exagerar. O segredo principal sempre será o 'THE'. Nunca esqueça do 'THE' antes dele! Para curtos, usamos o '-EST' no final, e para os longos 'THE MOST' antes. Vamos brilhar!\""
+                                : "\"Excellent! While comparative compares two things, the Superlative highlights ONE thing in an entire group! It's time to exaggerate. The main secret will always be 'THE'. Never forget 'THE' before it! For short ones, we use '-EST' at the end, and for long ones 'THE MOST' before. Let's shine!\""}
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+             {/* Warning Rule */}
+             <div className="p-6 bg-amber-50 rounded-[2rem] border-2 border-amber-200 shadow-sm flex items-start gap-4">
+                <div className="text-3xl">⚠️</div>
+                <div>
+                     <h4 className="font-black text-amber-800 mb-1">{isPortuguese ? 'Dica de Ouro da Teacher!' : 'Teacher\'s Golden Tip!'}</h4>
+                     <p className="text-amber-700 text-sm">
+                         {isPortuguese ? "Sempre use 'THE' antes do adjetivo no superlativo! (Exemplo: THE best, THE tallest). Não deixe o 'THE' de fora, okay?" : "Always use 'THE' before the adjective in the superlative! (Example: THE best, THE tallest). Don't leave 'THE' out, okay?"}
+                     </p>
+                </div>
+            </div>
+
+            {/* Rules Grid */}
+            <section className="space-y-5">
+                <div className="flex items-center gap-3">
+                    <div className="p-2 bg-indigo-100 rounded-lg text-indigo-600"><BookOpen className="w-5 h-5" /></div>
+                    <h4 className="text-2xl font-bold text-slate-800">{isPortuguese ? '📏 Regras de Formação' : '📏 Formation Rules'}</h4>
+                </div>
+                <div className="grid md:grid-cols-2 gap-4">
+                    {rules.map((r, idx) => (
+                        <div key={idx} className={`p-6 rounded-2xl border-2 ${r.color} shadow-sm`}>
+                            <h5 className="font-black mb-1">{r.type}</h5>
+                            <div className="text-xs font-bold opacity-75 mb-4 bg-white/50 inline-block px-2 py-1 rounded">{r.rule}</div>
+                            <div className="space-y-3">
+                                {r.examples.map((ex, i) => (
+                                    <button key={i} onClick={() => speak(ex.en)} className="w-full text-left bg-white/60 hover:bg-white rounded-xl p-3 transition-colors flex items-center gap-3 group">
+                                        <span className="text-xl">{ex.icon}</span>
+                                        <div className="flex-1">
+                                            <div className="font-bold text-sm">{ex.en}</div>
+                                            <div className="text-[10px] text-slate-500 font-mono mt-0.5">{ex.phoneme}</div>
+                                            {isPortuguese && <div className="text-xs opacity-70 mt-1">{ex.pt}</div>}
+                                        </div>
+                                        <Volume2 className="w-4 h-4 opacity-30 group-hover:opacity-100 transition-opacity" />
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </section>
+
+            {/* Example Sentences */}
+            <section className="space-y-5">
+                <div className="flex items-center gap-3">
+                    <div className="p-2 bg-emerald-100 rounded-lg text-emerald-600"><MessageCircle className="w-5 h-5" /></div>
+                    <h4 className="text-2xl font-bold text-slate-800">{isPortuguese ? '💬 Em Prática' : '💬 In Practice'}</h4>
+                </div>
+                <div className="grid gap-3">
+                    {examples.map((ex, idx) => (
+                        <button key={idx} onClick={() => speak(ex.en)} className="w-full text-left p-4 rounded-2xl bg-white border border-slate-100 hover:border-indigo-200 hover:shadow-md transition-all flex items-center gap-4 group">
+                            <span className="text-2xl flex-shrink-0">{ex.icon}</span>
+                            <div className="flex-1">
+                                <div className="font-bold text-slate-800 text-lg">{ex.en}</div>
+                                <div className="text-xs text-slate-400 font-mono mt-1">{ex.phoneme}</div>
+                                {isPortuguese && <div className="text-sm text-slate-500 mt-1">{ex.pt}</div>}
+                            </div>
+                            <Volume2 className="w-5 h-5 text-slate-300 group-hover:text-indigo-500 flex-shrink-0 transition-colors" />
+                        </button>
+                    ))}
+                </div>
+            </section>
+        </div>
+    );
+};
+
 // --- LANGUAGE TOGGLE COMPONENT ---
 const FloatingLanguageToggle = ({ isPortuguese, onToggle }: { isPortuguese: boolean, onToggle: (val: boolean) => void }) => {
     return (
@@ -9852,6 +10139,8 @@ export default function App() {
             case 41: return <PresentContinuous isPortuguese={isPortuguese} />;
             case 42: return <PresentSimpleVsContinuous isPortuguese={isPortuguese} />;
             case 43: return <StativeVerbs isPortuguese={isPortuguese} />;
+            case 44: return <ComparativeAdjectives isPortuguese={isPortuguese} />;
+            case 45: return <SuperlativeAdjectives isPortuguese={isPortuguese} />;
             case -1: return <IrregularVerbsReference isPortuguese={isPortuguese} />;
             default: return <BuildingLesson title={getTitleForBuilding(activeSection)} isPortuguese={isPortuguese} />;
         }
